@@ -160,8 +160,12 @@ html.bdl-dash .badge{ border-radius:2px !important; letter-spacing:.06em; font-w
   var JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
   var MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
   function heureParis() {
-    try { return +new Intl.DateTimeFormat("fr-FR", { hour: "numeric", hourCycle: "h23", timeZone: "Europe/Paris" }).format(new Date()); }
-    catch (e) { return new Date().getHours(); }
+    try {
+      var p = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", hourCycle: "h23", timeZone: "Europe/Paris" }).formatToParts(new Date());
+      var h = parseInt((p.find(function (x) { return x.type === "hour"; }) || {}).value, 10);
+      if (!isNaN(h)) return h;
+    } catch (e) {}
+    return new Date().getHours();
   }
   function salutation() {
     var h = heureParis();
