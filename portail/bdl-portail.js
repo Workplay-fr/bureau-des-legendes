@@ -450,16 +450,10 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
     if (!m) return;
     if (!champAssistant()) (m.querySelector("button") || m).click();
     if (!q) return;
-    var n = 0, neuf = false;
+    var n = 0;
     (function essai() {
       var ta = champAssistant();
       if (!ta) { if (++n < 40) setTimeout(essai, 100); return; }
-      /* Conversation neuve à chaque suggestion */
-      if (!neuf) {
-        neuf = true;
-        var nv = Array.prototype.filter.call(doc.querySelectorAll("button"), function (b) { return b.offsetParent && /nouveau chat|new chat/i.test(b.textContent); })[0];
-        if (nv) { nv.click(); setTimeout(essai, 400); return; }
-      }
       var proto = ta.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
       Object.getOwnPropertyDescriptor(proto, "value").set.call(ta, q);
       ta.dispatchEvent(new Event("input", { bubbles: true }));
