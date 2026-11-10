@@ -196,6 +196,7 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event a{ border:0 !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .icon{ background-color:var(--bdl-noir) !important; }
 /* Calendrier, finition */
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-view-harness{ height:236px !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar, html.bdl-dash .fc-upcoming-agenda-calendar > .fc, html.bdl-dash .bdl-grille .card:has(.fc-upcoming-agenda-calendar){ height:auto !important; min-height:0 !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-scrollgrid-sync-table{ height:auto !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-daygrid-day-frame{ min-height:150px; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-scroller{ scrollbar-width:none; }
