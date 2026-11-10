@@ -24,3 +24,7 @@ Site vitrine du coworking fictif Bureau des Légendes (34, boulevard Haussmann),
 | `ALLOWED_ORIGIN` | facultatif, domaine autorisé à appeler la fonction |
 
 Chaque push sur `main` redéploie le site.
+
+## Habillage du portail membre
+
+`portail/bdl-portail.js` habille le tableau de bord du portail Nexudus (typo Jost, bandeau photo animé, salutation selon l'heure, grille deux colonnes, apparitions au défilement). Il est chargé par un bloc « Script » du plan de page `personal-dashboard` (éditeur du portail, `/admin/editor/personal-dashboard`). Le dossier `/portail/` est exempté du mot de passe du site. Pour revenir au tableau de bord d'origine : « Supprimer le plan » dans l'éditeur.
