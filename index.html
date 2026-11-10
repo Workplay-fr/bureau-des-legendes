@@ -138,7 +138,7 @@ section{padding-block:clamp(72px,9vw,128px)}
 
 /* Liste des espaces */
 .splist{border-top:1px solid var(--line-2)}
-.sprow{display:grid;grid-template-columns:190px minmax(0,1.1fr) minmax(0,1fr) auto;gap:32px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;position:relative}
+.sprow{display:grid;grid-template-columns:190px calc((100% - 64px) * 1.2 / 2.2 - 190px) minmax(0,1fr) 200px;gap:32px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;position:relative}
 .sprow::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease)}
 .sprow:hover::before{transform:scaleX(1)}
 .sprow .ph{aspect-ratio:16/10}
