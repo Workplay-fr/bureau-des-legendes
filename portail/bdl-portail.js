@@ -60,10 +60,10 @@ html.bdl-dash .dashboard-content-container .container{ max-width:1440px; }
 .bdl-salut{ position:relative; z-index:2; color:#fff; width:100%; max-width:1440px; margin:0 auto; padding:clamp(3.5rem,9vh,6.5rem) calc(var(--bs-gutter-x,1.5rem)*.5 + 12px) 0; }
 .bdl-sur{ display:flex; align-items:center; gap:.9rem; font-size:.7rem; letter-spacing:.28em; text-transform:uppercase; font-weight:500; opacity:0; animation:bdlMonte .9s var(--bdl-ease) .15s forwards; }
 .bdl-sur i{ display:inline-block; width:38px; height:1px; background:rgba(255,255,255,.7); transform-origin:left; transform:scaleX(0); animation:bdlTrait 1s var(--bdl-ease) .35s forwards; }
-.bdl-titre{ margin:.9rem 0 0; font-weight:300 !important; font-size:clamp(2.6rem,5.6vw,5.2rem) !important; line-height:1.02 !important; letter-spacing:-.015em; color:#fff !important; }
+.bdl-titre{ margin:.9rem 0 0; font-weight:500 !important; font-size:clamp(2.6rem,5.6vw,5.2rem) !important; line-height:1.02 !important; letter-spacing:-.015em; color:#fff !important; }
 .bdl-titre .m{ display:inline-block; overflow:hidden; vertical-align:bottom; padding:.06em .02em .12em; margin-bottom:-.12em; }
 .bdl-titre .m > span{ display:inline-block; transform:translateY(105%); animation:bdlMot 1.05s var(--bdl-ease) forwards; }
-.bdl-titre em{ font-style:italic; font-weight:300; }
+.bdl-titre em{ font-style:italic; font-weight:400; }
 .bdl-sous{ margin-top:1rem; max-width:40rem; font-size:1rem; line-height:1.6; color:rgba(255,255,255,.78); opacity:0; animation:bdlMonte 1s var(--bdl-ease) .9s forwards; }
 @keyframes bdlMot{ to{ transform:translateY(0);} }
 @keyframes bdlMonte{ from{ opacity:0; transform:translateY(14px);} to{ opacity:1; transform:none;} }
@@ -95,7 +95,9 @@ html.bdl-dash .dashboard-content-container .container{ max-width:1440px; }
 
 /* Titres de section numérotés */
 html.bdl-dash .dashboard-content-container h3.card-header-title,
-html.bdl-dash .bdl-grille h3.card-header-title, html.bdl-dash .bdl-pleine h3.card-header-title{ font-weight:300 !important; font-size:clamp(1.5rem,2.2vw,2rem) !important; letter-spacing:-.01em; }
+html.bdl-dash .bdl-grille h3.card-header-title, html.bdl-dash .bdl-pleine h3.card-header-title{ font-weight:600 !important; font-size:clamp(1.15rem,1.5vw,1.4rem) !important; letter-spacing:.08em; text-transform:uppercase; line-height:1.2; }
+html.bdl-dash .user-main-content .card h5, html.bdl-dash .user-main-content .card h6, html.bdl-dash .user-main-content .card .fw-bolder, html.bdl-dash .user-main-content .card .fw-semibold, html.bdl-dash .user-main-content .card .fw-bold{ font-family:var(--bdl-f) !important; font-weight:600 !important; letter-spacing:.01em; }
+html.bdl-dash .user-main-content .card .fw-medium{ font-weight:500 !important; }
 html.bdl-dash .dashboard-content-container h3.card-header-title::before{ counter-increment:bdlsec; content:counter(bdlsec,decimal-leading-zero) "  —  "; display:block;
   font-size:.66rem; letter-spacing:.28em; font-weight:500; color:var(--bdl-gris); margin-bottom:.55rem; white-space:pre; }
 html.bdl-dash .user-main-content a.text-body{ font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500; text-decoration:none; border-bottom:1px solid currentColor; padding-bottom:2px; }
@@ -127,7 +129,7 @@ html.bdl-dash .badge{ border-radius:2px !important; letter-spacing:.06em; font-w
 .bdl-grille .col-lg-4 .mb-2[style*="grid"], .bdl-grille .col-lg-4 div.mb-2{ grid-template-columns:1fr !important; }
 .bdl-grille .col-lg-4 .card{ width:100%; }
 .bdl-pleine{ margin-bottom:6rem; padding-top:4rem; border-top:1px solid var(--bdl-sable); display:flex; flex-direction:column; gap:5rem; }
-.bdl-pleine h3,.bdl-pleine h2{ font-weight:300 !important; font-size:clamp(1.5rem,2.2vw,2rem) !important; }
+.bdl-pleine h3,.bdl-pleine h2{ font-weight:600 !important; }
 .bdl-grille h3.card-header-title::before,.bdl-pleine h3.card-header-title::before{ counter-increment:bdlsec; content:counter(bdlsec,decimal-leading-zero) "  —  "; display:block;
   font-size:.66rem; letter-spacing:.28em; font-weight:500; color:var(--bdl-gris); margin-bottom:.55rem; white-space:pre; }
 html.bdl-dash .user-main-content{ counter-reset:bdlsec; }
