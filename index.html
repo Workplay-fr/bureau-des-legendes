@@ -369,6 +369,23 @@ section{padding-block:clamp(72px,9vw,128px)}
 .recap li span{color:var(--gris);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
 .crm{font-size:13px;color:var(--gris)}
 .crm b{color:var(--noir);font-weight:500}
+.mv-corps{padding:26px 36px 22px;scrollbar-width:none}
+.mv-corps::-webkit-scrollbar{display:none}
+.mv .mv-etapes{margin:16px 0 0}
+#mv .mv-etape{gap:16px;padding-top:16px}
+#mv .mv-pied{padding-top:12px}
+#mv textarea{min-height:44px;height:44px;resize:none}
+#mv .mv-fin{gap:12px;padding-top:16px}
+#mv .sceau,#mv .sceau svg{width:56px;height:56px}
+#mv .recap li{padding:8px 0}
+#mv .mv-fin .mv-pied{padding-top:4px !important}
+@media (max-height:780px){
+  #mv .mv-corps{padding:20px 32px 18px}
+  #mv .mv-etape{gap:12px;padding-top:12px}
+  #mv .mv-fin{gap:10px;padding-top:10px}
+  #mv .mv-fin p.muted{font-size:14px;line-height:1.5}
+  #mv .sceau,#mv .sceau svg{width:46px;height:46px}
+}
 @keyframes fade{from{opacity:0}}
 @keyframes ouvre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
 @keyframes tourne{to{transform:rotate(360deg)}}
@@ -904,7 +921,7 @@ body.modal-ouverte{overflow:hidden}
             <div class="champ"><label class="t" for="mv-email">E-mail</label><input id="mv-email" name="email" type="email" autocomplete="email" required><span class="msg"></span></div>
             <div class="champ"><label class="t" for="mv-tel">Téléphone</label><input id="mv-tel" name="tel" type="tel" autocomplete="tel"><span class="msg"></span></div>
             <div class="champ large"><label class="t" for="mv-equipe">Taille de l'équipe</label><select id="mv-equipe" name="equipe"><option>Seul·e</option><option>2 à 5 personnes</option><option>6 personnes et plus</option></select><span class="msg"></span></div>
-            <div class="champ large"><label class="t" for="mv-message">Un mot pour l'équipe (facultatif)</label><textarea id="mv-message" name="message" rows="2"></textarea></div>
+            <div class="champ large"><label class="t" for="mv-message">Un mot pour l'équipe (facultatif)</label><textarea id="mv-message" name="message" rows="1"></textarea></div>
           </div>
           <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="mv-site">Site web</label><input id="mv-site" name="site_web" tabindex="-1" autocomplete="off"></div>
           <label class="accord"><input type="checkbox" id="mv-accord" required> J'accepte que le Bureau des Légendes me recontacte au sujet de cette visite.</label>
