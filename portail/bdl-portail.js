@@ -258,6 +258,14 @@ html.bdl-dash .dashboard-content-container > .container > .vstack:empty{ display
   .bdl-grille .col-lg-4 .card-header-title + div .d-md-inline{ display:none !important; }
   .bdl-grille .col-lg-4 .card-header-title + div .d-md-none{ display:inline !important; }
 }
+html.bdl-dash .fc-upcoming-agenda-calendar table.fc-col-header, html.bdl-dash .fc-upcoming-agenda-calendar table.fc-scrollgrid-sync-table{ min-width:var(--bdl-calw, 3780px) !important; width:var(--bdl-calw, 3780px) !important; }
+/* Cartes en grille : jamais plus larges que la colonne */
+html.bdl-dash .bdl-grille div.mb-2, html.bdl-dash .bdl-pleine div.mb-2{ grid-template-columns:repeat(auto-fill, minmax(min(100%, 300px), 1fr)) !important; }
+html.bdl-dash .bdl-grille .col-lg-4 div.mb-2{ grid-template-columns:1fr !important; }
+@media (max-width:767px){
+  html.bdl-dash .bdl-grille div.mb-2, html.bdl-dash .bdl-pleine div.mb-2{ grid-template-columns:1fr !important; }
+  .bdl-hero .announcement-banner .order-md-2{ display:none !important; }
+}
 /* Calendrier : libellés sur une ligne avec ellipse */
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .text-truncate, html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .fw-bolder{ white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; min-width:0; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child{ min-width:0; overflow:hidden; }
@@ -413,9 +421,8 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
     if (!sc || !jours) return;
     var visibles = sc.clientWidth >= 760 ? 5 : sc.clientWidth >= 480 ? 3 : 2;
     var w = (sc.getBoundingClientRect().width * jours / visibles).toFixed(2);
-    c.querySelectorAll("table.fc-col-header, table.fc-scrollgrid-sync-table").forEach(function (t) {
-      if (t.style.minWidth !== w + "px") t.style.setProperty("min-width", w + "px", "important");
-    });
+    if (c.style.getPropertyValue("--bdl-calw") !== w + "px") c.style.setProperty("--bdl-calw", w + "px");
+    if (!c.dataset.bdlRo && window.ResizeObserver) { c.dataset.bdlRo = "1"; new ResizeObserver(function () { calendrier(); }).observe(sc); }
   }
   window.addEventListener("resize", function () { setTimeout(calendrier, 120); });
   var attente = 0;
