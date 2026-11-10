@@ -419,6 +419,28 @@ body.modal-ouverte{overflow:hidden}
 .recap-salle b{display:block;font:400 14px/1.3 var(--f);letter-spacing:.1em;text-transform:uppercase}
 .recap-salle span{font-size:14px;color:var(--gris)}
 @media (max-width:620px){.salles-choix{grid-template-columns:minmax(0,1fr)}.carte-l{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.carte-l .champ:first-child{grid-column:1/-1}}
+
+/* Carrousel de la fenêtre de réservation : la salle puis les services */
+#ms-car::after{display:none}
+.car-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.1s var(--ease)}
+.car-slide.on{opacity:1}
+.car-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.car-slide.on img{animation:kb 6s var(--ease) both}
+.car-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,6,.45) 0,rgba(15,10,6,0) 22%,rgba(15,10,6,0) 45%,rgba(15,10,6,.78) 100%)}
+.car-slide p{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;margin:0;color:#fff;font:400 14px/1.55 var(--f);letter-spacing:.01em;text-transform:none;max-width:44ch}
+.car-slide p b{display:block;font:400 22px/1.25 var(--f);letter-spacing:.08em;text-transform:uppercase;margin:8px 0 6px}
+.car-slide .tag{display:inline-block;font:400 10.5px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(255,255,255,.7);padding:5px 8px}
+.car-slide.on p > *{animation:up .8s var(--ease) both}
+.car-slide.on p > :nth-child(2){animation-delay:.08s}.car-slide.on p > :nth-child(3){animation-delay:.16s}
+.car-points{position:absolute;top:22px;left:28px;right:28px;z-index:3;display:flex;gap:6px}
+.car-points button{flex:1;height:18px;border:0;padding:8px 0;background:none;cursor:pointer;position:relative}
+.car-points button::before,.car-points button::after{content:"";position:absolute;left:0;right:0;top:8px;height:2px;background:rgba(255,255,255,.35)}
+.car-points button::after{background:#fff;transform:scaleX(0);transform-origin:left}
+.car-points button.vu::after{transform:scaleX(1)}
+.car-points button.on::after{animation:barre var(--duree,5s) linear forwards}
+.car-figee .car-points button.on::after{animation:none;transform:scaleX(1)}
+.car-points button:focus-visible{outline:1px solid #fff;outline-offset:2px}
+@keyframes barre{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 </style>
 </head>
 <body>
@@ -809,7 +831,7 @@ body.modal-ouverte{overflow:hidden}
 <div class="mv ms" id="ms" hidden role="dialog" aria-modal="true" aria-labelledby="ms-titre">
   <div class="mv-voile" data-fermer-ms></div>
   <div class="mv-panneau">
-    <figure class="mv-photo"><img id="ms-photo" src="img/projection.jpg" alt=""><p><b id="ms-photo-nom">Salles de réunion</b><span id="ms-photo-info">34, boulevard Haussmann · Paris IX<sup>e</sup></span></p></figure>
+    <figure class="mv-photo" id="ms-car" aria-roledescription="carrousel" aria-label="La salle et ses services"><div id="ms-slides"></div><div class="car-points" id="ms-points"></div></figure>
     <div class="mv-corps">
       <div class="mv-tete">
         <div><span class="label" id="ms-sur">Réserver une salle · 1 sur 4</span><h2 id="ms-titre">Choisissez votre salle.</h2></div>
@@ -1258,7 +1280,38 @@ document.getElementById("ms-participants").innerHTML = Array.from({length:15},(_
   box.innerHTML = html;
 })();
 
-function photoSalle(){ const s = salleCourante(); if (!s) return; document.getElementById("ms-photo").src = s.photo; document.getElementById("ms-photo-nom").textContent = s.nom; document.getElementById("ms-photo-info").textContent = `${s.etage} · jusqu'à ${s.places} personnes · ${s.eq}`; }
+// Carrousel : la salle choisie, puis les services proposés avec la réservation.
+const SERVICES = [
+  { photo:"img/hero.jpg", tag:"Inclus", titre:"Tout est prêt à votre arrivée", texte:"Écran, caméra et micro de salle, Wi-Fi fibre, paperboard. Vous branchez, vous commencez." },
+  { photo:"img/petit-dejeuner.jpg", tag:"En option", titre:"Petit-déjeuner d'accueil", texte:"Café, jus pressés et viennoiseries servis dans la salle · 12 € HT par personne." },
+  { photo:"img/courrier.jpg", tag:"Inclus", titre:"Accueil de vos invités", texte:"Vos participants sont annoncés à l'entrée et accompagnés jusqu'à la salle." },
+  { photo:"img/degustation.jpg", tag:"En option", titre:"Apéritif de fin de réunion", texte:"Vins et planches à partager, dans la salle ou au salon · à partir de 18 € HT par personne." },
+];
+const CAR = { i:0, minuterie:null, survol:false, duree:5000 };
+function photoSalle(){
+  const s = salleCourante(); if (!s) return;
+  const slides = [{ photo:s.photo, tag:"Votre salle", titre:s.nom, texte:`${s.etage} · jusqu'à ${s.places} personnes · ${s.eq} · ${eur(s.prix)} HT / h` }, ...SERVICES];
+  document.getElementById("ms-slides").innerHTML = slides.map((x,k) => `<div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="${k+1} sur ${slides.length}"><img src="${x.photo}" alt="" loading="lazy"><p><span class="tag">${x.tag}</span><b>${esc(x.titre)}</b><span>${esc(x.texte)}</span></p></div>`).join("");
+  document.getElementById("ms-points").innerHTML = slides.map((x,k) => `<button type="button" data-car="${k}" aria-label="Voir : ${esc(x.titre)}"></button>`).join("");
+  document.getElementById("ms-car").style.setProperty("--duree", CAR.duree + "ms");
+  montrerSlide(0);
+}
+function montrerSlide(k){
+  const slides = [...document.querySelectorAll("#ms-slides .car-slide")], pts = [...document.querySelectorAll("#ms-points button")];
+  if (!slides.length) return;
+  CAR.i = (k + slides.length) % slides.length;
+  slides.forEach((x,j) => x.classList.toggle("on", j === CAR.i));
+  pts.forEach((b,j) => { b.classList.remove("on"); b.classList.toggle("vu", j < CAR.i); });
+  void pts[CAR.i].offsetWidth; pts[CAR.i].classList.add("on");
+  clearTimeout(CAR.minuterie);
+  const fige = RM || CAR.survol || ms.hidden;
+  document.getElementById("ms-car").classList.toggle("car-figee", fige);
+  if (!fige) CAR.minuterie = setTimeout(() => montrerSlide(CAR.i + 1), CAR.duree);
+}
+document.getElementById("ms-points").addEventListener("click", e => { const b = e.target.closest("[data-car]"); if (b) montrerSlide(Number(b.dataset.car)); });
+const carEl = document.getElementById("ms-car");
+carEl.addEventListener("mouseenter", () => { CAR.survol = true; montrerSlide(CAR.i); });
+carEl.addEventListener("mouseleave", () => { CAR.survol = false; montrerSlide(CAR.i); });
 const TITRES = { 1:"Choisissez votre salle.", 2:"Choisissez votre créneau.", 3:"Vos coordonnées.", 4:"Paiement." };
 function etapeMs(n){
   S.etape = n;
@@ -1277,10 +1330,12 @@ function ouvrirSalle(id){
   S.jour = msForm.querySelector('input[name="jour"]:checked').value; S.heure = null;
   photoSalle(); msForm.hidden = false; document.getElementById("ms-fin").classList.remove("on");
   ms.hidden = false; ms.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  montrerSlide(0);
   etapeMs(id ? 2 : 1);
 }
 function fermerSalle(){
   if (ms.hidden) return;
+  clearTimeout(CAR.minuterie);
   const fin = () => { ms.hidden = true; ms.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); S.focus?.focus?.(); };
   if (RM) return fin(); ms.classList.add("ferme"); setTimeout(fin, 480);
 }
