@@ -64,20 +64,36 @@ export async function occupation(salle, jour) {
 }
 
 // Retrouve un contact par e-mail, ou le crée.
-export async function contact({ nom, email, tel, societe, note }) {
+export async function contact({ nom, email, tel, societe, note, compte }) {
   const liste = await nx("GET", `/spaces/coworkers?Coworker_Email=${encodeURIComponent(email)}&size=1`);
   const existant = liste.Records && liste.Records[0] && liste.Records[0].Id;
-  if (existant) return { id: existant, nouveau: false };
-  const c = await nx("POST", "/spaces/coworkers", {
+  if (existant) return { id: existant, nouveau: false, compte: !!liste.Records[0].UserId };
+  const fiche = {
     CoworkerType: 1, FullName: nom, Email: email, MobilePhone: tel || null, CompanyName: societe || null,
     Gender: 1, TaxRateType: 1, CountryId: CFG.pays, SimpleTimeZoneId: CFG.fuseau, InvoicingBusinessId: CFG.business,
     MondayAttendance: 1, TuesdayAttendance: 1, WednesdayAttendance: 1, ThursdayAttendance: 1, FridayAttendance: 1, SaturdayAttendance: 1, SundayAttendance: 1,
     Notes: note || "Contact créé depuis le site vitrine.",
-  });
+  };
+  let c, avecCompte = !!compte;
+  try { c = await nx("POST", "/spaces/coworkers", compte ? { ...fiche, CreateUser: true } : fiche); }
+  catch (e) {
+    if (!compte) throw e;
+    // Si la création du compte portail est refusée, on crée au moins la fiche.
+    console.error("CreateUser refusé, fiche sans compte :", e.message);
+    c = await nx("POST", "/spaces/coworkers", fiche); avecCompte = false;
+  }
   const id = c.Value && c.Value.Id;
   if (!id) throw new Error("Nexudus n'a pas renvoyé l'identifiant du contact.");
-  return { id, nouveau: true };
+  return { id, nouveau: true, compte: avecCompte };
 }
+
+// Formules proposées à l'adhésion depuis le site (identifiants et prix mensuels HT Nexudus).
+export const FORMULES_NX = {
+  1415397038: { nom: "Nomade", prix: 290, quantite: false },
+  1415397039: { nom: "Résident", prix: 490, quantite: false },
+  1415397447: { nom: "Bureau privé", prix: 750, quantite: true },
+  1415397040: { nom: "Domiciliation", prix: 90, quantite: false },
+};
 
 // Utilitaires HTTP.
 export const nettoie = (v, max) => String(v ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, max);

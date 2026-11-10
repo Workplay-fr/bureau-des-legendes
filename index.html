@@ -441,6 +441,84 @@ body.modal-ouverte{overflow:hidden}
 .car-figee .car-points button.on::after{animation:none;transform:scaleX(1)}
 .car-points button:focus-visible{outline:1px solid #fff;outline-offset:2px}
 @keyframes barre{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* Trois accès principaux du hero */
+.trio{margin-top:34px;border-top:1px solid var(--line-2);max-width:560px}
+.trio-l{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 20px;width:100%;padding:18px 18px 18px 0;border:0;border-bottom:1px solid var(--line-2);background:none;color:var(--fg);font:inherit;text-align:left;text-decoration:none;cursor:pointer;position:relative;isolation:isolate;transition:color .45s var(--ease),padding .45s var(--ease)}
+.trio-l::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--noir);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
+.trio-l b{font:400 clamp(17px,1.5vw,21px)/1.2 var(--f);letter-spacing:.12em;text-transform:uppercase}
+.trio-l small{grid-column:1;font-size:14px;color:var(--fg-2);transition:color .45s var(--ease)}
+.trio-l i{grid-row:1/3;grid-column:2;font-style:normal;font-size:22px;line-height:1;transition:transform .45s var(--ease)}
+.trio-l.premier{background:var(--noir);color:#fff;padding-left:18px;border-bottom-color:var(--noir)}
+.trio-l.premier small{color:#C7C0B8}
+.trio-l.premier::before{background:#fff}
+@media (hover:hover){
+  .trio-l:hover{color:#fff;padding-left:18px}
+  .trio-l:hover::before{transform:scaleX(1);transform-origin:left}
+  .trio-l:hover small{color:#C7C0B8}
+  .trio-l:hover i{transform:translateX(6px)}
+  .trio-l.premier:hover{color:var(--noir)}
+  .trio-l.premier:hover small{color:var(--gris)}
+}
+.trio-l:focus-visible{outline:1px solid var(--fg);outline-offset:3px}
+
+/* Adhésion façon formulaire conversationnel */
+.tf{position:fixed;inset:0;z-index:220;background:var(--blanc);color:var(--noir);display:flex;flex-direction:column;animation:fade .4s var(--ease) both}
+.tf[hidden]{display:none!important}
+.tf.ferme{animation:fade .35s var(--ease) reverse both}
+.tf-haut{display:flex;align-items:center;gap:20px;padding:16px max(20px,env(safe-area-inset-right,0px)) 16px max(20px,env(safe-area-inset-left,0px));padding-top:calc(16px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--line)}
+.tf-haut img{height:34px;width:auto}
+.tf-haut .label{margin-left:auto}
+.tf-prog{height:2px;background:var(--line);position:relative}
+.tf-prog span{position:absolute;inset:0 auto 0 0;background:var(--noir);width:0;transition:width .7s var(--ease)}
+.tf-corps{flex:1;overflow:auto;display:flex;padding:clamp(28px,6vh,72px) max(20px,env(safe-area-inset-right,0px)) 40px max(20px,env(safe-area-inset-left,0px))}
+.tf-q{display:none;width:100%;max-width:760px;margin:auto}
+.tf-q.on{display:block;animation:tfIn .7s var(--ease) both}
+.tf-q.large{max-width:1180px}
+@keyframes tfIn{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+.tf-num{display:flex;align-items:center;gap:10px;font:400 13px/1 var(--f);letter-spacing:.16em;color:var(--gris);margin-bottom:16px}
+.tf-q h2{font-size:clamp(26px,3.4vw,44px);letter-spacing:.04em;line-height:1.15}
+.tf-aide{color:var(--gris);margin-top:12px;max-width:56ch}
+.tf-champ{margin-top:34px;display:grid;gap:22px}
+.tf-champ.deux{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tf-champ input{width:100%;border:0;border-bottom:1px solid var(--line-2);background:transparent;padding:6px 0 12px;font:300 clamp(22px,2.6vw,32px)/1.3 var(--f);color:var(--noir);outline:none;border-radius:0}
+.tf-champ input::placeholder{color:#C9C2BA}
+.tf-champ input:focus{border-bottom-color:var(--noir);box-shadow:0 1px 0 var(--noir)}
+.tf-champ .msg{display:block;min-height:1.2em;margin-top:6px;font-size:14px;color:#B3261E}
+.tf-choix{margin-top:30px;display:grid;gap:10px;max-width:520px}
+.tf-choix button{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;border:1px solid var(--line-2);background:#fff;font:400 17px/1.3 var(--f);color:var(--noir);text-align:left;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.tf-choix button kbd{flex:none;display:grid;place-items:center;width:26px;height:26px;border:1px solid var(--line-2);font:500 12px/1 var(--f);transition:inherit}
+.tf-choix button small{display:block;color:var(--gris);font-size:13.5px;margin-top:2px}
+.tf-choix button:hover{border-color:var(--noir)}
+.tf-choix button.on{background:var(--noir);color:#fff;border-color:var(--noir)}
+.tf-choix button.on kbd{border-color:#fff}
+.tf-choix button.on small{color:#C7C0B8}
+.tf-ok{margin-top:30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tf-ok .astuce{font-size:13px;color:var(--gris)}
+.tf-ok .astuce b{font-weight:500;color:var(--noir)}
+.tf-err{min-height:1.4em;margin-top:12px;font-size:14px;color:#B3261E}
+.tf-nav{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;z-index:2}
+.tf-nav button{width:40px;height:40px;border:0;background:var(--noir);color:#fff;font-size:16px;cursor:pointer}
+.tf-nav button:disabled{opacity:.3;cursor:default}
+/* Formules */
+.plans-tf{margin-top:34px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.pl{display:flex;flex-direction:column;border:1px solid var(--line-2);padding:22px 20px 20px;min-width:0;position:relative;transition:border-color .3s,transform .5s var(--ease)}
+.pl:hover{border-color:var(--noir);transform:translateY(-4px)}
+.pl .badge{position:absolute;top:-1px;right:-1px;background:var(--noir);color:#fff;font:400 10.5px/1 var(--f);letter-spacing:.18em;text-transform:uppercase;padding:7px 10px}
+.pl h3{font-size:19px;letter-spacing:.12em}
+.pl .accroche{font-size:14px;color:var(--gris);margin-top:8px;min-height:3em}
+.pl .p{margin-top:18px;font:300 40px/1 var(--f)}
+.pl .p small{font:400 12px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin-left:6px}
+.pl ul{list-style:none;margin:18px 0 22px;padding:14px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:14px;color:var(--gris);flex:1}
+.pl li{padding-left:16px;position:relative}
+.pl li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:1px;background:var(--noir)}
+.pl .note-pl{font-size:12.5px;color:var(--gris);margin:-10px 0 16px;font-style:italic}
+.pl .btn{width:100%}
+.pl.vedette{border-color:var(--noir)}
+@media (max-width:1100px){.plans-tf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.plans-tf{grid-template-columns:minmax(0,1fr)}.tf-champ.deux{grid-template-columns:minmax(0,1fr)}.tf-nav{display:none}}
+.tf .paiement{max-width:520px;margin-top:28px}
+.tf .recap{margin-top:24px;max-width:520px}
 </style>
 </head>
 <body>
@@ -475,7 +553,7 @@ body.modal-ouverte{overflow:hidden}
         <div class="entre">
           <h1>Une adresse discrète pour écrire sa légende.</h1>
           <p class="lede">Postes de coworking, bureaux privés et salles de réunion dans un immeuble haussmannien. Parquet en point de Hongrie, moulures, cheminées de marbre, et une verrière de 120&nbsp;m² au rez-de-chaussée.</p>
-          <div class="hero-cta"><button class="btn btn-or" type="button" data-salle="">Réserver une salle de réunion</button><a class="btn btn-fil" data-portal="tour" href="#">Réserver une visite</a></div>
+          <nav class="trio" aria-label="Accès rapides"><button class="trio-l premier" type="button" data-salle=""><b>Réserver une salle</b><small>Dès 35 € HT de l'heure · créneaux en temps réel</small><i aria-hidden="true">→</i></button><a class="trio-l" data-portal="tour" href="#"><b>Visiter le lieu</b><small>30 minutes, café compris ;)</small><i aria-hidden="true">→</i></a><button class="trio-l" type="button" data-membre=""><b>Devenir membre</b><small>Dès 90 € HT par mois · inscription en 2 minutes</small><i aria-hidden="true">→</i></button></nav>
         </div>
       </div>
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
@@ -569,10 +647,10 @@ body.modal-ouverte{overflow:hidden}
         <p>Tarifs mensuels. Le détail de chaque formule est sur la page dédiée.</p>
       </div>
       <div class="plans">
-        <div class="plan court"><div><h3>Nomade</h3><span class="pour">Place libre sur les plateaux</span></div><div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
-        <div class="plan court"><div><h3>Résident</h3><span class="pour">Votre poste attitré</span></div><div class="prix"><b class="num">490&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
-        <div class="plan court"><div><h3>Bureau privé</h3><span class="pour">Un bureau fermé pour votre équipe</span></div><div class="prix"><b class="num">750&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
-        <div class="plan court"><div><h3>Domiciliation</h3><span class="pour">Votre siège au 34 boulevard Haussmann</span></div><div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
+        <div class="plan court"><div><h3>Nomade</h3><span class="pour">Place libre sur les plateaux</span></div><div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397038">Choisir</a></div>
+        <div class="plan court"><div><h3>Résident</h3><span class="pour">Votre poste attitré</span></div><div class="prix"><b class="num">490&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397039">Choisir</a></div>
+        <div class="plan court"><div><h3>Bureau privé</h3><span class="pour">Un bureau fermé pour votre équipe</span></div><div class="prix"><b class="num">750&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397447">Choisir</a></div>
+        <div class="plan court"><div><h3>Domiciliation</h3><span class="pour">Votre siège au 34 boulevard Haussmann</span></div><div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397040">Choisir</a></div>
       </div>
     </div>
   </section>
@@ -597,7 +675,7 @@ body.modal-ouverte{overflow:hidden}
           <li><b>Plateau du 2<sup>e</sup> étage</b><span>10 postes</span></li>
           <li><b>Plateau du 3<sup>e</sup> étage</b><span>10 postes</span></li>
         </ul>
-        <a class="btn btn-or" data-portal="signup" href="#">Devenir membre</a>
+        <button class="btn btn-or" type="button" data-membre="">Devenir membre</button>
       </div>
     </article>
     <article class="bloc">
@@ -669,16 +747,16 @@ body.modal-ouverte{overflow:hidden}
       <div class="plans" style="border-top:0">
         <div class="plan"><div><h3>Nomade</h3><span class="pour">Pour venir quand vous voulez</span></div>
           <ul><li>Place libre sur les trois plateaux</li><li>Fibre très haut débit</li><li>Accès aux cabines Enigma et Morse</li><li>Salles de réunion à la réservation</li></ul>
-          <div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Nomade</a></div>
+          <div class="prix"><b class="num">290&nbsp;€</b>par mois</div><button class="btn btn-or" type="button" data-membre="1415397038">Choisir Nomade</button></div>
         <div class="plan"><div><h3>Résident</h3><span class="pour">Pour avoir votre place à vous</span></div>
           <ul><li>Poste attitré sur un plateau</li><li>Casier sécurisé</li><li>Accès aux cabines Enigma et Morse</li><li>Salles de réunion à la réservation</li></ul>
-          <div class="prix"><b class="num">490&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Résident</a></div>
+          <div class="prix"><b class="num">490&nbsp;€</b>par mois</div><button class="btn btn-or" type="button" data-membre="1415397039">Choisir Résident</button></div>
         <div class="plan"><div><h3>Bureau privé</h3><span class="pour">Pour une équipe de 3 à 6 personnes</span></div>
           <ul><li>Bureau fermé George Smiley ou Mata Hari</li><li>Ligne fibre dédiée</li><li>Rangements sécurisés</li><li>Votre plaque à la porte</li></ul>
-          <div class="prix"><b class="num">750&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Bureau privé</a></div>
+          <div class="prix"><b class="num">750&nbsp;€</b>par mois</div><button class="btn btn-or" type="button" data-membre="1415397447">Choisir Bureau privé</button></div>
         <div class="plan"><div><h3>Domiciliation</h3><span class="pour">Pour installer votre siège à Paris</span></div>
           <ul><li>Adresse au 34 boulevard Haussmann</li><li>Réception de votre courrier</li><li>Salles de réunion à la réservation</li><li>Gestion depuis l'espace membre</li></ul>
-          <div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Domiciliation</a></div>
+          <div class="prix"><b class="num">90&nbsp;€</b>par mois</div><button class="btn btn-or" type="button" data-membre="1415397040">Choisir Domiciliation</button></div>
       </div>
       <p class="note">Une question sur une formule ? <a href="#contact">Écrivez-nous</a> ou passez nous voir.</p>
     </div>
@@ -759,7 +837,7 @@ body.modal-ouverte{overflow:hidden}
 <section class="appel deep" id="appel">
   <div class="wrap">
     <div><span class="label">Votre mission, si vous l'acceptez</span><h2 style="margin-top:18px">Venez voir le lieu de vos yeux.</h2></div>
-    <div class="hero-cta" style="margin:0"><a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a><a class="btn btn-fil" data-portal="signup" href="#">Devenir membre</a></div>
+    <div class="hero-cta" style="margin:0"><a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a><button class="btn btn-fil" type="button" data-membre="">Devenir membre</button></div>
   </div>
 </section>
 
@@ -768,7 +846,7 @@ body.modal-ouverte{overflow:hidden}
     <div class="top">
       <div><img src="img/logo-blanc.png" alt="Bureau des Légendes" width="496" height="220"><p class="sig">Coworking et bureaux privés, boulevard Haussmann.</p></div>
       <div><h4>Le lieu</h4><ul><li><a href="#espaces">Espaces</a></li><li><a href="#formules">Formules</a></li><li><a href="#evenements">Événements</a></li><li><a href="#contact">Contact</a></li></ul></div>
-      <div><h4>Membres</h4><ul><li><a data-portal="login" href="#">Espace membre</a></li><li><a data-portal="bookings" href="#">Réserver une salle</a></li><li><a data-portal="events" href="#">Agenda</a></li><li><a data-portal="signup" href="#">Devenir membre</a></li></ul></div>
+      <div><h4>Membres</h4><ul><li><a data-portal="login" href="#">Espace membre</a></li><li><a data-portal="bookings" href="#">Réserver une salle</a></li><li><a data-portal="events" href="#">Agenda</a></li><li><a href="#" data-membre="">Devenir membre</a></li></ul></div>
     </div>
     <div class="bot"><span>34, boulevard Haussmann, 75009 Paris</span><span>Lieu de démonstration · réservations et espace membre propulsés par Nexudus</span></div>
   </div>
@@ -899,6 +977,86 @@ body.modal-ouverte{overflow:hidden}
       </div>
     </div>
   </div>
+</div>
+
+<div class="tf" id="tf" hidden role="dialog" aria-modal="true" aria-label="Devenir membre">
+  <div class="tf-haut"><img src="img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220"><span class="label" id="tf-etat">Devenir membre</span><button class="mv-fermer" type="button" data-fermer-tf aria-label="Fermer" style="margin:0"></button></div>
+  <div class="tf-prog" aria-hidden="true"><span id="tf-prog"></span></div>
+  <div class="tf-corps" id="tf-corps">
+    <section class="tf-q large" data-q="formule">
+      <div class="tf-num">01 →</div>
+      <h2>Choisissez votre formule.</h2>
+      <p class="tf-aide">Mensuel, sans frais d'adhésion. Vous pourrez changer de formule à tout moment depuis votre espace membre.</p>
+      <div class="plans-tf" id="tf-plans"></div>
+    </section>
+    <section class="tf-q" data-q="debut">
+      <div class="tf-num">02 →</div>
+      <h2>Quand souhaitez-vous commencer ?</h2>
+      <p class="tf-aide">Le premier mois est calculé au prorata à partir de cette date.</p>
+      <div class="tf-choix" id="tf-debuts"></div>
+      <p class="tf-err" data-err></p>
+    </section>
+    <section class="tf-q" data-q="postes">
+      <div class="tf-num">03 →</div>
+      <h2>Combien de postes dans votre bureau ?</h2>
+      <p class="tf-aide">Nos bureaux privés accueillent jusqu'à 6 personnes. Le tarif s'entend par poste.</p>
+      <div class="tf-choix" id="tf-postes"></div>
+      <p class="tf-err" data-err></p>
+    </section>
+    <section class="tf-q" data-q="nom">
+      <div class="tf-num">04 →</div>
+      <h2>Comment vous appelez-vous ?</h2>
+      <div class="tf-champ deux">
+        <div><input id="tf-prenom" placeholder="Prénom" autocomplete="given-name" aria-label="Prénom"><span class="msg"></span></div>
+        <div><input id="tf-nom" placeholder="Nom" autocomplete="family-name" aria-label="Nom"><span class="msg"></span></div>
+      </div>
+      <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">appuyez sur <b>Entrée ↵</b></span></div>
+    </section>
+    <section class="tf-q" data-q="societe">
+      <div class="tf-num">05 →</div>
+      <h2>Ravi de vous rencontrer, <span id="tf-prenom-echo"></span>. Pour quelle entreprise ?</h2>
+      <p class="tf-aide">Facultatif : laissez vide si vous venez à titre personnel.</p>
+      <div class="tf-champ"><div><input id="tf-societe" placeholder="Nom de votre entreprise" autocomplete="organization" aria-label="Entreprise"><span class="msg"></span></div></div>
+      <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">appuyez sur <b>Entrée ↵</b></span></div>
+    </section>
+    <section class="tf-q" data-q="contact">
+      <div class="tf-num">06 →</div>
+      <h2>Où pouvons-nous vous écrire ?</h2>
+      <p class="tf-aide">Vos accès à l'espace membre seront rattachés à cette adresse.</p>
+      <div class="tf-champ">
+        <div><input id="tf-email" type="email" placeholder="vous@entreprise.fr" autocomplete="email" aria-label="E-mail"><span class="msg"></span></div>
+        <div><input id="tf-tel" type="tel" placeholder="Téléphone (facultatif)" autocomplete="tel" aria-label="Téléphone"><span class="msg"></span></div>
+      </div>
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="tf-site">Site web</label><input id="tf-site" tabindex="-1" autocomplete="off"></div>
+      <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">appuyez sur <b>Entrée ↵</b></span></div>
+    </section>
+    <section class="tf-q" data-q="paiement">
+      <div class="tf-num">07 →</div>
+      <h2>Dernière étape : le paiement.</h2>
+      <ul class="recap" id="tf-recap"></ul>
+      <div class="paiement">
+        <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Paiement de démonstration.</b> Aucune carte n'est débitée et aucune donnée bancaire n'est demandée : les champs ci-dessous sont des valeurs de test. L'adhésion, elle, est bien enregistrée.</span></div>
+        <div class="carte-l">
+          <div class="champ"><label class="t" for="tf-cb">Numéro de carte</label><input id="tf-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
+          <div class="champ"><label class="t" for="tf-exp">Expiration</label><input id="tf-exp" value="12 / 34" readonly tabindex="-1"></div>
+          <div class="champ"><label class="t" for="tf-cvc">CVC</label><input id="tf-cvc" value="123" readonly tabindex="-1"></div>
+        </div>
+        <div class="total"><span class="mv-statut">Premier mois TTC</span><div><b id="tf-ttc"></b><small id="tf-ht"></small></div></div>
+      </div>
+      <label class="accord" style="margin-top:22px;max-width:520px"><input type="checkbox" id="tf-accord"> J'accepte les conditions d'adhésion : formule mensuelle, résiliable avec un préavis de <span id="tf-preavis">30</span> jours.</label>
+      <div class="tf-ok"><button class="btn btn-or" type="button" id="tf-payer">Payer</button></div>
+      <p class="tf-err" id="tf-statut" role="status" aria-live="polite"></p>
+    </section>
+    <section class="tf-q" data-q="fin">
+      <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
+      <h2 style="margin-top:22px">Bienvenue au Bureau des Légendes, <span id="tf-fin-prenom"></span>.</h2>
+      <p class="tf-aide">Votre adhésion est enregistrée. Nous vous attendons le <span id="tf-fin-date"></span> pour vous remettre votre badge.</p>
+      <ul class="recap" id="tf-fin-recap"></ul>
+      <p class="crm" id="tf-crm" style="margin-top:16px;max-width:560px"></p>
+      <div class="tf-ok"><a class="btn btn-or" data-portal="login" href="#">Accéder à l'espace membre</a><button class="btn btn-fil" type="button" data-fermer-tf>Retour au site</button></div>
+    </section>
+  </div>
+  <div class="tf-nav"><button type="button" id="tf-prec" aria-label="Question précédente">↑</button><button type="button" id="tf-suiv" aria-label="Question suivante">↓</button></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1500,6 +1658,156 @@ function finSalle(v, res){
   document.getElementById("ms-fin").classList.add("on");
   delete S.occupe[v.salle + "|" + v.jour];
 }
+
+
+/* Devenir membre : formules, questions une à une, paiement simulé, fiche membre et contrat créés dans Nexudus. */
+const FORMULES_UI = [
+  { id:1415397038, nom:"Nomade", prix:290, accroche:"L'accès libre aux plateaux, en journée, du lundi au samedi.", inclus:["Poste nomade sur les 3 étages","Fibre 10 Gb/s et impression","Café de comptoir à volonté","2 h de salle de réunion / mois","Événements membres"], note:"Sans engagement.", preavis:30 },
+  { id:1415397039, nom:"Résident", prix:490, accroche:"Votre poste attitré, à vous seul, dans une zone au calme.", inclus:["Bureau nominatif, écran sur demande","Accès 24/7 et casier sécurisé","5 h de salle de réunion / mois","Adresse professionnelle et courrier","Café et événements membres"], vedette:true, preavis:30 },
+  { id:1415397447, nom:"Bureau privé", prix:750, unite:"/ poste", accroche:"Un bureau fermé rien qu'à vous, ou à votre équipe.", inclus:["Mobilier sur mesure, plaque à la porte","Accès 24/7 et casiers sécurisés","10 h de salle de réunion / mois","Courrier et conciergerie","Ligne fibre dédiée"], postes:true, preavis:60 },
+  { id:1415397040, nom:"Domiciliation", prix:90, accroche:"Votre adresse au 34 boulevard Haussmann, sans le bureau.", inclus:["Domiciliation commerciale","Courrier reçu, numérisé, notifié","Réexpédition sur demande","Salles de réunion à la carte","Vérification d'identité (KYC)"], note:"Activation après vérification d'identité.", preavis:30 },
+];
+const tf = document.getElementById("tf");
+const M = { formule:null, debut:null, debutTxt:"", postes:1, i:0, ouvertLe:0, focus:null, envoi:false };
+const fCour = () => FORMULES_UI.find(f => f.id === M.formule);
+const ordreQ = () => ["formule","debut", ...(fCour() && fCour().postes ? ["postes"] : []), "nom","societe","contact","paiement"];
+
+document.getElementById("tf-plans").innerHTML = FORMULES_UI.map(f => `<article class="pl${f.vedette ? " vedette" : ""}">${f.vedette ? '<span class="badge">La plus choisie</span>' : ""}<h3>${f.nom}</h3><p class="accroche">${f.accroche}</p><p class="p num">${eur(f.prix).replace(",00","")}<small>HT ${f.unite || "/ mois"}</small></p><ul>${f.inclus.map(x => `<li>${x}</li>`).join("")}</ul>${f.note ? `<p class="note-pl">${f.note}</p>` : ""}<button class="btn ${f.vedette ? "btn-or" : "btn-fil"}" type="button" data-plan="${f.id}">Choisir ${f.nom}</button></article>`).join("");
+(function(){
+  const auj = jourParis(new Date()), [y,m,d] = auj.split("-").map(Number), base = new Date(Date.UTC(y,m-1,d));
+  const plus = n => { const x = new Date(base); x.setUTCDate(x.getUTCDate()+n); return x; };
+  const lundi = (() => { const x = plus(1); while (x.getUTCDay() !== 1) x.setUTCDate(x.getUTCDate()+1); return x; })();
+  const premier = new Date(Date.UTC(y, m, 1));
+  const deux = plus(14);
+  const fmt = x => x.toLocaleDateString("fr-FR",{ weekday:"long", day:"numeric", month:"long", timeZone:"UTC" });
+  const opts = [["Dès lundi prochain", lundi], ["Le 1er du mois prochain", premier], ["Dans deux semaines", deux]];
+  document.getElementById("tf-debuts").innerHTML = opts.map(([t,x],k) => `<button type="button" data-val="${x.toISOString().slice(0,10)}" data-txt="${fmt(x)}"><kbd>${"ABC"[k]}</kbd><span>${t}<small>${fmt(x)}</small></span></button>`).join("");
+  document.getElementById("tf-postes").innerHTML = [1,2,3,4,5,6].map((n,k) => `<button type="button" data-val="${n}"><kbd>${"ABCDEF"[k]}</kbd><span>${n} ${n > 1 ? "postes" : "poste"}<small>${eur(750*n)} HT / mois</small></span></button>`).join("");
+})();
+
+function ouvrirMembre(plan){
+  M.focus = document.activeElement; M.ouvertLe = Date.now(); M.envoi = false;
+  tf.hidden = false; tf.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  if (plan){ M.formule = plan; allerQ("debut"); } else allerQ("formule");
+}
+function fermerMembre(){
+  if (tf.hidden) return;
+  const fin = () => { tf.hidden = true; tf.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); M.focus?.focus?.(); };
+  if (RM) return fin(); tf.classList.add("ferme"); setTimeout(fin, 340);
+}
+function allerQ(nom){
+  const ordre = ordreQ(); M.i = nom === "fin" ? ordre.length : Math.max(0, ordre.indexOf(nom));
+  tf.querySelectorAll(".tf-q").forEach(q => q.classList.toggle("on", q.dataset.q === nom));
+  tf.querySelectorAll(".tf-q").forEach(q => { const k = ordre.indexOf(q.dataset.q); if (k >= 0) q.querySelector(".tf-num").textContent = String(k+1).padStart(2,"0") + " →"; });
+  document.getElementById("tf-prog").style.width = (nom === "fin" ? 100 : Math.round(M.i / ordre.length * 100)) + "%";
+  document.getElementById("tf-etat").textContent = nom === "fin" ? "Adhésion confirmée" : `Devenir membre · ${M.i+1} sur ${ordre.length}`;
+  document.getElementById("tf-prec").disabled = M.i === 0 || nom === "fin";
+  document.getElementById("tf-suiv").disabled = nom === "fin" || nom === "paiement";
+  if (nom === "debut") marquer("tf-debuts", M.debut);
+  if (nom === "postes") marquer("tf-postes", String(M.postes));
+  if (nom === "societe") document.getElementById("tf-prenom-echo").textContent = document.getElementById("tf-prenom").value.trim();
+  if (nom === "paiement") remplirRecapM();
+  document.getElementById("tf-corps").scrollTop = 0;
+  setTimeout(() => { const q = tf.querySelector(".tf-q.on"); (q.querySelector("input:not([readonly]):not([tabindex='-1'])") || q.querySelector(".tf-choix button.on, .tf-choix button, button"))?.focus({ preventScroll:true }); }, 80);
+}
+function marquer(id, val){ document.querySelectorAll(`#${id} button`).forEach(b => b.classList.toggle("on", b.dataset.val === val)); }
+const qCour = () => tf.querySelector(".tf-q.on")?.dataset.q;
+function champ(id, test, msg){ const el = document.getElementById(id), m = el.parentElement.querySelector(".msg"), bad = !test(el.value.trim()); if (m) m.textContent = bad ? msg : ""; if (bad) el.focus(); return !bad; }
+function valider(nom){
+  if (nom === "formule") return !!M.formule;
+  if (nom === "debut"){ if (!M.debut){ tf.querySelector('[data-q="debut"] [data-err]').textContent = "Choisissez une date de début."; return false; } return true; }
+  if (nom === "postes") return M.postes >= 1;
+  if (nom === "nom") return champ("tf-prenom", v => v.length >= 1, "Indiquez votre prénom.") && champ("tf-nom", v => v.length >= 1, "Indiquez votre nom.");
+  if (nom === "contact") return champ("tf-email", v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), "Cette adresse e-mail n'est pas valide.") && champ("tf-tel", v => !v || v.replace(/\D/g,"").length >= 8, "Ce numéro paraît incomplet.");
+  return true;
+}
+function suivante(){ const n = qCour(), o = ordreQ(); if (!n || n === "paiement" || n === "fin") return; if (!valider(n)) return; allerQ(o[o.indexOf(n)+1]); }
+function precedente(){ const n = qCour(), o = ordreQ(); const k = o.indexOf(n); if (k > 0) allerQ(o[k-1]); }
+
+tf.addEventListener("click", e => {
+  if (e.target.closest("[data-fermer-tf]")) return fermerMembre();
+  const p = e.target.closest("[data-plan]"); if (p){ M.formule = Number(p.dataset.plan); if (!fCour().postes) M.postes = 1; return allerQ("debut"); }
+  const c = e.target.closest(".tf-choix button");
+  if (c){ const box = c.parentElement.id; if (box === "tf-debuts"){ M.debut = c.dataset.val; M.debutTxt = c.dataset.txt; } else M.postes = Number(c.dataset.val);
+    marquer(box, c.dataset.val); const er = c.closest(".tf-q").querySelector("[data-err]"); if (er) er.textContent = ""; setTimeout(suivante, RM ? 0 : 380); return; }
+  if (e.target.closest("[data-ok]")) suivante();
+});
+document.getElementById("tf-prec").addEventListener("click", precedente);
+document.getElementById("tf-suiv").addEventListener("click", suivante);
+document.addEventListener("keydown", e => {
+  if (tf.hidden) return;
+  if (e.key === "Escape") return fermerMembre();
+  const n = qCour();
+  if (e.key === "Enter" && !e.shiftKey && e.target.tagName !== "BUTTON" && n !== "paiement"){ e.preventDefault(); suivante(); return; }
+  const q = tf.querySelector(".tf-q.on .tf-choix");
+  if (q && e.target.tagName !== "INPUT" && /^[a-f]$/i.test(e.key)){ const b = q.querySelectorAll("button")["abcdef".indexOf(e.key.toLowerCase())]; if (b){ e.preventDefault(); b.click(); } }
+});
+document.addEventListener("click", e => { const t = e.target.closest("[data-membre]"); if (t){ e.preventDefault(); closeMenu(); fermerSalle?.(); ouvrirMembre(Number(t.dataset.membre) || null); } });
+
+function montantM(){ const f = fCour(), ht = f.prix * (f.postes ? M.postes : 1); return { ht, ttc: Math.round(ht*1.2*100)/100 }; }
+function remplirRecapM(){
+  const f = fCour(), m = montantM(), nom = (document.getElementById("tf-prenom").value + " " + document.getElementById("tf-nom").value).trim();
+  const lignes = [["Formule", f.nom + (f.postes ? ` · ${M.postes} ${M.postes > 1 ? "postes" : "poste"}` : "")], ["Début", M.debutTxt], ["Membre", nom], ["E-mail", document.getElementById("tf-email").value.trim()]];
+  const soc = document.getElementById("tf-societe").value.trim(); if (soc) lignes.splice(3, 0, ["Entreprise", soc]);
+  document.getElementById("tf-recap").innerHTML = lignes.map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+  document.getElementById("tf-ttc").textContent = eur(m.ttc);
+  document.getElementById("tf-ht").textContent = eur(m.ht) + " HT + TVA 20 %";
+  document.getElementById("tf-preavis").textContent = f.preavis;
+  document.getElementById("tf-payer").textContent = "Payer " + eur(m.ttc) + " et devenir membre";
+  document.getElementById("tf-statut").textContent = "";
+}
+async function adhererClaude(v){
+  await mcpPret; if (!mcpNs) throw Object.assign(new Error("sans"), { code:"sans" });
+  const nom = (v.prenom + " " + v.nom).trim(), f = fCour();
+  const trouve = await appel("nexudus_list", { entity:"coworkers", filters:{ Coworker_Email:v.email }, pageSize:1 });
+  let client = trouve && trouve.Records && trouve.Records[0] ? trouve.Records[0].Id : null, nouveau = !client, compte = !!(trouve && trouve.Records && trouve.Records[0] && trouve.Records[0].UserId);
+  if (!client){
+    const fiche = { CoworkerType:1, FullName:nom, Email:v.email, MobilePhone:v.tel || null, CompanyName:v.societe || null, CountryId:NX.pays, SimpleTimeZoneId:NX.fuseau, InvoicingBusinessId:NX.business, Notes:`Membre inscrit depuis le site vitrine (formule ${f.nom}).` };
+    try { client = idDe(await appel("nexudus_create", { entity:"coworkers", body:{ ...fiche, CreateUser:true } })); compte = true; }
+    catch(err){ if (err.code !== "tool_error") throw err; client = idDe(await appel("nexudus_create", { entity:"coworkers", body:fiche })); compte = false; }
+    if (!client) throw Object.assign(new Error("Nexudus n'a pas renvoyé l'identifiant du contact."), { code:"tool_error" });
+  }
+  const m = montantM();
+  const k = await appel("nexudus_create", { entity:"coworkercontracts", body:{ IssuedById:NX.business, CoworkerId:client, TariffId:f.id, StartDate:v.debut + "T00:00:00Z",
+    BillingDay:Math.min(28, Number(v.debut.slice(8,10))), Quantity:f.postes ? M.postes : 1, ApplyProRating:true,
+    Notes:`Souscription depuis le site vitrine · paiement simulé (démo) de ${m.ht} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}` } });
+  const id = idDe(k);
+  return { contrat:id, reference: id ? "BDL-M" + String(id).slice(-5) : null, nouveau, compte };
+}
+async function adhererSite(v){
+  const r = await fetch("/api/membres", { method:"POST", headers:{ "content-type":"application/json" }, body:JSON.stringify(v) });
+  let d = {}; try { d = await r.json(); } catch(_){}
+  if (!r.ok || !d.ok) throw Object.assign(new Error(d.erreur || "L'adhésion n'a pas pu être enregistrée."), { code:"site" });
+  return d;
+}
+document.getElementById("tf-payer").addEventListener("click", async () => {
+  if (M.envoi) return;
+  const st = document.getElementById("tf-statut"), b = document.getElementById("tf-payer");
+  if (!document.getElementById("tf-accord").checked){ st.textContent = "Cochez la case pour accepter les conditions d'adhésion."; return; }
+  const f = fCour();
+  const v = { formule:f.id, quantite:f.postes ? M.postes : 1, debut:M.debut, prenom:document.getElementById("tf-prenom").value.trim(), nom:document.getElementById("tf-nom").value.trim(),
+    societe:document.getElementById("tf-societe").value.trim(), email:document.getElementById("tf-email").value.trim().toLowerCase(), tel:document.getElementById("tf-tel").value.trim(),
+    accord:true, site_web:document.getElementById("tf-site").value, ouvert_le:M.ouvertLe };
+  M.envoi = true; b.disabled = true; st.textContent = "";
+  b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Paiement en cours';
+  try {
+    await pause(RM ? 0 : 1100);
+    b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Création de votre espace membre';
+    const res = DANS_CLAUDE ? await adhererClaude(v) : await adhererSite(v);
+    document.getElementById("tf-fin-prenom").textContent = v.prenom;
+    document.getElementById("tf-fin-date").textContent = M.debutTxt;
+    document.getElementById("tf-fin-recap").innerHTML = [["Formule", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "postes" : "poste"}` : "")], ["Début", M.debutTxt], ["Premier mois", eur(montantM().ttc) + " TTC (paiement simulé)"], ["Référence", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+    document.getElementById("tf-crm").innerHTML = `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>${esc(f.nom)}</b> qui démarre le ${esc(M.debutTxt)}. Visible tout de suite dans Flow, rubrique Clients.`;
+    allerQ("fin");
+  } catch (err){
+    const c = err && err.code;
+    if (c === "sans" || c === "server_not_connected" || c === "not_granted" || c === "capability_disabled" || c === "not_in_manifest" || c === "blocked_by_policy" || c === "selection_required") st.innerHTML = SANS_NEXUDUS;
+    else if (c === "needs_reauth") st.textContent = "La connexion à Nexudus a expiré. Reconnectez Nexudus dans Réglages → Connecteurs de claude.ai, puis réessayez.";
+    else if (c === "approval_required" || c === "consent_required") st.textContent = "Nexudus demande votre accord pour cette page. Cliquez à nouveau sur « Payer » et autorisez l'accès.";
+    else if (c === "site" || c === "tool_error") st.textContent = String(err.message || "L'adhésion n'a pas pu être enregistrée.").slice(0,240);
+    else st.textContent = "La réponse de Nexudus n'est pas arrivée. L'adhésion a peut-être été créée : vérifiez la liste des clients avant de recommencer.";
+  } finally { M.envoi = false; b.disabled = false; if (qCour() === "paiement") b.textContent = "Payer " + eur(montantM().ttc) + " et devenir membre"; }
+});
 
 window.addEventListener("hashchange", route);
 route();
