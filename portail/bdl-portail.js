@@ -198,7 +198,10 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .icon{ background-color:var
 html.bdl-dash .user-main-content .card.bg-light, html.bdl-dash .user-main-content .card .card.bg-light{ background:#fff !important; }
 html.bdl-dash .bdl-pleine .card .card-img-overlay > .d-flex > .card, html.bdl-dash .bdl-grille .card .card-img-overlay > .d-flex > .card{ border:0 !important; border-left:1px solid var(--bdl-sable) !important; border-radius:0 !important; }
 /* Coins : la carte découpe son image, un seul arrondi */
-html.bdl-dash .bdl-grille .card, html.bdl-dash .bdl-pleine .card{ overflow:hidden !important; }
+html.bdl-dash .bdl-grille .card, html.bdl-dash .bdl-pleine .card{ overflow:hidden !important; border:0 !important; box-shadow:0 0 0 1px var(--bdl-sable) !important; }
+html.bdl-dash .bdl-grille .card:hover, html.bdl-dash .bdl-pleine .card:hover{ box-shadow:0 0 0 1px #d6cbbd, 0 24px 40px -32px rgba(25,17,11,.45) !important; }
+html.bdl-dash .bdl-grille .card .card, html.bdl-dash .bdl-pleine .card .card{ box-shadow:none !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-view-harness, html.bdl-dash .fc-upcoming-agenda-calendar .fc-scrollgrid{ border-radius:0 !important; }
 html.bdl-dash .bdl-grille .card img, html.bdl-dash .bdl-pleine .card img,
 html.bdl-dash .bdl-grille .card .card-img, html.bdl-dash .bdl-pleine .card .card-img,
 html.bdl-dash .bdl-grille .card .card-img-overlay, html.bdl-dash .bdl-pleine .card .card-img-overlay,
