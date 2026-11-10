@@ -260,6 +260,9 @@ html.bdl-dash .dashboard-content-container > .container > .vstack:empty{ display
 }
 html.bdl-dash .fc-upcoming-agenda-calendar table.fc-col-header, html.bdl-dash .fc-upcoming-agenda-calendar table.fc-scrollgrid-sync-table{ min-width:var(--bdl-calw, 3780px) !important; width:var(--bdl-calw, 3780px) !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar col{ min-width:0 !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .flex-grow-0{ display:none !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event{ padding:8px 10px !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-daygrid-event-harness{ margin:8px 8px 0 !important; }
 /* Cartes en grille : jamais plus larges que la colonne */
 html.bdl-dash .bdl-grille div.mb-2, html.bdl-dash .bdl-pleine div.mb-2{ grid-template-columns:repeat(auto-fill, minmax(min(100%, 300px), 1fr)) !important; }
 html.bdl-dash .bdl-grille .col-lg-4 div.mb-2{ grid-template-columns:1fr !important; }
