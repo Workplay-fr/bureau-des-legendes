@@ -87,6 +87,16 @@ export async function contact({ nom, email, tel, societe, note, compte }) {
   return { id, nouveau: true, compte: avecCompte };
 }
 
+// Services proposés avec une réservation de salle (produits Nexudus, prix HT). parPersonne : quantité = nombre de participants par défaut.
+export const PRODUITS_RESA = {
+  1415347146: { nom: "Petit-déjeuner", prix: 7, parPersonne: true },
+  1415523484: { nom: "Pause gourmande", prix: 9, parPersonne: true },
+  1415347147: { nom: "Plateau repas", prix: 29, parPersonne: true },
+  1415458044: { nom: "Plateau boissons", prix: 18, parPersonne: false },
+  1415523387: { nom: "Kit visioconférence", prix: 15, parPersonne: false },
+  1415523388: { nom: "Paperboard & fournitures", prix: 8, parPersonne: false },
+};
+
 // Formules proposées à l'adhésion depuis le site (identifiants et prix mensuels HT Nexudus).
 export const FORMULES_NX = {
   1415397038: { nom: "Nomade", prix: 290, quantite: false },

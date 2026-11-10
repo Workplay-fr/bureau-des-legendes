@@ -2,7 +2,7 @@
 //   GET  /api/salles?salle=<id>&jour=AAAA-MM-JJ  → créneaux déjà pris ce jour-là (lus dans Nexudus)
 //   POST /api/salles                              → crée (ou retrouve) le contact puis la réservation dans Nexudus
 // Le paiement affiché sur le site est une simulation : aucune donnée bancaire n'est reçue ici.
-import { SALLES, HORAIRES, nx, contact, occupation, parisVersUtc, jourSemaine, isoZ, nettoie, emailValide, json, tropDEnvois, vide } from "../lib/nexudus.mjs";
+import { SALLES, HORAIRES, nx, contact, occupation, parisVersUtc, jourSemaine, isoZ, nettoie, emailValide, json, tropDEnvois, vide, PRODUITS_RESA } from "../lib/nexudus.mjs";
 
 const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
 
@@ -41,7 +41,14 @@ export default async (req) => {
     const pris = await occupation(salle, jour);
     if (pris.some(b => new Date(b.a) > de && new Date(b.de) < a)) return json(409, { ok: false, erreur: "Ce créneau vient d'être réservé. Choisissez-en un autre.", occupe: pris });
     const c = await contact({ ...v, note: "Contact créé depuis le site vitrine (réservation de salle)." });
-    const montant = s.prixHeure * duree;
+    const produits = (Array.isArray(d.produits) ? d.produits : [])
+      .map(x => ({ id: Number(x && x.id), q: Math.max(0, Math.min(50, Math.round(Number(x && x.q) || 0))) }))
+      .filter(x => PRODUITS_RESA[x.id] && x.q > 0)
+      .filter((x, i, t) => t.findIndex(y => y.id === x.id) === i);
+    const montantSalle = s.prixHeure * duree;
+    const montantProduits = produits.reduce((t, x) => t + PRODUITS_RESA[x.id].prix * x.q, 0);
+    const montant = montantSalle + montantProduits;
+    const lignes = produits.map(x => `${PRODUITS_RESA[x.id].nom} × ${x.q}`).join(", ");
     const b = await nx("POST", "/spaces/bookings", {
       ResourceId: salle, CoworkerId: c.id, FromTime: isoZ(de), ToTime: isoZ(a), Repeats: 2, WhichBookingsToUpdate: 1,
       // Créée « à confirmer » : Nexudus refuse (erreur 500) une réservation confirmée d'emblée via l'API pour ce compte.
@@ -49,11 +56,12 @@ export default async (req) => {
       // Nexudus refuse la création (erreur 500 générique) si ces champs ne sont pas envoyés explicitement.
       InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: 0, IncludeZoomInvite: false,
       // InternalNotes n'est pas enregistré à la création : le détail passe dans Notes.
-      Notes: [v.objet, `Réservé depuis le site vitrine · paiement de démonstration de ${montant} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
+      BookingProducts: produits.map(x => ({ ProductId: x.id, Quantity: x.q, InvoiceInMinutes: false })),
+      Notes: [v.objet, `Réservé depuis le site vitrine · paiement de démonstration de ${montant} € HT`, lignes && `Services : ${lignes}`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
       InternalNotes: [`Réservation depuis le site vitrine · paiement simulé (démo) de ${montant} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
     });
     const id = b.Value && b.Value.Id;
-    return json(200, { ok: true, reservation: id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau: c.nouveau });
+    return json(200, { ok: true, montantHt: montant, reservation: id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau: c.nouveau });
   } catch (e) {
     console.error(e.message, JSON.stringify(e.details || null));
     return json(502, { ok: false, erreur: "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
