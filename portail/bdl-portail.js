@@ -173,7 +173,7 @@ html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; 
 /* === Passe 2 === */
 /* En-tête sur la grille de la page */
 html.bdl header nav .container{ max-width:1440px !important; }
-@media (min-width:1500px){ html.bdl .mobile-aichatManager{ right:calc((100vw - 1440px) / 2) !important; margin-right:0 !important; } }
+@media (min-width:1500px){ html.bdl .mobile-aichatManager{ right:calc((100vw - 1440px) / 2 + 12px) !important; margin-right:0 !important; } html.bdl header nav .container{ padding-right:calc(var(--bs-gutter-x,1.5rem) * .5 + 150px) !important; } }
 /* Bandeau plus compact */
 .bdl-hero{ min-height:0 !important; margin-bottom:3.5rem !important; }
 .bdl-salut{ padding-top:clamp(2.5rem,6vh,4rem) !important; }
