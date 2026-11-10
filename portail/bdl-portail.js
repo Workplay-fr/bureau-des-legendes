@@ -323,7 +323,7 @@ html.bdl-dash .fc-upcoming-agenda-calendar td, html.bdl-dash .fc-upcoming-agenda
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-daygrid-day, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell{ background:#fff !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today,
 html.bdl-dash .fc-upcoming-agenda-calendar td.fc-daygrid-day.fc-day-today{
-  background:linear-gradient(180deg, rgba(25,17,11,.86), rgba(25,17,11,.78)) !important; border-color:rgba(25,17,11,.86) !important;
+  background:rgba(25,17,11,.82) !important; border-color:rgba(25,17,11,.86) !important;
   backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today *{ color:#fff !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today :not(h5):not(.fs-4):not(.fw-bold):not(.fw-bolder){ color:rgba(255,255,255,.7) !important; }
