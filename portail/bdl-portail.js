@@ -197,6 +197,12 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .icon{ background-color:var
 /* Cartes : un seul système (blanc, filet sable) */
 html.bdl-dash .user-main-content .card.bg-light, html.bdl-dash .user-main-content .card .card.bg-light{ background:#fff !important; }
 html.bdl-dash .bdl-pleine .card .card-img-overlay > .d-flex > .card, html.bdl-dash .bdl-grille .card .card-img-overlay > .d-flex > .card{ border:0 !important; border-left:1px solid var(--bdl-sable) !important; border-radius:0 !important; }
+/* Coins : la carte découpe son image, un seul arrondi */
+html.bdl-dash .bdl-grille .card, html.bdl-dash .bdl-pleine .card{ overflow:hidden !important; }
+html.bdl-dash .bdl-grille .card img, html.bdl-dash .bdl-pleine .card img,
+html.bdl-dash .bdl-grille .card .card-img, html.bdl-dash .bdl-pleine .card .card-img,
+html.bdl-dash .bdl-grille .card .card-img-overlay, html.bdl-dash .bdl-pleine .card .card-img-overlay,
+html.bdl-dash .bdl-grille .card .card, html.bdl-dash .bdl-pleine .card .card{ border-radius:0 !important; }
 /* Événements à la une : colonnes de même hauteur */
 html.bdl-dash .bdl-pleine .row{ align-items:stretch; }
 html.bdl-dash .bdl-pleine .row > * > .card, html.bdl-dash .bdl-pleine .row > * > a > .card{ height:100%; }
