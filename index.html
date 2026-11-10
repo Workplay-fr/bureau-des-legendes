@@ -367,6 +367,58 @@ section{padding-block:clamp(72px,9vw,128px)}
   .champs{grid-template-columns:minmax(0,1fr)}
 }
 body.modal-ouverte{overflow:hidden}
+
+/* Réservation de salle : section d'accueil et fenêtre en quatre étapes */
+.resa{padding-block:clamp(56px,7vw,96px);border-bottom:1px solid var(--line)}
+.resa-tete{display:grid;grid-template-columns:minmax(0,1.2fr) auto;gap:20px 48px;align-items:end;margin-bottom:36px}
+.resa-tete .label{display:block;margin-bottom:16px}
+.resa-tete p{color:var(--fg-2);margin-top:14px;max-width:52ch}
+.resa-grille{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.resa-carte{display:flex;flex-direction:column;gap:12px;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;min-width:0}
+.resa-carte .ph{aspect-ratio:4/3}
+.resa-carte:hover .ph img{transform:scale(1.06)}
+.resa-carte h3{font-size:16px}
+.resa-carte span{font-size:14px;color:var(--fg-2)}
+.resa-carte .prix-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-top:1px solid var(--line);padding-top:10px}
+.resa-carte .prix-h b{font-weight:400;color:var(--fg);font-size:15px}
+.resa-carte:focus-visible{outline:1px solid var(--fg);outline-offset:6px}
+@media (max-width:900px){.resa-tete{grid-template-columns:minmax(0,1fr)}.resa-grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ms .mv-etapes span{flex:1}
+.salles-choix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.salle-opt{position:relative;display:block;cursor:pointer}
+.salle-opt input{position:absolute;opacity:0;pointer-events:none}
+.salle-opt .boite{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;padding:10px;border:1px solid var(--line-2);transition:border-color .3s,background .3s}
+.salle-opt img{width:72px;height:56px;object-fit:cover}
+.salle-opt b{display:block;font:400 13.5px/1.3 var(--f);letter-spacing:.1em;text-transform:uppercase}
+.salle-opt small{display:block;font-size:12.5px;color:var(--gris);margin-top:3px}
+.salle-opt:hover .boite{border-color:var(--noir)}
+.salle-opt input:checked + .boite{border-color:var(--noir);background:var(--noir);color:#fff}
+.salle-opt input:checked + .boite small{color:#C7C0B8}
+.salle-opt input:focus-visible + .boite{outline:1px solid var(--noir);outline-offset:3px}
+.heures{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:6px;min-height:44px}
+.heures .choix span{min-width:0;width:100%;flex-direction:row;padding:11px 6px}
+.heures .choix input:disabled + span{color:#B9B2AA;border-color:var(--line);text-decoration:line-through;cursor:not-allowed;background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(25,17,11,.04) 6px 12px)}
+.heures .attente{grid-column:1/-1;font-size:13.5px;color:var(--gris);padding:12px 0}
+.heures .sq{height:42px;background:linear-gradient(90deg,var(--creme),#fff,var(--creme));background-size:200% 100%;animation:sk 1.2s linear infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.legende-h{display:flex;gap:16px;font-size:12px;color:var(--gris);margin-top:8px}
+.legende-h i{display:inline-block;width:12px;height:12px;border:1px solid var(--line-2);vertical-align:-2px;margin-right:6px}
+.legende-h i.pris{background:repeating-linear-gradient(135deg,transparent 0 3px,rgba(25,17,11,.15) 3px 6px)}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:1px solid var(--line-2);padding-top:14px}
+.total b{font:300 26px/1 var(--f)}
+.total small{display:block;font-size:12px;color:var(--gris);margin-top:4px;text-align:right}
+.paiement{border:1px solid var(--line-2);padding:18px;display:grid;gap:14px}
+.demo-badge{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;color:var(--noir);background:var(--creme);padding:10px 12px}
+.demo-badge b{font-weight:500}
+.carte-l{display:grid;grid-template-columns:minmax(0,1fr) 92px 74px;gap:10px}
+.carte-l .champ input{font-variant-numeric:tabular-nums;letter-spacing:.06em;color:var(--gris)}
+.carte-ico{display:flex;gap:6px;align-items:center}
+.carte-ico i{display:block;width:30px;height:20px;border:1px solid var(--line-2);border-radius:3px;background:linear-gradient(135deg,#fff,var(--creme))}
+.recap-salle{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:center}
+.recap-salle img{width:84px;height:64px;object-fit:cover}
+.recap-salle b{display:block;font:400 14px/1.3 var(--f);letter-spacing:.1em;text-transform:uppercase}
+.recap-salle span{font-size:14px;color:var(--gris)}
+@media (max-width:620px){.salles-choix{grid-template-columns:minmax(0,1fr)}.carte-l{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.carte-l .champ:first-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -401,7 +453,7 @@ body.modal-ouverte{overflow:hidden}
         <div class="entre">
           <h1>Une adresse discrète pour écrire sa légende.</h1>
           <p class="lede">Postes de coworking, bureaux privés et salles de réunion dans un immeuble haussmannien. Parquet en point de Hongrie, moulures, cheminées de marbre, et une verrière de 120&nbsp;m² au rez-de-chaussée.</p>
-          <div class="hero-cta"><a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a><a class="btn btn-fil" href="#espaces">Voir les espaces</a></div>
+          <div class="hero-cta"><button class="btn btn-or" type="button" data-salle="">Réserver une salle de réunion</button><a class="btn btn-fil" data-portal="tour" href="#">Réserver une visite</a></div>
         </div>
       </div>
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
@@ -422,6 +474,16 @@ body.modal-ouverte{overflow:hidden}
     </div>
   </section>
 
+
+  <section class="resa" id="resa">
+    <div class="wrap">
+      <div class="resa-tete">
+        <div><span class="label">Salles de réunion</span><h2>Une salle pour demain matin ?</h2><p>Quatre salles équipées, jusqu'à 15 personnes. Vous voyez les créneaux libres en temps réel, vous réservez et payez en ligne.</p></div>
+        <button class="btn btn-or" type="button" data-salle="">Réserver une salle de réunion</button>
+      </div>
+      <div class="resa-grille" id="resa-grille"></div>
+    </div>
+  </section>
 
   <section class="salon">
     <div class="wrap why">
@@ -446,7 +508,7 @@ body.modal-ouverte{overflow:hidden}
       <div class="splist">
         <a class="sprow" href="#espaces"><span class="ph"><img src="img/plateau.jpg" alt="" loading="lazy"></span><h3>Coworking</h3><p>Trois plateaux lumineux sur le boulevard, en place libre ou en poste attitré.</p><span class="label q cap">30 postes</span></a>
         <a class="sprow" href="#espaces"><span class="ph"><img src="img/bureau.jpg" alt="" loading="lazy"></span><h3>Bureaux privés</h3><p>George Smiley et Mata Hari, deux bureaux fermés avec cheminée et moulures.</p><span class="label q cap">3 à 6 personnes</span></a>
-        <a class="sprow" href="#espaces"><span class="ph"><img src="img/projection.jpg" alt="" loading="lazy"></span><h3>Salles de réunion</h3><p>Quatre salles équipées pour vos comités, vos visios et vos projections.</p><span class="label q cap">Jusqu'à 15 personnes</span></a>
+        <a class="sprow" href="#" data-salle=""><span class="ph"><img src="img/projection.jpg" alt="" loading="lazy"></span><h3>Salles de réunion</h3><p>Quatre salles équipées pour vos comités, vos visios et vos projections.</p><span class="label q cap">Jusqu'à 15 personnes</span></a>
         <a class="sprow" href="#espaces"><span class="ph"><img src="img/cabines.jpg" alt="" loading="lazy"></span><h3>Cabines</h3><p>Enigma et Morse, deux cabines insonorisées pour un appel ou une visio.</p><span class="label q cap">1 personne</span></a>
         <a class="sprow" href="#evenements"><span class="ph"><img src="img/verriere-jour.jpg" alt="" loading="lazy"></span><h3>La Verrière</h3><p>Notre pièce maîtresse, pour une conférence, un cocktail ou un atelier.</p><span class="label q cap">60 assis · 90 debout</span></a>
       </div>
@@ -541,7 +603,7 @@ body.modal-ouverte{overflow:hidden}
           <li><b>Salle Ethan Hunt</b><span>15 personnes · 2<sup>e</sup> étage</span></li>
           <li><b>Salle James Bond</b><span>15 personnes · 3<sup>e</sup> étage</span></li>
         </ul>
-        <a class="btn btn-or" data-portal="bookings" href="#">Réserver une salle</a>
+        <button class="btn btn-or" type="button" data-salle="">Réserver une salle</button>
       </div>
     </article>
     <article class="bloc">
@@ -739,6 +801,79 @@ body.modal-ouverte{overflow:hidden}
         <ul class="recap" id="mv-recap"></ul>
         <p class="crm" id="mv-crm"></p>
         <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer>Fermer</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mv ms" id="ms" hidden role="dialog" aria-modal="true" aria-labelledby="ms-titre">
+  <div class="mv-voile" data-fermer-ms></div>
+  <div class="mv-panneau">
+    <figure class="mv-photo"><img id="ms-photo" src="img/projection.jpg" alt=""><p><b id="ms-photo-nom">Salles de réunion</b><span id="ms-photo-info">34, boulevard Haussmann · Paris IX<sup>e</sup></span></p></figure>
+    <div class="mv-corps">
+      <div class="mv-tete">
+        <div><span class="label" id="ms-sur">Réserver une salle · 1 sur 4</span><h2 id="ms-titre">Choisissez votre salle.</h2></div>
+        <button class="mv-fermer" type="button" data-fermer-ms aria-label="Fermer"></button>
+      </div>
+      <div class="mv-etapes" aria-hidden="true"><span class="ok"></span><span></span><span></span><span></span></div>
+      <form id="ms-form" novalidate>
+        <div class="mv-etape on" data-e="1">
+          <div class="salles-choix" id="ms-salles"></div>
+          <div class="mv-pied"><span class="mv-statut">Tarifs à l'heure, hors taxes.</span><button class="btn btn-or" type="button" data-suite="2">Voir les créneaux</button></div>
+        </div>
+        <div class="mv-etape" data-e="2">
+          <fieldset><legend>Jour</legend><div class="jours" id="ms-jours"></div></fieldset>
+          <fieldset><legend>Durée</legend><div class="lignes" id="ms-durees">
+            <label class="choix"><input type="radio" name="duree" value="1" checked><span>1 heure</span></label>
+            <label class="choix"><input type="radio" name="duree" value="2"><span>2 heures</span></label>
+            <label class="choix"><input type="radio" name="duree" value="3"><span>3 heures</span></label>
+            <label class="choix"><input type="radio" name="duree" value="4"><span>Demi-journée · 4 h</span></label>
+          </div></fieldset>
+          <fieldset><legend>Heure d'arrivée</legend><div class="heures" id="ms-heures"></div>
+            <div class="legende-h"><span><i></i>Libre</span><span><i class="pris"></i>Déjà réservé</span></div></fieldset>
+          <div class="total"><span id="ms-quand" class="mv-statut">Choisissez une heure.</span><div><b id="ms-prix">—</b><small id="ms-prix-ttc"></small></div></div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="1">← Salle</button><button class="btn btn-or" type="button" data-suite="3" id="ms-vers3" disabled>Continuer</button></div>
+          <p class="mv-statut" id="ms-statut2" role="status" aria-live="polite"></p>
+        </div>
+        <div class="mv-etape" data-e="3">
+          <div class="champs">
+            <div class="champ"><label class="t" for="ms-prenom">Prénom</label><input id="ms-prenom" name="prenom" autocomplete="given-name" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-nom">Nom</label><input id="ms-nom" name="nom" autocomplete="family-name" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-societe">Entreprise</label><input id="ms-societe" name="societe" autocomplete="organization"><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-participants">Participants</label><select id="ms-participants" name="participants"></select><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-email">E-mail</label><input id="ms-email" name="email" type="email" autocomplete="email" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-tel">Téléphone</label><input id="ms-tel" name="tel" type="tel" autocomplete="tel"><span class="msg"></span></div>
+            <div class="champ large"><label class="t" for="ms-objet">Objet de la réunion (facultatif)</label><input id="ms-objet" name="objet"></div>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="ms-site">Site web</label><input id="ms-site" name="site_web" tabindex="-1" autocomplete="off"></div>
+          <label class="accord"><input type="checkbox" id="ms-accord"> J'accepte les conditions de réservation : annulation gratuite jusqu'à 24 h avant le créneau.</label>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="2">← Créneau</button><button class="btn btn-or" type="button" data-suite="4">Passer au paiement</button></div>
+          <p class="mv-statut" id="ms-statut3" role="status" aria-live="polite"></p>
+        </div>
+        <div class="mv-etape" data-e="4">
+          <div class="recap-salle"><img id="ms-r-photo" src="img/projection.jpg" alt=""><div><b id="ms-r-salle"></b><span id="ms-r-quand"></span></div></div>
+          <div class="paiement">
+            <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Paiement de démonstration.</b> Aucune carte n'est débitée et aucune donnée bancaire n'est demandée : les champs ci-dessous sont des valeurs de test. La réservation, elle, est bien enregistrée.</span></div>
+            <div class="carte-ico" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="carte-l">
+              <div class="champ"><label class="t" for="ms-cb">Numéro de carte</label><input id="ms-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
+              <div class="champ"><label class="t" for="ms-exp">Expiration</label><input id="ms-exp" value="12 / 34" readonly tabindex="-1"></div>
+              <div class="champ"><label class="t" for="ms-cvc">CVC</label><input id="ms-cvc" value="123" readonly tabindex="-1"></div>
+            </div>
+            <div class="champ"><label class="t" for="ms-titulaire">Titulaire</label><input id="ms-titulaire" readonly tabindex="-1"></div>
+            <div class="total"><span class="mv-statut">Total TTC</span><div><b id="ms-r-ttc"></b><small id="ms-r-ht"></small></div></div>
+          </div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="3">← Coordonnées</button><button class="btn btn-or" type="submit" id="ms-payer">Payer</button></div>
+          <p class="mv-statut" id="ms-statut4" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div class="mv-fin" id="ms-fin">
+        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
+        <h2>Salle réservée.</h2>
+        <p style="color:var(--gris)">Votre salle vous attend. L'équipe vous accueille à l'entrée du 34, boulevard Haussmann.</p>
+        <ul class="recap" id="ms-recap"></ul>
+        <p class="crm" id="ms-crm"></p>
+        <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer-ms>Fermer</button></div>
       </div>
     </div>
   </div>
@@ -1083,6 +1218,233 @@ form.addEventListener("submit", async e => {
     else statut("La réponse de Nexudus n'est pas arrivée. La demande a peut-être été enregistrée : vérifiez le CRM avant de renvoyer.", true);
   } finally { b.disabled = false; b.textContent = "Envoyer ma demande"; }
 });
+
+
+/* Réservation de salle : créneaux réels lus dans Nexudus, paiement simulé, réservation réelle créée dans Nexudus. */
+const SALLES_UI = [
+  { id:1415233614, nom:"Salle des Légendes", etage:"1er étage", places:15, prix:175, photo:"img/projection.jpg", eq:"Grand écran, visio" },
+  { id:1415233716, nom:"Salle Jason Bourne", etage:"1er étage", places:15, prix:175, photo:"img/bureau.jpg", eq:"Écran, visio" },
+  { id:1415233715, nom:"Salle Ethan Hunt", etage:"2e étage", places:15, prix:175, photo:"img/salon.jpg", eq:"Grand écran, visio" },
+  { id:1415233717, nom:"Salle James Bond", etage:"3e étage", places:15, prix:35, photo:"img/plateau.jpg", eq:"Écran, visio" },
+];
+const HORAIRES_SALLE = { 0:null, 1:[8,20], 2:[8,20], 3:[8,20], 4:[8,20], 5:[8,20], 6:[9,18] };
+const eur = n => n.toLocaleString("fr-FR", { style:"currency", currency:"EUR" });
+const hTxt = h => h + " h";
+function decalageParis(date){
+  const p = new Intl.DateTimeFormat("en-US",{timeZone:"Europe/Paris",hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}).formatToParts(date);
+  const g = t => Number(p.find(x => x.type === t).value);
+  return (Date.UTC(g("year"),g("month")-1,g("day"),g("hour"),g("minute"),g("second")) - date.getTime())/60000;
+}
+function parisVersUtc(jour, h, m){ const [y,mo,d] = jour.split("-").map(Number); const n = Date.UTC(y,mo-1,d,h,m||0); return new Date(n - decalageParis(new Date(n))*60000); }
+const isoZ = d => d.toISOString().replace(/\.\d{3}Z$/,"Z");
+const utcDe = s => new Date(/Z$|[+-]\d\d:?\d\d$/.test(s) ? s : s + "Z");
+const jourParis = d => new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Paris"}).format(d);
+
+const ms = document.getElementById("ms"), msForm = document.getElementById("ms-form");
+const S = { salle:null, jour:null, duree:1, heure:null, occupe:{}, etape:1, ouvertLe:0, focus:null };
+const salleCourante = () => SALLES_UI.find(s => s.id === S.salle);
+
+// Cartes de l'accueil et choix dans la fenêtre
+document.getElementById("resa-grille").innerHTML = SALLES_UI.map(s => `<button class="resa-carte" type="button" data-salle="${s.id}"><figure class="ph"><img src="${s.photo}" alt="" loading="lazy"></figure><h3>${s.nom}</h3><span>${s.etage} · jusqu'à ${s.places} personnes · ${s.eq}</span><span class="prix-h"><span>À l'heure</span><b>${eur(s.prix)} HT</b></span></button>`).join("");
+document.getElementById("ms-salles").innerHTML = SALLES_UI.map((s,i) => `<label class="salle-opt"><input type="radio" name="salle" value="${s.id}"${i===0?" checked":""}><span class="boite"><img src="${s.photo}" alt=""><span><b>${s.nom}</b><small>${s.etage} · ${s.places} pers. · ${eur(s.prix)} HT / h</small></span></span></label>`).join("");
+document.getElementById("ms-participants").innerHTML = Array.from({length:15},(_,i)=>`<option value="${i+1}"${i===3?" selected":""}>${i+1} ${i?"personnes":"personne"}</option>`).join("");
+(function(){
+  const box = document.getElementById("ms-jours"), j = ["dim.","lun.","mar.","mer.","jeu.","ven.","sam."], m = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  const auj = jourParis(new Date()); const [y,mo,d] = auj.split("-").map(Number); const c = new Date(Date.UTC(y,mo-1,d));
+  let n = 0, html = "", k = 0;
+  while (n < 12 && k < 30){ const v = c.toISOString().slice(0,10), w = c.getUTCDay(); k++;
+    if (HORAIRES_SALLE[w]){ html += `<label class="choix"><input type="radio" name="jour" value="${v}"${n===0?" checked":""}><span><small>${n===0 && v===auj ? "auj." : j[w]}</small><b>${c.getUTCDate()}</b><small>${m[c.getUTCMonth()]}</small></span></label>`; n++; }
+    c.setUTCDate(c.getUTCDate()+1); }
+  box.innerHTML = html;
+})();
+
+function photoSalle(){ const s = salleCourante(); if (!s) return; document.getElementById("ms-photo").src = s.photo; document.getElementById("ms-photo-nom").textContent = s.nom; document.getElementById("ms-photo-info").textContent = `${s.etage} · jusqu'à ${s.places} personnes · ${s.eq}`; }
+const TITRES = { 1:"Choisissez votre salle.", 2:"Choisissez votre créneau.", 3:"Vos coordonnées.", 4:"Paiement." };
+function etapeMs(n){
+  S.etape = n;
+  ms.querySelectorAll(".mv-etape").forEach(e => e.classList.toggle("on", Number(e.dataset.e) === n));
+  ms.querySelectorAll(".mv-etapes span").forEach((s,i) => s.classList.toggle("ok", i < n));
+  document.getElementById("ms-sur").textContent = `Réserver une salle · ${n} sur 4`;
+  document.getElementById("ms-titre").textContent = TITRES[n];
+  if (n === 2) chargerHeures();
+  if (n === 4) remplirPaiement();
+  setTimeout(() => ms.querySelector(".mv-etape.on input:not([readonly]):not([type=hidden]), .mv-etape.on button")?.focus(), 60);
+}
+function ouvrirSalle(id){
+  S.focus = document.activeElement; S.ouvertLe = Date.now();
+  const r = msForm.querySelector(`input[name="salle"][value="${id || SALLES_UI[0].id}"]`); if (r) r.checked = true;
+  S.salle = Number(msForm.querySelector('input[name="salle"]:checked').value);
+  S.jour = msForm.querySelector('input[name="jour"]:checked').value; S.heure = null;
+  photoSalle(); msForm.hidden = false; document.getElementById("ms-fin").classList.remove("on");
+  ms.hidden = false; ms.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  etapeMs(id ? 2 : 1);
+}
+function fermerSalle(){
+  if (ms.hidden) return;
+  const fin = () => { ms.hidden = true; ms.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); S.focus?.focus?.(); };
+  if (RM) return fin(); ms.classList.add("ferme"); setTimeout(fin, 480);
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-salle]"); if (t){ e.preventDefault(); closeMenu(); ouvrirSalle(Number(t.dataset.salle) || null); return; }
+  if (e.target.closest("[data-fermer-ms]")) fermerSalle();
+  const s = e.target.closest("[data-suite]"); if (s && ms.contains(s)){ const n = Number(s.dataset.suite); if (n === 4 && !validerCoord()) return; etapeMs(n); }
+});
+document.addEventListener("keydown", e => {
+  if (ms.hidden) return;
+  if (e.key === "Escape") return fermerSalle();
+  if (e.key === "Tab"){ const f = [...ms.querySelectorAll('button,input:not([readonly]),select,textarea,a[href]')].filter(x => x.offsetParent !== null && !x.disabled && x.tabIndex !== -1);
+    if (!f.length) return; const a = f[0], z = f[f.length-1];
+    if (e.shiftKey && document.activeElement === a){ e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z){ e.preventDefault(); a.focus(); } }
+});
+msForm.addEventListener("change", e => {
+  if (e.target.name === "salle"){ S.salle = Number(e.target.value); S.heure = null; photoSalle(); }
+  if (e.target.name === "jour"){ S.jour = e.target.value; S.heure = null; chargerHeures(); }
+  if (e.target.name === "duree"){ S.duree = Number(e.target.value); S.heure = null; dessinerHeures(); }
+  if (e.target.name === "heure"){ S.heure = Number(e.target.value); majTotal(); }
+});
+
+// Disponibilités
+async function lireOccupation(salle, jour){
+  if (DANS_CLAUDE){
+    await mcpPret; if (!mcpNs) throw Object.assign(new Error("sans"), { code:"sans" });
+    const de = parisVersUtc(jour,0), fin = parisVersUtc(jour,23,59);
+    const p = charge(await mcpNs.callTool(NX.server, "nexudus_fetch_bookings", { resourceId:salle, fromTime:isoZ(new Date(de - 864e5)), toTime:isoZ(fin), pageSize:100 }, { cache:false }));
+    return (p && p.Records || []).map(b => ({ de:utcDe(b.FromTime), a:utcDe(b.ToTime) })).filter(b => b.a > de && b.de < fin).map(b => ({ de:isoZ(b.de), a:isoZ(b.a) }));
+  }
+  const r = await fetch(`/api/salles?salle=${salle}&jour=${jour}`); let d = {}; try { d = await r.json(); } catch(_){}
+  if (!r.ok || !d.ok) throw new Error(d.erreur || "Disponibilités indisponibles.");
+  return d.occupe || [];
+}
+async function chargerHeures(){
+  const cle = S.salle + "|" + S.jour, box = document.getElementById("ms-heures"), st = document.getElementById("ms-statut2");
+  st.textContent = ""; st.classList.remove("err");
+  if (!S.occupe[cle]){
+    box.innerHTML = '<span class="sq"></span>'.repeat(8);
+    try { S.occupe[cle] = (await lireOccupation(S.salle, S.jour)).map(b => [new Date(b.de), new Date(b.a)]); }
+    catch(err){
+      box.innerHTML = "";
+      st.innerHTML = err.code === "sans" ? SANS_NEXUDUS : esc(err.message || "Disponibilités indisponibles pour le moment."); st.classList.add("err");
+      return;
+    }
+  }
+  if (S.salle + "|" + S.jour === cle) dessinerHeures();
+}
+function dessinerHeures(){
+  const box = document.getElementById("ms-heures"), occ = S.occupe[S.salle + "|" + S.jour];
+  if (!occ) return;
+  const w = new Date(S.jour + "T12:00:00Z").getUTCDay(), h = HORAIRES_SALLE[w], limite = Date.now() + 15*60e3;
+  let html = "", libres = 0;
+  for (let x = h[0]; x + S.duree <= h[1]; x++){
+    const de = parisVersUtc(S.jour, x), a = parisVersUtc(S.jour, x + S.duree);
+    const pris = occ.some(([b0,b1]) => b1 > de && b0 < a), passe = de.getTime() < limite, off = pris || passe;
+    if (!off) libres++;
+    html += `<label class="choix" title="${pris ? "Déjà réservé" : passe ? "Créneau passé" : hTxt(x) + " – " + hTxt(x + S.duree)}"><input type="radio" name="heure" value="${x}"${off ? " disabled" : ""}${S.heure === x && !off ? " checked" : ""}><span>${hTxt(x)}</span></label>`;
+  }
+  box.innerHTML = libres ? html : html + '<p class="attente">Plus aucun créneau libre ce jour-là pour cette durée. Essayez un autre jour ou une durée plus courte.</p>';
+  if (S.heure !== null && !box.querySelector(`input[value="${S.heure}"]:not(:disabled)`)) S.heure = null;
+  majTotal();
+}
+function montant(){ const s = salleCourante(); const ht = s.prix * S.duree; return { ht, ttc: Math.round(ht * 1.2 * 100)/100 }; }
+function quandTxt(){
+  const d = new Date(S.jour + "T12:00:00Z").toLocaleDateString("fr-FR",{ weekday:"long", day:"numeric", month:"long", timeZone:"UTC" });
+  return `${d} · ${hTxt(S.heure)} – ${hTxt(S.heure + S.duree)}`;
+}
+function majTotal(){
+  const ok = S.heure !== null, m = montant();
+  document.getElementById("ms-vers3").disabled = !ok;
+  document.getElementById("ms-quand").textContent = ok ? quandTxt() : "Choisissez une heure.";
+  document.getElementById("ms-prix").textContent = eur(m.ht) + " HT";
+  document.getElementById("ms-prix-ttc").textContent = eur(m.ttc) + " TTC · " + S.duree + " h × " + eur(salleCourante().prix);
+}
+
+// Coordonnées
+function validerCoord(){
+  let ok = true; const st = document.getElementById("ms-statut3"); st.textContent = ""; st.classList.remove("err");
+  const regle = (id, test, msg) => { const el = document.getElementById(id), c = el.closest(".champ"), bad = !test(el.value.trim()); c.classList.toggle("err", bad); c.querySelector(".msg").textContent = bad ? msg : ""; if (bad && ok){ el.focus(); ok = false; } };
+  regle("ms-prenom", v => v.length >= 1, "Indiquez votre prénom.");
+  regle("ms-nom", v => v.length >= 1, "Indiquez votre nom.");
+  regle("ms-email", v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), "Cette adresse e-mail n'est pas valide.");
+  regle("ms-tel", v => !v || v.replace(/\D/g,"").length >= 8, "Ce numéro paraît incomplet.");
+  if (ok && !document.getElementById("ms-accord").checked){ st.textContent = "Cochez la case pour accepter les conditions de réservation."; st.classList.add("err"); ok = false; }
+  return ok;
+}
+function remplirPaiement(){
+  const s = salleCourante(), m = montant();
+  document.getElementById("ms-r-photo").src = s.photo;
+  document.getElementById("ms-r-salle").textContent = s.nom;
+  document.getElementById("ms-r-quand").textContent = quandTxt();
+  document.getElementById("ms-titulaire").value = (document.getElementById("ms-prenom").value + " " + document.getElementById("ms-nom").value).trim().toUpperCase();
+  document.getElementById("ms-r-ttc").textContent = eur(m.ttc);
+  document.getElementById("ms-r-ht").textContent = eur(m.ht) + " HT + TVA 20 %";
+  document.getElementById("ms-payer").textContent = "Payer " + eur(m.ttc);
+  document.getElementById("ms-statut4").textContent = "";
+}
+
+// Réservation
+function donneesResa(){
+  const f = new FormData(msForm);
+  return { salle:S.salle, jour:S.jour, heure:S.heure, duree:S.duree, prenom:f.get("prenom").trim(), nom:f.get("nom").trim(), email:f.get("email").trim().toLowerCase(),
+    tel:f.get("tel").trim(), societe:f.get("societe").trim(), participants:Number(f.get("participants")), objet:f.get("objet").trim(), accord:true, site_web:f.get("site_web"), ouvert_le:S.ouvertLe };
+}
+async function reserverClaude(v){
+  await mcpPret; if (!mcpNs) throw Object.assign(new Error("sans"), { code:"sans" });
+  const nom = (v.prenom + " " + v.nom).trim();
+  const trouve = await appel("nexudus_list", { entity:"coworkers", filters:{ Coworker_Email:v.email }, pageSize:1 });
+  let client = trouve && trouve.Records && trouve.Records[0] ? trouve.Records[0].Id : null, nouveau = !client;
+  if (!client){
+    client = idDe(await appel("nexudus_create", { entity:"coworkers", body:{ CoworkerType:1, FullName:nom, Email:v.email, MobilePhone:v.tel || null, CompanyName:v.societe || null,
+      CountryId:NX.pays, SimpleTimeZoneId:NX.fuseau, InvoicingBusinessId:NX.business, Notes:"Contact créé depuis le site vitrine (réservation de salle)." } }));
+    if (!client) throw Object.assign(new Error("Nexudus n'a pas renvoyé l'identifiant du contact."), { code:"tool_error" });
+  }
+  const de = parisVersUtc(v.jour, v.heure), a = parisVersUtc(v.jour, v.heure + v.duree), m = montant();
+  const pris = await lireOccupation(v.salle, v.jour);
+  if (pris.some(b => new Date(b.a) > de && new Date(b.de) < a)) throw Object.assign(new Error("Ce créneau vient d'être réservé. Choisissez-en un autre."), { code:"pris", occupe:pris });
+  const b = await appel("nexudus_create", { entity:"bookings", body:{ ResourceId:v.salle, CoworkerId:client, FromTime:isoZ(de), ToTime:isoZ(a), Repeats:2, WhichBookingsToUpdate:1,
+    ChargeNow:false, InvoiceNow:false, Tentative:false, Notes:v.objet || null,
+    InternalNotes:[`Réservation depuis le site vitrine · paiement simulé (démo) de ${m.ht} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · ") } });
+  const id = idDe(b);
+  return { reservation:id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau };
+}
+async function reserverSite(v){
+  const r = await fetch("/api/salles", { method:"POST", headers:{ "content-type":"application/json" }, body:JSON.stringify(v) });
+  let d = {}; try { d = await r.json(); } catch(_){}
+  if (r.status === 409) throw Object.assign(new Error(d.erreur), { code:"pris", occupe:d.occupe || [] });
+  if (!r.ok || !d.ok) throw Object.assign(new Error(d.erreur || "La réservation n'a pas pu être enregistrée."), { code:"site" });
+  return d;
+}
+const pause = ms => new Promise(r => setTimeout(r, ms));
+msForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (S.etape !== 4) return;
+  const b = document.getElementById("ms-payer"), st = document.getElementById("ms-statut4"), v = donneesResa();
+  st.classList.remove("err");
+  b.disabled = true; b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Paiement en cours'; st.textContent = "Autorisation du paiement de démonstration…";
+  try {
+    await pause(RM ? 0 : 1100);
+    b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Réservation'; st.textContent = "Réservation de la salle dans Nexudus…";
+    const res = DANS_CLAUDE ? await reserverClaude(v) : await reserverSite(v);
+    st.textContent = ""; finSalle(v, res);
+  } catch (err){
+    const c = err && err.code;
+    if (c === "pris"){ S.occupe[v.salle + "|" + v.jour] = (err.occupe || []).map(x => [new Date(x.de), new Date(x.a)]); S.heure = null; etapeMs(2);
+      const s2 = document.getElementById("ms-statut2"); s2.textContent = err.message; s2.classList.add("err"); }
+    else if (c === "sans" || c === "server_not_connected" || c === "not_granted" || c === "capability_disabled" || c === "not_in_manifest" || c === "blocked_by_policy" || c === "selection_required"){ st.innerHTML = SANS_NEXUDUS; st.classList.add("err"); }
+    else if (c === "needs_reauth"){ st.textContent = "La connexion à Nexudus a expiré. Reconnectez Nexudus dans Réglages → Connecteurs de claude.ai, puis réessayez."; st.classList.add("err"); }
+    else if (c === "approval_required" || c === "consent_required"){ st.textContent = "Nexudus demande votre accord pour cette page. Cliquez à nouveau sur « Payer » et autorisez l'accès."; st.classList.add("err"); }
+    else if (c === "site" || c === "tool_error"){ st.textContent = String(err.message || "La réservation n'a pas pu être enregistrée.").slice(0,240); st.classList.add("err"); }
+    else { st.textContent = "La réponse de Nexudus n'est pas arrivée. La réservation a peut-être été créée : vérifiez le calendrier avant de recommencer."; st.classList.add("err"); }
+  } finally { b.disabled = false; b.textContent = "Payer " + eur(montant().ttc); }
+});
+function finSalle(v, res){
+  const s = salleCourante(), m = montant();
+  msForm.hidden = true;
+  document.getElementById("ms-titre").textContent = "C'est réservé.";
+  document.getElementById("ms-sur").textContent = "Réserver une salle · confirmé";
+  document.getElementById("ms-recap").innerHTML = [["Salle", s.nom], ["Créneau", quandTxt()], ["Montant", eur(m.ttc) + " TTC (paiement simulé)"], ["Référence", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+  document.getElementById("ms-crm").innerHTML = `Réservation créée dans le calendrier Nexudus de la <b>${esc(s.nom)}</b>${res.nouveau ? ", avec une nouvelle fiche contact" : ", sur la fiche contact existante"}. Elle est visible dans Flow et sur le portail membre.`;
+  document.getElementById("ms-fin").classList.add("on");
+  delete S.occupe[v.salle + "|" + v.jour];
+}
 
 window.addEventListener("hashchange", route);
 route();
