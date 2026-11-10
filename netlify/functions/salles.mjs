@@ -45,6 +45,8 @@ export default async (req) => {
     const b = await nx("POST", "/spaces/bookings", {
       ResourceId: salle, CoworkerId: c.id, FromTime: isoZ(de), ToTime: isoZ(a), Repeats: 2, WhichBookingsToUpdate: 1,
       ChargeNow: false, InvoiceNow: false, Tentative: false,
+      // Nexudus refuse la création (erreur 500 générique) si ces champs ne sont pas envoyés explicitement.
+      InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: 0, IncludeZoomInvite: false,
       Notes: v.objet || null,
       InternalNotes: [`Réservation depuis le site vitrine · paiement simulé (démo) de ${montant} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
     });
