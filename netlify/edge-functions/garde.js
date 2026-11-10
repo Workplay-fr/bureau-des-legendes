@@ -1,6 +1,7 @@
 // Protège tout le site par un mot de passe (variable d'environnement Netlify SITE_PASSWORD).
 // Sans cookie valide, chaque page affiche l'écran de connexion ; les appels /api/* répondent 401.
 // Les images de /img/ restent servies pour que l'écran de connexion puisse les afficher.
+// /portail/ contient l'habillage chargé par le portail membre Nexudus : il doit rester public.
 
 const COOKIE = "bdl_acces";
 const DUREE = 60 * 60 * 24 * 30; // 30 jours
@@ -24,7 +25,7 @@ const versInterne = s => (typeof s === "string" && s.startsWith("/") && !s.start
 export default async (req, context) => {
   const url = new URL(req.url);
   const p = url.pathname;
-  if (p.startsWith("/img/")) return context.next();
+  if (p.startsWith("/img/") || p.startsWith("/portail/")) return context.next();
 
   const secret = env("SITE_PASSWORD");
   const attendu = secret ? await jeton(secret) : null;
