@@ -317,6 +317,22 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-ch
 html.bdl .ai-chat-manager.collapsed{ transform:scale(1) !important; width:auto !important; }
 html.bdl .ai-chat-manager.collapsed .ai-chat-label{ max-width:none !important; opacity:1 !important; margin-left:.4rem; }
 html.bdl .ai-chat-label{ white-space:nowrap; }
+/* Calendrier : jours en blanc, aujourd'hui en verre sombre */
+html.bdl-dash .fc-upcoming-agenda-calendar, html.bdl-dash .bdl-grille .card:has(.fc-upcoming-agenda-calendar),
+html.bdl-dash .fc-upcoming-agenda-calendar td, html.bdl-dash .fc-upcoming-agenda-calendar th,
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-daygrid-day, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell{ background:#fff !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today,
+html.bdl-dash .fc-upcoming-agenda-calendar td.fc-daygrid-day.fc-day-today{
+  background:linear-gradient(180deg, rgba(25,17,11,.86), rgba(25,17,11,.78)) !important; border-color:rgba(25,17,11,.86) !important;
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today *{ color:#fff !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today :not(h5):not(.fs-4):not(.fw-bold):not(.fw-bolder){ color:rgba(255,255,255,.7) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event{ background:#F6F1EB !important; box-shadow:0 0 0 1px var(--bdl-sable) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event:hover{ background:#EFE7DC !important; box-shadow:0 0 0 1px var(--bdl-noir) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today .fc-event{ background:rgba(255,255,255,.12) !important; box-shadow:0 0 0 1px rgba(255,255,255,.32) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today .fc-event:hover{ background:rgba(255,255,255,.2) !important; box-shadow:0 0 0 1px rgba(255,255,255,.6) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today .fc-event *{ color:#fff !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today .fc-event .fs-xs{ color:rgba(255,255,255,.72) !important; }
 /* Assistant : bouton d'en-tête affirmé */
 html.bdl .ai-chat-manager{ background:var(--bdl-noir) !important; color:#fff !important; border:1px solid var(--bdl-noir) !important; border-radius:999px !important;
   padding:.55rem 1.1rem !important; box-shadow:0 10px 28px -12px rgba(25,17,11,.55) !important; animation:bdlHalo 2.4s ease-out 1.5s 3; }
