@@ -427,7 +427,7 @@ section{padding-block:clamp(72px,9vw,128px)}
   .mv .crm{font-size:14px}
   .mv .salles-choix{gap:16px}
   .mv .salle-opt .boite{grid-template-columns:minmax(0,1fr);gap:0;padding:0;align-items:stretch}
-  .mv .salle-opt img{width:100%;height:clamp(110px,17vh,170px)}
+  .mv .salle-opt img{width:100%;height:clamp(100px,15vh,150px)}
   .mv .salle-opt .boite > span{padding:14px 16px 16px}
   .mv .salle-opt b{font-size:15px}
   .mv .salle-opt small{font-size:13.5px}
@@ -438,7 +438,12 @@ section{padding-block:clamp(72px,9vw,128px)}
     box-shadow:0 40px 120px -40px rgba(0,0,0,.6) !important;animation:tfOuvre .75s cubic-bezier(.76,0,.24,1) both !important}
   .tf.ferme{animation:tfOuvre .5s cubic-bezier(.76,0,.24,1) reverse both !important}
   .tf-haut{padding:18px 32px}
-  .tf-corps{padding:clamp(24px,4vh,56px) clamp(32px,4vw,64px) 32px;scrollbar-width:none}
+  .tf-corps{padding:clamp(24px,4vh,48px) clamp(32px,4vw,64px) 28px !important;scrollbar-width:none}
+  .tf .tf-q{margin:auto !important}
+  .tf .tf-q.large{margin:0 auto !important}
+  .tf .tf-q.large h2{font-size:clamp(26px,2.4vw,36px) !important}
+  .tf .tf-q.large .tf-aide{margin-top:8px}
+  .tf .plans-tf{margin-top:24px !important}
   .tf-corps::-webkit-scrollbar{display:none}
 }
 .tf-voile{position:fixed;inset:0;z-index:219;background:rgba(25,17,11,.62);backdrop-filter:blur(3px);animation:fade .45s var(--ease) both}
