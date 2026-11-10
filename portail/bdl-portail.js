@@ -227,6 +227,65 @@ html.bdl-dash .bdl-grille .card .card, html.bdl-dash .bdl-pleine .card .card{ bo
 /* Événements à la une : colonnes de même hauteur */
 html.bdl-dash .bdl-pleine .row{ align-items:stretch; }
 html.bdl-dash .bdl-pleine .row > * > .card, html.bdl-dash .bdl-pleine .row > * > a > .card{ height:100%; }
+
+/* === Passe 3 : grille unique et rythme === */
+:root{ --bdl-pad:40px; --bdl-max:1280px; --bdl-sec:80px; }
+@media (max-width:767px){ :root{ --bdl-pad:20px; --bdl-sec:56px; } }
+html.bdl header nav .container,
+html.bdl-dash .bdl-hero .container, html.bdl-dash .bdl-salut,
+html.bdl-dash .container.bdl-grille, html.bdl-dash .container.bdl-pleine,
+html.bdl-dash .dashboard-content-container > .container,
+html.bdl .bdl-pied-c{ max-width:var(--bdl-max) !important; width:100%; margin-left:auto !important; margin-right:auto !important;
+  padding-left:var(--bdl-pad) !important; padding-right:var(--bdl-pad) !important; }
+@media (min-width:1200px){
+  html.bdl header nav .container{ padding-right:calc(var(--bdl-pad) + 176px) !important; }
+  html.bdl .mobile-aichatManager{ right:max(var(--bdl-pad), calc((100vw - var(--bdl-max)) / 2 + var(--bdl-pad))) !important; margin-right:0 !important; }
+}
+/* Rythme : un seul espacement entre sections */
+.bdl-hero{ margin-bottom:var(--bdl-sec) !important; }
+html.bdl-dash .dashboard-content-container > .container > .vstack{ margin-bottom:0 !important; }
+html.bdl-dash .dashboard-content-container > .container > .vstack:empty{ display:none !important; }
+.bdl-grille{ margin-bottom:var(--bdl-sec) !important; }
+.bdl-grille > .row{ --bs-gutter-y:var(--bdl-sec) !important; }
+.bdl-grille > .row > [class*="col"]{ gap:var(--bdl-sec) !important; }
+.bdl-pleine{ padding-top:var(--bdl-sec) !important; margin-bottom:var(--bdl-sec) !important; gap:var(--bdl-sec) !important; }
+/* Hauteur réservée : pas de saut au chargement */
+.bdl-grille .col-lg-4 > div > :first-child{ min-height:150px; }
+/* Colonne de droite : lien « Voir tout » à droite du titre */
+.bdl-grille .col-lg-4 .w-100.d-flex.flex-wrap{ flex-wrap:nowrap !important; align-items:baseline !important; }
+.bdl-grille .col-lg-4 .card-header-title + div{ flex-shrink:0; white-space:nowrap; }
+@media (min-width:768px){
+  .bdl-grille .col-lg-4 .card-header-title + div .d-md-inline{ display:none !important; }
+  .bdl-grille .col-lg-4 .card-header-title + div .d-md-none{ display:inline !important; }
+}
+/* Calendrier : libellés sur une ligne avec ellipse */
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .text-truncate, html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .fw-bolder{ white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; min-width:0; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child{ min-width:0; overflow:hidden; }
+/* Événements à la une : deux cartes identiques */
+.bdl-pleine [class*="_scroller_"]{ overflow:visible !important; }
+.bdl-pleine [class*="_fade_"], .bdl-pleine [class*="_srOnly_"]{ display:none !important; }
+.bdl-pleine [class*="_scroller_"] > div{ display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px !important; width:100% !important; align-items:stretch; }
+.bdl-pleine [class*="_scroller_"] > div > div{ flex:none !important; width:auto !important; min-width:0; }
+.bdl-pleine [class*="_scroller_"] a.card{ height:100%; background:#fff !important; border-radius:6px !important; overflow:hidden !important; gap:0 !important; box-shadow:0 0 0 1px var(--bdl-sable) !important; }
+.bdl-pleine [class*="_scroller_"] a.card img{ width:100% !important; height:auto !important; aspect-ratio:16/9 !important; object-fit:cover !important; border-radius:0 !important; }
+.bdl-pleine [class*="_scroller_"] a.card .card-body{ padding:20px 24px 24px !important; gap:12px !important; flex:1 1 auto; display:flex; flex-direction:column; }
+.bdl-pleine [class*="_scroller_"] a.card .card-body > :last-child{ margin-top:auto; padding-top:8px; }
+.bdl-pleine [class*="_scroller_"] a.card .card-title{ font-size:1.05rem !important; }
+@media (max-width:767px){ .bdl-pleine [class*="_scroller_"] > div{ grid-template-columns:1fr; } }
+/* Avantages : même hauteur, actions en bas */
+.bdl-pleine .row{ align-items:stretch; }
+.bdl-pleine .row > * > .card{ height:100%; }
+.bdl-pleine .card .card-body > .d-flex.flex-column.h-100{ height:100%; }
+/* Actions rapides : icônes allégées */
+.bdl-hero .quick-actions-banner-container [class*="-subtle"], .bdl-hero .quick-actions-banner-container .row > div > * [class*="bg-"]{
+  background:transparent !important; border:0 !important; border-left:1px solid rgba(255,255,255,.16) !important; border-radius:0 !important; }
+.bdl-hero .quick-actions-banner-container .icon svg, .bdl-hero .quick-actions-banner-container .icon svg *{ stroke:#fff !important; }
+/* Pied de page */
+html.bdl .bdl-pied{ padding:28px 0 !important; min-height:0 !important; }
+html.bdl .bdl-pied-c{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; color:rgba(255,255,255,.8); font-size:.82rem; }
+html.bdl .bdl-pied-liens{ display:flex; gap:24px; flex-wrap:wrap; }
+html.bdl .bdl-pied-liens a{ color:rgba(255,255,255,.8) !important; text-decoration:none; letter-spacing:.04em; }
+html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
 @media (max-width:767px){
   .bdl-hero{ border-radius:0 0 18px 18px !important; min-height:0; }
   .bdl-salut{ padding-top:3rem; }
@@ -326,6 +385,14 @@ html.bdl-dash .bdl-pleine .row > * > .card, html.bdl-dash .bdl-pleine .row > * >
       if (h.textContent.trim() === "Avantages.") h.textContent = "Avantages partenaires";
     });
     calendrier();
+    doc.querySelectorAll(".bdl-pleine button span, .bdl-pleine .btn span").forEach(function (sp) {
+      if (sp.textContent.trim() === "Réclamation") sp.textContent = "En profiter";
+    });
+    doc.querySelectorAll(".quick-actions-banner-container .icon-external-link").forEach(function (ic) {
+      if (ic.dataset.bdlIc) return;
+      ic.dataset.bdlIc = "1";
+      ic.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2M8 3v4M16 3v4"/><path d="M9.5 14.5l1.7 1.7 3.3-3.4"/></svg>';
+    });
     /* Logos de partenaires : affichés entiers, sans recadrage */
     doc.querySelectorAll(".bdl-pleine .card").forEach(function (cd) {
       var t = (cd.innerText || "").trim();
