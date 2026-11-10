@@ -358,8 +358,9 @@ html.bdl .ai-modal-content .modal-body{ flex:1 1 auto; overflow-y:auto; padding:
 /* Accueil */
 html.bdl .ai-modal-content .modal-body > .text-center{ margin:auto 0 0 !important; text-align:left !important; padding-top:8px; }
 html.bdl .ai-modal-content .modal-body > .text-center .icon{ display:none !important; }
-html.bdl .ai-modal-content .modal-body > .text-center h4{ font-size:1.35rem !important; font-weight:400 !important; color:var(--bdl-noir); margin:0; }
-html.bdl .ai-modal-content .modal-body > .text-center h4::after{ content:"Réservez une salle, invitez un visiteur ou posez une question sur le lieu."; display:block; font-size:.85rem; color:var(--bdl-gris); margin-top:6px; line-height:1.45; }
+html.bdl .ai-modal-content .modal-body > .text-center h4{ font-size:0 !important; margin:0; }
+html.bdl .ai-modal-content .modal-body > .text-center h4::before{ content:"Bonjour, que puis-je faire pour vous ?"; display:block; font-size:1.35rem; font-weight:400; color:var(--bdl-noir); line-height:1.25; }
+html.bdl .ai-modal-content .modal-body > .text-center h4::after{ content:"Réservez une salle, invitez un visiteur ou posez une question sur le lieu."; display:block; font-size:.85rem; font-weight:400; color:var(--bdl-gris); margin-top:6px; line-height:1.45; }
 html.bdl .ai-modal-content .modal-body:has(> .text-center){ display:flex; flex-direction:column; }
 /* Messages */
 html.bdl .ai-modal-content section.ai-response{ border:0 !important; padding:10px 14px !important; margin:0 0 8px !important; border-radius:16px 16px 16px 4px !important; background:#fff !important; max-width:88%; font-size:.88rem; line-height:1.5; color:var(--bdl-noir); box-shadow:0 1px 0 rgba(25,17,11,.05); }
@@ -370,7 +371,12 @@ html.bdl .ai-modal-content section.ai-response p{ margin:0 0 .5em; }
 html.bdl .ai-modal-content section.ai-response p:last-child{ margin-bottom:0; }
 html.bdl .ai-modal-content section.ai-response a{ color:var(--bdl-noir) !important; text-decoration:underline; text-underline-offset:3px; }
 html.bdl .ai-modal-content section.ai-response img{ width:56px !important; height:56px !important; object-fit:cover; border-radius:8px !important; }
-html.bdl .ai-modal-content section.ai-response .btn, html.bdl .ai-modal-content section.ai-response button{ font-size:.72rem !important; padding:.3rem .7rem !important; border-radius:999px !important; border:1px solid var(--bdl-noir) !important; background:transparent !important; color:var(--bdl-noir) !important; text-decoration:none !important; letter-spacing:.04em; }
+html.bdl .ai-modal-content section.ai-response .btn, html.bdl .ai-modal-content section.ai-response button{ font-size:.72rem !important; padding:.3rem .75rem !important; border-radius:999px !important; border:1px solid var(--bdl-noir) !important; background:transparent !important; color:var(--bdl-noir) !important; text-decoration:none !important; letter-spacing:.02em !important; text-transform:none !important; white-space:nowrap !important; width:auto !important; min-width:0 !important; }
+html.bdl .ai-modal-content section.ai-response .btn:hover, html.bdl .ai-modal-content section.ai-response button:hover{ background:var(--bdl-noir) !important; color:#fff !important; }
+html.bdl .ai-modal-content section.ai-response .card{ background:#F6F1EB !important; border:0 !important; border-radius:12px !important; padding:10px !important; margin-top:8px; }
+html.bdl .ai-modal-content section.ai-response .card h5{ font-size:.88rem !important; font-weight:500 !important; margin-bottom:2px !important; }
+html.bdl .ai-modal-content section.ai-response .card .d-flex.gap-2, html.bdl .ai-modal-content section.ai-response .card .d-flex.flex-wrap{ gap:6px !important; flex-wrap:wrap; }
+html.bdl .ai-modal-content section.ai-response .card *{ font-size:.8rem; line-height:1.4; }
 /* Pied : saisie et suggestions */
 html.bdl .ai-modal-content .ai-modal-footer{ flex:0 0 auto; padding:10px 14px 14px !important; background:#F6F1EB; border-top:1px solid rgba(25,17,11,.08) !important; display:block; }
 html.bdl .ai-modal-content .ai-modal-footer form{ display:flex; flex-direction:column-reverse; gap:10px; }
@@ -383,7 +389,7 @@ html.bdl .ai-modal-content .ai-modal-footer .input-group{ position:relative; }
 html.bdl .ai-modal-content .ai-modal-footer .input-group .btn{ width:38px; height:38px; flex:0 0 38px; border-radius:50% !important; padding:0 !important; display:grid; place-items:center; background:var(--bdl-noir) !important; border:0 !important; }
 html.bdl .ai-modal-content .ai-modal-footer hr, html.bdl .ai-modal-content .ai-modal-footer > form > small, html.bdl .ai-modal-content .ai-modal-footer h5{ display:none !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start{ display:flex; flex-wrap:wrap; gap:6px; }
-html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(n+5){ display:none !important; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(2), html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(n+6){ display:none !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start > div > .d-flex{ display:none !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start .bg-light{ margin:0 !important; padding:0 !important; background:transparent !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start button.card{ background:#fff !important; border:1px solid rgba(25,17,11,.14) !important; border-radius:999px !important; padding:.4rem .8rem !important; font-size:.78rem; color:var(--bdl-noir); line-height:1.3; transition:border-color .2s, background .2s; }
@@ -561,10 +567,13 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
     /* Assistant : retire la distance calculée depuis le navigateur, peu fiable */
     var fen = doc.querySelector(".ai-modal-content");
     if (fen) {
-      var w = doc.createTreeWalker(fen, NodeFilter.SHOW_TEXT), t;
-      while ((t = w.nextNode())) {
-        if (/km de distance/.test(t.nodeValue)) t.nodeValue = t.nodeValue.replace(/\s*\((?:À|à)\s*[\d.,\s]+km de distance\)/g, "");
-      }
+      fen.querySelectorAll("span, small").forEach(function (sp) {
+        if (!sp.dataset.bdlKm && /^\s*\(.*km de distance\)\s*$/.test(sp.textContent)) { sp.dataset.bdlKm = "1"; sp.style.display = "none"; }
+      });
+      /* Lieu de démonstration hérité du compte : masqué */
+      fen.querySelectorAll(".card h5").forEach(function (h) {
+        if (/Coliving Demo/i.test(h.textContent)) { var cd = h.closest(".card"); if (cd) (cd.parentElement || cd).style.display = "none"; }
+      });
     }
     var pied =doc.querySelector("footer.bg-primary > div");
     if (pied && !pied.querySelector(".bdl-pied-info")) {
