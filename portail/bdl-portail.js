@@ -317,6 +317,29 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-ch
 html.bdl .ai-chat-manager.collapsed{ transform:scale(1) !important; width:auto !important; }
 html.bdl .ai-chat-manager.collapsed .ai-chat-label{ max-width:none !important; opacity:1 !important; margin-left:.4rem; }
 html.bdl .ai-chat-label{ white-space:nowrap; }
+/* Assistant : bouton d'en-tête affirmé */
+html.bdl .ai-chat-manager{ background:var(--bdl-noir) !important; color:#fff !important; border:1px solid var(--bdl-noir) !important; border-radius:999px !important;
+  padding:.55rem 1.1rem !important; box-shadow:0 10px 28px -12px rgba(25,17,11,.55) !important; animation:bdlHalo 2.4s ease-out 1.5s 3; }
+html.bdl .ai-chat-manager *{ color:#fff !important; }
+html.bdl .ai-chat-manager svg [fill]:not([fill="none"]){ fill:#fff !important; }
+html.bdl .ai-chat-manager svg [stroke]:not([stroke="none"]){ stroke:#fff !important; }
+html.bdl .ai-chat-manager .ai-chat-label{ font-weight:500 !important; letter-spacing:.02em; }
+html.bdl .ai-chat-manager:hover{ transform:translateY(-1px) !important; }
+@keyframes bdlHalo{ 0%{ box-shadow:0 0 0 0 rgba(25,17,11,.45); } 100%{ box-shadow:0 0 0 14px rgba(25,17,11,0); } }
+/* Assistant : barre dans le bandeau */
+.bdl-assist{ margin-top:1.75rem; max-width:760px; opacity:0; animation:bdlMonte .8s var(--bdl-ease) .95s forwards; }
+.bdl-assist-barre{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; cursor:pointer;
+  background:rgba(25,17,11,.42); border:1px solid rgba(255,255,255,.28); border-radius:999px; padding:10px 10px 10px 22px; color:#fff;
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); transition:background .25s, border-color .25s; font:inherit; }
+.bdl-assist-barre:hover{ background:rgba(25,17,11,.58); border-color:rgba(255,255,255,.5); }
+.bdl-assist-barre .ico{ flex:0 0 auto; width:20px; height:20px; }
+.bdl-assist-barre .txt{ flex:1 1 auto; font-size:1rem; color:rgba(255,255,255,.82); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bdl-assist-barre .txt b{ color:#fff; font-weight:500; }
+.bdl-assist-barre .go{ flex:0 0 auto; background:#fff; color:var(--bdl-noir); border-radius:999px; padding:.6rem 1.15rem; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500; }
+.bdl-assist-puces{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.bdl-assist-puces button{ font:inherit; font-size:.82rem; color:#fff; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.3); border-radius:999px; padding:.4rem .9rem; cursor:pointer; transition:background .2s, border-color .2s; }
+.bdl-assist-puces button:hover{ background:rgba(255,255,255,.22); border-color:rgba(255,255,255,.6); }
+@media (max-width:767px){ .bdl-assist-barre .go{ display:none; } .bdl-assist-barre{ padding:14px 18px; } }
 /* À la une : vignette pleine largeur */
 .bdl-pleine .g-4.row > .col-lg-6 > .vstack .flex-shrink-0{ max-width:none !important; width:100% !important; }
 /* Pied de page */
@@ -392,12 +415,56 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
     var s = doc.createElement("div"); s.className = "bdl-salut";
     s.innerHTML = '<div class="bdl-sur"><span>' + date + '</span><i></i><span>34, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
       '<h1 class="bdl-titre">' + mots + "</h1>" +
-      '<p class="bdl-sous">Vos réservations, vos invités et la vie du lieu, réunis sur une seule page.</p>';
+      '<p class="bdl-sous">Vos réservations, vos invités et la vie du lieu, réunis sur une seule page.</p>' +
+      '<div class="bdl-assist">' +
+        '<button type="button" class="bdl-assist-barre" data-q="">' +
+          '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg>' +
+          '<span class="txt"><b>Votre concierge</b> · réservez, invitez, posez une question…</span>' +
+          '<span class="go">Demander</span>' +
+        '</button>' +
+        '<div class="bdl-assist-puces">' +
+          '<button type="button" data-q="Réserve-moi une salle pour 6 personnes demain à 10h">Une salle demain à 10h</button>' +
+          '<button type="button" data-q="Quelles sont mes prochaines réservations ?">Mes réservations</button>' +
+          '<button type="button" data-q="Je veux inviter un visiteur">Inviter un visiteur</button>' +
+          '<button type="button" data-q="Quels événements sont prévus prochainement ?">Les prochains événements</button>' +
+        '</div>' +
+      '</div>';
+    s.querySelectorAll("[data-q]").forEach(function (b) {
+      b.addEventListener("click", function () { ouvrirAssistant(b.getAttribute("data-q")); });
+    });
     hero.insertBefore(grain, hero.firstChild);
     hero.insertBefore(voile, hero.firstChild);
     hero.insertBefore(bg, hero.firstChild);
     var contenu = hero.querySelector(".z-index-1");
     hero.insertBefore(s, contenu || null);
+  }
+
+  /* Ouvre l'assistant Nexudus et, si besoin, lui envoie la question */
+  function champAssistant() {
+    return Array.prototype.filter.call(doc.querySelectorAll("textarea, input[type=text], input:not([type])"), function (e) {
+      return e.offsetParent && !e.closest(".bdl-salut") && /message|demande|faire pour/i.test(e.placeholder || "");
+    })[0];
+  }
+  function ouvrirAssistant(q) {
+    var m = doc.querySelector(".ai-chat-manager");
+    if (!m) return;
+    if (!champAssistant()) (m.querySelector("button") || m).click();
+    if (!q) return;
+    var n = 0;
+    (function essai() {
+      var ta = champAssistant();
+      if (!ta) { if (++n < 40) setTimeout(essai, 100); return; }
+      var proto = ta.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      Object.getOwnPropertyDescriptor(proto, "value").set.call(ta, q);
+      ta.dispatchEvent(new Event("input", { bubbles: true }));
+      ta.focus();
+      setTimeout(function () {
+        var p = ta.parentElement, b = null;
+        for (var i = 0; i < 3 && p && !b; i++) { b = p.querySelector("button[type=submit], button:not([disabled])"); p = p.parentElement; }
+        if (b) b.click();
+        else ta.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", keyCode: 13, which: 13, bubbles: true }));
+      }, 150);
+    })();
   }
 
   var obs = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
