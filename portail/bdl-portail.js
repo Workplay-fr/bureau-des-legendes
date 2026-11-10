@@ -57,7 +57,7 @@ html.bdl-dash .dashboard-content-container .container{ max-width:1440px; }
 .bdl-hero-grain{ position:absolute; inset:0; pointer-events:none; opacity:.08; mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 .bdl-hero > .z-index-1{ position:relative; z-index:2; }
-.bdl-salut{ position:relative; z-index:2; color:#fff; width:100%; max-width:1440px; margin:0 auto; padding:clamp(3.5rem,9vh,6.5rem) calc(var(--bs-gutter-x,1.5rem)*.5 + 12px) 0; }
+.bdl-salut{ position:relative; z-index:2; color:#fff; width:100%; max-width:1440px; margin:0 auto; padding:clamp(3.5rem,9vh,6.5rem) calc(var(--bs-gutter-x,1.5rem)*.5) 0; }
 .bdl-sur{ display:flex; align-items:center; gap:.9rem; font-size:.7rem; letter-spacing:.28em; text-transform:uppercase; font-weight:500; opacity:0; animation:bdlMonte .9s var(--bdl-ease) .15s forwards; }
 .bdl-sur i{ display:inline-block; width:38px; height:1px; background:rgba(255,255,255,.7); transform-origin:left; transform:scaleX(0); animation:bdlTrait 1s var(--bdl-ease) .35s forwards; }
 .bdl-titre{ margin:.9rem 0 0; font-weight:500 !important; font-size:clamp(2.6rem,5.6vw,5.2rem) !important; line-height:1.02 !important; letter-spacing:-.015em; color:#fff !important; }
@@ -98,7 +98,7 @@ html.bdl-dash .dashboard-content-container h3.card-header-title,
 html.bdl-dash .bdl-grille h3.card-header-title, html.bdl-dash .bdl-pleine h3.card-header-title{ font-weight:600 !important; font-size:clamp(1.15rem,1.5vw,1.4rem) !important; letter-spacing:.08em; text-transform:uppercase; line-height:1.2; }
 html.bdl-dash .user-main-content .card h5, html.bdl-dash .user-main-content .card h6, html.bdl-dash .user-main-content .card .fw-bolder, html.bdl-dash .user-main-content .card .fw-semibold, html.bdl-dash .user-main-content .card .fw-bold{ font-family:var(--bdl-f) !important; font-weight:600 !important; letter-spacing:.01em; }
 html.bdl-dash .user-main-content .card .fw-medium{ font-weight:500 !important; }
-html.bdl-dash .dashboard-content-container h3.card-header-title::before{ counter-increment:bdlsec; content:counter(bdlsec,decimal-leading-zero) "  —  "; display:block;
+html.bdl-dash .dashboard-content-container h3.card-header-title::before{ counter-increment:bdlsec; content:none; display:none;
   font-size:.66rem; letter-spacing:.28em; font-weight:500; color:var(--bdl-gris); margin-bottom:.55rem; white-space:pre; }
 html.bdl-dash .user-main-content a.text-body{ font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500; text-decoration:none; border-bottom:1px solid currentColor; padding-bottom:2px; }
 
@@ -120,7 +120,7 @@ html.bdl-dash .badge{ border-radius:2px !important; letter-spacing:.06em; font-w
 .bdl-grille > .row{ --bs-gutter-x:3.5rem; --bs-gutter-y:3.5rem; }
 .bdl-grille > .row > [class*="col"]{ display:flex; flex-direction:column; gap:4rem; }
 @media (min-width:992px){
-  .bdl-grille > .row > .col-lg-4{ align-self:flex-start; position:sticky; top:104px; padding-top:1.75rem; }
+  .bdl-grille > .row > .col-lg-4{ align-self:flex-start; position:sticky; top:104px; }
   .bdl-grille > .row > .col-lg-8{ border-right:1px solid var(--bdl-sable); padding-right:calc(var(--bs-gutter-x) * .5 + 1rem); }
 }
 /* Colonne de droite : une carte par ligne */
@@ -130,7 +130,7 @@ html.bdl-dash .badge{ border-radius:2px !important; letter-spacing:.06em; font-w
 .bdl-grille .col-lg-4 .card{ width:100%; }
 .bdl-pleine{ margin-bottom:6rem; padding-top:4rem; border-top:1px solid var(--bdl-sable); display:flex; flex-direction:column; gap:5rem; }
 .bdl-pleine h3,.bdl-pleine h2{ font-weight:600 !important; }
-.bdl-grille h3.card-header-title::before,.bdl-pleine h3.card-header-title::before{ counter-increment:bdlsec; content:counter(bdlsec,decimal-leading-zero) "  —  "; display:block;
+.bdl-grille h3.card-header-title::before,.bdl-pleine h3.card-header-title::before{ counter-increment:bdlsec; content:none; display:none;
   font-size:.66rem; letter-spacing:.28em; font-weight:500; color:var(--bdl-gris); margin-bottom:.55rem; white-space:pre; }
 html.bdl-dash .user-main-content{ counter-reset:bdlsec; }
 
@@ -144,6 +144,31 @@ html.bdl-dash .user-main-content{ counter-reset:bdlsec; }
 .bdl-rideau img{ width:56px; opacity:0; animation:bdlMonte .5s ease forwards; }
 @keyframes bdlRideau{ to{ transform:translateY(-100%);} }
 
+
+/* === Correctifs démo === */
+/* 1. Annonce intégrée au bandeau */
+.bdl-hero .announcement-banner{ background:rgba(25,17,11,.45) !important; border:1px solid rgba(255,255,255,.22) !important; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:none !important; padding:1rem; gap:1.25rem; }
+.bdl-hero .announcement-banner *{ color:#fff !important; }
+.bdl-hero .announcement-banner .card-header,.bdl-hero .announcement-banner .card-body{ background:transparent !important; padding-left:0 !important; padding-right:0 !important; }
+.bdl-hero .announcement-banner .card-body{ flex-grow:0 !important; gap:1rem; }
+.bdl-hero .announcement-banner .order-md-2{ max-width:240px; }
+.bdl-hero .announcement-banner .btn-primary{ background:#fff !important; border-color:#fff !important; color:var(--bdl-noir) !important; }
+.bdl-hero .announcement-banner .btn-primary *{ color:var(--bdl-noir) !important; }
+/* 2. Pastilles du calendrier */
+html.bdl-dash .bdl-grille .col-lg-8 .card .bg-light, html.bdl-dash .bdl-grille [class*="bg-secondary"], html.bdl-dash .bdl-grille .bg-body-secondary, html.bdl-dash .bdl-grille .bg-body-tertiary{ background:var(--bdl-sable) !important; }
+html.bdl-dash .bdl-grille .col-lg-8 .text-truncate{ white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
+/* 3. Badges unifiés */
+html.bdl-dash .user-main-content .badge, html.bdl-dash .user-main-content [class*="-subtle"], html.bdl-dash .benefit-badge{
+  background:transparent !important; color:var(--bdl-noir) !important; border:1px solid var(--bdl-noir) !important; border-radius:2px !important; font-weight:500 !important; letter-spacing:.08em; }
+html.bdl-dash .user-main-content .badge *, html.bdl-dash .user-main-content [class*="-subtle"] *, html.bdl-dash .benefit-badge *{ color:var(--bdl-noir) !important; }
+html.bdl-dash .bdl-pleine .badge, html.bdl-dash .bdl-pleine [class*="bg-info"]{ background:rgba(255,255,255,.92) !important; border-color:transparent !important; color:var(--bdl-noir) !important; }
+/* 4. Liens « Voir tous » sur la ligne du titre */
+html.bdl-dash .bdl-grille .col-lg-4 .d-flex.flex-column.align-items-start{ flex-direction:row !important; align-items:baseline !important; justify-content:space-between !important; width:100%; }
+/* 5. En-tête */
+html.bdl header .navbar-nav .nav-link{ text-transform:none !important; letter-spacing:.02em !important; font-size:.92rem !important; font-weight:500 !important; }
+html.bdl header .navbar-nav .nav-link svg, html.bdl header .navbar-nav .nav-link img, html.bdl header .navbar-nav .nav-link .icon{ display:none !important; }
+html.bdl header .avatar, html.bdl header [class*="avatar"]{ background:var(--bdl-noir) !important; color:#fff !important; border-radius:50% !important; }
+html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; }
 @media (max-width:767px){
   .bdl-hero{ border-radius:0 0 18px 18px !important; min-height:0; }
   .bdl-salut{ padding-top:3rem; }
