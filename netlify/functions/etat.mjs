@@ -6,7 +6,7 @@ export const config = { path: "/api/etat" };
 export default async () => {
   const u = process.env.NEXUDUS_USER || "";
   const res = { identifiants: !vide(), utilisateur: u ? u.replace(/^(.{2}).*(@.*)$/, "$1…$2") : null, motDePasse: (process.env.NEXUDUS_PASSWORD || "").length };
-  for (const [nom, chemin] of [["entreprise", `/sys/businesses/${CFG.business}`], ["contacts", `/spaces/coworkers?size=1`], ["crm", `/crm/crmopportunities?size=1`]]) {
+  for (const [nom, chemin] of [["entreprise", `/sys/businesses/${CFG.business}`], ["contacts", `/spaces/coworkers?size=1`], ["crm", `/crm/crmopportunities?size=1`], ["reservations", `/spaces/bookings?size=1`], ["contrats", `/billing/coworkercontracts?size=1`], ["tarifs", `/billing/tariffs?size=1`]]) {
     try { await nx("GET", chemin); res[nom] = "ok"; }
     catch (e) { res[nom] = String(e.message).slice(0, 160); }
   }
