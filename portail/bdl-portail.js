@@ -432,9 +432,9 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
       var info = doc.createElement("div");
       info.className = "bdl-pied-info";
       info.innerHTML = '<span>34, boulevard Haussmann · 75009 Paris</span>' +
-        '<a href="' + base + '/bookings">Réserver une salle</a>' +
-        '<a href="' + base + '/events/agenda">Événements</a>' +
-        '<a href="' + base + '/faq">Aide</a>';
+        '<a href="' + base + '/bookings/meeting-rooms/list">Salles de réunion</a>' +
+        '<a href="' + base + '/events/agenda">Agenda des événements</a>' +
+        '<a href="' + base + '/user/activity/events">Mes événements</a>';
       if (pied.children[1]) pied.insertBefore(info, pied.children[1]); else pied.appendChild(info);
     }
     doc.querySelectorAll(".bdl-pleine button span, .bdl-pleine .btn span").forEach(function (sp) {
