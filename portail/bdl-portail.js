@@ -63,7 +63,7 @@ html.bdl-dash .dashboard-content-container .container{ max-width:1440px; }
 .bdl-titre{ margin:.9rem 0 0; font-weight:500 !important; font-size:clamp(2.6rem,5.6vw,5.2rem) !important; line-height:1.02 !important; letter-spacing:-.015em; color:#fff !important; }
 .bdl-titre .m{ display:inline-block; overflow:hidden; vertical-align:bottom; padding:.06em .02em .12em; margin-bottom:-.12em; }
 .bdl-titre .m > span{ display:inline-block; transform:translateY(105%); animation:bdlMot 1.05s var(--bdl-ease) forwards; }
-.bdl-titre em{ font-style:italic; font-weight:400; }
+.bdl-titre em{ font-style:normal; font-weight:inherit; color:var(--bdl-bleu) !important; }
 .bdl-sous{ margin-top:1rem; max-width:40rem; font-size:1rem; line-height:1.6; color:rgba(255,255,255,.78); opacity:0; animation:bdlMonte 1s var(--bdl-ease) .9s forwards; }
 @keyframes bdlMot{ to{ transform:translateY(0);} }
 @keyframes bdlMonte{ from{ opacity:0; transform:translateY(14px);} to{ opacity:1; transform:none;} }
@@ -468,10 +468,10 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
   }
   function salutation() {
     var h = heureParis();
-    if (h < 5) return ["Belle", "<em>nuit</em>", "au", "Bureau."];
+    if (h < 5) return ["Belle", "nuit", "au", "<em>Bureau.</em>"];
     if (h < 12) return ["Bonjour,", "et", "bienvenue", "au", "<em>Bureau.</em>"];
     if (h < 18) return ["Bel", "après-midi", "au", "<em>Bureau.</em>"];
-    return ["Bonsoir,", "la", "verrière", "vous", "<em>attend.</em>"];
+    return ["Bonsoir,", "et", "bienvenue", "au", "<em>Bureau.</em>"];
   }
 
   function habillerBandeau(hero) {
