@@ -440,7 +440,9 @@ section{padding-block:clamp(72px,9vw,128px)}
   .tf-haut{padding:18px 32px}
   .tf-corps{padding:clamp(24px,4vh,48px) clamp(32px,4vw,64px) 28px !important;scrollbar-width:none}
   .tf .tf-q{margin:auto !important}
-  .tf .tf-q.large{margin:0 auto !important}
+  .tf .tf-q.large{margin:0 auto !important;align-self:flex-start}
+  .tf .tf-corps{align-items:flex-start}
+  .tf .tf-q:not(.large){margin:auto !important;align-self:center}
   .tf .tf-q.large h2{font-size:clamp(26px,2.4vw,36px) !important}
   .tf .tf-q.large .tf-aide{margin-top:8px}
   .tf .plans-tf{margin-top:24px !important}
