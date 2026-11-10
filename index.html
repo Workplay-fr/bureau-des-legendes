@@ -437,7 +437,8 @@ section{padding-block:clamp(72px,9vw,128px)}
 .panier-t{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .panier-t small{color:var(--gris);font-size:12.5px}
 .produits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.prod{border:1px solid var(--line-2);transition:border-color .3s,background .3s}
+.prod{display:flex;align-items:center;border:1px solid var(--line-2);transition:border-color .3s,background .3s;min-width:0}
+.prod .prod-choix{flex:1 1 auto;min-width:0}
 .prod.on{border-color:var(--noir)}
 .prod-choix{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;padding:10px 12px;background:none;border:0;cursor:pointer;text-align:left;color:var(--noir);font:inherit}
 .prod-choix i{width:16px;height:16px;border:1px solid var(--noir);position:relative}
@@ -446,15 +447,24 @@ section{padding-block:clamp(72px,9vw,128px)}
 .prod-choix b{display:block;font:500 13.5px/1.25 var(--f);letter-spacing:.02em}
 .prod-choix small{display:block;font-size:12px;color:var(--gris);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prod-choix em{font-style:normal;font-size:13px;white-space:nowrap}
-.prod-q{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:0 12px 10px 40px}
-.prod-q button{width:28px;height:28px;border:1px solid var(--line-2);background:#fff;cursor:pointer;font-size:16px;line-height:1;color:var(--noir)}
+.prod-q{display:flex;align-items:center;gap:6px;padding:0 10px 0 0;flex:none}
+.prod-q button{width:26px;height:26px;border:1px solid var(--line-2);background:#fff;cursor:pointer;font-size:16px;line-height:1;color:var(--noir)}
 .prod-q button:hover{border-color:var(--noir)}
-.prod-q span{min-width:56px;text-align:center;font-size:13.5px}
+.prod-q span{min-width:22px;text-align:center;font-size:13.5px}
+.prod.on .prod-choix em{display:none}
 .panier-lignes{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--line-2)}
 .panier-lignes li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:13.5px;color:var(--gris)}
 .panier-lignes li b{font-weight:400;color:var(--noir)}
 .panier-lignes li.tva{border-top:1px dashed var(--line)}
 @media (max-width:640px){ .produits{grid-template-columns:minmax(0,1fr)} }
+#ms [data-e="4"] .recap-salle, #ms [data-e="4"] .carte-ico, #ms [data-e="4"] .paiement > .champ{display:none}
+#ms [data-e="4"]{gap:14px !important}
+#ms [data-e="4"] .paiement{padding:14px 16px;gap:10px}
+#ms [data-e="4"] .demo-badge{padding:8px 10px;font-size:12.5px}
+#ms [data-e="4"] .carte-l .champ input{font-size:15px !important;padding:4px 0 6px !important}
+#ms [data-e="4"] .carte-l .champ .t{font-size:11px !important}
+#ms [data-e="4"] .total{padding-top:4px}
+#ms [data-e="4"] .prod-choix{padding:8px 10px}
 /* Devenir membre : même fenêtre que les autres */
 @media (min-width:900px){
   .tf{inset:auto !important;top:50% !important;left:50% !important;transform:translate(-50%,-50%) !important;width:min(1360px,calc(100vw - 48px)) !important;height:min(880px,calc(100vh - 48px)) !important;
@@ -1085,7 +1095,7 @@ section.tf-q{padding-block:0}
             <div class="produits" id="ms-produits"></div>
           </div>
           <div class="paiement">
-            <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Paiement de démonstration.</b> Aucune carte n'est débitée et aucune donnée bancaire n'est demandée : les champs ci-dessous sont des valeurs de test. La réservation, elle, est bien enregistrée.</span></div>
+            <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Paiement de démonstration.</b> Aucune carte n'est débitée : valeurs de test. La réservation, elle, est bien enregistrée.</span></div>
             <div class="carte-ico" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="carte-l">
               <div class="champ"><label class="t" for="ms-cb">Numéro de carte</label><input id="ms-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
