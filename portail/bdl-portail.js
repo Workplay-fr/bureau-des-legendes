@@ -342,6 +342,53 @@ html.bdl .ai-chat-manager svg [stroke]:not([stroke="none"]){ stroke:#fff !import
 html.bdl .ai-chat-manager .ai-chat-label{ font-weight:500 !important; letter-spacing:.02em; }
 html.bdl .ai-chat-manager:hover{ transform:translateY(-1px) !important; }
 @keyframes bdlHalo{ 0%{ box-shadow:0 0 0 0 rgba(25,17,11,.45); } 100%{ box-shadow:0 0 0 14px rgba(25,17,11,0); } }
+/* Assistant : fenêtre de discussion compacte, ancrée en bas à droite */
+body:has(.ai-modal-dialog) .modal-backdrop.show{ opacity:.18 !important; }
+html.bdl .modal:has(.ai-modal-dialog){ padding:0 !important; }
+html.bdl .ai-modal-dialog{ position:fixed !important; right:24px; bottom:24px; margin:0 !important; width:400px; max-width:calc(100vw - 32px) !important; min-height:0 !important; transform:none !important; display:block !important; }
+html.bdl .ai-modal-content{ height:min(600px, calc(100vh - 48px)); display:flex !important; flex-direction:column; border:0 !important; border-radius:18px !important; overflow:hidden;
+  background:#F6F1EB !important; box-shadow:0 30px 70px -20px rgba(25,17,11,.45), 0 0 0 1px rgba(25,17,11,.06) !important; font-family:Jost, sans-serif; }
+html.bdl .ai-modal-content .modal-header{ flex:0 0 auto; background:var(--bdl-noir) !important; color:#fff; padding:14px 16px 14px 20px !important; gap:10px; align-items:center; }
+html.bdl .ai-modal-content .modal-header::before{ content:"Votre concierge"; order:0; font-size:1rem; font-weight:500; letter-spacing:.02em; color:#fff; margin-right:auto; }
+html.bdl .ai-modal-content .modal-header .btn-outline-secondary{ order:1; margin:0 !important; border:1px solid rgba(255,255,255,.3) !important; color:#fff !important; background:transparent !important; border-radius:999px !important; font-size:.72rem !important; padding:.25rem .7rem !important; letter-spacing:.04em; }
+html.bdl .ai-modal-content .modal-header .btn-outline-secondary:hover{ background:rgba(255,255,255,.12) !important; }
+html.bdl .ai-modal-content .modal-header .btn-outline-secondary svg{ display:none; }
+html.bdl .ai-modal-content .modal-header .btn-close{ order:2; filter:invert(1); opacity:.8; margin:0 !important; padding:.4rem !important; background-size:.7rem; }
+html.bdl .ai-modal-content .modal-body{ flex:1 1 auto; overflow-y:auto; padding:16px !important; scrollbar-width:thin; }
+/* Accueil */
+html.bdl .ai-modal-content .modal-body > .text-center{ margin:auto 0 0 !important; text-align:left !important; padding-top:8px; }
+html.bdl .ai-modal-content .modal-body > .text-center .icon{ display:none !important; }
+html.bdl .ai-modal-content .modal-body > .text-center h4{ font-size:1.35rem !important; font-weight:400 !important; color:var(--bdl-noir); margin:0; }
+html.bdl .ai-modal-content .modal-body > .text-center h4::after{ content:"Réservez une salle, invitez un visiteur ou posez une question sur le lieu."; display:block; font-size:.85rem; color:var(--bdl-gris); margin-top:6px; line-height:1.45; }
+html.bdl .ai-modal-content .modal-body:has(> .text-center){ display:flex; flex-direction:column; }
+/* Messages */
+html.bdl .ai-modal-content section.ai-response{ border:0 !important; padding:10px 14px !important; margin:0 0 8px !important; border-radius:16px 16px 16px 4px !important; background:#fff !important; max-width:88%; font-size:.88rem; line-height:1.5; color:var(--bdl-noir); box-shadow:0 1px 0 rgba(25,17,11,.05); }
+html.bdl .ai-modal-content section.ai-response > svg{ display:none !important; }
+html.bdl .ai-modal-content section.ai-response:has(> svg[viewBox="0 0 448 512"]){ margin-left:auto !important; background:var(--bdl-noir) !important; color:#fff !important; border-radius:16px 16px 4px 16px !important; }
+html.bdl .ai-modal-content section.ai-response:has(> svg[viewBox="0 0 448 512"]) *{ color:#fff !important; }
+html.bdl .ai-modal-content section.ai-response p{ margin:0 0 .5em; }
+html.bdl .ai-modal-content section.ai-response p:last-child{ margin-bottom:0; }
+html.bdl .ai-modal-content section.ai-response a{ color:var(--bdl-noir) !important; text-decoration:underline; text-underline-offset:3px; }
+html.bdl .ai-modal-content section.ai-response img{ width:56px !important; height:56px !important; object-fit:cover; border-radius:8px !important; }
+html.bdl .ai-modal-content section.ai-response .btn, html.bdl .ai-modal-content section.ai-response button{ font-size:.72rem !important; padding:.3rem .7rem !important; border-radius:999px !important; border:1px solid var(--bdl-noir) !important; background:transparent !important; color:var(--bdl-noir) !important; text-decoration:none !important; letter-spacing:.04em; }
+/* Pied : saisie et suggestions */
+html.bdl .ai-modal-content .ai-modal-footer{ flex:0 0 auto; padding:10px 14px 14px !important; background:#F6F1EB; border-top:1px solid rgba(25,17,11,.08) !important; display:block; }
+html.bdl .ai-modal-content .ai-modal-footer form{ display:flex; flex-direction:column-reverse; gap:10px; }
+html.bdl .ai-modal-content .ai-modal-footer .input-group{ background:#fff; border-radius:999px; padding:4px; box-shadow:0 0 0 1px rgba(25,17,11,.12); flex-wrap:nowrap; }
+html.bdl .ai-modal-content .ai-modal-footer .input-group:focus-within{ box-shadow:0 0 0 1px var(--bdl-noir); }
+html.bdl .ai-modal-content .ai-modal-footer .form-control{ border:0 !important; box-shadow:none !important; background:transparent !important; padding:.55rem .9rem !important; font-size:.88rem; border-radius:999px !important; }
+html.bdl .ai-modal-content .ai-modal-footer .form-control::placeholder{ color:transparent; }
+html.bdl .ai-modal-content .ai-modal-footer .input-group:has(.form-control:placeholder-shown)::after{ content:"Écrivez votre demande…"; position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--bdl-gris); font-size:.88rem; pointer-events:none; }
+html.bdl .ai-modal-content .ai-modal-footer .input-group{ position:relative; }
+html.bdl .ai-modal-content .ai-modal-footer .input-group .btn{ width:38px; height:38px; flex:0 0 38px; border-radius:50% !important; padding:0 !important; display:grid; place-items:center; background:var(--bdl-noir) !important; border:0 !important; }
+html.bdl .ai-modal-content .ai-modal-footer hr, html.bdl .ai-modal-content .ai-modal-footer > form > small, html.bdl .ai-modal-content .ai-modal-footer h5{ display:none !important; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start{ display:flex; flex-wrap:wrap; gap:6px; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(n+5){ display:none !important; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start > div > .d-flex{ display:none !important; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start .bg-light{ margin:0 !important; padding:0 !important; background:transparent !important; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start button.card{ background:#fff !important; border:1px solid rgba(25,17,11,.14) !important; border-radius:999px !important; padding:.4rem .8rem !important; font-size:.78rem; color:var(--bdl-noir); line-height:1.3; transition:border-color .2s, background .2s; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start button.card:hover{ border-color:var(--bdl-noir) !important; }
+@media (max-width:575px){ html.bdl .ai-modal-dialog{ right:8px; bottom:8px; width:calc(100vw - 16px); } html.bdl .ai-modal-content{ height:calc(100vh - 16px); } }
 /* Assistant : barre dans le bandeau */
 .bdl-assist{ margin-top:1.75rem; max-width:760px; opacity:0; animation:bdlMonte .8s var(--bdl-ease) .95s forwards; }
 .bdl-assist-barre{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; cursor:pointer;
@@ -511,7 +558,15 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
       if (h.textContent.trim() === "Avantages.") h.textContent = "Avantages partenaires";
     });
     calendrier();
-    var pied = doc.querySelector("footer.bg-primary > div");
+    /* Assistant : retire la distance calculée depuis le navigateur, peu fiable */
+    var fen = doc.querySelector(".ai-modal-content");
+    if (fen) {
+      var w = doc.createTreeWalker(fen, NodeFilter.SHOW_TEXT), t;
+      while ((t = w.nextNode())) {
+        if (/km de distance/.test(t.nodeValue)) t.nodeValue = t.nodeValue.replace(/\s*\((?:À|à)\s*[\d.,\s]+km de distance\)/g, "");
+      }
+    }
+    var pied =doc.querySelector("footer.bg-primary > div");
     if (pied && !pied.querySelector(".bdl-pied-info")) {
       var base = (location.pathname.match(/^\/[^/]+/) || [""])[0];
       var info = doc.createElement("div");
