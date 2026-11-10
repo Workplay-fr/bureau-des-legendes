@@ -146,7 +146,7 @@ html.bdl-dash .user-main-content{ counter-reset:bdlsec; }
 
 
 /* === Correctifs démo === */
-img.bdl-logo{ width:60px !important; max-width:60px !important; height:100% !important; object-fit:contain !important; object-position:center; padding:4px !important; background:#fff !important; transform:scale(1.35); transform-origin:center; }
+img.bdl-logo{ width:60px !important; max-width:60px !important; height:100% !important; object-fit:contain !important; background:#fff !important; }
 /* 1. Annonce intégrée au bandeau */
 .bdl-hero .announcement-banner{ background:rgba(25,17,11,.45) !important; border:1px solid rgba(255,255,255,.22) !important; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:none !important; padding:1rem; gap:1.25rem; }
 .bdl-hero .announcement-banner *{ color:#fff !important; }
@@ -273,7 +273,7 @@ html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; 
       if (!img || img.dataset.bdlLogo) return;
       img.dataset.bdlLogo = "1";
       img.classList.add("bdl-logo");
-      try { var u = new URL(img.src); u.searchParams.set("mode", "pad"); u.searchParams.set("w", "400"); u.searchParams.set("h", "200"); img.src = u.toString(); } catch (e) {}
+      img.src = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#fff"/><text x="60" y="70" text-anchor="middle" font-family="Jost,Helvetica,Arial,sans-serif" font-size="34" font-weight="600" fill="#000">Uber</text></svg>');
     });
   }
 
