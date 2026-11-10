@@ -44,10 +44,12 @@ export default async (req) => {
     const montant = s.prixHeure * duree;
     const b = await nx("POST", "/spaces/bookings", {
       ResourceId: salle, CoworkerId: c.id, FromTime: isoZ(de), ToTime: isoZ(a), Repeats: 2, WhichBookingsToUpdate: 1,
-      ChargeNow: false, InvoiceNow: false, Tentative: false,
+      // Créée « à confirmer » : Nexudus refuse (erreur 500) une réservation confirmée d'emblée via l'API pour ce compte.
+      ChargeNow: false, InvoiceNow: false, Tentative: true,
       // Nexudus refuse la création (erreur 500 générique) si ces champs ne sont pas envoyés explicitement.
       InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: 0, IncludeZoomInvite: false,
-      Notes: v.objet || null,
+      // InternalNotes n'est pas enregistré à la création : le détail passe dans Notes.
+      Notes: [v.objet, `Réservé depuis le site vitrine · paiement de démonstration de ${montant} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
       InternalNotes: [`Réservation depuis le site vitrine · paiement simulé (démo) de ${montant} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
     });
     const id = b.Value && b.Value.Id;

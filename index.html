@@ -1006,9 +1006,9 @@ body.modal-ouverte{overflow:hidden}
         </div>
       </form>
       <div class="mv-fin" id="ms-fin">
-        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
-        <h2>Salle réservée.</h2>
-        <p style="color:var(--gris)">Votre salle vous attend. L'équipe vous accueille à l'entrée du 34, boulevard Haussmann.</p>
+        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 76 76"><circle class="anneau" cx="38" cy="38" r="36"/><path class="coche" d="M25 39l9 9 17-19"/></svg></div>
+        <h2>Créneau bloqué.</h2>
+        <p style="color:var(--gris)">La salle est bloquée à votre nom. L'équipe vous confirme la réservation par e-mail et vous accueille à l'entrée du 34, boulevard Haussmann.</p>
         <ul class="recap" id="ms-recap"></ul>
         <p class="crm" id="ms-crm"></p>
         <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer-ms>Fermer</button></div>
@@ -1697,11 +1697,11 @@ msForm.addEventListener("submit", async e => {
 function finSalle(v, res){
   const s = salleCourante(), m = montant();
   msForm.hidden = true;
-  document.getElementById("ms-titre").textContent = "C'est réservé.";
-  document.getElementById("ms-sur").textContent = "Réserver une salle · confirmé";
+  document.getElementById("ms-titre").textContent = "C'est noté.";
+  document.getElementById("ms-sur").textContent = "Réserver une salle · créneau bloqué";
   document.getElementById("ms-recap").innerHTML = [["Salle", s.nom], ["Créneau", quandTxt()], ["Montant", eur(m.ttc) + " TTC (paiement simulé)"], ["Référence", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
-  document.getElementById("ms-crm").innerHTML = `Réservation créée dans le calendrier Nexudus de la <b>${esc(s.nom)}</b>${res.nouveau ? ", avec une nouvelle fiche contact" : ", sur la fiche contact existante"}. Elle est visible dans Flow et sur le portail membre.`;
-  document.getElementById("ms-fin").classList.add("on");
+  document.getElementById("ms-crm").innerHTML = `Réservation créée dans le calendrier Nexudus de la <b>${esc(s.nom)}</b>${res.nouveau ? ", avec une nouvelle fiche contact" : ", sur la fiche contact existante"}. Elle apparaît dans Flow en attente de confirmation par l'équipe.`;
+  const fin = document.getElementById("ms-fin"); fin.classList.remove("on"); void fin.offsetWidth; fin.classList.add("on");
   delete S.occupe[v.salle + "|" + v.jour];
 }
 
