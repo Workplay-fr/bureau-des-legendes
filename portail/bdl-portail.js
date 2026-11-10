@@ -284,6 +284,21 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-ch
 .bdl-pleine [class*="_scroller_"] a.card .card-body > :last-child{ margin-top:auto; padding-top:8px; }
 .bdl-pleine [class*="_scroller_"] a.card .card-title{ font-size:1.05rem !important; }
 @media (max-width:767px){ .bdl-pleine [class*="_scroller_"] > div{ grid-template-columns:1fr; } }
+/* Variante grand écran : grande carte + liste → deux cartes identiques */
+.bdl-pleine .g-4.row{ --bs-gutter-x:32px; --bs-gutter-y:32px; align-items:stretch; }
+.bdl-pleine .g-4.row > .col-lg-6{ display:flex; padding-left:calc(var(--bs-gutter-x) * .5) !important; padding-right:calc(var(--bs-gutter-x) * .5) !important; }
+.bdl-pleine .g-4.row > .col-lg-6 > a.card, .bdl-pleine .g-4.row > .col-lg-6 > .vstack{ flex:1 1 auto; }
+.bdl-pleine .g-4.row > .col-lg-6 > .vstack > a{ display:flex; flex:1 1 auto; }
+.bdl-pleine .g-4.row > .col-lg-6 > a.card, .bdl-pleine .g-4.row > .col-lg-6 > .vstack > a > .d-flex{
+  width:100%; background:#fff !important; border-radius:6px !important; overflow:hidden !important; box-shadow:0 0 0 1px var(--bdl-sable) !important; gap:0 !important; }
+.bdl-pleine .g-4.row > .col-lg-6 > .vstack > a > .d-flex{ flex-direction:column !important; }
+.bdl-pleine .g-4.row > .col-lg-6 > .vstack > a > .d-flex > .flex-shrink-0{ width:100% !important; }
+.bdl-pleine .g-4.row > .col-lg-6 img{ width:100% !important; height:auto !important; aspect-ratio:16/9 !important; object-fit:cover !important; border-radius:0 !important; max-width:none !important; }
+.bdl-pleine .g-4.row > .col-lg-6 > a.card .card-body, .bdl-pleine .g-4.row > .col-lg-6 > .vstack > a > .d-flex > :last-child{
+  padding:20px 24px 24px !important; gap:12px !important; flex:1 1 auto; display:flex; flex-direction:column; }
+.bdl-pleine .g-4.row > .col-lg-6 > a.card .card-body > :last-child, .bdl-pleine .g-4.row > .col-lg-6 > .vstack > a > .d-flex > :last-child > :last-child{ margin-top:auto; padding-top:8px; }
+.bdl-pleine .g-4.row > .col-lg-6 .card-title, .bdl-pleine .g-4.row > .col-lg-6 .h5, .bdl-pleine .g-4.row > .col-lg-6 h5{ font-size:1.05rem !important; text-transform:none !important; letter-spacing:.01em !important; }
+.bdl-pleine .g-4.row > .col-lg-6 .six-lines, .bdl-pleine .g-4.row > .col-lg-6 [class*="truncate"]{ -webkit-line-clamp:2 !important; }
 /* Avantages : même hauteur, actions en bas */
 .bdl-pleine .row{ align-items:stretch; }
 .bdl-pleine .row > * > .card{ height:100%; }
