@@ -100,7 +100,7 @@ html.bdl-dash .user-main-content .card h5, html.bdl-dash .user-main-content .car
 html.bdl-dash .user-main-content .card .fw-medium{ font-weight:500 !important; }
 html.bdl-dash .dashboard-content-container h3.card-header-title::before{ counter-increment:bdlsec; content:none; display:none;
   font-size:.66rem; letter-spacing:.28em; font-weight:500; color:var(--bdl-gris); margin-bottom:.55rem; white-space:pre; }
-html.bdl-dash .user-main-content a.text-body{ font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500; text-decoration:none; border-bottom:1px solid currentColor; padding-bottom:2px; }
+html.bdl-dash .user-main-content .card-header-title + div a.text-body, html.bdl-dash .user-main-content .d-flex.flex-column.align-items-start > div > a.text-body{ font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500; text-decoration:none; border-bottom:1px solid currentColor; padding-bottom:2px; }
 
 /* Cartes : blanc, filet fin, plus d'ombre floue */
 html.bdl-dash .dashboard-content-container > .container .card,
@@ -111,7 +111,7 @@ html.bdl-dash .benefit-badge{ background:var(--bdl-noir) !important; color:#fff 
 html.bdl-dash .benefit-badge *{ color:#fff !important; letter-spacing:.06em; }
 html.bdl-dash .rounded-4{ border-radius:6px !important; }
 html.bdl-dash .rounded-3{ border-radius:4px !important; }
-html.bdl-dash .bg-light{ background-color:var(--bdl-creme) !important; }
+html.bdl-dash .user-main-content .bg-light{ background-color:#fff !important; }
 html.bdl-dash .badge{ border-radius:2px !important; letter-spacing:.06em; font-weight:500; }
 
 /* Grille en deux colonnes (bloc CustomGrid du plan de page) */
@@ -146,7 +146,7 @@ html.bdl-dash .user-main-content{ counter-reset:bdlsec; }
 
 
 /* === Correctifs démo === */
-img.bdl-logo{ width:60px !important; max-width:60px !important; height:100% !important; object-fit:contain !important; background:#fff !important; }
+img.bdl-logo{ object-fit:cover !important; }
 /* 1. Annonce intégrée au bandeau */
 .bdl-hero .announcement-banner{ background:rgba(25,17,11,.45) !important; border:1px solid rgba(255,255,255,.22) !important; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:none !important; padding:1rem; gap:1.25rem; }
 .bdl-hero .announcement-banner *{ color:#fff !important; }
@@ -156,8 +156,7 @@ img.bdl-logo{ width:60px !important; max-width:60px !important; height:100% !imp
 .bdl-hero .announcement-banner .btn-primary{ background:#fff !important; border-color:#fff !important; color:var(--bdl-noir) !important; }
 .bdl-hero .announcement-banner .btn-primary *{ color:var(--bdl-noir) !important; }
 /* 2. Pastilles du calendrier */
-html.bdl-dash .bdl-grille .col-lg-8 .card .bg-light, html.bdl-dash .bdl-grille [class*="bg-secondary"], html.bdl-dash .bdl-grille .bg-body-secondary, html.bdl-dash .bdl-grille .bg-body-tertiary{ background:var(--bdl-sable) !important; }
-html.bdl-dash .bdl-grille .col-lg-8 .text-truncate{ white-space:normal !important; overflow:visible !important; text-overflow:clip !important; }
+
 /* 3. Badges unifiés */
 html.bdl-dash .user-main-content .badge, html.bdl-dash .user-main-content [class*="-subtle"], html.bdl-dash .benefit-badge{
   background:transparent !important; color:var(--bdl-noir) !important; border:1px solid var(--bdl-noir) !important; border-radius:2px !important; font-weight:500 !important; letter-spacing:.08em; }
@@ -170,6 +169,37 @@ html.bdl header .navbar-nav .nav-link{ text-transform:none !important; letter-sp
 html.bdl header .navbar-nav .nav-link svg, html.bdl header .navbar-nav .nav-link img, html.bdl header .navbar-nav .nav-link .icon{ display:none !important; }
 html.bdl header .avatar, html.bdl header [class*="avatar"]{ background:var(--bdl-noir) !important; color:#fff !important; border-radius:50% !important; }
 html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; }
+
+/* === Passe 2 === */
+/* En-tête sur la grille de la page */
+html.bdl header nav .container{ max-width:1440px !important; }
+@media (min-width:1500px){ html.bdl .mobile-aichatManager{ right:calc((100vw - 1440px) / 2) !important; margin-right:0 !important; } }
+/* Bandeau plus compact */
+.bdl-hero{ min-height:0 !important; margin-bottom:3.5rem !important; }
+.bdl-salut{ padding-top:clamp(2.5rem,6vh,4rem) !important; }
+.bdl-hero .container.vstack{ padding-top:1.75rem !important; padding-bottom:2.5rem !important; margin-bottom:0 !important; gap:1.75rem !important; }
+.bdl-hero .announcement-banner{ align-items:center; }
+.bdl-hero .announcement-banner .order-md-2 img{ height:132px !important; width:220px !important; }
+.bdl-hero .announcement-banner .order-md-1{ justify-content:center; }
+.bdl-hero .announcement-banner .card-body{ padding-bottom:0 !important; }
+.bdl-hero .announcement-banner .d-flex.mt-auto{ margin-top:.25rem !important; align-items:center; gap:.75rem; }
+html.bdl .bdl-hero .announcement-banner .btn-link, html.bdl .bdl-hero .announcement-banner .btn-link *{ color:rgba(255,255,255,.85) !important; }
+/* Calendrier */
+html.bdl-dash .fc-upcoming-agenda-calendar{ background:#FCFAF7 !important; }
+html.bdl-dash .bdl-grille .card:has(.fc-upcoming-agenda-calendar){ background:#FCFAF7 !important; box-shadow:none !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-theme-standard td, html.bdl-dash .fc-upcoming-agenda-calendar .fc-theme-standard th,
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-scrollgrid{ border-color:var(--bdl-sable) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today{ background:rgba(233,225,214,.35) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event{ background:var(--bdl-sable) !important; border:0 !important; border-left:2px solid var(--bdl-noir) !important; border-radius:3px !important; box-shadow:none !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event:hover{ background:#DED3C4 !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event a{ border:0 !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .icon{ background-color:var(--bdl-noir) !important; }
+/* Cartes : un seul système (blanc, filet sable) */
+html.bdl-dash .user-main-content .card.bg-light, html.bdl-dash .user-main-content .card .card.bg-light{ background:#fff !important; }
+html.bdl-dash .bdl-pleine .card .card-img-overlay > .d-flex > .card, html.bdl-dash .bdl-grille .card .card-img-overlay > .d-flex > .card{ border:0 !important; border-left:1px solid var(--bdl-sable) !important; border-radius:0 !important; }
+/* Événements à la une : colonnes de même hauteur */
+html.bdl-dash .bdl-pleine .row{ align-items:stretch; }
+html.bdl-dash .bdl-pleine .row > * > .card, html.bdl-dash .bdl-pleine .row > * > a > .card{ height:100%; }
 @media (max-width:767px){
   .bdl-hero{ border-radius:0 0 18px 18px !important; min-height:0; }
   .bdl-salut{ padding-top:3rem; }
@@ -245,7 +275,7 @@ html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; 
     es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("vu"); obs.unobserve(e.target); } });
   }, { rootMargin: "0px 0px -8% 0px" }) : null;
   function reveler(el, i) {
-    if (!obs || el.dataset.bdlRev) return;
+    return;
     el.dataset.bdlRev = "1";
     el.classList.add("bdl-rev");
     el.style.transitionDelay = (Math.min(i, 4) * 0.08) + "s";
@@ -265,6 +295,10 @@ html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; 
     }
     c.querySelectorAll(":scope > .container > .vstack > div").forEach(reveler);
     doc.querySelectorAll(".bdl-grille > .row > [class*=col] > * > *, .bdl-pleine > *").forEach(reveler);
+    doc.querySelectorAll(".bdl-pleine h3.card-header-title, .bdl-pleine h3").forEach(function (h) {
+      if (h.textContent.trim() === "Avantages.") h.textContent = "Avantages partenaires";
+    });
+    calendrier();
     /* Logos de partenaires : affichés entiers, sans recadrage */
     doc.querySelectorAll(".bdl-pleine .card").forEach(function (cd) {
       var t = (cd.innerText || "").trim();
@@ -273,10 +307,23 @@ html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; 
       if (!img || img.dataset.bdlLogo) return;
       img.dataset.bdlLogo = "1";
       img.classList.add("bdl-logo");
-      img.src = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#fff"/><text x="60" y="70" text-anchor="middle" font-family="Jost,Helvetica,Arial,sans-serif" font-size="34" font-weight="600" fill="#000">Uber</text></svg>');
+      img.src = BASE + "/img/facade.jpg";
     });
   }
 
+  function calendrier() {
+    var c = doc.querySelector(".fc-upcoming-agenda-calendar");
+    if (!c) return;
+    var sc = c.querySelector(".fc-scroller") ;
+    var jours = c.querySelectorAll(".fc-scrollgrid-sync-table td.fc-daygrid-day").length;
+    if (!sc || !jours) return;
+    var visibles = sc.clientWidth >= 760 ? 5 : sc.clientWidth >= 480 ? 3 : 2;
+    var w = Math.floor(sc.clientWidth / visibles) * jours;
+    c.querySelectorAll("table.fc-col-header, table.fc-scrollgrid-sync-table").forEach(function (t) {
+      if (t.style.minWidth !== w + "px") t.style.setProperty("min-width", w + "px", "important");
+    });
+  }
+  window.addEventListener("resize", function () { setTimeout(calendrier, 120); });
   var attente = 0;
   new MutationObserver(function () {
     if (attente) return;
