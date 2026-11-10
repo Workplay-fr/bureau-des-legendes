@@ -194,6 +194,23 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event{ background:var(--bdl-sable
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event:hover{ background:#DED3C4 !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event a{ border:0 !important; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .icon{ background-color:var(--bdl-noir) !important; }
+/* Calendrier, finition */
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-view-harness{ height:236px !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-scrollgrid-sync-table{ height:auto !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-daygrid-day-frame{ min-height:150px; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-scroller{ scrollbar-width:none; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-scroller::-webkit-scrollbar{ display:none; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell{ text-align:left; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell *{ text-transform:uppercase; letter-spacing:.16em; font-size:.68rem; font-weight:500; color:var(--bdl-gris); }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell h5, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell .fs-4, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell .fw-bold, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell .fw-bolder{ font-size:1.6rem !important; letter-spacing:0 !important; font-weight:300 !important; color:var(--bdl-noir) !important; text-transform:none !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-day-today, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today{ background:rgba(233,225,214,.45) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today h5, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today .fw-bold, html.bdl-dash .fc-upcoming-agenda-calendar .fc-col-header-cell.fc-day-today .fw-bolder{ font-weight:500 !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-daygrid-event-harness{ margin:10px 10px 0 !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event{ margin:0 !important; padding:10px 12px !important; border-left:0 !important; background:#fff !important; box-shadow:0 0 0 1px var(--bdl-sable) !important; border-radius:4px !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event:hover{ background:#fff !important; box-shadow:0 0 0 1px var(--bdl-noir) !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child > div:nth-child(3){ display:none !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .fw-bolder{ font-weight:600 !important; font-size:.82rem; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .fs-xs{ color:var(--bdl-gris) !important; }
 /* Cartes : un seul système (blanc, filet sable) */
 html.bdl-dash .user-main-content .card.bg-light, html.bdl-dash .user-main-content .card .card.bg-light{ background:#fff !important; }
 html.bdl-dash .bdl-pleine .card .card-img-overlay > .d-flex > .card, html.bdl-dash .bdl-grille .card .card-img-overlay > .d-flex > .card{ border:0 !important; border-left:1px solid var(--bdl-sable) !important; border-radius:0 !important; }
@@ -327,7 +344,7 @@ html.bdl-dash .bdl-pleine .row > * > .card, html.bdl-dash .bdl-pleine .row > * >
     var jours = c.querySelectorAll(".fc-scrollgrid-sync-table td.fc-daygrid-day").length;
     if (!sc || !jours) return;
     var visibles = sc.clientWidth >= 760 ? 5 : sc.clientWidth >= 480 ? 3 : 2;
-    var w = Math.floor(sc.clientWidth / visibles) * jours;
+    var w = (sc.getBoundingClientRect().width * jours / visibles).toFixed(2);
     c.querySelectorAll("table.fc-col-header, table.fc-scrollgrid-sync-table").forEach(function (t) {
       if (t.style.minWidth !== w + "px") t.style.setProperty("min-width", w + "px", "important");
     });
