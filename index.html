@@ -290,7 +290,7 @@ section{padding-block:clamp(72px,9vw,128px)}
 .mv[hidden]{display:none!important}
 .mv-voile{position:absolute;inset:0;background:rgba(25,17,11,.62);backdrop-filter:blur(3px);animation:fade .45s var(--ease) both}
 .mv-panneau{position:relative;width:min(1040px,100%);max-height:min(720px,calc(100vh - 32px));display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);background:var(--blanc);color:var(--noir);overflow:hidden;animation:ouvre .75s cubic-bezier(.76,0,.24,1) both}
-.mv-photo{position:relative;min-height:100%;background:var(--creme)}
+.mv-photo{position:relative;margin:0;min-height:100%;background:var(--creme);overflow:hidden}
 .mv-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 2.4s var(--ease) both}
 .mv-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,6,0) 45%,rgba(15,10,6,.7) 100%)}
 .mv-photo p{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;color:#fff;font:400 12px/1.6 var(--f);letter-spacing:.2em;text-transform:uppercase}
@@ -340,7 +340,7 @@ section{padding-block:clamp(72px,9vw,128px)}
 .mv .btn[disabled]{opacity:.45;cursor:not-allowed}
 .mv .btn[disabled]::before{display:none}
 .mv-statut{font-size:13.5px;color:var(--gris);min-height:1.4em}
-.mv-statut.err{color:#B3261E}
+.mv-statut.err{color:#B3261E;padding:10px 12px;border:1px solid rgba(179,38,30,.35);background:rgba(179,38,30,.05)}
 .envoi{display:inline-block;width:14px;height:14px;border:1px solid currentColor;border-right-color:transparent;border-radius:50%;animation:tourne .8s linear infinite;vertical-align:-2px;margin-right:8px}
 .mv-fin{display:none;flex-direction:column;gap:18px;padding-top:28px}
 .mv-fin.on{display:flex}
@@ -897,8 +897,9 @@ body.modal-ouverte{overflow:hidden}
       </form>
       <div class="mv-fin" id="mv-fin">
         <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
-        <h2>Demande enregistrée.</h2>
-        <p class="muted" style="color:var(--gris)">Nous vous confirmons le créneau par e-mail dans la journée.</p>
+        <span class="label">Merci <span id="mv-prenom"></span></span>
+        <h2>C'est noté.</h2>
+        <p class="muted" style="color:var(--gris)">Votre demande de visite est bien enregistrée. Nous vous envoyons un e-mail à <b id="mv-mail-conf"></b> pour confirmer votre créneau, en général dans la journée.</p>
         <ul class="recap" id="mv-recap"></ul>
         <p class="crm" id="mv-crm"></p>
         <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer>Fermer</button></div>
@@ -1306,7 +1307,7 @@ function etape(n){
   document.getElementById("mv-e2").classList.toggle("ok", n === 2);
   if (n === 2) setTimeout(() => document.getElementById("mv-nom").focus(), 60);
 }
-function statut(t, err){ const s = document.getElementById("mv-statut"); s.innerHTML = t; s.classList.toggle("err", !!err); }
+function statut(t, err){ const s = document.getElementById("mv-statut"); s.innerHTML = t; s.classList.toggle("err", !!err); if (err && t) s.scrollIntoView({ block:"nearest", behavior:"smooth" }); }
 
 document.querySelectorAll('[data-portal="tour"]').forEach(a => a.addEventListener("click", e => { e.preventDefault(); closeMenu(); ouvrir(); }));
 mv.addEventListener("click", e => { if (e.target.closest("[data-fermer]")) fermer(); });
@@ -1364,6 +1365,8 @@ async function enregistrer(v){
 }
 function fini(v, res){
   form.hidden = true;
+  document.getElementById("mv-prenom").textContent = (v.nom.split(/\s+/)[0] || "") + ",";
+  document.getElementById("mv-mail-conf").textContent = v.email;
   document.getElementById("mv-recap").innerHTML = [["Visite", v.quandTxt], ["Intérêt", v.formule], ["Contact", v.email]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
   document.getElementById("mv-crm").innerHTML = res
     ? `Ajoutée au CRM Nexudus : <b>Sales Pipeline · Demande de visite en ligne</b>${res.nouveau ? ", avec une nouvelle fiche contact" : ", sur la fiche contact existante"}.`
