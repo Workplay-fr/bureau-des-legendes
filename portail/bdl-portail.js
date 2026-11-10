@@ -124,6 +124,8 @@ html.bdl-dash .badge{ border-radius:2px !important; letter-spacing:.06em; font-w
 /* Colonne de droite : une carte par ligne */
 .bdl-grille .col-lg-4 .row > *{ flex:0 0 100% !important; max-width:100% !important; width:100% !important; }
 .bdl-grille .col-lg-4 [class*="row-cols"] > *{ flex:0 0 100% !important; max-width:100% !important; }
+.bdl-grille .col-lg-4 .mb-2[style*="grid"], .bdl-grille .col-lg-4 div.mb-2{ grid-template-columns:1fr !important; }
+.bdl-grille .col-lg-4 .card{ width:100%; }
 .bdl-pleine{ margin-bottom:6rem; padding-top:4rem; border-top:1px solid var(--bdl-sable); display:flex; flex-direction:column; gap:5rem; }
 .bdl-pleine h3,.bdl-pleine h2{ font-weight:300 !important; font-size:clamp(1.5rem,2.2vw,2rem) !important; }
 .bdl-grille h3.card-header-title::before,.bdl-pleine h3.card-header-title::before{ counter-increment:bdlsec; content:counter(bdlsec,decimal-leading-zero) "  —  "; display:block;
