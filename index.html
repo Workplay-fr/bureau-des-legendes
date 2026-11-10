@@ -458,7 +458,12 @@ section{padding-block:clamp(72px,9vw,128px)}
 .panier-lignes li.tva{border-top:1px dashed var(--line)}
 @media (max-width:640px){ .produits{grid-template-columns:minmax(0,1fr)} }
 #ms [data-e="4"] .recap-salle, #ms [data-e="4"] .carte-ico, #ms [data-e="4"] .paiement > .champ{display:none}
-#ms [data-e="4"]{gap:14px !important}
+#ms [data-e="4"]{gap:10px !important;padding-top:12px !important}
+#ms [data-e="4"] .panier-lignes li{padding:3px 0}
+#ms [data-e="4"] .total b{font-size:26px}
+#ms [data-e="4"] #ms-statut4:empty{display:none}
+#ms [data-e="4"] .mv-pied{padding-top:6px !important}
+#ms [data-e="4"] .produits{gap:6px}
 #ms [data-e="4"] .paiement{padding:14px 16px;gap:10px}
 #ms [data-e="4"] .demo-badge{padding:8px 10px;font-size:12.5px}
 #ms [data-e="4"] .carte-l .champ input{font-size:15px !important;padding:4px 0 6px !important}
@@ -1095,7 +1100,7 @@ section.tf-q{padding-block:0}
             <div class="produits" id="ms-produits"></div>
           </div>
           <div class="paiement">
-            <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Paiement de démonstration.</b> Aucune carte n'est débitée : valeurs de test. La réservation, elle, est bien enregistrée.</span></div>
+            <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Paiement de démonstration :</b> aucune carte n'est débitée, la réservation est bien enregistrée.</span></div>
             <div class="carte-ico" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="carte-l">
               <div class="champ"><label class="t" for="ms-cb">Numéro de carte</label><input id="ms-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
