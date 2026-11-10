@@ -146,6 +146,7 @@ html.bdl-dash .user-main-content{ counter-reset:bdlsec; }
 
 
 /* === Correctifs démo === */
+img.bdl-logo{ width:140px !important; max-width:140px !important; height:100% !important; object-fit:contain !important; padding:18px !important; background:#fff !important; }
 /* 1. Annonce intégrée au bandeau */
 .bdl-hero .announcement-banner{ background:rgba(25,17,11,.45) !important; border:1px solid rgba(255,255,255,.22) !important; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:none !important; padding:1rem; gap:1.25rem; }
 .bdl-hero .announcement-banner *{ color:#fff !important; }
@@ -264,6 +265,16 @@ html.bdl .ai-chat-manager, html.bdl header .btn:last-child{ margin-right:.5rem; 
     }
     c.querySelectorAll(":scope > .container > .vstack > div").forEach(reveler);
     doc.querySelectorAll(".bdl-grille > .row > [class*=col] > * > *, .bdl-pleine > *").forEach(reveler);
+    /* Logos de partenaires : affichés entiers, sans recadrage */
+    doc.querySelectorAll(".bdl-pleine .card").forEach(function (cd) {
+      var t = (cd.innerText || "").trim();
+      if (!/^Uber\b/.test(t)) return;
+      var img = cd.querySelector("img");
+      if (!img || img.dataset.bdlLogo) return;
+      img.dataset.bdlLogo = "1";
+      img.classList.add("bdl-logo");
+      try { var u = new URL(img.src); u.searchParams.set("mode", "pad"); u.searchParams.set("w", "600"); u.searchParams.set("h", "600"); img.src = u.toString(); } catch (e) {}
+    });
   }
 
   var attente = 0;
