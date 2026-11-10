@@ -464,6 +464,20 @@ section{padding-block:clamp(72px,9vw,128px)}
 #ms [data-e="4"] #ms-statut4:empty{display:none}
 #ms [data-e="4"] .mv-pied{padding-top:6px !important}
 #ms [data-e="4"] .produits{gap:6px}
+.ticket{display:none}
+@media (min-width:900px){
+  #ms.e4 .ticket{display:flex;flex-direction:column;gap:6px;position:absolute;left:32px;right:32px;bottom:32px;z-index:3;background:rgba(246,241,235,.97);color:var(--noir);padding:22px 24px 20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.7);animation:up .6s var(--ease) both}
+  #ms.e4 .ticket .ticket-salle{font:400 18px/1.25 var(--f);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+  #ms.e4 .ticket .ticket-quand{font-size:13.5px;color:var(--gris)}
+  #ms.e4 .ticket .panier-lignes{margin-top:10px}
+  #ms.e4 .ticket .panier-lignes li{padding:6px 0;font-size:14px}
+  #ms.e4 .ticket-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--noir);padding-top:12px;margin-top:6px}
+  #ms.e4 .ticket-total span{font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  #ms.e4 .ticket-total b{font:300 30px/1 var(--f)}
+  #ms.e4 .ticket small{text-align:right;color:var(--gris);font-size:12.5px}
+  #ms.e4 .car-slide p, #ms.e4 #ms-points{opacity:0;transition:opacity .4s}
+  #ms [data-e="4"] .paiement .panier-lignes, #ms [data-e="4"] .paiement .total{display:none}
+}
 #ms [data-e="4"] .paiement{padding:14px 16px;gap:10px}
 #ms [data-e="4"] .demo-badge{padding:8px 10px;font-size:12.5px}
 #ms [data-e="4"] .carte-l .champ input{font-size:15px !important;padding:4px 0 6px !important}
@@ -1052,7 +1066,8 @@ section.tf-q{padding-block:0}
 <div class="mv ms" id="ms" hidden role="dialog" aria-modal="true" aria-labelledby="ms-titre">
   <div class="mv-voile" data-fermer-ms></div>
   <div class="mv-panneau">
-    <figure class="mv-photo" id="ms-car" aria-roledescription="carrousel" aria-label="La salle et ses services"><div id="ms-slides"></div><div class="car-points" id="ms-points"></div></figure>
+    <figure class="mv-photo" id="ms-car" aria-roledescription="carrousel" aria-label="La salle et ses services"><div id="ms-slides"></div><div class="car-points" id="ms-points"></div>
+      <div class="ticket" id="ms-ticket" aria-hidden="true"><span class="label">Votre panier</span><b class="ticket-salle" id="ms-t-salle"></b><span class="ticket-quand" id="ms-t-quand"></span><ul class="panier-lignes" id="ms-t-lignes"></ul><div class="ticket-total"><span>Total TTC</span><b id="ms-t-ttc"></b></div><small id="ms-t-ht"></small></div></figure>
     <div class="mv-corps">
       <div class="mv-tete">
         <div><span class="label" id="ms-sur">Réserver une salle · 1 sur 4</span><h2 id="ms-titre">Choisissez votre salle.</h2></div>
@@ -1638,6 +1653,7 @@ function etapeMs(n){
   document.getElementById("ms-titre").textContent = TITRES[n];
   if (n === 2) chargerHeures();
   if (n === 4) remplirPaiement();
+  ms.classList.toggle("e4", n === 4);
   setTimeout(() => ms.querySelector(".mv-etape.on input:not([readonly]):not([type=hidden]), .mv-etape.on button")?.focus(), 60);
 }
 function ouvrirSalle(id){
@@ -1746,6 +1762,11 @@ function rendrePanier(){
   document.getElementById("ms-r-ttc").textContent = eur(m.ttc);
   document.getElementById("ms-r-ht").textContent = eur(m.ht) + " HT";
   document.getElementById("ms-payer").textContent = "Payer " + eur(m.ttc);
+  document.getElementById("ms-t-salle").textContent = s.nom;
+  document.getElementById("ms-t-quand").textContent = quandTxt();
+  document.getElementById("ms-t-lignes").innerHTML = document.getElementById("ms-lignes").innerHTML;
+  document.getElementById("ms-t-ttc").textContent = eur(m.ttc);
+  document.getElementById("ms-t-ht").textContent = eur(m.ht) + " HT · TVA 20 % " + eur(m.tva);
 }
 document.getElementById("ms-produits").addEventListener("click", e => {
   const a = e.target.closest("[data-ajout]"), plus = e.target.closest("[data-plus]"), moins = e.target.closest("[data-moins]");
@@ -1853,7 +1874,7 @@ function finSalle(v, res){
   document.getElementById("ms-mail-conf").textContent = v.email;
   document.getElementById("ms-fin-titre").innerHTML = ["C'est", "noté."].map((x, i) => `<span class="m"><span style="animation-delay:${(0.95 + i * 0.12).toFixed(2)}s">${x}</span></span>`).join(" ");
   // La photo s'arrête sur la salle réservée.
-  CAR.fin = true; clearTimeout(CAR.minuterie); ms.classList.add("fini");
+  CAR.fin = true; clearTimeout(CAR.minuterie); ms.classList.add("fini"); ms.classList.remove("e4");
   ms.querySelectorAll(".mv-etapes span").forEach(x => x.classList.add("ok"));
   const box = document.getElementById("ms-slides");
   box.insertAdjacentHTML("beforeend", `<div class="car-slide" role="group" aria-label="Votre réservation"><img src="${s.photo}" alt=""><p><span class="tag">À très vite</span><b>${esc(s.nom)}</b><span>${esc(quandTxt())} · ${esc(s.etage)}</span></p></div>`);
