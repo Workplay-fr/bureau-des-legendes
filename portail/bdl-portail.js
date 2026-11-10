@@ -424,9 +424,9 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
         '</button>' +
         '<div class="bdl-assist-puces">' +
           '<button type="button" data-q="Réserve-moi une salle pour 6 personnes demain à 10h">Une salle demain à 10h</button>' +
-          '<button type="button" data-q="Quelles sont mes prochaines réservations ?">Mes réservations</button>' +
           '<button type="button" data-q="Je veux inviter un visiteur">Inviter un visiteur</button>' +
-          '<button type="button" data-q="Quels événements sont prévus prochainement ?">Les prochains événements</button>' +
+          '<button type="button" data-q="Quelles formules d\'abonnement proposez-vous à partir du mois prochain ?">Nos formules</button>' +
+          '<button type="button" data-q="Que pouvez-vous faire pour moi ?">Tout ce qu\'il sait faire</button>' +
         '</div>' +
       '</div>';
     s.querySelectorAll("[data-q]").forEach(function (b) {
@@ -450,10 +450,16 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
     if (!m) return;
     if (!champAssistant()) (m.querySelector("button") || m).click();
     if (!q) return;
-    var n = 0;
+    var n = 0, neuf = false;
     (function essai() {
       var ta = champAssistant();
       if (!ta) { if (++n < 40) setTimeout(essai, 100); return; }
+      /* Conversation neuve à chaque suggestion */
+      if (!neuf) {
+        neuf = true;
+        var nv = Array.prototype.filter.call(doc.querySelectorAll("button"), function (b) { return b.offsetParent && /nouveau chat|new chat/i.test(b.textContent); })[0];
+        if (nv) { nv.click(); setTimeout(essai, 400); return; }
+      }
       var proto = ta.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
       Object.getOwnPropertyDescriptor(proto, "value").set.call(ta, q);
       ta.dispatchEvent(new Event("input", { bubbles: true }));
