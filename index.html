@@ -484,6 +484,14 @@ section{padding-block:clamp(72px,9vw,128px)}
 #ms [data-e="4"] .carte-l .champ .t{font-size:11px !important}
 #ms [data-e="4"] .total{padding-top:4px}
 #ms [data-e="4"] .prod-choix{padding:8px 10px}
+/* Réservation de salle · créneau : jours sur une ligne, heures en grille serrée */
+#ms .jours{flex-wrap:nowrap !important;overflow-x:auto !important;scrollbar-width:none;padding-bottom:2px}
+#ms .jours::-webkit-scrollbar{display:none}
+#ms .jours .choix span{min-width:64px !important;padding:9px 8px !important}
+#ms .jours .choix span b{font-size:22px !important}
+#ms .heures{grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+#ms .heures .choix span{padding:9px 4px !important;font-size:13px !important}
+#ms [data-e="2"], #ms [data-e="3"]{gap:14px !important}
 /* Devenir membre : même fenêtre que les autres */
 @media (min-width:900px){
   .tf{inset:auto !important;top:50% !important;left:50% !important;transform:translate(-50%,-50%) !important;width:min(1360px,calc(100vw - 48px)) !important;height:min(880px,calc(100vh - 48px)) !important;
@@ -1921,6 +1929,24 @@ function ouvrirMembre(plan){
   if (plan){ M.formule = plan; allerQ("debut"); } else allerQ("formule");
 }
 document.getElementById("tf-voile").addEventListener("click", () => fermerMembre());
+/* Aucune fenêtre ne défile : si un contenu dépasse la carte, il est légèrement réduit pour tenir. */
+function ajusterFenetres(){
+  [["#mv .mv-corps", "#mv-form:not([hidden]), #mv-fin.on"], ["#ms .mv-corps", "#ms-form:not([hidden]), #ms-fin.on"], ["#tf-corps", ".tf-q.on"]].forEach(([c, interne]) => {
+    const corps = document.querySelector(c); if (!corps || !corps.offsetParent) return;
+    corps.querySelectorAll(interne).forEach(el => {
+      el.style.zoom = "";
+      for (let i = 0; i < 3 && corps.scrollHeight > corps.clientHeight + 1; i++){
+        const z = parseFloat(el.style.zoom || 1) * Math.max(.62, (corps.clientHeight - 2) / corps.scrollHeight);
+        el.style.zoom = Math.max(.62, z).toFixed(3);
+      }
+      corps.scrollTop = 0;
+    });
+  });
+}
+let ajusteT = 0;
+const planifierAjuste = () => { clearTimeout(ajusteT); ajusteT = setTimeout(ajusterFenetres, 60); };
+new MutationObserver(planifierAjuste).observe(document.body, { subtree:true, childList:true, attributes:true, attributeFilter:["class","hidden"] });
+window.addEventListener("resize", planifierAjuste);
 function fermerMembre(){
   if (tf.hidden) return;
   const voile = document.getElementById("tf-voile");
