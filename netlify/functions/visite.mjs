@@ -37,7 +37,7 @@ export default async (req) => {
     return json(200, { ok: true, nouveau: c.nouveau });
   } catch (e) {
     console.error(e.message, JSON.stringify(e.details || null));
-    return json(502, { ok: false, erreur: "Votre demande n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34." });
+    return json(502, { ok: false, erreur: "Votre demande n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
   }
 };
 

@@ -14,7 +14,7 @@ export default async (req) => {
     const salle = Number(url.searchParams.get("salle")), jour = url.searchParams.get("jour");
     if (!SALLES[salle] || !jourValide(jour)) return json(400, { ok: false, erreur: "Salle ou jour invalide." });
     try { return json(200, { ok: true, occupe: await occupation(salle, jour) }); }
-    catch (e) { console.error(e.message); return json(502, { ok: false, erreur: "Impossible de lire les disponibilités pour le moment." }); }
+    catch (e) { console.error(e.message); return json(502, { ok: false, erreur: "Impossible de lire les disponibilités pour le moment.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") }); }
   }
   if (req.method !== "POST") return json(405, { ok: false, erreur: "Méthode non autorisée." });
 
@@ -52,7 +52,7 @@ export default async (req) => {
     return json(200, { ok: true, reservation: id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau: c.nouveau });
   } catch (e) {
     console.error(e.message, JSON.stringify(e.details || null));
-    return json(502, { ok: false, erreur: "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34." });
+    return json(502, { ok: false, erreur: "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
   }
 };
 
