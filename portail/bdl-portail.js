@@ -270,6 +270,7 @@ html.bdl-dash .bdl-grille .col-lg-4 div.mb-2{ grid-template-columns:1fr !importa
 @media (max-width:767px){
   html.bdl-dash .bdl-grille div.mb-2, html.bdl-dash .bdl-pleine div.mb-2{ grid-template-columns:1fr !important; }
   .bdl-hero .announcement-banner .order-md-2{ display:none !important; }
+  html.bdl-dash .user-main-content .badge, html.bdl-dash .user-main-content [class*="-subtle"]{ white-space:normal !important; max-width:100%; font-size:.68rem; }
 }
 /* Calendrier : libellés sur une ligne avec ellipse */
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .text-truncate, html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .fw-bolder{ white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; min-width:0; }
