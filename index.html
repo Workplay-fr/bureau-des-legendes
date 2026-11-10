@@ -425,13 +425,18 @@ section{padding-block:clamp(72px,9vw,128px)}
   .mv .mv-fin p.muted, .mv .mv-fin > p{font-size:17px;line-height:1.6}
   .mv .recap li{font-size:17px;padding:12px 0}
   .mv .crm{font-size:14px}
-  .mv .salles-choix{gap:14px}
+  .mv .salles-choix{gap:16px}
+  .mv .salle-opt .boite{grid-template-columns:minmax(0,1fr);gap:0;padding:0;align-items:stretch}
+  .mv .salle-opt img{width:100%;height:clamp(110px,17vh,170px)}
+  .mv .salle-opt .boite > span{padding:14px 16px 16px}
+  .mv .salle-opt b{font-size:15px}
+  .mv .salle-opt small{font-size:13.5px}
 }
 /* Devenir membre : même fenêtre que les autres */
 @media (min-width:900px){
-  .tf{inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);width:min(1360px,calc(100vw - 48px));height:min(880px,calc(100vh - 48px));
-    box-shadow:0 40px 120px -40px rgba(0,0,0,.6);animation:tfOuvre .75s cubic-bezier(.76,0,.24,1) both}
-  .tf.ferme{animation:tfOuvre .5s cubic-bezier(.76,0,.24,1) reverse both}
+  .tf{inset:auto !important;top:50% !important;left:50% !important;transform:translate(-50%,-50%) !important;width:min(1360px,calc(100vw - 48px)) !important;height:min(880px,calc(100vh - 48px)) !important;
+    box-shadow:0 40px 120px -40px rgba(0,0,0,.6) !important;animation:tfOuvre .75s cubic-bezier(.76,0,.24,1) both !important}
+  .tf.ferme{animation:tfOuvre .5s cubic-bezier(.76,0,.24,1) reverse both !important}
   .tf-haut{padding:18px 32px}
   .tf-corps{padding:clamp(24px,4vh,56px) clamp(32px,4vw,64px) 32px;scrollbar-width:none}
   .tf-corps::-webkit-scrollbar{display:none}
