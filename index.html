@@ -441,6 +441,7 @@ section{padding-block:clamp(72px,9vw,128px)}
   .tf-corps{padding:clamp(24px,4vh,48px) clamp(32px,4vw,64px) 28px !important;scrollbar-width:none}
   .tf .tf-q{margin:auto !important}
   .tf .tf-q.large{margin:0 auto !important;align-self:flex-start}
+  .tf section.tf-q{padding-block:0 !important}
   .tf .tf-corps{align-items:flex-start}
   .tf .tf-q:not(.large){margin:auto !important;align-self:center}
   .tf .tf-q.large h2{font-size:clamp(26px,2.4vw,36px) !important}
@@ -577,6 +578,7 @@ body.modal-ouverte{overflow:hidden}
 .tf-q{display:none;width:100%;max-width:760px;margin:auto}
 .tf-q.on{display:block;animation:tfIn .7s var(--ease) both}
 .tf-q.large{max-width:1180px}
+section.tf-q{padding-block:0}
 @keyframes tfIn{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
 .tf-num{display:flex;align-items:center;gap:10px;font:400 13px/1 var(--f);letter-spacing:.16em;color:var(--gris);margin-bottom:16px}
 .tf-q h2{font-size:clamp(26px,3.4vw,44px);letter-spacing:.04em;line-height:1.15}
