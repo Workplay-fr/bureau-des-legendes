@@ -457,14 +457,22 @@ section{padding-block:clamp(72px,9vw,128px)}
 .panier-lignes li b{font-weight:400;color:var(--noir)}
 .panier-lignes li.tva{border-top:1px dashed var(--line)}
 @media (max-width:640px){ .produits{grid-template-columns:minmax(0,1fr)} }
-#ms [data-e="4"] .recap-salle, #ms [data-e="4"] .carte-ico, #ms [data-e="4"] .paiement > .champ{display:none}
-#ms [data-e="4"]{gap:10px !important;padding-top:12px !important}
-#ms [data-e="4"] .panier-lignes li{padding:3px 0}
-#ms [data-e="4"] .total b{font-size:26px}
-#ms [data-e="4"] #ms-statut4:empty{display:none}
-#ms [data-e="4"] .mv-pied{padding-top:6px !important}
-#ms [data-e="4"] .produits{gap:6px}
+#ms [data-e="5"] .recap-salle, #ms [data-e="5"] .carte-ico, #ms [data-e="5"] .paiement > .champ{display:none}
+#ms [data-e="5"]{gap:10px !important;padding-top:12px !important}
+#ms [data-e="5"] .panier-lignes li{padding:3px 0}
+#ms [data-e="5"] .total b{font-size:26px}
+#ms [data-e="5"] #ms-statut4:empty{display:none}
+#ms [data-e="5"] .mv-pied{padding-top:6px !important}
+#ms [data-e="3"] .produits{gap:10px}
 .ticket{display:none}
+#ms [data-e="3"] .panier{gap:14px}
+.panier-aide{color:var(--gris);font-size:14px;margin:0}
+.pers{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--gris)}
+.pers button{width:28px;height:28px;border:1px solid var(--line-2);background:#fff;cursor:pointer;font-size:16px;line-height:1;color:var(--noir)}
+.pers button:hover{border-color:var(--noir)}
+.pers b{min-width:22px;text-align:center;font-weight:500;color:var(--noir);font-size:15px}
+#ms [data-e="3"] .produits{grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){ #ms [data-e="3"] .produits{grid-template-columns:repeat(2,minmax(0,1fr))} #ms [data-e="3"] .prod-choix small{white-space:normal} }
 @media (min-width:900px){
   #ms.e4 .ticket{display:flex;flex-direction:column;gap:6px;position:absolute;left:32px;right:32px;bottom:32px;z-index:3;background:rgba(246,241,235,.97);color:var(--noir);padding:22px 24px 20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.7);animation:up .6s var(--ease) both}
   #ms.e4 .ticket .ticket-salle{font:400 18px/1.25 var(--f);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
@@ -476,14 +484,14 @@ section{padding-block:clamp(72px,9vw,128px)}
   #ms.e4 .ticket-total b{font:300 30px/1 var(--f)}
   #ms.e4 .ticket small{text-align:right;color:var(--gris);font-size:12.5px}
   #ms.e4 .car-slide p, #ms.e4 #ms-points{opacity:0;transition:opacity .4s}
-  #ms [data-e="4"] .paiement .panier-lignes, #ms [data-e="4"] .paiement .total{display:none}
+  #ms [data-e="5"] .paiement .panier-lignes, #ms [data-e="5"] .paiement .total{display:none}
 }
-#ms [data-e="4"] .paiement{padding:14px 16px;gap:10px}
-#ms [data-e="4"] .demo-badge{padding:8px 10px;font-size:12.5px}
-#ms [data-e="4"] .carte-l .champ input{font-size:15px !important;padding:4px 0 6px !important}
-#ms [data-e="4"] .carte-l .champ .t{font-size:11px !important}
-#ms [data-e="4"] .total{padding-top:4px}
-#ms [data-e="4"] .prod-choix{padding:8px 10px}
+#ms [data-e="5"] .paiement{padding:14px 16px;gap:10px}
+#ms [data-e="5"] .demo-badge{padding:8px 10px;font-size:12.5px}
+#ms [data-e="5"] .carte-l .champ input{font-size:15px !important;padding:4px 0 6px !important}
+#ms [data-e="5"] .carte-l .champ .t{font-size:11px !important}
+#ms [data-e="5"] .total{padding-top:4px}
+#ms [data-e="3"] .prod-choix{padding:12px 14px}
 /* Réservation de salle · créneau : jours sur une ligne, heures en grille serrée */
 #ms .jours{flex-wrap:nowrap !important;overflow-x:auto !important;scrollbar-width:none;padding-bottom:2px}
 #ms .jours::-webkit-scrollbar{display:none}
@@ -491,7 +499,7 @@ section{padding-block:clamp(72px,9vw,128px)}
 #ms .jours .choix span b{font-size:22px !important}
 #ms .heures{grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
 #ms .heures .choix span{padding:9px 4px !important;font-size:13px !important}
-#ms [data-e="2"], #ms [data-e="3"]{gap:14px !important}
+#ms [data-e="2"], #ms [data-e="4"]{gap:14px !important}
 /* Devenir membre : même fenêtre que les autres */
 @media (min-width:900px){
   .tf{inset:auto !important;top:50% !important;left:50% !important;transform:translate(-50%,-50%) !important;width:min(1360px,calc(100vw - 48px)) !important;height:min(880px,calc(100vh - 48px)) !important;
@@ -1078,10 +1086,10 @@ section.tf-q{padding-block:0}
       <div class="ticket" id="ms-ticket" aria-hidden="true"><span class="label">Votre panier</span><b class="ticket-salle" id="ms-t-salle"></b><span class="ticket-quand" id="ms-t-quand"></span><ul class="panier-lignes" id="ms-t-lignes"></ul><div class="ticket-total"><span>Total TTC</span><b id="ms-t-ttc"></b></div><small id="ms-t-ht"></small></div></figure>
     <div class="mv-corps">
       <div class="mv-tete">
-        <div><span class="label" id="ms-sur">Réserver une salle · 1 sur 4</span><h2 id="ms-titre">Choisissez votre salle.</h2></div>
+        <div><span class="label" id="ms-sur">Réserver une salle · 1 sur 5</span><h2 id="ms-titre">Choisissez votre salle.</h2></div>
         <button class="mv-fermer" type="button" data-fermer-ms aria-label="Fermer"></button>
       </div>
-      <div class="mv-etapes" aria-hidden="true"><span class="ok"></span><span></span><span></span><span></span></div>
+      <div class="mv-etapes" aria-hidden="true"><span class="ok"></span><span></span><span></span><span></span><span></span></div>
       <form id="ms-form" novalidate>
         <div class="mv-etape on" data-e="1">
           <div class="salles-choix" id="ms-salles"></div>
@@ -1098,10 +1106,19 @@ section.tf-q{padding-block:0}
           <fieldset><legend>Heure d'arrivée</legend><div class="heures" id="ms-heures"></div>
             <div class="legende-h"><span><i></i>Libre</span><span><i class="pris"></i>Déjà réservé</span></div></fieldset>
           <div class="total"><span id="ms-quand" class="mv-statut">Choisissez une heure.</span><div><b id="ms-prix">—</b><small id="ms-prix-ttc"></small></div></div>
-          <div class="mv-pied"><button class="lien" type="button" data-suite="1">← Salle</button><button class="btn btn-or" type="button" data-suite="3" id="ms-vers3" disabled>Continuer</button></div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="1">← Salle</button><button class="btn btn-or" type="button" data-suite="3" id="ms-vers3" disabled>Choisir des services pour votre réservation</button></div>
           <p class="mv-statut" id="ms-statut2" role="status" aria-live="polite"></p>
         </div>
         <div class="mv-etape" data-e="3">
+          <div class="panier">
+            <div class="panier-t"><span class="label">Services pour votre réunion</span>
+              <div class="pers"><span>Pour</span><button type="button" id="ms-pers-moins" aria-label="Une personne de moins">−</button><b id="ms-pers">4</b><button type="button" id="ms-pers-plus" aria-label="Une personne de plus">+</button><span id="ms-pers-l">personnes</span></div></div>
+            <p class="panier-aide">Facultatif : tout est préparé en salle avant votre arrivée et ajouté à votre réservation dans Nexudus.</p>
+            <div class="produits" id="ms-produits"></div>
+          </div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="2">← Créneau</button><button class="btn btn-or" type="button" data-suite="4" id="ms-vers4">Continuer sans service</button></div>
+        </div>
+        <div class="mv-etape" data-e="4">
           <div class="champs">
             <div class="champ"><label class="t" for="ms-prenom">Prénom</label><input id="ms-prenom" name="prenom" autocomplete="given-name" required><span class="msg"></span></div>
             <div class="champ"><label class="t" for="ms-nom">Nom</label><input id="ms-nom" name="nom" autocomplete="family-name" required><span class="msg"></span></div>
@@ -1113,15 +1130,12 @@ section.tf-q{padding-block:0}
           </div>
           <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="ms-site">Site web</label><input id="ms-site" name="site_web" tabindex="-1" autocomplete="off"></div>
           <label class="accord"><input type="checkbox" id="ms-accord"> J'accepte les conditions de réservation : annulation gratuite jusqu'à 24 h avant le créneau.</label>
-          <div class="mv-pied"><button class="lien" type="button" data-suite="2">← Créneau</button><button class="btn btn-or" type="button" data-suite="4">Passer au paiement</button></div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="3">← Services</button><button class="btn btn-or" type="button" data-suite="5">Passer au paiement</button></div>
           <p class="mv-statut" id="ms-statut3" role="status" aria-live="polite"></p>
         </div>
-        <div class="mv-etape" data-e="4">
+        <div class="mv-etape" data-e="5">
           <div class="recap-salle"><img id="ms-r-photo" src="img/projection.jpg" alt=""><div><b id="ms-r-salle"></b><span id="ms-r-quand"></span></div></div>
-          <div class="panier">
-            <div class="panier-t"><span class="label">Services pour votre réunion</span><small>Ajoutés à la réservation dans Nexudus</small></div>
-            <div class="produits" id="ms-produits"></div>
-          </div>
+
           <div class="paiement">
             <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Paiement de démonstration :</b> aucune carte n'est débitée, la réservation est bien enregistrée.</span></div>
             <div class="carte-ico" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -1134,7 +1148,7 @@ section.tf-q{padding-block:0}
             <ul class="panier-lignes" id="ms-lignes"></ul>
             <div class="total"><span class="mv-statut">Total TTC</span><div><b id="ms-r-ttc"></b><small id="ms-r-ht"></small></div></div>
           </div>
-          <div class="mv-pied"><button class="lien" type="button" data-suite="3">← Coordonnées</button><button class="btn btn-or" type="submit" id="ms-payer">Payer</button></div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="4">← Coordonnées</button><button class="btn btn-or" type="submit" id="ms-payer">Payer</button></div>
           <p class="mv-statut" id="ms-statut4" role="status" aria-live="polite"></p>
         </div>
       </form>
@@ -1652,16 +1666,17 @@ document.getElementById("ms-points").addEventListener("click", e => { const b = 
 const carEl = document.getElementById("ms-car");
 carEl.addEventListener("mouseenter", () => { CAR.survol = true; montrerSlide(CAR.i); });
 carEl.addEventListener("mouseleave", () => { CAR.survol = false; montrerSlide(CAR.i); });
-const TITRES = { 1:"Choisissez votre salle.", 2:"Choisissez votre créneau.", 3:"Vos coordonnées.", 4:"Paiement." };
+const TITRES = { 1:"Choisissez votre salle.", 2:"Choisissez votre créneau.", 3:"Vos services.", 4:"Vos coordonnées.", 5:"Paiement." };
 function etapeMs(n){
   S.etape = n;
   ms.querySelectorAll(".mv-etape").forEach(e => e.classList.toggle("on", Number(e.dataset.e) === n));
   ms.querySelectorAll(".mv-etapes span").forEach((s,i) => s.classList.toggle("ok", i < n));
-  document.getElementById("ms-sur").textContent = `Réserver une salle · ${n} sur 4`;
+  document.getElementById("ms-sur").textContent = `Réserver une salle · ${n} sur 5`;
   document.getElementById("ms-titre").textContent = TITRES[n];
   if (n === 2) chargerHeures();
-  if (n === 4) remplirPaiement();
-  ms.classList.toggle("e4", n === 4);
+  if (n === 3) rendrePanier();
+  if (n === 5) remplirPaiement();
+  ms.classList.toggle("e4", n === 3 || n === 5);
   setTimeout(() => ms.querySelector(".mv-etape.on input:not([readonly]):not([type=hidden]), .mv-etape.on button")?.focus(), 60);
 }
 function ouvrirSalle(id){
@@ -1683,7 +1698,7 @@ function fermerSalle(){
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-salle]"); if (t){ e.preventDefault(); closeMenu(); ouvrirSalle(Number(t.dataset.salle) || null); return; }
   if (e.target.closest("[data-fermer-ms]")) fermerSalle();
-  const s = e.target.closest("[data-suite]"); if (s && ms.contains(s)){ const n = Number(s.dataset.suite); if (n === 4 && !validerCoord()) return; etapeMs(n); }
+  const s = e.target.closest("[data-suite]"); if (s && ms.contains(s)){ const n = Number(s.dataset.suite); if (n === 5 && !validerCoord()) return; etapeMs(n); }
 });
 document.addEventListener("keydown", e => {
   if (ms.hidden) return;
@@ -1770,12 +1785,26 @@ function rendrePanier(){
   document.getElementById("ms-r-ttc").textContent = eur(m.ttc);
   document.getElementById("ms-r-ht").textContent = eur(m.ht) + " HT";
   document.getElementById("ms-payer").textContent = "Payer " + eur(m.ttc);
+  const np = nbParticipants();
+  document.getElementById("ms-pers").textContent = np;
+  document.getElementById("ms-pers-l").textContent = np > 1 ? "personnes" : "personne";
+  const nbServ = lignesProduits().length, v4 = document.getElementById("ms-vers4");
+  v4.textContent = nbServ ? `Continuer · ${eur(m.ttc)} TTC` : "Continuer sans service";
   document.getElementById("ms-t-salle").textContent = s.nom;
   document.getElementById("ms-t-quand").textContent = quandTxt();
   document.getElementById("ms-t-lignes").innerHTML = document.getElementById("ms-lignes").innerHTML;
   document.getElementById("ms-t-ttc").textContent = eur(m.ttc);
   document.getElementById("ms-t-ht").textContent = eur(m.ht) + " HT · TVA 20 % " + eur(m.tva);
 }
+function fixerPersonnes(n){
+  n = Math.max(1, Math.min(15, n));
+  const avant = nbParticipants(), sel = document.getElementById("ms-participants"); sel.value = String(n);
+  PRODUITS_RESA.filter(p => p.pers && (S.produits || {})[p.id] === avant).forEach(p => { S.produits[p.id] = n; });
+  rendrePanier();
+}
+document.getElementById("ms-pers-moins").addEventListener("click", () => fixerPersonnes(nbParticipants() - 1));
+document.getElementById("ms-pers-plus").addEventListener("click", () => fixerPersonnes(nbParticipants() + 1));
+document.getElementById("ms-participants").addEventListener("change", () => rendrePanier());
 document.getElementById("ms-produits").addEventListener("click", e => {
   const a = e.target.closest("[data-ajout]"), plus = e.target.closest("[data-plus]"), moins = e.target.closest("[data-moins]");
   S.produits = S.produits || {};
@@ -1855,7 +1884,7 @@ async function reserverSite(v){
 const pause = ms => new Promise(r => setTimeout(r, ms));
 msForm.addEventListener("submit", async e => {
   e.preventDefault();
-  if (S.etape !== 4) return;
+  if (S.etape !== 5) return;
   const b = document.getElementById("ms-payer"), st = document.getElementById("ms-statut4"), v = donneesResa();
   st.classList.remove("err");
   b.disabled = true; b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Paiement en cours'; st.textContent = "Autorisation du paiement de démonstration…";
