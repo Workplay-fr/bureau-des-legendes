@@ -361,7 +361,15 @@ html.bdl .ai-modal-content .modal-body > .text-center .icon{ display:none !impor
 html.bdl .ai-modal-content .modal-body > .text-center h4{ font-size:0 !important; margin:0; }
 html.bdl .ai-modal-content .modal-body > .text-center h4::before{ content:"Bonjour, que puis-je faire pour vous ?"; display:block; font-size:1.35rem; font-weight:400; color:var(--bdl-noir); line-height:1.25; }
 html.bdl .ai-modal-content .modal-body > .text-center h4::after{ content:"Réservez une salle, invitez un visiteur ou posez une question sur le lieu."; display:block; font-size:.85rem; font-weight:400; color:var(--bdl-gris); margin-top:6px; line-height:1.45; }
-html.bdl .ai-modal-content .modal-body:has(> .text-center){ display:flex; flex-direction:column; }
+html.bdl .ai-modal-content .modal-body:has(> .text-center){ display:flex; flex-direction:column; position:relative; overflow:hidden; }
+html.bdl .ai-modal-content .modal-body:has(> .text-center)::before{ content:""; position:absolute; left:0; right:0; top:0; height:78%;
+  background:url(https://bdl.workplay.fr/img/verriere-nuit.jpg) center 35%/cover no-repeat;
+  -webkit-mask-image:linear-gradient(180deg,#000 45%,transparent); mask-image:linear-gradient(180deg,#000 45%,transparent);
+  animation:bdlConcierge 18s ease-in-out infinite alternate, bdlFondu .9s ease-out both; transform-origin:60% 40%; }
+html.bdl .ai-modal-content .modal-body:has(> .text-center)::after{ content:"34, bd Haussmann · à votre service"; position:absolute; left:20px; top:18px; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.9); text-shadow:0 1px 8px rgba(0,0,0,.4); }
+html.bdl .ai-modal-content .modal-body > .text-center{ position:relative; z-index:1; }
+@keyframes bdlConcierge{ from{ transform:scale(1.02); } to{ transform:scale(1.12) translateY(-2%); } }
+@keyframes bdlFondu{ from{ opacity:0; } to{ opacity:1; } }
 /* Messages */
 html.bdl .ai-modal-content section.ai-response{ border:0 !important; padding:10px 14px !important; margin:0 0 8px !important; border-radius:16px 16px 16px 4px !important; background:#fff !important; max-width:88%; font-size:.88rem; line-height:1.5; color:var(--bdl-noir); box-shadow:0 1px 0 rgba(25,17,11,.05); }
 html.bdl .ai-modal-content section.ai-response > svg{ display:none !important; }
