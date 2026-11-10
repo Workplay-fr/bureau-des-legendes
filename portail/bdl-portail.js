@@ -362,7 +362,7 @@ html.bdl .ai-modal-content .modal-body > .text-center h4{ font-size:0 !important
 html.bdl .ai-modal-content .modal-body > .text-center h4::before{ content:"Bonjour, que puis-je faire pour vous ?"; display:block; font-size:1.35rem; font-weight:400; color:var(--bdl-noir); line-height:1.25; }
 html.bdl .ai-modal-content .modal-body > .text-center h4::after{ content:"Réservez une salle, invitez un visiteur ou posez une question sur le lieu."; display:block; font-size:.85rem; font-weight:400; color:var(--bdl-gris); margin-top:6px; line-height:1.45; }
 html.bdl .ai-modal-content .modal-body:has(> .text-center){ display:flex; flex-direction:column; position:relative; overflow:hidden; }
-html.bdl .ai-modal-content .modal-body:has(> .text-center)::before{ content:""; position:absolute; left:0; right:0; top:0; height:78%;
+html.bdl .ai-modal-content .modal-body:has(> .text-center)::before{ content:""; position:absolute; left:0; right:0; top:0; height:66%;
   background:url(https://bdl.workplay.fr/img/verriere-nuit.jpg) center 35%/cover no-repeat;
   -webkit-mask-image:linear-gradient(180deg,#000 45%,transparent); mask-image:linear-gradient(180deg,#000 45%,transparent);
   animation:bdlConcierge 18s ease-in-out infinite alternate, bdlFondu .9s ease-out both; transform-origin:60% 40%; }
