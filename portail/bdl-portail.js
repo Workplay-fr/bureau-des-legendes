@@ -306,9 +306,23 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-ch
 /* Actions rapides : icônes allégées */
 .bdl-hero .quick-actions-banner-container [class*="-subtle"], .bdl-hero .quick-actions-banner-container .row > div > * [class*="bg-"]{
   background:transparent !important; border:0 !important; border-left:1px solid rgba(255,255,255,.16) !important; border-radius:0 !important; }
-.bdl-hero .quick-actions-banner-container .icon svg, .bdl-hero .quick-actions-banner-container .icon svg *{ stroke:#fff !important; }
+.bdl-hero .quick-actions-banner-container .icon{ background-color:transparent !important; }
+.bdl-hero .quick-actions-banner-container .icon-masked{ background-color:#fff !important; }
+.bdl-hero .quick-actions-banner-container .icon svg [fill]:not([fill="none"]){ fill:#fff !important; }
+.bdl-hero .quick-actions-banner-container .icon svg [stroke]:not([stroke="none"]){ stroke:#fff !important; }
+.bdl-hero .quick-actions-banner-container .icon svg rect[fill]:first-child{ fill:transparent !important; }
+/* Demande-moi : libellé toujours visible */
+html.bdl .ai-chat-manager.collapsed{ transform:scale(1) !important; }
+html.bdl .ai-chat-manager.collapsed .ai-chat-label{ max-width:none !important; opacity:1 !important; margin-left:.4rem; }
+html.bdl .ai-chat-label{ white-space:nowrap; }
+/* À la une : vignette pleine largeur */
+.bdl-pleine .g-4.row > .col-lg-6 > .vstack .flex-shrink-0{ max-width:none !important; width:100% !important; }
 /* Pied de page */
-html.bdl .bdl-pied{ padding:28px 0 !important; min-height:0 !important; }
+html.bdl footer.bg-primary{ padding:28px max(var(--bdl-pad), calc((100% - var(--bdl-max)) / 2 + var(--bdl-pad))) !important; border-radius:20px 20px 0 0 !important; }
+html.bdl footer.bg-primary > div{ align-items:center !important; gap:24px !important; }
+html.bdl .bdl-pied-info{ display:flex; align-items:center; gap:32px; flex-wrap:wrap; flex:1 1 auto; justify-content:center; font-size:.82rem; color:rgba(255,255,255,.78); }
+html.bdl .bdl-pied-info a{ color:rgba(255,255,255,.78) !important; text-decoration:none; }
+html.bdl .bdl-pied-info a:hover{ color:#fff !important; }
 html.bdl .bdl-pied-c{ display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; color:rgba(255,255,255,.8); font-size:.82rem; }
 html.bdl .bdl-pied-liens{ display:flex; gap:24px; flex-wrap:wrap; }
 html.bdl .bdl-pied-liens a{ color:rgba(255,255,255,.8) !important; text-decoration:none; letter-spacing:.04em; }
@@ -412,6 +426,17 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
       if (h.textContent.trim() === "Avantages.") h.textContent = "Avantages partenaires";
     });
     calendrier();
+    var pied = doc.querySelector("footer.bg-primary > div");
+    if (pied && !pied.querySelector(".bdl-pied-info")) {
+      var base = (location.pathname.match(/^\/[^/]+/) || [""])[0];
+      var info = doc.createElement("div");
+      info.className = "bdl-pied-info";
+      info.innerHTML = '<span>34, boulevard Haussmann · 75009 Paris</span>' +
+        '<a href="' + base + '/bookings">Réserver une salle</a>' +
+        '<a href="' + base + '/events/agenda">Événements</a>' +
+        '<a href="' + base + '/faq">Aide</a>';
+      if (pied.children[1]) pied.insertBefore(info, pied.children[1]); else pied.appendChild(info);
+    }
     doc.querySelectorAll(".bdl-pleine button span, .bdl-pleine .btn span").forEach(function (sp) {
       if (sp.textContent.trim() === "Réclamation") sp.textContent = "En profiter";
     });
