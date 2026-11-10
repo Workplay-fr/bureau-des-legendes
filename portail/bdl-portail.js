@@ -312,7 +312,7 @@ html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-ch
 .bdl-hero .quick-actions-banner-container .icon svg [stroke]:not([stroke="none"]){ stroke:#fff !important; }
 .bdl-hero .quick-actions-banner-container .icon svg rect[fill]:first-child{ fill:transparent !important; }
 /* Demande-moi : libellé toujours visible */
-html.bdl .ai-chat-manager.collapsed{ transform:scale(1) !important; }
+html.bdl .ai-chat-manager.collapsed{ transform:scale(1) !important; width:auto !important; }
 html.bdl .ai-chat-manager.collapsed .ai-chat-label{ max-width:none !important; opacity:1 !important; margin-left:.4rem; }
 html.bdl .ai-chat-label{ white-space:nowrap; }
 /* À la une : vignette pleine largeur */
@@ -441,9 +441,8 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
       if (sp.textContent.trim() === "Réclamation") sp.textContent = "En profiter";
     });
     doc.querySelectorAll(".quick-actions-banner-container .icon-external-link").forEach(function (ic) {
-      if (ic.dataset.bdlIc) return;
-      ic.dataset.bdlIc = "1";
-      ic.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2M8 3v4M16 3v4"/><path d="M9.5 14.5l1.7 1.7 3.3-3.4"/></svg>';
+      if (ic.querySelector("svg[data-bdl]")) return;
+      ic.innerHTML = '<svg data-bdl="1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2M8 3v4M16 3v4"/><path d="M9.5 14.5l1.7 1.7 3.3-3.4"/></svg>';
     });
     /* Logos de partenaires : affichés entiers, sans recadrage */
     doc.querySelectorAll(".bdl-pleine .card").forEach(function (cd) {
