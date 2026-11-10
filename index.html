@@ -374,20 +374,23 @@ section{padding-block:clamp(72px,9vw,128px)}
 .ms.fini #ms-points{opacity:0;pointer-events:none;transition:opacity .5s}
 #mv .mv-fermer{margin:0}
 @media (min-height:781px){ #mv .mv-corps{overflow:hidden} }
+#ms .mv-fin .recap li{padding:6px 0}
+#ms .mv-fin{gap:10px}
+#ms .sceau,#ms .sceau svg{width:48px;height:48px}
 .mv .mv-etapes{margin:16px 0 0}
-#mv .mv-etape{gap:16px;padding-top:16px}
-#mv .mv-pied{padding-top:12px}
-#mv textarea{min-height:44px;height:44px;resize:none}
-#mv .mv-fin{gap:12px;padding-top:16px}
-#mv .sceau,#mv .sceau svg{width:56px;height:56px}
-#mv .recap li{padding:8px 0}
-#mv .mv-fin .mv-pied{padding-top:4px !important}
+.mv .mv-etape{gap:16px;padding-top:16px}
+.mv .mv-pied{padding-top:12px}
+.mv textarea{min-height:44px;height:44px;resize:none}
+.mv .mv-fin{gap:12px;padding-top:16px}
+.mv .sceau,.mv .sceau svg{width:56px;height:56px}
+.mv .recap li{padding:8px 0}
+.mv .mv-fin .mv-pied{padding-top:4px !important}
 @media (max-height:780px){
-  #mv .mv-corps{padding:20px 32px 18px}
-  #mv .mv-etape{gap:12px;padding-top:12px}
-  #mv .mv-fin{gap:10px;padding-top:10px}
-  #mv .mv-fin p.muted{font-size:14px;line-height:1.5}
-  #mv .sceau,#mv .sceau svg{width:46px;height:46px}
+  .mv .mv-corps{padding:20px 32px 18px}
+  .mv .mv-etape{gap:12px;padding-top:12px}
+  .mv .mv-fin{gap:10px;padding-top:10px}
+  .mv .mv-fin p.muted{font-size:14px;line-height:1.5}
+  .mv .sceau,.mv .sceau svg{width:46px;height:46px}
 }
 @keyframes fade{from{opacity:0}}
 @keyframes ouvre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
@@ -1008,7 +1011,7 @@ body.modal-ouverte{overflow:hidden}
       </form>
       <div class="mv-fin" id="ms-fin">
         <div class="sceau" aria-hidden="true"><svg viewBox="0 0 76 76"><circle class="anneau" cx="38" cy="38" r="36"/><path class="coche" d="M25 39l9 9 17-19"/></svg></div>
-        <span class="label">Merci <span id="ms-prenom"></span></span>
+        <span class="label">Merci <span id="ms-merci"></span></span>
         <h2 id="ms-fin-titre">C'est noté.</h2>
         <p class="muted" style="color:var(--gris)">Votre salle est bloquée à votre nom. Nous vous envoyons un e-mail à <b id="ms-mail-conf"></b> pour confirmer la réservation, puis l'équipe vous accueille au 34, boulevard Haussmann.</p>
         <ul class="recap" id="ms-recap"></ul>
@@ -1700,7 +1703,7 @@ msForm.addEventListener("submit", async e => {
 function finSalle(v, res){
   const s = salleCourante(), m = montant();
   msForm.hidden = true;
-  document.getElementById("ms-prenom").textContent = (v.prenom || "").split(/\s+/)[0] + ",";
+  document.getElementById("ms-merci").textContent = (v.prenom || "").split(/\s+/)[0] + ",";
   document.getElementById("ms-mail-conf").textContent = v.email;
   document.getElementById("ms-fin-titre").innerHTML = ["C'est", "noté."].map((x, i) => `<span class="m"><span style="animation-delay:${(0.95 + i * 0.12).toFixed(2)}s">${x}</span></span>`).join(" ");
   // La photo s'arrête sur la salle réservée.
