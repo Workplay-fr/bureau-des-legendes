@@ -392,6 +392,34 @@ section{padding-block:clamp(72px,9vw,128px)}
   .mv .mv-fin p.muted{font-size:14px;line-height:1.5}
   .mv .sceau,.mv .sceau svg{width:46px;height:46px}
 }
+/* Fenêtres agrandies (visite, salle) */
+@media (min-width:900px){
+  .mv-panneau{width:min(1360px,100%) !important;height:min(880px,calc(100vh - 48px));max-height:none !important;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) !important}
+  .mv .mv-corps{padding:clamp(32px,5vh,56px) clamp(36px,4vw,64px) clamp(24px,4vh,44px) !important;display:flex;flex-direction:column}
+  .mv .mv-corps form, .mv .mv-corps .mv-fin{flex:1 1 auto}
+  .mv h2#mv-titre, .mv h2#ms-titre{font-size:clamp(30px,2.6vw,42px)}
+  .mv .mv-etapes{margin-top:24px !important}
+  #mv .mv-etape, #ms .mv-etape{gap:clamp(16px,2.6vh,28px) !important;padding-top:clamp(16px,2.6vh,28px) !important}
+  #mv .mv-fin, #ms .mv-fin{gap:clamp(10px,1.8vh,18px) !important;padding-top:clamp(12px,2.4vh,28px) !important}
+  #mv .sceau, #mv .sceau svg, #ms .sceau, #ms .sceau svg{width:clamp(48px,7vh,72px) !important;height:clamp(48px,7vh,72px) !important}
+  .mv .mv-pied{margin-top:auto}
+  .mv-photo p{left:40px;right:40px;bottom:36px}
+  .mv-photo p b{font-size:28px}
+}
+/* Devenir membre : même fenêtre que les autres */
+@media (min-width:900px){
+  .tf{inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);width:min(1360px,calc(100vw - 48px));height:min(880px,calc(100vh - 48px));
+    box-shadow:0 40px 120px -40px rgba(0,0,0,.6);animation:tfOuvre .75s cubic-bezier(.76,0,.24,1) both}
+  .tf.ferme{animation:tfOuvre .5s cubic-bezier(.76,0,.24,1) reverse both}
+  .tf-haut{padding:18px 32px}
+  .tf-corps{padding:clamp(24px,4vh,56px) clamp(32px,4vw,64px) 32px;scrollbar-width:none}
+  .tf-corps::-webkit-scrollbar{display:none}
+}
+.tf-voile{position:fixed;inset:0;z-index:219;background:rgba(25,17,11,.62);backdrop-filter:blur(3px);animation:fade .45s var(--ease) both}
+.tf-voile[hidden]{display:none!important}
+.tf-voile.ferme{animation:fade .4s var(--ease) reverse both}
+@media (max-width:899px){ .tf-voile{display:none} }
+@keyframes tfOuvre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
 @keyframes fade{from{opacity:0}}
 @keyframes ouvre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
 @keyframes tourne{to{transform:rotate(360deg)}}
@@ -1022,6 +1050,7 @@ body.modal-ouverte{overflow:hidden}
   </div>
 </div>
 
+<div class="tf-voile" id="tf-voile" hidden></div>
 <div class="tf" id="tf" hidden role="dialog" aria-modal="true" aria-label="Devenir membre">
   <div class="tf-haut"><img src="img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220"><span class="label" id="tf-etat">Devenir membre</span><button class="mv-fermer" type="button" data-fermer-tf aria-label="Fermer" style="margin:0"></button></div>
   <div class="tf-prog" aria-hidden="true"><span id="tf-prog"></span></div>
@@ -1749,12 +1778,15 @@ document.getElementById("tf-plans").innerHTML = FORMULES_UI.map(f => `<article c
 function ouvrirMembre(plan){
   M.focus = document.activeElement; M.ouvertLe = Date.now(); M.envoi = false;
   tf.hidden = false; tf.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  const voile = document.getElementById("tf-voile"); voile.hidden = false; voile.classList.remove("ferme");
   if (plan){ M.formule = plan; allerQ("debut"); } else allerQ("formule");
 }
+document.getElementById("tf-voile").addEventListener("click", () => fermerMembre());
 function fermerMembre(){
   if (tf.hidden) return;
-  const fin = () => { tf.hidden = true; tf.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); M.focus?.focus?.(); };
-  if (RM) return fin(); tf.classList.add("ferme"); setTimeout(fin, 340);
+  const voile = document.getElementById("tf-voile");
+  const fin = () => { tf.hidden = true; voile.hidden = true; tf.classList.remove("ferme"); voile.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); M.focus?.focus?.(); };
+  if (RM) return fin(); tf.classList.add("ferme"); voile.classList.add("ferme"); setTimeout(fin, 480);
 }
 function allerQ(nom){
   const ordre = ordreQ(); M.i = nom === "fin" ? ordre.length : Math.max(0, ordre.indexOf(nom));
