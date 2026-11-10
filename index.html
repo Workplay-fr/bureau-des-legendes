@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/png" href="img/mark-blanc.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Bureau des Légendes</title>
+<meta name="description" content="Bureau des Légendes : coworking, bureaux privés et salles de réunion au 34 boulevard Haussmann, Paris 9e.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout : maison parisienne, sobre. Blanc, noir chaud, un seul panneau crème. Une seule famille géométrique,
+   titres en capitales espacées, angles droits, filets fins. Les animations portent le caractère. */
+:root{
+  --noir:#19110B; --blanc:#FFFFFF; --creme:#F6F1EB; --gris:#6B635C; --bleu:#3C6A9E;
+  --bg:var(--blanc); --fg:var(--noir); --fg-2:var(--gris); --line:rgba(25,17,11,.13); --line-2:rgba(25,17,11,.5);
+  --btn:var(--noir); --on-btn:var(--blanc);
+  --f:"Jost","Futura","Century Gothic","Avenir Next",system-ui,sans-serif;
+  --gut:max(clamp(16px,4vw,56px),env(safe-area-inset-left,0px));
+  --gut-r:max(clamp(16px,4vw,56px),env(safe-area-inset-right,0px));
+  --wrap:1280px; --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+.salon{--bg:var(--creme);background:var(--bg)}
+.deep,.ftr{--bg:var(--noir);--fg:var(--blanc);--fg-2:#C7C0B8;--line:rgba(255,255,255,.18);--line-2:rgba(255,255,255,.55);--btn:var(--blanc);--on-btn:var(--noir);background:var(--bg);color:var(--fg)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.65 var(--f);-webkit-font-smoothing:antialiased;margin:0;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--blanc)}
+img{max-width:100%;display:block}
+a{color:inherit;text-underline-offset:5px;text-decoration-thickness:1px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:1px solid var(--fg);outline-offset:3px}
+h1,h2,h3,p,figure{margin:0}
+h1,h2,h3{text-wrap:balance;overflow-wrap:break-word;color:var(--fg);font-weight:400;text-transform:uppercase}
+h1{font-size:clamp(32px,4.5vw,68px);line-height:1.1;letter-spacing:.05em}
+h2{font-size:clamp(24px,2.8vw,40px);line-height:1.18;letter-spacing:.07em}
+h3{font-size:17px;line-height:1.3;letter-spacing:.12em}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:var(--gut);padding-right:var(--gut-r)}
+.label{font:400 12px/1.4 var(--f);letter-spacing:.22em;text-transform:uppercase;color:var(--fg-2)}
+.lede{font-size:18px;color:var(--fg-2);max-width:52ch}
+.num{font-variant-numeric:tabular-nums lining-nums}
+section{padding-block:clamp(72px,9vw,128px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px 64px;align-items:end;margin-bottom:56px}
+.sec-head .label{display:block;margin-bottom:18px}
+.sec-head p{color:var(--fg-2);max-width:48ch}
+@media (max-width:860px){.sec-head{grid-template-columns:minmax(0,1fr);margin-bottom:40px}}
+
+/* Boutons : balayage, comme sur France Coworking */
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--btn);padding:16px 30px;font:400 12.5px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;text-align:center;max-width:100%;transition:color .35s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+@media (hover:hover){.btn:hover::before{transform:scaleX(1);transform-origin:left}}
+.btn-or{background:var(--btn);color:var(--on-btn)}
+.btn-or::before{background:var(--on-btn)}
+@media (hover:hover){.btn-or:hover{color:var(--btn)}}
+.btn-fil{background:transparent;color:var(--btn)}
+.btn-fil::before{background:var(--btn)}
+@media (hover:hover){.btn-fil:hover{color:var(--on-btn)}}
+.lien{font:400 12.5px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;color:var(--fg);white-space:nowrap}
+.lien:hover{text-decoration-thickness:2px}
+
+/* En-tête */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--blanc);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:24px;min-height:74px}
+.brand{margin-right:auto;display:block;flex:none}
+.brand img{height:40px;width:auto}
+.nav{display:flex;gap:6px;align-items:center}
+.nav a{font:400 12.5px/1 var(--f);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:10px 12px;position:relative}
+.nav a::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:1px;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.nav a:hover::after,.nav a[aria-current="page"]::after{transform:scaleX(1)}
+.hdr .btn{padding:12px 20px}
+.menu-btn{display:none;background:none;border:1px solid var(--fg);padding:10px 14px;font:400 12px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.mnav{display:none}
+@media (max-width:1040px){
+  .nav,.hdr-cta{display:none}
+  .menu-btn{display:inline-flex}
+  .mnav{display:block;border-top:1px solid var(--line)}
+  .hdr .mnav .wrap{flex-direction:column;align-items:stretch;gap:0;min-height:0;padding-block:6px 26px}
+  .mnav a:not(.btn){display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);text-decoration:none;font:400 clamp(22px,6vw,30px)/1 var(--f);letter-spacing:.08em;text-transform:uppercase;animation:up .5s var(--ease) both}
+  .mnav a:not(.btn)::after{content:"→";font-size:.7em}
+  .mnav a:nth-child(2){animation-delay:.04s}.mnav a:nth-child(3){animation-delay:.08s}.mnav a:nth-child(4){animation-delay:.12s}.mnav a:nth-child(5){animation-delay:.16s}
+  .mnav .btn{margin-top:24px}
+}
+
+/* Hero : texte, mot vertical, scène 3D */
+.hero{padding:0;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) clamp(100px,10.5vw,170px) minmax(0,1fr);min-height:clamp(560px,78vh,820px)}
+.hero-l{display:flex;flex-direction:column;justify-content:space-between;gap:48px;padding:48px 44px 52px max(16px,env(safe-area-inset-left,0px),calc((100vw - var(--wrap))/2 + 16px));min-width:0}
+.hero-l .lede{margin-top:26px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.fiche{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center}
+.fiche span + span{padding-left:28px;border-left:1px solid var(--line-2)}
+.vword{writing-mode:vertical-rl;transform:rotate(180deg);font:500 clamp(72px,8vw,124px)/1.25 var(--f);letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;border-inline:1px solid var(--line)}
+.vword span{display:inline-block;animation:rise 1.1s var(--ease) both}
+.hero-r{position:relative;overflow:hidden;min-height:340px;background:var(--creme)}
+.hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:32% 50%}
+.hero-r canvas.office3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+.hero-r.has3d img{display:none}
+.hero-r figcaption{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
+.hero-r:not(.has3d) figcaption{color:#fff}
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0}
+  .hero-l{padding:36px var(--gut-r) 40px var(--gut);gap:32px}
+  .vword{writing-mode:horizontal-tb;transform:none;font-size:clamp(56px,19vw,120px);border-inline:0;border-block:1px solid var(--line);justify-content:flex-start;padding:0 var(--gut-r) 0 var(--gut);line-height:1.3}
+  .hero-r{height:86vw;min-height:320px}
+  .fiche span + span{padding-left:0;border-left:0}
+}
+
+/* Chiffres du lieu */
+.faits{padding:0;border-bottom:1px solid var(--line)}
+.faits .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.fait{padding:30px 24px 30px 0;min-width:0}
+.fait + .fait{padding-left:28px;border-left:1px solid var(--line)}
+.fait b{display:block;font:300 clamp(38px,4.2vw,58px)/1 var(--f)}
+.fait b small{font:400 12px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;margin-left:10px}
+.fait span{display:block;margin-top:10px;font-size:14.5px;color:var(--fg-2)}
+@media (max-width:760px){.faits .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.fait,.fait + .fait{padding:24px 12px 24px 0;border-left:0;border-bottom:1px solid var(--line)}.fait:nth-child(even){padding-left:20px;border-left:1px solid var(--line)}.fait:nth-last-child(-n+2){border-bottom:0}}
+
+/* Défilé des noms */
+.marquee{overflow:hidden;padding-block:20px;border-bottom:1px solid var(--line)}
+.mq-track{display:flex;width:max-content;animation:mq 46s linear infinite}
+.marquee:hover .mq-track{animation-play-state:paused}
+.mq-track span{display:flex;align-items:center;gap:36px;padding-right:36px;font:400 clamp(26px,3.6vw,50px)/1.1 var(--f);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.mq-track span::after{content:"";width:10px;height:10px;background:var(--bleu);flex:none}
+
+/* Esprit du lieu */
+.why{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}
+.why > *{min-width:0}
+.ph{position:relative;overflow:hidden;background:var(--creme)}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.why .ph{aspect-ratio:5/4;position:sticky;top:110px}
+.reason{padding:24px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:24px}
+.reason:first-of-type{border-top:1px solid var(--line-2);margin-top:36px}
+.reason p{color:var(--fg-2)}
+@media (max-width:860px){.why{grid-template-columns:minmax(0,1fr);gap:40px}.why .ph{position:relative;top:0;aspect-ratio:16/10}.reason{grid-template-columns:minmax(0,1fr);gap:8px}}
+
+/* Liste des espaces */
+.splist{border-top:1px solid var(--line-2)}
+.sprow{display:grid;grid-template-columns:190px minmax(0,1.1fr) minmax(0,1fr) auto;gap:32px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;position:relative}
+.sprow::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease)}
+.sprow:hover::before{transform:scaleX(1)}
+.sprow .ph{aspect-ratio:16/10}
+.sprow:hover .ph img{transform:scale(1.06)}
+.sprow h3{font-size:clamp(20px,2.1vw,30px);letter-spacing:.08em}
+.sprow p{color:var(--fg-2);font-size:15px}
+.sprow .cap{text-align:right;white-space:nowrap}
+@media (max-width:900px){.sprow{grid-template-columns:120px minmax(0,1fr);gap:8px 20px}.sprow .ph{grid-row:span 3}.sprow p,.sprow .cap{grid-column:2;text-align:left;white-space:normal}}
+
+/* Façade */
+.facade{padding:0;position:relative;overflow:hidden;min-height:clamp(380px,50vw,620px);display:grid;align-items:end;color:#fff;--fg:#fff;--btn:#fff;--on-btn:var(--noir)}
+.facade img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover}
+.facade::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,10,6,.8) 0,rgba(15,10,6,.3) 55%,rgba(15,10,6,.05) 100%)}
+.facade .wrap{position:relative;z-index:2;width:100%;padding-block:56px}
+.facade .label{color:#E8E2DA}
+.facade h2{max-width:18ch}
+.facade p{color:#E8E2DA;max-width:44ch;margin:18px 0 28px}
+
+/* Étapes */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));counter-reset:st;border-top:1px solid var(--line-2)}
+.step{padding:26px 26px 0 0;min-width:0}
+.step + .step{padding-left:26px;border-left:1px solid var(--line)}
+.step::before{counter-increment:st;content:counter(st,decimal-leading-zero);display:block;font:300 56px/1 var(--f);margin-bottom:22px}
+.step p{color:var(--fg-2);margin-top:10px;font-size:15px}
+@media (max-width:860px){.steps{grid-template-columns:minmax(0,1fr)}.step,.step + .step{padding:22px 0;border-left:0;border-bottom:1px solid var(--line)}.step::before{font-size:44px;margin-bottom:12px}}
+
+/* Formules */
+.plans{border-top:1px solid var(--line-2)}
+.plan{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr) minmax(0,.7fr) auto;gap:20px 40px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line)}
+.plan h3{font-size:clamp(20px,2.2vw,30px);letter-spacing:.08em}
+.plan .pour{display:block;margin-top:8px;font-size:14.5px;color:var(--fg-2)}
+.plan ul{list-style:none;margin:0;padding:0;columns:2;column-gap:28px;font-size:15px;color:var(--fg-2)}
+.plan li{padding:4px 0 4px 16px;position:relative;break-inside:avoid}
+.plan li::before{content:"";position:absolute;left:0;top:15px;width:6px;height:1px;background:var(--fg)}
+.prix{white-space:nowrap;font-size:14px;color:var(--fg-2)}
+.prix b{display:block;font:300 clamp(34px,3.6vw,50px)/1.05 var(--f);color:var(--fg)}
+.plan.court{grid-template-columns:minmax(0,1fr) auto 120px}
+@media (max-width:980px){.plan{grid-template-columns:minmax(0,1fr) auto}.plan ul{grid-column:1/-1;grid-row:2}.plan .btn{grid-column:1/-1;justify-self:start}}
+@media (max-width:620px){.plan.court{grid-template-columns:minmax(0,1fr) auto}.plan.court .lien{grid-column:1/-1;justify-self:start}}
+@media (max-width:520px){.plan ul{columns:1}}
+.note{margin-top:22px;font-size:14.5px;color:var(--fg-2)}
+
+.appel .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) auto;gap:32px 64px;align-items:end}
+.appel h2{max-width:20ch}
+@media (max-width:820px){.appel .wrap{grid-template-columns:minmax(0,1fr)}}
+
+/* Pages intérieures */
+.page-head{padding-block:64px 44px;border-bottom:1px solid var(--line)}
+.page-head .label{display:block;margin-bottom:22px}
+.page-head h1{font-size:clamp(32px,5.4vw,84px)}
+.page-head .lede{margin-top:26px}
+.bloc{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:64px;align-items:center;padding-block:clamp(56px,7vw,104px);border-bottom:1px solid var(--line)}
+.bloc > *{min-width:0}
+.bloc:nth-of-type(even) .ph{order:2}
+.bloc .ph{aspect-ratio:16/11}
+.bloc:hover .ph img{transform:scale(1.04)}
+.bloc .label{display:block;margin-bottom:16px}
+.bloc > div > p{color:var(--fg-2);margin-top:18px;max-width:50ch}
+.res{list-style:none;margin:28px 0 30px;padding:0;border-top:1px solid var(--line-2)}
+.res li{display:flex;justify-content:space-between;align-items:baseline;gap:8px 20px;flex-wrap:wrap;padding:13px 0;border-bottom:1px solid var(--line)}
+.res b{font:400 14px/1.3 var(--f);letter-spacing:.12em;text-transform:uppercase}
+.res span{font-size:14.5px;color:var(--fg-2)}
+@media (max-width:900px){.bloc{grid-template-columns:minmax(0,1fr);gap:32px}.bloc:nth-of-type(even) .ph{order:0}}
+
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.duo figure{position:relative;aspect-ratio:16/10;overflow:hidden}
+.duo img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.duo figure:hover img{transform:scale(1.04)}
+.duo figcaption{position:absolute;left:18px;bottom:16px;z-index:2;color:#fff;font:400 12.5px/1 var(--f);letter-spacing:.22em;text-transform:uppercase;text-shadow:0 1px 14px rgba(0,0,0,.7)}
+@media (max-width:700px){.duo{grid-template-columns:minmax(0,1fr)}}
+.specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-2);margin-top:56px}
+.spec{padding:26px 26px 6px 0;min-width:0}
+.spec + .spec{padding-left:26px;border-left:1px solid var(--line)}
+.spec b{display:block;font:300 clamp(38px,4vw,54px)/1 var(--f)}
+.spec b small{font:400 12px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;margin-left:8px}
+.spec h3{margin-top:14px}
+.spec p{font-size:15px;color:var(--fg-2);margin-top:6px}
+@media (max-width:760px){.specs{grid-template-columns:minmax(0,1fr)}.spec,.spec + .spec{padding:22px 0;border-left:0;border-bottom:1px solid var(--line)}}
+.cartes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 32px}
+.carte{min-width:0;display:flex;flex-direction:column;gap:14px}
+.carte .ph{aspect-ratio:4/3}
+.carte:hover .ph img{transform:scale(1.06)}
+.carte p{color:var(--fg-2);font-size:15px}
+@media (max-width:860px){.cartes{grid-template-columns:minmax(0,1fr)}.carte .ph{aspect-ratio:16/10}}
+
+.faq{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:64px}
+.faq > *{min-width:0}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-of-type{border-top:1px solid var(--line-2)}
+.faq summary{cursor:pointer;list-style:none;padding:22px 40px 22px 0;font:400 15px/1.4 var(--f);letter-spacing:.1em;text-transform:uppercase;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:4px;top:50%;width:13px;height:13px;margin-top:-6px;background:linear-gradient(var(--fg),var(--fg)) center/13px 1px no-repeat,linear-gradient(var(--fg),var(--fg)) center/1px 13px no-repeat;transition:transform .4s var(--ease)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 24px;color:var(--fg-2);max-width:60ch}
+@media (max-width:860px){.faq{grid-template-columns:minmax(0,1fr);gap:28px}}
+
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:72px;align-items:start}
+.contact > *{min-width:0}
+.contact .ph{aspect-ratio:5/4}
+.coord{border-top:1px solid var(--line-2);margin-top:8px}
+.coord > div{display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:6px 20px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line)}
+.coord .v{font:400 clamp(18px,1.8vw,22px)/1.4 var(--f);user-select:all;overflow-wrap:anywhere}
+.copie{background:none;border:0;padding:0;cursor:pointer;font:400 11.5px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;text-underline-offset:5px;color:var(--fg-2)}
+.copie:hover{color:var(--fg)}
+@media (max-width:900px){.contact{grid-template-columns:minmax(0,1fr);gap:40px}.contact .ph{aspect-ratio:16/9}}
+@media (max-width:520px){.coord > div{grid-template-columns:minmax(0,1fr) auto}.coord .label{grid-column:1/-1}}
+
+.appel.deep{border-bottom:1px solid var(--line)}
+.ftr{padding-block:64px 36px}
+.ftr .top{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:40px}
+.ftr img{height:60px;width:auto}
+.ftr .sig{margin-top:22px;max-width:30ch;color:var(--fg-2)}
+.ftr h4{margin:0 0 14px;font:400 12px/1.4 var(--f);letter-spacing:.22em;text-transform:uppercase;color:var(--fg)}
+.ftr ul{list-style:none;margin:0;padding:0}
+.ftr li{padding:4px 0;color:var(--fg-2)}
+.ftr li a{text-decoration:none}
+.ftr li a:hover{color:var(--fg);text-decoration:underline}
+.ftr .bot{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;color:var(--fg-2)}
+@media (max-width:760px){.ftr .top{grid-template-columns:minmax(0,1fr)}}
+
+/* Rideau de transition entre les pages */
+#rideau{position:fixed;inset:0;z-index:300;background:var(--noir);transform:translateY(100%);display:grid;place-items:center;pointer-events:none;padding:0 24px;visibility:hidden}
+#rideau div{text-align:center}
+#rideau img{height:54px;width:auto;margin:0 auto 28px}
+#rideau span{font:400 clamp(30px,6.4vw,92px)/1.05 var(--f);letter-spacing:.1em;text-transform:uppercase;color:#fff}
+
+/* Titres mot à mot */
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:.18em 0 .08em;margin:-.18em 0 -.08em}
+.w > span{display:inline-block}
+.on .w > span{animation:rise .9s var(--ease) both;animation-delay:calc(var(--i)*55ms + var(--d0,120ms))}
+.on .entre > *:not(h1){animation:up .8s var(--ease) both;animation-delay:calc(var(--d0,120ms) + .35s)}
+.on .entre > .hero-cta{animation-delay:calc(var(--d0,120ms) + .5s)}
+
+@keyframes rise{from{transform:translateY(112%)}to{transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes rv{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes clipIn{from{clip-path:inset(0 0 100% 0);transform:translateY(50px)}to{clip-path:inset(0 0 0 0);transform:none}}
+@keyframes px{from{transform:translateY(-5%)}to{transform:translateY(5%)}}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .sprow,.reason,.step,.plan,.res li,.spec,.carte,.fait,.sec-head{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 75%}
+  .bloc .ph,.why .ph,.duo figure,.contact .ph{animation:clipIn linear both;animation-timeline:view();animation-range:entry 0% entry 90%}
+  .facade img{animation:px linear both;animation-timeline:view()}
+}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* Formulaire de visite : fenêtre modale reliée au CRM Nexudus */
+.mv{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.mv[hidden]{display:none!important}
+.mv-voile{position:absolute;inset:0;background:rgba(25,17,11,.62);backdrop-filter:blur(3px);animation:fade .45s var(--ease) both}
+.mv-panneau{position:relative;width:min(1040px,100%);max-height:min(720px,calc(100vh - 32px));display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);background:var(--blanc);color:var(--noir);overflow:hidden;animation:ouvre .75s cubic-bezier(.76,0,.24,1) both}
+.mv-photo{position:relative;min-height:100%;background:var(--creme)}
+.mv-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 2.4s var(--ease) both}
+.mv-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,6,0) 45%,rgba(15,10,6,.7) 100%)}
+.mv-photo p{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;color:#fff;font:400 12px/1.6 var(--f);letter-spacing:.2em;text-transform:uppercase}
+.mv-photo p b{display:block;font:400 22px/1.25 var(--f);letter-spacing:.08em;margin-bottom:8px}
+.mv-corps{display:flex;flex-direction:column;min-width:0;overflow:auto;padding:30px 36px 28px}
+.mv-tete{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.mv-fermer{flex:none;width:40px;height:40px;border:1px solid var(--line-2);background:none;cursor:pointer;position:relative;margin:-6px -8px 0 0;transition:background .3s}
+.mv-fermer::before,.mv-fermer::after{content:"";position:absolute;left:11px;right:11px;top:50%;height:1px;background:var(--noir);transform:rotate(45deg);transition:background .3s}
+.mv-fermer::after{transform:rotate(-45deg)}
+.mv-fermer:hover{background:var(--noir)}
+.mv-fermer:hover::before,.mv-fermer:hover::after{background:#fff}
+.mv h2{font-size:clamp(22px,2.3vw,30px);margin-top:12px}
+.mv-etapes{display:flex;gap:6px;margin:22px 0 4px}
+.mv-etapes span{flex:1;height:2px;background:var(--line);position:relative;overflow:hidden}
+.mv-etapes span::after{content:"";position:absolute;inset:0;background:var(--noir);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease)}
+.mv-etapes span.ok::after{transform:scaleX(1)}
+.mv-etape{display:none;flex-direction:column;gap:22px;padding-top:22px}
+.mv-etape.on{display:flex}
+.mv-etape.on > *{animation:up .6s var(--ease) both}
+.mv-etape.on > :nth-child(2){animation-delay:.06s}.mv-etape.on > :nth-child(3){animation-delay:.12s}.mv-etape.on > :nth-child(4){animation-delay:.18s}.mv-etape.on > :nth-child(5){animation-delay:.24s}
+.mv fieldset{border:0;margin:0;padding:0;min-width:0}
+.mv legend,.mv label.t{display:block;padding:0;margin-bottom:10px;font:400 11.5px/1.4 var(--f);letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.jours{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.choix{position:relative;flex:none}
+.choix input{position:absolute;opacity:0;pointer-events:none}
+.choix span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:66px;padding:11px 12px;border:1px solid var(--line-2);cursor:pointer;font:400 13px/1.2 var(--f);letter-spacing:.06em;text-transform:uppercase;scroll-snap-align:start;transition:background .3s,color .3s,border-color .3s}
+.choix span b{font:300 24px/1 var(--f);letter-spacing:0}
+.choix span small{font-size:10.5px;letter-spacing:.16em;color:var(--gris);transition:color .3s}
+.choix:hover span{border-color:var(--noir)}
+.choix input:checked + span{background:var(--noir);color:#fff;border-color:var(--noir)}
+.choix input:checked + span small{color:#C7C0B8}
+.choix input:focus-visible + span{outline:1px solid var(--noir);outline-offset:3px}
+.lignes{display:flex;flex-wrap:wrap;gap:6px}
+.lignes .choix span{min-width:0;flex-direction:row;padding:11px 16px}
+.champs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px}
+.champs .large{grid-column:1/-1}
+.champ{min-width:0}
+.champ input,.champ select,.champ textarea{display:block;width:100%;border:0;border-bottom:1px solid var(--line-2);background:transparent;padding:8px 0 10px;font:400 16px/1.4 var(--f);color:var(--noir);border-radius:0;outline:none;transition:border-color .3s}
+.champ textarea{resize:vertical;min-height:62px}
+.champ input:focus,.champ select:focus,.champ textarea:focus{border-bottom-color:var(--noir);box-shadow:0 1px 0 var(--noir)}
+.champ.err input{border-bottom-color:#B3261E}
+.champ .msg{display:block;min-height:1.2em;margin-top:4px;font-size:12.5px;color:#B3261E}
+.accord{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--gris);line-height:1.5;cursor:pointer}
+.accord input{margin:3px 0 0;accent-color:var(--noir);width:16px;height:16px;flex:none}
+.mv-pied{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:auto;padding-top:24px}
+.mv-pied .lien{background:none;border:0;padding:0;cursor:pointer}
+.mv .btn[disabled]{opacity:.45;cursor:not-allowed}
+.mv .btn[disabled]::before{display:none}
+.mv-statut{font-size:13.5px;color:var(--gris);min-height:1.4em}
+.mv-statut.err{color:#B3261E}
+.envoi{display:inline-block;width:14px;height:14px;border:1px solid currentColor;border-right-color:transparent;border-radius:50%;animation:tourne .8s linear infinite;vertical-align:-2px;margin-right:8px}
+.mv-fin{display:none;flex-direction:column;gap:18px;padding-top:28px}
+.mv-fin.on{display:flex}
+.sceau{width:64px;height:64px;border:1px solid var(--noir);display:grid;place-items:center;animation:sceau .9s var(--ease) both}
+.sceau svg{width:30px;height:30px}
+.sceau path{stroke-dasharray:40;stroke-dashoffset:40;animation:trait .7s .35s var(--ease) forwards}
+.recap{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
+.recap li{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.recap li span{color:var(--gris);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+.crm{font-size:13px;color:var(--gris)}
+.crm b{color:var(--noir);font-weight:500}
+@keyframes fade{from{opacity:0}}
+@keyframes ouvre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
+@keyframes tourne{to{transform:rotate(360deg)}}
+@keyframes sceau{from{transform:scale(.6) rotate(-12deg);opacity:0}}
+@keyframes trait{to{stroke-dashoffset:0}}
+.mv.ferme .mv-voile{animation:fade .4s var(--ease) reverse both}
+.mv.ferme .mv-panneau{animation:ouvre .5s cubic-bezier(.76,0,.24,1) reverse both}
+@media (max-width:820px){
+  .mv{padding:0;place-items:end stretch}
+  .mv-panneau{grid-template-columns:minmax(0,1fr);max-height:calc(100vh - env(safe-area-inset-top,0px) - 24px)}
+  .mv-photo{display:none}
+  .mv-corps{padding:24px max(18px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+  .champs{grid-template-columns:minmax(0,1fr)}
+}
+body.modal-ouverte{overflow:hidden}
+</style>
+</head>
+<body>
+
+
+<div id="rideau" aria-hidden="true"><div><img src="img/mark-blanc.png" alt=""><br><span id="rideau-t"></span></div></div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a class="brand" href="#accueil" aria-label="Bureau des Légendes, accueil"><img src="img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220"></a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#espaces">Espaces</a><a href="#formules">Formules</a><a href="#evenements">Événements</a><a href="#contact">Contact</a>
+      <a data-portal="login" href="#">Espace membre</a>
+    </nav>
+    <a class="btn btn-or hdr-cta" data-portal="tour" href="#">Réserver une visite</a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="mnav">Menu</button>
+  </div>
+  <div class="mnav" id="mnav" hidden>
+    <div class="wrap">
+      <a href="#accueil">Accueil</a><a href="#espaces">Espaces</a><a href="#formules">Formules</a><a href="#evenements">Événements</a><a href="#contact">Contact</a>
+      <a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a>
+    </div>
+  </div>
+</header>
+
+<!-- ACCUEIL -->
+<main data-view="accueil">
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-l">
+        <div class="fiche label q"><span>34, boulevard Haussmann</span><span>Paris IX<sup>e</sup></span><span>Coworking et bureaux</span></div>
+        <div class="entre">
+          <h1>Une adresse discrète pour écrire sa légende.</h1>
+          <p class="lede">Postes de coworking, bureaux privés et salles de réunion dans un immeuble haussmannien. Parquet en point de Hongrie, moulures, cheminées de marbre, et une verrière de 120&nbsp;m² au rez-de-chaussée.</p>
+          <div class="hero-cta"><a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a><a class="btn btn-fil" href="#espaces">Voir les espaces</a></div>
+        </div>
+      </div>
+      <p class="vword" aria-hidden="true"><span>Légendes</span></p>
+      <figure class="hero-r">
+        <img src="img/hero.jpg" alt="Grande table de travail en chêne sous la verrière, fauteuils bleu nuit et lampes en laiton" width="1600" height="900">
+        <figcaption class="label"><span>Le plateau</span><span>Dix postes par étage</span></figcaption>
+        
+      </figure>
+    </div>
+  </section>
+
+  <section class="faits" aria-label="Le lieu en chiffres">
+    <div class="wrap">
+      <div class="fait"><b class="num">3<small>étages</small></b><span>de coworking, dix postes chacun</span></div>
+      <div class="fait"><b class="num">4<small>salles</small></b><span>de réunion, jusqu'à 15 personnes</span></div>
+      <div class="fait"><b class="num">120<small>m²</small></b><span>de verrière pour vos événements</span></div>
+      <div class="fait"><b class="num">12<small>espaces</small></b><span>réservables en ligne</span></div>
+    </div>
+  </section>
+
+
+  <section class="salon">
+    <div class="wrap why">
+      <figure class="ph"><img src="img/salon.jpg" alt="Salon avec cheminée de marbre, fauteuils en cuir et en velours, table basse en laiton" width="1200" height="540" loading="lazy"></figure>
+      <div>
+        <span class="label">L'esprit du lieu</span>
+        <h2 style="margin-top:18px">Un appartement parisien où l'on vient travailler.</h2>
+        <div class="reason"><h3>Feutré</h3><p>Velours, bois clair et lumière dorée. On s'entend réfléchir, et les appels se passent en cabine capitonnée.</p></div>
+        <div class="reason"><h3>Central</h3><p>Au 34 boulevard Haussmann, dans le 9<sup>e</sup> arrondissement. Vos rendez-vous n'ont pas à traverser Paris.</p></div>
+        <div class="reason"><h3>Confidentiel</h3><p>Casiers sécurisés, bureaux fermés, lignes fibre dédiées. Ce qui se dit ici reste ici.</p></div>
+        <div class="reason"><h3>Simple</h3><p>Vous réservez une salle, payez une facture ou invitez un visiteur depuis votre espace membre, en quelques secondes.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="label">Les espaces</span><h2>Chaque pièce porte le nom d'une légende.</h2></div>
+        <p>Ethan Hunt, James Bond, Mata Hari, George Smiley. Des salles et des bureaux pensés pour des missions très différentes.</p>
+      </div>
+      <div class="splist">
+        <a class="sprow" href="#espaces"><span class="ph"><img src="img/plateau.jpg" alt="" loading="lazy"></span><h3>Coworking</h3><p>Trois plateaux lumineux sur le boulevard, en place libre ou en poste attitré.</p><span class="label q cap">30 postes</span></a>
+        <a class="sprow" href="#espaces"><span class="ph"><img src="img/bureau.jpg" alt="" loading="lazy"></span><h3>Bureaux privés</h3><p>George Smiley et Mata Hari, deux bureaux fermés avec cheminée et moulures.</p><span class="label q cap">3 à 6 personnes</span></a>
+        <a class="sprow" href="#espaces"><span class="ph"><img src="img/projection.jpg" alt="" loading="lazy"></span><h3>Salles de réunion</h3><p>Quatre salles équipées pour vos comités, vos visios et vos projections.</p><span class="label q cap">Jusqu'à 15 personnes</span></a>
+        <a class="sprow" href="#espaces"><span class="ph"><img src="img/cabines.jpg" alt="" loading="lazy"></span><h3>Cabines</h3><p>Enigma et Morse, deux cabines insonorisées pour un appel ou une visio.</p><span class="label q cap">1 personne</span></a>
+        <a class="sprow" href="#evenements"><span class="ph"><img src="img/verriere-jour.jpg" alt="" loading="lazy"></span><h3>La Verrière</h3><p>Notre pièce maîtresse, pour une conférence, un cocktail ou un atelier.</p><span class="label q cap">60 assis · 90 debout</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="facade">
+    <img src="img/facade.jpg" alt="Façade haussmannienne du 34 boulevard Haussmann au crépuscule, lanternes allumées" width="1280" height="520" loading="lazy">
+    <div class="wrap">
+      <span class="label">L'adresse</span>
+      <h2 style="margin-top:16px">Poussez la porte cochère.</h2>
+      <p>34, boulevard Haussmann, Paris 9<sup>e</sup>. Venez voir le lieu, prendre un café et choisir votre place.</p>
+      <a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a>
+    </div>
+  </section>
+
+  <section class="salon">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="label">Votre arrivée</span><h2>De la visite à votre premier jour.</h2></div>
+        <p>Tout se fait en ligne, sans paperasse. L'équipe reste là pour le reste.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Visitez</h3><p>Choisissez un créneau en ligne. Nous vous faisons faire le tour des étages.</p></div>
+        <div class="step"><h3>Choisissez</h3><p>Nomade, Résident, Bureau privé ou Domiciliation. Vous souscrivez en quelques minutes.</p></div>
+        <div class="step"><h3>Recevez vos accès</h3><p>Votre compte membre est créé. Vous y retrouvez contrat, factures et badge.</p></div>
+        <div class="step"><h3>Réservez</h3><p>Salles, cabines et Verrière se réservent depuis votre espace membre, en temps réel.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="label">Les formules</span><h2>Quatre façons d'en être.</h2></div>
+        <p>Tarifs mensuels. Le détail de chaque formule est sur la page dédiée.</p>
+      </div>
+      <div class="plans">
+        <div class="plan court"><div><h3>Nomade</h3><span class="pour">Place libre sur les plateaux</span></div><div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
+        <div class="plan court"><div><h3>Résident</h3><span class="pour">Votre poste attitré</span></div><div class="prix"><b class="num">490&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
+        <div class="plan court"><div><h3>Bureau privé</h3><span class="pour">Un bureau fermé pour votre équipe</span></div><div class="prix"><b class="num">750&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
+        <div class="plan court"><div><h3>Domiciliation</h3><span class="pour">Votre siège au 34 boulevard Haussmann</span></div><div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="lien" href="#formules">Détail</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ESPACES -->
+<main data-view="espaces" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">Les espaces</span>
+    <h1>Douze pièces, douze missions.</h1>
+    <p class="lede">Du poste de coworking à la verrière de 120&nbsp;m², tous nos espaces se réservent en ligne depuis l'espace membre.</p>
+  </div>
+  <div class="wrap">
+    <article class="bloc">
+      <figure class="ph"><img src="img/plateau.jpg" alt="Plateau de coworking avec longue table en noyer et hautes fenêtres sur le boulevard" width="1600" height="900"></figure>
+      <div>
+        <span class="label">Coworking</span>
+        <h2>Les plateaux</h2>
+        <p>Trois étages de travail partagé, dix postes par plateau. Grandes tables en bois, lampes en laiton, prises à chaque place et lumière du boulevard.</p>
+        <ul class="res">
+          <li><b>Plateau du 1<sup>er</sup> étage</b><span>10 postes</span></li>
+          <li><b>Plateau du 2<sup>e</sup> étage</b><span>10 postes</span></li>
+          <li><b>Plateau du 3<sup>e</sup> étage</b><span>10 postes</span></li>
+        </ul>
+        <a class="btn btn-or" data-portal="signup" href="#">Devenir membre</a>
+      </div>
+    </article>
+    <article class="bloc">
+      <figure class="ph"><img src="img/bureau.jpg" alt="Bureau privé avec cheminée de marbre, grand miroir doré et casiers en bois" width="1600" height="900" loading="lazy"></figure>
+      <div>
+        <span class="label">Bureaux privés</span>
+        <h2>Vos quartiers</h2>
+        <p>Deux bureaux fermés, à la journée, au mois ou à l'année. Mobilier sur mesure, rangements sécurisés, fibre dédiée, et votre plaque à la porte.</p>
+        <ul class="res">
+          <li><b>Bureau George Smiley</b><span>5 à 6 personnes · 1<sup>er</sup> étage, côté boulevard</span></li>
+          <li><b>Bureau Mata Hari</b><span>3 à 4 personnes · 2<sup>e</sup> étage, sur cour</span></li>
+        </ul>
+        <a class="btn btn-or" data-portal="tour" href="#">Visiter un bureau</a>
+      </div>
+    </article>
+    <article class="bloc">
+      <figure class="ph"><img src="img/projection.jpg" alt="Salle de projection avec fauteuils en cuir, grand écran et bibliothèques éclairées" width="1280" height="520" loading="lazy"></figure>
+      <div>
+        <span class="label">Salles de réunion</span>
+        <h2>Les salles de briefing</h2>
+        <p>Quatre salles pour vos comités, vos visioconférences et vos présentations. Grand écran, vidéoprojecteur, connexion très haut débit et lumière naturelle.</p>
+        <ul class="res">
+          <li><b>Salle des Légendes</b><span>15 personnes · 1<sup>er</sup> étage</span></li>
+          <li><b>Salle Jason Bourne</b><span>15 personnes · 1<sup>er</sup> étage</span></li>
+          <li><b>Salle Ethan Hunt</b><span>15 personnes · 2<sup>e</sup> étage</span></li>
+          <li><b>Salle James Bond</b><span>15 personnes · 3<sup>e</sup> étage</span></li>
+        </ul>
+        <a class="btn btn-or" data-portal="bookings" href="#">Réserver une salle</a>
+      </div>
+    </article>
+    <article class="bloc">
+      <figure class="ph"><img src="img/cabines.jpg" alt="Deux cabines téléphoniques capitonnées bleu nuit dans un couloir haussmannien" width="1600" height="900" loading="lazy"></figure>
+      <div>
+        <span class="label">Cabines</span>
+        <h2>Ligne sécurisée</h2>
+        <p>Deux cabines capitonnées et insonorisées pour un appel au calme ou une visio en tête-à-tête. Assise confortable, tablette, prise et USB-C.</p>
+        <ul class="res">
+          <li><b>Cabine Enigma</b><span>1 personne · 2<sup>e</sup> étage</span></li>
+          <li><b>Cabine Morse</b><span>1 personne · 3<sup>e</sup> étage</span></li>
+        </ul>
+        <a class="btn btn-or" data-portal="bookings" href="#">Réserver une cabine</a>
+      </div>
+    </article>
+    <article class="bloc" style="border-bottom:0">
+      <figure class="ph"><img src="img/verriere-jour.jpg" alt="La Verrière installée en conférence, rangées de chaises sous la grande verrière" width="1600" height="900" loading="lazy"></figure>
+      <div>
+        <span class="label">Événementiel</span>
+        <h2>La Verrière</h2>
+        <p>Une verrière d'atelier de 120&nbsp;m², parquet ancien et grandes plantes, au rez-de-chaussée. Elle se configure en conférence, en cocktail ou en ateliers.</p>
+        <ul class="res">
+          <li><b>En conférence</b><span>60 personnes assises</span></li>
+          <li><b>En cocktail</b><span>90 personnes debout</span></li>
+        </ul>
+        <a class="btn btn-or" href="#evenements">Découvrir la Verrière</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<!-- FORMULES -->
+<main data-view="formules" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">Les formules</span>
+    <h1>Choisissez votre couverture.</h1>
+    <p class="lede">Quatre formules mensuelles. Vous souscrivez en ligne et gérez tout depuis votre espace membre.</p>
+  </div>
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="plans" style="border-top:0">
+        <div class="plan"><div><h3>Nomade</h3><span class="pour">Pour venir quand vous voulez</span></div>
+          <ul><li>Place libre sur les trois plateaux</li><li>Fibre très haut débit</li><li>Accès aux cabines Enigma et Morse</li><li>Salles de réunion à la réservation</li></ul>
+          <div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Nomade</a></div>
+        <div class="plan"><div><h3>Résident</h3><span class="pour">Pour avoir votre place à vous</span></div>
+          <ul><li>Poste attitré sur un plateau</li><li>Casier sécurisé</li><li>Accès aux cabines Enigma et Morse</li><li>Salles de réunion à la réservation</li></ul>
+          <div class="prix"><b class="num">490&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Résident</a></div>
+        <div class="plan"><div><h3>Bureau privé</h3><span class="pour">Pour une équipe de 3 à 6 personnes</span></div>
+          <ul><li>Bureau fermé George Smiley ou Mata Hari</li><li>Ligne fibre dédiée</li><li>Rangements sécurisés</li><li>Votre plaque à la porte</li></ul>
+          <div class="prix"><b class="num">750&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Bureau privé</a></div>
+        <div class="plan"><div><h3>Domiciliation</h3><span class="pour">Pour installer votre siège à Paris</span></div>
+          <ul><li>Adresse au 34 boulevard Haussmann</li><li>Réception de votre courrier</li><li>Salles de réunion à la réservation</li><li>Gestion depuis l'espace membre</li></ul>
+          <div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="btn btn-or" data-portal="signup" href="#">Choisir Domiciliation</a></div>
+      </div>
+      <p class="note">Une question sur une formule ? <a href="#contact">Écrivez-nous</a> ou passez nous voir.</p>
+    </div>
+  </section>
+  <section class="salon">
+    <div class="wrap faq">
+      <div><span class="label">Questions fréquentes</span><h2 style="margin-top:18px">Avant de signer.</h2></div>
+      <div>
+        <details open><summary>Puis-je visiter avant de choisir ?</summary><p>Oui. Réservez un créneau de visite en ligne, nous vous faisons découvrir les trois étages et la Verrière.</p></details>
+        <details><summary>Comment réserver une salle de réunion ?</summary><p>Depuis votre espace membre. Vous voyez les disponibilités en temps réel, choisissez votre créneau et recevez la confirmation par e-mail.</p></details>
+        <details><summary>Où retrouver mes factures ?</summary><p>Dans votre espace membre, avec votre contrat et l'historique de vos réservations.</p></details>
+        <details><summary>Puis-je changer de formule ?</summary><p>Oui. Parlez-en à l'équipe sur place ou écrivez-nous, nous ajustons votre formule à votre rythme.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ÉVÉNEMENTS -->
+<main data-view="evenements" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">Événements</span>
+    <h1>Sous la verrière, de jour comme de nuit.</h1>
+    <p class="lede">Une conférence le matin, un cocktail le soir. La Verrière se privatise, et la maison a aussi son propre agenda.</p>
+  </div>
+  <section style="padding-top:48px">
+    <div class="wrap">
+      <div class="duo">
+        <figure><img src="img/verriere-jour.jpg" alt="La Verrière de jour, installée en conférence" width="1600" height="900"><figcaption>De jour</figcaption></figure>
+        <figure><img src="img/verriere-nuit.jpg" alt="La Verrière de nuit, guirlandes lumineuses, bougies et mange-debout" width="1600" height="900"><figcaption>De nuit</figcaption></figure>
+      </div>
+      <div class="specs">
+        <div class="spec"><b class="num">60<small> assis</small></b><h3>Conférence</h3><p>Scène, fauteuils d'intervenants et rangées de chaises face à la cheminée.</p></div>
+        <div class="spec"><b class="num">90<small> debout</small></b><h3>Cocktail</h3><p>Mange-debout, lumières tamisées et grandes plantes sous le ciel de Paris.</p></div>
+        <div class="spec"><b class="num">120<small> m²</small></b><h3>Ateliers</h3><p>Sonorisation, grand écran et vidéoprojection. La salle se reconfigure selon votre format.</p></div>
+      </div>
+      <div class="hero-cta" style="margin-top:44px"><a class="btn btn-or" href="#contact">Privatiser la Verrière</a><a class="btn btn-fil" data-portal="bookings" href="#">Voir les disponibilités</a></div>
+    </div>
+  </section>
+  <section class="salon">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="label">L'agenda de la maison</span><h2>Des rendez-vous réservés aux initiés.</h2></div>
+        <p>Les dates et les inscriptions sont dans l'agenda en ligne.</p>
+      </div>
+      <div class="cartes">
+        <div class="carte"><figure class="ph"><img src="img/petit-dejeuner.jpg" alt="Table de petit-déjeuner avec croissants, jus d'orange et café" loading="lazy"></figure><h3>Petits-déjeuners</h3><p>Croissants, café et nouvelles têtes. Le moment le plus simple pour rencontrer les autres membres.</p></div>
+        <div class="carte"><figure class="ph"><img src="img/projection.jpg" alt="Salle de projection aux fauteuils en cuir" loading="lazy"></figure><h3>Masterclass</h3><p>Un invité, un sujet, une heure. En petit comité, dans les fauteuils en cuir de la salle de projection.</p></div>
+        <div class="carte"><figure class="ph"><img src="img/degustation.jpg" alt="Table de dégustation avec vins, charcuteries et fromages" loading="lazy"></figure><h3>Dégustations</h3><p>Vins, fromages et planches à partager, en fin de journée, quand le plateau se transforme en salon.</p></div>
+      </div>
+      <div style="margin-top:48px"><a class="btn btn-or" data-portal="events" href="#">Voir l'agenda</a></div>
+    </div>
+  </section>
+</main>
+
+<!-- CONTACT -->
+<main data-view="contact" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">Contact</span>
+    <h1>Prenons rendez-vous.</h1>
+    <p class="lede">Le plus simple est de venir voir. Sinon, un appel ou un message, et nous revenons vers vous dans la journée.</p>
+  </div>
+  <section style="padding-top:56px">
+    <div class="wrap contact">
+      <figure class="ph"><img src="img/courrier.jpg" alt="Bureau en cuir avec enveloppe, tampon en laiton et stylo" width="1280" height="520"></figure>
+      <div>
+        <span class="label">Coordonnées</span>
+        <div class="coord" style="margin-top:18px">
+          <div><span class="label q">Adresse</span><span class="v">34, boulevard Haussmann<br>75009 Paris</span><button class="copie" data-copie="34 boulevard Haussmann, 75009 Paris">Copier</button></div>
+          <div><span class="label q">Téléphone</span><span class="v num">+33 1 84 80 12 34</span><button class="copie" data-copie="+33 1 84 80 12 34">Copier</button></div>
+          <div><span class="label q">E-mail</span><span class="v">bonjour@bureaudeslegendes.paris</span><button class="copie" data-copie="bonjour@bureaudeslegendes.paris">Copier</button></div>
+        </div>
+        <div class="hero-cta"><a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a><a class="btn btn-fil" data-portal="login" href="#">Espace membre</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="appel deep" id="appel">
+  <div class="wrap">
+    <div><span class="label">Votre mission, si vous l'acceptez</span><h2 style="margin-top:18px">Venez voir le lieu de vos yeux.</h2></div>
+    <div class="hero-cta" style="margin:0"><a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a><a class="btn btn-fil" data-portal="signup" href="#">Devenir membre</a></div>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="top">
+      <div><img src="img/logo-blanc.png" alt="Bureau des Légendes" width="496" height="220"><p class="sig">Coworking et bureaux privés, boulevard Haussmann.</p></div>
+      <div><h4>Le lieu</h4><ul><li><a href="#espaces">Espaces</a></li><li><a href="#formules">Formules</a></li><li><a href="#evenements">Événements</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h4>Membres</h4><ul><li><a data-portal="login" href="#">Espace membre</a></li><li><a data-portal="bookings" href="#">Réserver une salle</a></li><li><a data-portal="events" href="#">Agenda</a></li><li><a data-portal="signup" href="#">Devenir membre</a></li></ul></div>
+    </div>
+    <div class="bot"><span>34, boulevard Haussmann, 75009 Paris</span><span>Lieu de démonstration · réservations et espace membre propulsés par Nexudus</span></div>
+  </div>
+</footer>
+
+<div class="mv" id="mv" hidden role="dialog" aria-modal="true" aria-labelledby="mv-titre">
+  <div class="mv-voile" data-fermer></div>
+  <div class="mv-panneau">
+    <figure class="mv-photo"><img src="img/facade.jpg" alt=""><p><b>34, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi</p></figure>
+    <div class="mv-corps">
+      <div class="mv-tete">
+        <div><span class="label">Réserver une visite</span><h2 id="mv-titre">Venez voir le lieu.</h2></div>
+        <button class="mv-fermer" type="button" data-fermer aria-label="Fermer"></button>
+      </div>
+      <div class="mv-etapes" aria-hidden="true"><span class="ok"></span><span id="mv-e2"></span></div>
+      <form id="mv-form" novalidate>
+        <div class="mv-etape on" id="mv-etape1">
+          <fieldset><legend>Votre jour</legend><div class="jours" id="mv-jours"></div></fieldset>
+          <fieldset><legend>Votre créneau</legend><div class="lignes">
+            <label class="choix"><input type="radio" name="creneau" value="10:00" checked><span>Matin · 10 h</span></label>
+            <label class="choix"><input type="radio" name="creneau" value="14:30"><span>Après-midi · 14 h 30</span></label>
+            <label class="choix"><input type="radio" name="creneau" value="18:00"><span>Fin de journée · 18 h</span></label>
+          </div></fieldset>
+          <fieldset><legend>Ce qui vous intéresse</legend><div class="lignes" id="mv-formules">
+            <label class="choix"><input type="radio" name="formule" value="Nomade" data-prix="290"><span>Nomade</span></label>
+            <label class="choix"><input type="radio" name="formule" value="Résident" data-prix="490" checked><span>Résident</span></label>
+            <label class="choix"><input type="radio" name="formule" value="Bureau privé" data-prix="750"><span>Bureau privé</span></label>
+            <label class="choix"><input type="radio" name="formule" value="Domiciliation" data-prix="90"><span>Domiciliation</span></label>
+            <label class="choix"><input type="radio" name="formule" value="À définir" data-prix=""><span>Je ne sais pas encore</span></label>
+          </div></fieldset>
+          <div class="mv-pied"><span class="mv-statut">Visite de 30 minutes, café compris.</span><button class="btn btn-or" type="button" id="mv-suite">Continuer</button></div>
+        </div>
+        <div class="mv-etape" id="mv-etape2">
+          <div class="champs">
+            <div class="champ"><label class="t" for="mv-nom">Prénom et nom</label><input id="mv-nom" name="nom" autocomplete="name" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="mv-societe">Société</label><input id="mv-societe" name="societe" autocomplete="organization"><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="mv-email">E-mail</label><input id="mv-email" name="email" type="email" autocomplete="email" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="mv-tel">Téléphone</label><input id="mv-tel" name="tel" type="tel" autocomplete="tel"><span class="msg"></span></div>
+            <div class="champ large"><label class="t" for="mv-equipe">Taille de l'équipe</label><select id="mv-equipe" name="equipe"><option>Seul·e</option><option>2 à 5 personnes</option><option>6 personnes et plus</option></select><span class="msg"></span></div>
+            <div class="champ large"><label class="t" for="mv-message">Un mot pour l'équipe (facultatif)</label><textarea id="mv-message" name="message" rows="2"></textarea></div>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="mv-site">Site web</label><input id="mv-site" name="site_web" tabindex="-1" autocomplete="off"></div>
+          <label class="accord"><input type="checkbox" id="mv-accord" required> J'accepte que le Bureau des Légendes me recontacte au sujet de cette visite.</label>
+          <div class="mv-pied"><button class="lien" type="button" id="mv-retour">← Retour</button><button class="btn btn-or" type="submit" id="mv-envoyer">Envoyer ma demande</button></div>
+          <p class="mv-statut" id="mv-statut" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div class="mv-fin" id="mv-fin">
+        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
+        <h2>Demande enregistrée.</h2>
+        <p class="muted" style="color:var(--gris)">Nous vous confirmons le créneau par e-mail dans la journée.</p>
+        <ul class="recap" id="mv-recap"></ul>
+        <p class="crm" id="mv-crm"></p>
+        <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer>Fermer</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// Portail membre Nexudus : une seule adresse à changer ici.
+const PORTAL = "https://bureaudeslegendesparis.nexudus.site/bureaudeslegendesparis";
+const PATHS = { login:"/login", signup:"/signup", tour:"/tour", bookings:"/bookings", events:"/events" };
+document.querySelectorAll("[data-portal]").forEach(a => { a.href = PORTAL + (PATHS[a.dataset.portal] || "/"); a.target = "_blank"; a.rel = "noopener"; });
+
+const NOMS = ["Ethan Hunt","James Bond","Jason Bourne","George Smiley","Mata Hari","Enigma","Morse","La Verrière"];
+
+const RM = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function fitVword(){
+  document.querySelectorAll(".vword").forEach(el => {
+    const sp = el.firstElementChild; if (!sp || !el.clientHeight) return;
+    el.style.fontSize = "";
+    const cs = getComputedStyle(el), vertical = cs.writingMode.indexOf("vertical") === 0;
+    const cur = parseFloat(cs.fontSize), r = sp.getBoundingClientRect();
+    const len = vertical ? r.height : r.width;
+    const avail = vertical ? el.clientHeight * 0.9 : el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (len > 0 && avail > 0){ let fs = cur * avail / len; if (vertical) fs = Math.min(fs, cur); el.style.fontSize = Math.min(240, Math.floor(fs * 0.98)) + "px"; }
+  });
+}
+window.addEventListener("resize", () => requestAnimationFrame(fitVword));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitVword());
+
+function splitWords(el){
+  if (el.classList.contains("split")) return;
+  let i = 0;
+  el.innerHTML = el.textContent.split(/(\s+)/).map(t => !t ? "" : /^\s+$/.test(t) ? " " : `<span class="w"><span style="--i:${i++}">${esc(t)}</span></span>`).join("");
+  el.classList.add("split");
+}
+
+/* Scène 3D reprise de France Coworking : le plateau se construit, les membres s'installent, un poste réservé s'allume. */
+function mountOffice3D(fig){
+  const THREE = window.THREE;
+  if (!fig || !THREE) return null;
+  const canvas = document.createElement("canvas");
+  canvas.className = "office3d"; canvas.setAttribute("role","img");
+  canvas.setAttribute("aria-label","Animation 3D : un plateau de coworking se construit, des personnes s'installent, un poste réservé s'allume en bleu.");
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({canvas, antialias:true}); } catch(e){ return null; }
+  fig.appendChild(canvas); fig.classList.add("has3d");
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setClearColor(0xF6F1EB);
+  const scene = new THREE.Scene();
+  const cam = new THREE.OrthographicCamera(-1,1,1,-1,0.1,200);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xB9A88E, 0.82));
+  const sun = new THREE.DirectionalLight(0xfff4e2, 0.72);
+  sun.position.set(9,16,7); sun.castShadow = true;
+  sun.shadow.mapSize.set(1024,1024);
+  Object.assign(sun.shadow.camera, {left:-11,right:11,top:11,bottom:-11,near:1,far:50});
+  scene.add(sun);
+  const C = {navy:0x19110B, struct:0x19110B, white:0xFFFFFF, red:0x3C6A9E, stoneD:0x1F3050, wood:0xDCCBB0, glass:0xD9E4EA, leaf:0x58724F, brass:0xC2A160, skin:0xD9C2A6};
+  const mats = {}; const M = (c, extra) => { const k = c + JSON.stringify(extra||{}); return mats[k] || (mats[k] = new THREE.MeshLambertMaterial(Object.assign({color:c}, extra||{}))); };
+  const group = new THREE.Group(); scene.add(group);
+  const items = [];
+  const add = (mesh, t0, o={}) => {
+    mesh.castShadow = o.shadow !== false; mesh.receiveShadow = true;
+    group.add(mesh);
+    items.push({mesh, t0, dur:o.dur||.6, drop:o.drop||0, base:mesh.position.clone()});
+    mesh.scale.setScalar(1e-4);
+    return mesh;
+  };
+  const box = (w,h,d,c,x,y,z,extra) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), M(c,extra)); m.position.set(x,y+h/2,z); return m; };
+  // Parquet et socle
+  add(box(12.4,0.35,8.4,C.wood,0,-0.35,0), 0, {dur:.9});
+  add(box(12.6,0.12,8.6,C.struct,0,-0.47,0), 0.05, {dur:.9});
+  // Hautes fenêtres (arrière et gauche)
+  add(box(12,3,0.04,C.glass,0,0,-4,{transparent:true,opacity:.4}), 1.2, {shadow:false, dur:.8});
+  add(box(0.04,3,8,C.glass,-6,0,0,{transparent:true,opacity:.4}), 1.3, {shadow:false, dur:.8});
+  for (let i=0;i<=8;i++) add(box(0.09,3,0.09,C.white,-6+i*1.5,0,-4), 0.55+i*0.05, {drop:3});
+  for (let i=1;i<=5;i++) add(box(0.09,3,0.09,C.white,-6,0,-4+i*1.6), 0.95+i*0.05, {drop:3});
+  add(box(12,0.09,0.09,C.white,0,2.95,-4), 1.25, {drop:2});
+  add(box(0.09,0.09,8,C.white,-6,2.95,0), 1.3, {drop:2});
+  // Salle de réunion vitrée
+  add(box(2.6,2.6,0.04,C.glass,4.7,0,-1.4,{transparent:true,opacity:.45}), 1.8, {shadow:false});
+  add(box(0.04,2.6,2.6,C.glass,3.4,0,-2.7,{transparent:true,opacity:.45}), 1.85, {shadow:false});
+  add(box(0.08,2.6,0.08,C.struct,3.4,0,-1.4), 1.75, {drop:2});
+  add(box(1.6,0.07,0.9,C.navy,4.7,0.72,-2.7), 2.0, {drop:1.4});
+  [[4.1,-3.4],[5.3,-3.4],[4.1,-2.0],[5.3,-2.0]].forEach(([x,z],i)=> add(box(0.42,0.5,0.42,C.stoneD,x,0,z), 2.1+i*.06, {drop:1}));
+  add(box(1.3,0.75,0.05,C.navy,4.7,1.05,-3.95), 2.3, {drop:1});
+  // Postes de travail
+  const desks = []; let n = 0;
+  [-1.0, 0.9, 2.8].forEach(z => [-4.5,-2.7,-0.9,0.9].forEach(x => {
+    const t = 2.3 + n*0.11, reserved = n === 6;
+    add(box(1.5,0.07,0.75, reserved ? C.red : C.white, x,0.72,z), t, {drop:1.6});
+    add(box(0.06,0.72,0.66,C.navy,x-0.68,0,z), t, {drop:1.6});
+    add(box(0.06,0.72,0.66,C.navy,x+0.68,0,z), t, {drop:1.6});
+    add(box(0.52,0.32,0.04,C.navy,x,0.84,z-0.25), t+0.25, {drop:.8});
+    add(box(0.46,0.09,0.46,C.stoneD,x,0.42,z+0.62), t+0.18, {drop:1});
+    add(box(0.46,0.5,0.08,C.stoneD,x,0.5,z+0.86), t+0.18, {drop:1});
+    desks.push({x, z: z+0.62, reserved}); n++;
+  }));
+  // Suspensions en laiton
+  [[-3.6,-1.0],[-0.0,-1.0],[-3.6,0.9],[0,0.9],[-3.6,2.8],[0,2.8]].forEach(([x,z],i)=>{
+    add(box(0.02,1.05,0.02,C.struct,x,3.15,z), 3.9+i*.07, {drop:2.5});
+    const shade = new THREE.Mesh(new THREE.ConeGeometry(0.32,0.28,24,1,true), M(C.brass,{side:THREE.DoubleSide}));
+    shade.position.set(x,3.05,z); add(shade, 3.95+i*.07, {drop:2.5});
+  });
+  // Plantes
+  [[-5.4,-3.4],[2.9,3.6],[-5.4,3.5]].forEach(([x,z],i)=>{
+    add(new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.22,0.5,16), M(C.struct)), 4.4+i*.1).position.set(x,0.25,z);
+    const leaf = new THREE.Mesh(new THREE.IcosahedronGeometry(0.55,0), M(C.leaf)); leaf.position.set(x,0.95,z); add(leaf, 4.5+i*.1, {drop:.6});
+  });
+  items.forEach(it => it.base.copy(it.mesh.position));
+  // Salon
+  add(box(2.2,0.42,0.85,C.stoneD,3.9,0,2.6), 4.7, {drop:1.2});
+  add(box(2.2,0.6,0.22,C.stoneD,3.9,0.35,3.0), 4.75, {drop:1.2});
+  add(box(1.0,0.32,0.6,C.brass,3.9,0,1.5), 4.85, {drop:1});
+  // Repère de réservation au-dessus du poste réservé
+  const target = desks.find(d => d.reserved);
+  const pin = new THREE.Mesh(new THREE.ConeGeometry(0.22,0.55,4), M(C.red, {emissive:0x0a1a30}));
+  pin.rotation.x = Math.PI; pin.position.set(target.x, 2.1, target.z-0.62);
+  add(pin, 7.0, {drop:2, dur:.7});
+  // Personnes : arrivent par l'angle avant droit et rejoignent un poste
+  const seats = [desks[1], desks[6], desks[4], desks[9], desks[11]];
+  const people = seats.map((d,i) => {
+    const g = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.21,0.72,14), M([C.navy,C.red,C.white,C.brass,C.navy][i]));
+    body.position.y = 0.36; body.castShadow = true;
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.15,16,12), M(C.skin)); head.position.y = 0.88; head.castShadow = true;
+    g.add(body, head); g.visible = false; group.add(g);
+    return {g, from:new THREE.Vector3(6.4,0,4.6), to:new THREE.Vector3(d.x,0,d.z), t0:5.4+i*0.38};
+  });
+  const clamp = v => Math.max(0, Math.min(1, v));
+  const outBack = k => { const c1 = 1.5, c3 = c1+1; return 1 + c3*Math.pow(k-1,3) + c1*Math.pow(k-1,2); };
+  const outCubic = k => 1 - Math.pow(1-k,3);
+  const inOut = k => k<.5 ? 4*k*k*k : 1-Math.pow(-2*k+2,3)/2;
+  const N = items.length;
+  function frame(t){
+    items.forEach((it, idx) => {
+      const k = clamp((t - it.t0)/it.dur);
+      const out = clamp((t - (9.25 + (1 - idx/N)*0.45)) / 0.3);
+      const s = Math.max(1e-4, outBack(k) * (1 - outCubic(out)));
+      it.mesh.scale.setScalar(s);
+      it.mesh.position.y = it.base.y + it.drop*(1-outCubic(k));
+    });
+    pin.position.y = 2.1 + (t>7.6 ? Math.sin(t*4)*0.12 : 0) + 2*(1-outCubic(clamp((t-7)/.7)));
+    pin.rotation.y = t*2;
+    const g = Math.max(0,Math.sin(t*6));
+    pin.material.emissive.setRGB(0.04 + 0.08*g, 0.1 + 0.16*g, 0.2 + 0.3*g);
+    people.forEach(p => {
+      const k = clamp((t - p.t0)/1.7), gone = t > 9.2;
+      p.g.visible = k > 0 && !gone;
+      p.g.position.lerpVectors(p.from, p.to, inOut(k));
+      p.g.position.y = (k>=1 ? -0.22 : Math.abs(Math.sin(k*Math.PI*6))*0.06);
+      p.g.rotation.y = Math.atan2(p.to.x-p.from.x, p.to.z-p.from.z);
+    });
+    const a = Math.PI*0.27 + 0.42*Math.sin(2*Math.PI*t/10);
+    cam.position.set(Math.sin(a)*24, 17, Math.cos(a)*24);
+    cam.zoom = 1 + 0.14*Math.sin(Math.PI*t/10);
+    cam.lookAt(0,0.4,0.3); cam.updateProjectionMatrix();
+    renderer.render(scene, cam);
+  }
+  let ready = false;
+  function resize(){
+    const w = fig.clientWidth || 1, h = fig.clientHeight || 1, asp = w/h;
+    const half = Math.max(5.6, 8.4/asp);
+    Object.assign(cam, {left:-half*asp, right:half*asp, top:half, bottom:-half});
+    cam.updateProjectionMatrix(); renderer.setSize(w, h, false);
+    if (RM && ready) frame(8.6);
+  }
+  resize(); ready = true;
+  const ro = window.ResizeObserver ? new ResizeObserver(resize) : null; ro && ro.observe(fig);
+  let raf = 0, visible = true, start = performance.now();
+  const loop = now => { raf = requestAnimationFrame(loop); if (!visible || document.hidden || !fig.clientWidth) return; frame(((now - start)/1000) % 10); };
+  const io = window.IntersectionObserver ? new IntersectionObserver(es => { visible = es[0].isIntersecting; }) : null; io && io.observe(fig);
+  if (RM) frame(8.6); else raf = requestAnimationFrame(loop);
+  return true;
+}
+
+const VIEWS = { accueil:"Bureau des Légendes", espaces:"Espaces", formules:"Formules", evenements:"Événements", contact:"Contact" };
+const cur = () => { const h = location.hash.slice(1); return VIEWS[h] ? h : "accueil"; };
+let shown = null, transitioning = false;
+function show(v, d0){
+  document.querySelectorAll("main[data-view]").forEach(m => {
+    m.hidden = m.dataset.view !== v; m.classList.remove("on");
+    if (!m.hidden){ m.querySelectorAll("h1").forEach(splitWords); m.style.setProperty("--d0", d0 + "ms"); void m.offsetWidth; m.classList.add("on"); }
+  });
+  document.querySelectorAll('.nav a[href^="#"],.mnav a[href^="#"]').forEach(a => a.getAttribute("href") === "#" + v ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"));
+  document.getElementById("appel").hidden = v === "contact";
+  closeMenu(); window.scrollTo(0,0); shown = v; requestAnimationFrame(fitVword);
+}
+function route(){
+  const v = cur(); if (v === shown) return;
+  const c = document.getElementById("rideau");
+  if (RM || shown === null || !c.animate || transitioning){ show(v, 120); return; }
+  transitioning = true; c.style.visibility = "visible";
+  document.getElementById("rideau-t").textContent = VIEWS[v];
+  const ease = "cubic-bezier(.76,0,.24,1)";
+  c.animate([{transform:"translateY(100%)"},{transform:"translateY(0)"}], {duration:420, easing:ease, fill:"forwards"}).finished
+    .then(() => { show(v, 560); return c.animate([{transform:"translateY(0)"},{transform:"translateY(-100%)"}], {duration:620, delay:140, easing:ease, fill:"forwards"}).finished; })
+    .catch(() => show(v, 120))
+    .finally(() => { transitioning = false; c.style.visibility = ""; });
+}
+const btn = document.getElementById("menu-btn"), mnav = document.getElementById("mnav");
+function closeMenu(){ mnav.hidden = true; btn.setAttribute("aria-expanded","false"); btn.textContent = "Menu"; }
+btn.addEventListener("click", () => { const o = mnav.hidden; mnav.hidden = !o; btn.setAttribute("aria-expanded", String(o)); btn.textContent = o ? "Fermer" : "Menu"; });
+document.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (a && a.getAttribute("href").slice(1) === shown){ e.preventDefault(); closeMenu(); window.scrollTo({top:0,behavior:RM?"auto":"smooth"}); }
+  const c = e.target.closest(".copie");
+  if (c){
+    const done = () => { c.textContent = "Copié"; setTimeout(() => c.textContent = "Copier", 1800); };
+    const sel = () => { const r = document.createRange(); r.selectNodeContents(c.previousElementSibling); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(c.dataset.copie).then(done, sel); } catch(_) { sel(); }
+  }
+});
+
+/* Formulaire de visite : la demande arrive dans le CRM Nexudus (Sales Pipeline, colonne « Demande de visite en ligne »). */
+const NX = { server:"Nexudus", business:1420978704, colonne:1415241903, pays:1072, fuseau:2024 };
+let mcpNs = null;
+const mcpPret = (async () => { try { mcpNs = window.claude && window.claude.use ? await window.claude.use("mcp") : null; } catch(_) { mcpNs = null; } return mcpNs; })();
+const mv = document.getElementById("mv"), form = document.getElementById("mv-form");
+let dernierFocus = null, ouvertLe = 0;
+const DANS_CLAUDE = !!(window.claude && window.claude.use);
+
+(function jours(){
+  const box = document.getElementById("mv-jours"), j = ["dim.","lun.","mar.","mer.","jeu.","ven.","sam."], m = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+  const d = new Date(); d.setHours(0,0,0,0); let n = 0, html = "";
+  while (n < 10){ d.setDate(d.getDate()+1); if (d.getDay() === 0) continue;
+    const v = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    html += `<label class="choix"><input type="radio" name="jour" value="${v}"${n===0?" checked":""}><span><small>${j[d.getDay()]}</small><b>${d.getDate()}</b><small>${m[d.getMonth()]}</small></span></label>`; n++; }
+  box.innerHTML = html;
+})();
+
+function ouvrir(){
+  dernierFocus = document.activeElement;
+  mv.hidden = false; mv.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  ouvertLe = Date.now(); etape(1); document.getElementById("mv-fin").classList.remove("on"); form.hidden = false; statut("");
+  setTimeout(() => mv.querySelector(".jours input:checked")?.focus(), 60);
+}
+function fermer(){
+  if (mv.hidden) return;
+  const fin = () => { mv.hidden = true; mv.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); dernierFocus?.focus?.(); };
+  if (RM) return fin();
+  mv.classList.add("ferme"); setTimeout(fin, 480);
+}
+function etape(n){
+  document.getElementById("mv-etape1").classList.toggle("on", n === 1);
+  document.getElementById("mv-etape2").classList.toggle("on", n === 2);
+  document.getElementById("mv-e2").classList.toggle("ok", n === 2);
+  if (n === 2) setTimeout(() => document.getElementById("mv-nom").focus(), 60);
+}
+function statut(t, err){ const s = document.getElementById("mv-statut"); s.innerHTML = t; s.classList.toggle("err", !!err); }
+
+document.querySelectorAll('[data-portal="tour"]').forEach(a => a.addEventListener("click", e => { e.preventDefault(); closeMenu(); ouvrir(); }));
+mv.addEventListener("click", e => { if (e.target.closest("[data-fermer]")) fermer(); });
+document.addEventListener("keydown", e => {
+  if (mv.hidden) return;
+  if (e.key === "Escape") return fermer();
+  if (e.key === "Tab"){
+    const f = [...mv.querySelectorAll('button,input,select,textarea,a[href]')].filter(x => x.offsetParent !== null && !x.disabled);
+    if (!f.length) return; const a = f[0], z = f[f.length-1];
+    if (e.shiftKey && document.activeElement === a){ e.preventDefault(); z.focus(); }
+    else if (!e.shiftKey && document.activeElement === z){ e.preventDefault(); a.focus(); }
+  }
+});
+document.getElementById("mv-suite").addEventListener("click", () => etape(2));
+document.getElementById("mv-retour").addEventListener("click", () => etape(1));
+
+function valider(){
+  let ok = true;
+  const regle = (id, test, msg) => { const el = document.getElementById(id), c = el.closest(".champ"), bad = !test(el.value.trim()); c.classList.toggle("err", bad); c.querySelector(".msg").textContent = bad ? msg : ""; if (bad && ok){ el.focus(); ok = false; } };
+  regle("mv-nom", v => v.length >= 2, "Indiquez votre nom.");
+  regle("mv-email", v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), "Cette adresse e-mail n'est pas valide.");
+  regle("mv-tel", v => !v || v.replace(/\D/g,"").length >= 8, "Ce numéro paraît incomplet.");
+  if (ok && !document.getElementById("mv-accord").checked){ statut("Cochez la case pour que nous puissions vous recontacter.", true); ok = false; }
+  return ok;
+}
+function lire(){
+  const f = new FormData(form), jour = f.get("jour"), creneau = f.get("creneau");
+  const formule = form.querySelector('input[name="formule"]:checked');
+  const [y,mo,d] = jour.split("-").map(Number), [h,mi] = creneau.split(":").map(Number);
+  const quand = new Date(y, mo-1, d, h, mi);
+  return { nom:f.get("nom").trim(), email:f.get("email").trim().toLowerCase(), tel:f.get("tel").trim(), societe:f.get("societe").trim(),
+    equipe:f.get("equipe"), message:f.get("message").trim(), formule:formule.value, prix:formule.dataset.prix ? Number(formule.dataset.prix) : null, quand,
+    quandTxt: quand.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"}) + " à " + creneau.replace(":", " h ").replace(" h 00"," h") };
+}
+const charge = r => r && (r.payload !== undefined ? r.payload : r);
+const idDe = p => p && (p.Value && p.Value.Id || p.Id || p.value && p.value.id);
+async function appel(outil, input){
+  const p = charge(await mcpNs.callTool(NX.server, outil, input, {cache:false}));
+  if (p && p.WasSuccessful === false){ const e = new Error((p.Errors && JSON.stringify(p.Errors)) || p.Message || "Refus de Nexudus"); e.code = "tool_error"; throw e; }
+  return p;
+}
+async function enregistrer(v){
+  const trouve = await appel("nexudus_list", { entity:"coworkers", filters:{ Coworker_Email:v.email }, pageSize:1 });
+  let client = trouve && trouve.Records && trouve.Records[0] ? trouve.Records[0].Id : null, nouveau = !client;
+  if (!client){
+    const c = await appel("nexudus_create", { entity:"coworkers", body:{ CoworkerType:1, FullName:v.nom, Email:v.email, MobilePhone:v.tel || null, CompanyName:v.societe || null,
+      CountryId:NX.pays, SimpleTimeZoneId:NX.fuseau, InvoicingBusinessId:NX.business, Notes:"Contact créé depuis le site vitrine (demande de visite)." } });
+    client = idDe(c);
+    if (!client){ const e = new Error("Nexudus n'a pas renvoyé l'identifiant du contact."); e.code = "tool_error"; throw e; }
+  }
+  const notes = [`Visite souhaitée : ${v.quandTxt}`, `Intérêt : ${v.formule}`, `Équipe : ${v.equipe}`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`, v.message && `Message : ${v.message}`].filter(Boolean).join("\n");
+  const o = await appel("nexudus_create", { entity:"crmopportunities", body:{ Name:`Visite · ${v.nom}`, CrmBoardColumnId:NX.colonne, CoworkerId:client, Status:1, Position:0,
+    LeadSource:1, DueDate:v.quand.toISOString().replace(/\.\d{3}Z$/,"Z"), Value:v.prix, Notes:notes, UtmSource:"site-vitrine", UtmMedium:"formulaire-visite" } });
+  return { opportunite:idDe(o), nouveau };
+}
+function fini(v, res){
+  form.hidden = true;
+  document.getElementById("mv-recap").innerHTML = [["Visite", v.quandTxt], ["Intérêt", v.formule], ["Contact", v.email]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+  document.getElementById("mv-crm").innerHTML = res
+    ? `Ajoutée au CRM Nexudus : <b>Sales Pipeline · Demande de visite en ligne</b>${res.nouveau ? ", avec une nouvelle fiche contact" : ", sur la fiche contact existante"}.`
+    : "";
+  document.getElementById("mv-fin").classList.add("on");
+}
+async function viaSite(v){
+  const q = new URLSearchParams(location.search);
+  const r = await fetch("/api/visite", { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({
+    nom:v.nom, email:v.email, tel:v.tel, societe:v.societe, equipe:v.equipe, message:v.message, formule:v.formule,
+    quand:v.quand.toISOString(), quandTxt:v.quandTxt, accord:true, site_web:document.getElementById("mv-site").value, ouvert_le:ouvertLe,
+    utm_source:q.get("utm_source"), utm_medium:q.get("utm_medium"), utm_campaign:q.get("utm_campaign") }) });
+  let d = {}; try { d = await r.json(); } catch(_) {}
+  if (!r.ok || !d.ok){ const e = new Error(d.erreur || "La demande n'a pas pu être envoyée."); e.code = "site"; throw e; }
+  return { nouveau: !!d.nouveau };
+}
+const PORTAIL_VISITE = PORTAL + "/tour";
+const SANS_NEXUDUS = `Ce formulaire de démonstration enregistre les demandes dans Nexudus depuis un compte relié au connecteur Nexudus. Vous pouvez aussi <a href="${PORTAIL_VISITE}" target="_blank" rel="noopener">demander votre visite sur le portail</a>.`;
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!valider()) return;
+  const v = lire(), b = document.getElementById("mv-envoyer");
+  if (DANS_CLAUDE){ await mcpPret; if (!mcpNs){ statut(SANS_NEXUDUS, true); return; } }
+  b.disabled = true; b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Envoi en cours'; statut("Enregistrement dans Nexudus…");
+  try { const res = DANS_CLAUDE ? await enregistrer(v) : await viaSite(v); statut(""); fini(v, res); }
+  catch (err){
+    const c = err && err.code;
+    if (c === "site"){ statut(esc(err.message), true); return; }
+    if (c === "server_not_connected" || c === "not_granted" || c === "capability_disabled" || c === "capability_removed" || c === "selection_required" || c === "not_in_manifest" || c === "blocked_by_policy") statut(SANS_NEXUDUS, true);
+    else if (c === "needs_reauth") statut("La connexion à Nexudus a expiré. Reconnectez Nexudus dans Réglages → Connecteurs de claude.ai, puis renvoyez la demande.", true);
+    else if (c === "approval_required" || c === "consent_required") statut("Nexudus demande votre accord pour cette page. Cliquez à nouveau sur « Envoyer ma demande » et autorisez l'accès.", true);
+    else if (c === "tool_error") statut("Nexudus a refusé la demande : " + esc(String(err.message || "").slice(0,220)), true);
+    else statut("La réponse de Nexudus n'est pas arrivée. La demande a peut-être été enregistrée : vérifiez le CRM avant de renvoyer.", true);
+  } finally { b.disabled = false; b.textContent = "Envoyer ma demande"; }
+});
+
+window.addEventListener("hashchange", route);
+route();
+mountOffice3D(document.querySelector(".hero-r"));
+</script>
+
+</body>
+</html>
