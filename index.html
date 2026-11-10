@@ -406,6 +406,27 @@ section{padding-block:clamp(72px,9vw,128px)}
   .mv-photo p{left:40px;right:40px;bottom:36px}
   .mv-photo p b{font-size:28px}
 }
+@media (min-width:900px) and (min-height:760px){
+  .mv .mv-corps form{display:flex;flex-direction:column}
+  .mv .mv-etape.on{flex:1 1 auto}
+  .mv .label{font-size:13px}
+  .mv legend, .mv .champ .t{font-size:13px !important}
+  .mv .jours{flex-wrap:wrap;overflow:visible;gap:8px}
+  .mv .choix span{min-width:78px;padding:14px 14px;font-size:14px}
+  .mv .choix span b{font-size:30px}
+  .mv .choix span small{font-size:11.5px}
+  .mv .lignes{gap:8px}
+  .mv .lignes .choix span{padding:14px 20px;font-size:14px}
+  .mv .champ input, .mv .champ select, .mv .champ textarea{font-size:20px;padding:10px 0 12px}
+  #mv textarea, #ms textarea{height:52px;min-height:52px}
+  .mv .accord{font-size:15px}
+  .mv .btn{padding:19px 36px;font-size:13px}
+  .mv .mv-statut{font-size:15px}
+  .mv .mv-fin p.muted, .mv .mv-fin > p{font-size:17px;line-height:1.6}
+  .mv .recap li{font-size:17px;padding:12px 0}
+  .mv .crm{font-size:14px}
+  .mv .salles-choix{gap:14px}
+}
 /* Devenir membre : même fenêtre que les autres */
 @media (min-width:900px){
   .tf{inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);width:min(1360px,calc(100vw - 48px));height:min(880px,calc(100vh - 48px));
@@ -1737,6 +1758,7 @@ function finSalle(v, res){
   document.getElementById("ms-fin-titre").innerHTML = ["C'est", "noté."].map((x, i) => `<span class="m"><span style="animation-delay:${(0.95 + i * 0.12).toFixed(2)}s">${x}</span></span>`).join(" ");
   // La photo s'arrête sur la salle réservée.
   CAR.fin = true; clearTimeout(CAR.minuterie); ms.classList.add("fini");
+  ms.querySelectorAll(".mv-etapes span").forEach(x => x.classList.add("ok"));
   const box = document.getElementById("ms-slides");
   box.insertAdjacentHTML("beforeend", `<div class="car-slide" role="group" aria-label="Votre réservation"><img src="${s.photo}" alt=""><p><span class="tag">À très vite</span><b>${esc(s.nom)}</b><span>${esc(quandTxt())} · ${esc(s.etage)}</span></p></div>`);
   const sl = [...box.querySelectorAll(".car-slide")];
