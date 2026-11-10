@@ -289,8 +289,12 @@ section{padding-block:clamp(72px,9vw,128px)}
 .mv{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .mv[hidden]{display:none!important}
 .mv-voile{position:absolute;inset:0;background:rgba(25,17,11,.62);backdrop-filter:blur(3px);animation:fade .45s var(--ease) both}
-.mv-panneau{position:relative;width:min(1040px,100%);max-height:min(720px,calc(100vh - 32px));display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);background:var(--blanc);color:var(--noir);overflow:hidden;animation:ouvre .75s cubic-bezier(.76,0,.24,1) both}
-.mv-photo{position:relative;margin:0;min-height:100%;background:var(--creme);overflow:hidden}
+.mv-panneau{position:relative;width:min(1040px,100%);max-height:min(720px,calc(100vh - 32px));display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);grid-template-rows:minmax(0,1fr);background:var(--blanc);color:var(--noir);overflow:hidden;animation:ouvre .75s cubic-bezier(.76,0,.24,1) both}
+.mv-photo{position:relative;margin:0;height:100%;min-height:0;background:var(--creme);overflow:hidden}
+.mv-photo img{object-position:50% 40%}
+.mv-photo img.apres{opacity:0;transition:opacity 1.2s var(--ease)}
+.mv.fini .mv-photo img.apres{opacity:1}
+.mv-photo p{transition:opacity .5s var(--ease)}
 .mv-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 2.4s var(--ease) both}
 .mv-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,6,0) 45%,rgba(15,10,6,.7) 100%)}
 .mv-photo p{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;color:#fff;font:400 12px/1.6 var(--f);letter-spacing:.2em;text-transform:uppercase}
@@ -344,9 +348,22 @@ section{padding-block:clamp(72px,9vw,128px)}
 .envoi{display:inline-block;width:14px;height:14px;border:1px solid currentColor;border-right-color:transparent;border-radius:50%;animation:tourne .8s linear infinite;vertical-align:-2px;margin-right:8px}
 .mv-fin{display:none;flex-direction:column;gap:18px;padding-top:28px}
 .mv-fin.on{display:flex}
-.sceau{width:64px;height:64px;border:1px solid var(--noir);display:grid;place-items:center;animation:sceau .9s var(--ease) both}
-.sceau svg{width:30px;height:30px}
-.sceau path{stroke-dasharray:40;stroke-dashoffset:40;animation:trait .7s .35s var(--ease) forwards}
+.sceau{position:relative;width:76px;height:76px;display:grid;place-items:center}
+.sceau svg{width:76px;height:76px;overflow:visible}
+.sceau .anneau{fill:none;stroke:var(--noir);stroke-width:1;stroke-dasharray:226;stroke-dashoffset:226;transform:rotate(-90deg);transform-origin:50% 50%;animation:trait 1s .1s cubic-bezier(.65,0,.35,1) forwards}
+.sceau .coche{fill:none;stroke:var(--noir);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:trait .55s .95s var(--ease) forwards}
+.sceau::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--noir);opacity:0;animation:onde 1.6s 1.3s var(--ease) forwards}
+@keyframes onde{0%{opacity:.35;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+.mv-fin.on > :not(.sceau){animation:up .8s var(--ease) both}
+.mv-fin.on > :nth-child(2){animation-delay:1.05s}.mv-fin.on > :nth-child(3){animation-delay:1.15s}.mv-fin.on > :nth-child(4){animation-delay:1.25s}
+.mv-fin.on > :nth-child(5){animation-delay:1.35s}.mv-fin.on > :nth-child(6){animation-delay:1.5s}.mv-fin.on > :nth-child(7){animation-delay:1.6s}
+.mv-fin.on .recap li{animation:glisse .6s var(--ease) both}
+.mv-fin.on .recap li:nth-child(1){animation-delay:1.45s}.mv-fin.on .recap li:nth-child(2){animation-delay:1.55s}.mv-fin.on .recap li:nth-child(3){animation-delay:1.65s}
+@keyframes glisse{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.mv-fin h2 .m{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+.mv-fin h2 .m > span{display:inline-block;transform:translateY(105%);animation:monteMot .9s var(--ease) forwards}
+@keyframes monteMot{to{transform:none}}
+@media (prefers-reduced-motion:reduce){.sceau .anneau,.sceau .coche{animation:none;stroke-dashoffset:0}.sceau::after,.mv-fin.on > *,.mv-fin.on .recap li,.mv-fin h2 .m > span{animation:none;transform:none;opacity:1}}
 .recap{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
 .recap li{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
 .recap li span{color:var(--gris);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
@@ -856,7 +873,7 @@ body.modal-ouverte{overflow:hidden}
 <div class="mv" id="mv" hidden role="dialog" aria-modal="true" aria-labelledby="mv-titre">
   <div class="mv-voile" data-fermer></div>
   <div class="mv-panneau">
-    <figure class="mv-photo"><img src="img/facade.jpg" alt=""><p><b>34, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi</p></figure>
+    <figure class="mv-photo"><img src="img/facade.jpg" alt=""><img class="apres" src="img/verriere-nuit.jpg" alt="" loading="lazy"><p id="mv-legende"><b>34, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi</p></figure>
     <div class="mv-corps">
       <div class="mv-tete">
         <div><span class="label">Réserver une visite</span><h2 id="mv-titre">Venez voir le lieu.</h2></div>
@@ -896,9 +913,9 @@ body.modal-ouverte{overflow:hidden}
         </div>
       </form>
       <div class="mv-fin" id="mv-fin">
-        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
+        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 76 76"><circle class="anneau" cx="38" cy="38" r="36"/><path class="coche" d="M25 39l9 9 17-19"/></svg></div>
         <span class="label">Merci <span id="mv-prenom"></span></span>
-        <h2>C'est noté.</h2>
+        <h2 id="mv-fin-titre">C'est noté.</h2>
         <p class="muted" style="color:var(--gris)">Votre demande de visite est bien enregistrée. Nous vous envoyons un e-mail à <b id="mv-mail-conf"></b> pour confirmer votre créneau, en général dans la journée.</p>
         <ul class="recap" id="mv-recap"></ul>
         <p class="crm" id="mv-crm"></p>
@@ -1293,6 +1310,7 @@ function ouvrir(){
   dernierFocus = document.activeElement;
   mv.hidden = false; mv.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
   ouvertLe = Date.now(); etape(1); document.getElementById("mv-fin").classList.remove("on"); form.hidden = false; statut("");
+  mv.classList.remove("fini"); document.getElementById("mv-legende").innerHTML = "<b>34, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi";
   setTimeout(() => mv.querySelector(".jours input:checked")?.focus(), 60);
 }
 function fermer(){
@@ -1371,7 +1389,12 @@ function fini(v, res){
   document.getElementById("mv-crm").innerHTML = res
     ? `Ajoutée au CRM Nexudus : <b>Sales Pipeline · Demande de visite en ligne</b>${res.nouveau ? ", avec une nouvelle fiche contact" : ", sur la fiche contact existante"}.`
     : "";
-  document.getElementById("mv-fin").classList.add("on");
+  const t = document.getElementById("mv-fin-titre");
+  t.innerHTML = ["C'est", "noté."].map((m, i) => `<span class="m"><span style="animation-delay:${(0.95 + i * 0.12).toFixed(2)}s">${m}</span></span>`).join(" ");
+  const fin = document.getElementById("mv-fin");
+  fin.classList.remove("on"); void fin.offsetWidth; fin.classList.add("on");
+  mv.classList.add("fini");
+  document.getElementById("mv-legende").innerHTML = "<b>À très vite</b>Sous la verrière, au 34, boulevard Haussmann";
 }
 async function viaSite(v){
   const q = new URLSearchParams(location.search);
