@@ -374,12 +374,13 @@ body.modal-ouverte{overflow:hidden}
 .resa-tete .label{display:block;margin-bottom:16px}
 .resa-tete p{color:var(--fg-2);margin-top:14px;max-width:52ch}
 .resa-grille{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.resa-carte{display:flex;flex-direction:column;gap:12px;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;min-width:0}
+.resa-carte{display:flex;flex-direction:column;gap:12px;height:100%;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;min-width:0}
 .resa-carte .ph{aspect-ratio:4/3}
 .resa-carte:hover .ph img{transform:scale(1.06)}
 .resa-carte h3{font-size:16px}
 .resa-carte span{font-size:14px;color:var(--fg-2)}
-.resa-carte .prix-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-top:1px solid var(--line);padding-top:10px}
+.resa-carte .infos{display:flex;flex-direction:column;gap:2px}
+.resa-carte .prix-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-top:1px solid var(--line);padding-top:12px;margin-top:auto}
 .resa-carte .prix-h b{font-weight:400;color:var(--fg);font-size:15px}
 .resa-carte:focus-visible{outline:1px solid var(--fg);outline-offset:6px}
 @media (max-width:900px){.resa-tete{grid-template-columns:minmax(0,1fr)}.resa-grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -1425,7 +1426,7 @@ const S = { salle:null, jour:null, duree:1, heure:null, occupe:{}, etape:1, ouve
 const salleCourante = () => SALLES_UI.find(s => s.id === S.salle);
 
 // Cartes de l'accueil et choix dans la fenêtre
-document.getElementById("resa-grille").innerHTML = SALLES_UI.map(s => `<button class="resa-carte" type="button" data-salle="${s.id}"><figure class="ph"><img src="${s.photo}" alt="" loading="lazy"></figure><h3>${s.nom}</h3><span>${s.etage} · jusqu'à ${s.places} personnes · ${s.eq}</span><span class="prix-h"><span>À l'heure</span><b>${eur(s.prix)} HT</b></span></button>`).join("");
+document.getElementById("resa-grille").innerHTML = SALLES_UI.map(s => `<button class="resa-carte" type="button" data-salle="${s.id}"><figure class="ph"><img src="${s.photo}" alt="" loading="lazy"></figure><h3>${s.nom}</h3><span class="infos"><span>${s.etage} · ${s.places} personnes</span><span>${s.eq}</span></span><span class="prix-h"><span>À l'heure</span><b>${eur(s.prix)} HT</b></span></button>`).join("");
 document.getElementById("ms-salles").innerHTML = SALLES_UI.map((s,i) => `<label class="salle-opt"><input type="radio" name="salle" value="${s.id}"${i===0?" checked":""}><span class="boite"><img src="${s.photo}" alt=""><span><b>${s.nom}</b><small>${s.etage} · ${s.places} pers. · ${eur(s.prix)} HT / h</small></span></span></label>`).join("");
 document.getElementById("ms-participants").innerHTML = Array.from({length:15},(_,i)=>`<option value="${i+1}"${i===3?" selected":""}>${i+1} ${i?"personnes":"personne"}</option>`).join("");
 (function(){
