@@ -238,8 +238,9 @@ html.bdl-dash .dashboard-content-container > .container,
 html.bdl .bdl-pied-c{ max-width:var(--bdl-max) !important; width:100%; margin-left:auto !important; margin-right:auto !important;
   padding-left:var(--bdl-pad) !important; padding-right:var(--bdl-pad) !important; }
 @media (min-width:1200px){
-  html.bdl header nav .container{ padding-right:calc(var(--bdl-pad) + 176px) !important; }
-  html.bdl .mobile-aichatManager{ right:max(var(--bdl-pad), calc((100vw - var(--bdl-max)) / 2 + var(--bdl-pad))) !important; margin-right:0 !important; }
+  html.bdl header nav .container{ padding-right:calc(var(--bdl-pad) + 200px) !important; }
+  html.bdl .mobile-aichatManager{ right:max(var(--bdl-pad), calc((100% - var(--bdl-max)) / 2 + var(--bdl-pad))) !important; margin-right:0 !important; margin-left:0 !important; }
+  html.bdl .mobile-aichatManager .ai-chat-manager{ right:0 !important; }
 }
 /* Rythme : un seul espacement entre sections */
 .bdl-hero{ margin-bottom:var(--bdl-sec) !important; }
