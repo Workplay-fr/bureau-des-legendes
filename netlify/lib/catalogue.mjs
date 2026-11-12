@@ -56,6 +56,12 @@ async function lire() {
   const produits = await parIds("/billing/products", `Product_Business=${CFG.business}`, Object.keys(PRODUITS_RESA));
   const formules = await parIds("/billing/tariffs", `Tariff_Business=${CFG.business}`, Object.keys(FORMULES_NX));
 
+  // Prochains événements publiés (l'inscription se fait dans le portail membre).
+  const maintenant = Date.now(), date = v => new Date(/Z$|[+-]\d\d:?\d\d$/.test(String(v)) ? v : v + "Z");
+  const evenements = (await liste("/content/calendarevents", `CalendarEvent_Business=${CFG.business}&orderBy=StartDate&dir=Descending`).catch(e => { noter("evenements", e); return []; }))
+    .filter(e => Number(e.BusinessId) === CFG.business && e.StartDate && date(e.StartDate).getTime() > maintenant && (!e.PublishDate || date(e.PublishDate).getTime() <= maintenant))
+    .sort((a, b) => date(a.StartDate) - date(b.StartDate)).slice(0, 3)
+    .map(e => ({ id: Number(e.Id), nom: e.Name, resume: texte(e.ShortDescription), lieu: e.Location || "", debut: date(e.StartDate).toISOString(), fin: e.EndDate ? date(e.EndDate).toISOString() : null, places: nombre(e.Allocation), reserveMembres: !!e.OnlyForMembers }));
   const lu = { lieu: false, ressources: 0, tarifs: 0, produits: 0, formules: 0 };
 
   // Horaires d'ouverture du lieu (minutes depuis minuit dans Nexudus).
@@ -103,7 +109,8 @@ async function lire() {
     const r = formules.get(Number(id)); if (!r) continue; lu.formules++;
     if (r.Name) f.nom = r.Name; if (nombre(r.Price) !== null) f.prix = r.Price; f.description = texte(r.Description);
   }
-  return { lu: { ...lu, erreurs: [...erreurs] }, coord, quand: new Date().toISOString() };
+  lu.evenements = evenements.length;
+  return { lu: { ...lu, erreurs: [...erreurs] }, coord, evenements, quand: new Date().toISOString() };
 }
 
 // À appeler au début de chaque fonction : met à jour SALLES, POSTES, HORAIRES, TARIFS_POSTE, PRODUITS_RESA et FORMULES_NX depuis Nexudus.
@@ -127,6 +134,7 @@ export async function catalogue() {
     postes: Object.entries(POSTES).map(([id, p]) => ({ id: Number(id), nom: p.nom, zone: p.zone, description: p.description || "", equipements: p.equipements || [] })),
     tarifsPoste: { ...TARIFS_POSTE },
     produits: Object.entries(PRODUITS_RESA).map(([id, p]) => ({ id: Number(id), nom: p.nom, prix: p.prix, description: p.description || "", parPersonne: p.parPersonne })),
+    evenements: etat.evenements || [],
     formules: Object.entries(FORMULES_NX).map(([id, f]) => ({ id: Number(id), nom: f.nom, prix: f.prix, description: f.description || "" })),
   };
 }

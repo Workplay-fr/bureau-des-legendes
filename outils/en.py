@@ -55,6 +55,8 @@ TEXT = {
     "Vingt postes flexibles. Choisissez le vôtre sur le plan.": "Twenty flexible desks. Pick yours on the floor plan.",
     "Choisir mon poste": "Choose my desk", "Le plateau": "The floor", "20 postes flexibles": "20 flexible desks",
     "Libre": "Free", "Occupé": "Taken",
+    "L'agenda": "What's on", "Ce qui se passe au Bureau.": "What's happening at the Bureau.",
+    "Les prochains rendez-vous de la maison. L'inscription se fait depuis l'espace membre.": "The next gatherings at the house. You sign up from the member area.",
     "Les formules": "Memberships", "Quatre façons d'en être.": "Four ways to belong.",
     "Tarifs mensuels. Le détail de chaque formule est sur la page dédiée.": "Monthly prices. Each membership is detailed on its own page.",
     "Nomade": "Nomad", "Poste flexible, à choisir chaque jour": "A flexible desk, chosen each day",
@@ -215,6 +217,7 @@ ATTR = {
 
 # ---------------------------------------------------------------- 4. script de la page (morceaux exacts, guillemets compris)
 JS = [
+    ('` · ${e.places} places`', '` · ${e.places} seats`'), ('<span class="lien">S\'inscrire</span>', '<span class="lien">Sign up</span>'),
     ('NaturalLight:"Lumière naturelle", StandingDesk:"Bureau assis-debout", QuietZone:"Zone silencieuse", DualDisplayScreen:"Double écran", DesktopMonitor:"Écran", LargeDisplay:"Grand écran", DisplayScreen:"Écran", Projector:"Vidéoprojecteur", VideoConferencing:"Visio", WirelessPresentation:"Partage d\'écran sans fil", ConferencePhone:"Téléphone de conférence", WhiteBoard:"Tableau blanc", FlipChart:"Paperboard", Soundproof:"Insonorisée", AirConditioning:"Climatisation", Internet:"Fibre", WirelessCharger:"Chargeur sans fil", PrivacyScreen:"Écran de confidentialité", SecureStorage:"Casier sécurisé", TeaAndCoffee:"Thé et café", Catering:"Restauration", Drinks:"Boissons"', 'NaturalLight:"Natural light", StandingDesk:"Sit-stand desk", QuietZone:"Quiet zone", DualDisplayScreen:"Dual screens", DesktopMonitor:"Monitor", LargeDisplay:"Large screen", DisplayScreen:"Screen", Projector:"Projector", VideoConferencing:"Video conferencing", WirelessPresentation:"Wireless screen sharing", ConferencePhone:"Conference phone", WhiteBoard:"Whiteboard", FlipChart:"Flip chart", Soundproof:"Soundproofed", AirConditioning:"Air conditioning", Internet:"Fibre", WirelessCharger:"Wireless charger", PrivacyScreen:"Privacy screen", SecureStorage:"Secure locker", TeaAndCoffee:"Tea and coffee", Catering:"Catering", Drinks:"Drinks"'),
     ('niveau:"Rez-de-chaussée", titre:"Salles de réunion et Verrière", detail:"Quatre salles jusqu\'à 15 personnes, et 120 m² sous verrière. Dès 35 € HT de l\'heure.", cta:"Réserver une salle"',
      'niveau:"Ground floor", titre:"Meeting rooms and La Verrière", detail:"Four rooms for up to 15 people, and 120 m² under glass. From €35 excl. VAT per hour.", cta:"Book a room"'),
