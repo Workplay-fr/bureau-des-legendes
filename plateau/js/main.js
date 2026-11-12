@@ -30,7 +30,9 @@ function fichesNexudus(d) {
 }
 const posteApi = code => E.etat && E.etat.postes.find(p => codeDe(p.nom) === code);
 const etatDe = (code, c = E.creneau) => { const p = posteApi(code); return p ? p.etat[c] : E.erreur ? "passe" : "attente"; };
-const libelleEtat = e => ({ libre: "Libre", pris: "Occupé", passe: "Indisponible", attente: "…" }[e] || "");
+const libelleEtat = e => ({ libre: "Libre", pris: "Occupé", passe: "Indisponible", attente: "…", partielM: "Libre le matin", partielA: "Libre l'après-midi" }[e] || "");
+// Vue « journée » : un poste pris seulement une demi-journée n'est pas plein, on indique la moitié encore libre.
+const etatPlan = code => { const e = etatDe(code); if (E.creneau !== "journee" || e !== "pris") return e; return etatDe(code, "matin") === "libre" ? "partielM" : etatDe(code, "apres") === "libre" ? "partielA" : e; };
 const heures = c => { const h = E.etat && E.etat.creneaux[c]; return h ? `${h.de} h – ${h.a} h` : ""; };
 const prix = c => { const h = E.etat && E.etat.creneaux[c]; return h ? h.prix : null; };
 
@@ -118,8 +120,8 @@ function placerReperes() {
 function rafraichir() {
   const etats = {};
   for (const p of POSTES_PLAN) {
-    const e = etatDe(p.code), el = reperes[p.code]; etats[p.code] = e;
-    if (el) { el.dataset.etat = e; el.classList.toggle("estompe", !!E.zone && p.zone !== E.zone); el.classList.toggle("choisi", E.choix === p.code); el.classList.toggle("survol", E.survol === p.code && E.choix !== p.code);
+    const e = etatPlan(p.code), el = reperes[p.code]; etats[p.code] = e;
+    if (el) { el.dataset.etat = e.startsWith("partiel") ? "partiel" : e; el.classList.toggle("estompe", !!E.zone && p.zone !== E.zone); el.classList.toggle("choisi", E.choix === p.code); el.classList.toggle("survol", E.survol === p.code && E.choix !== p.code);
       el.lastElementChild.innerHTML = `${esc(p.nom)}<span>${esc(libelleEtat(e))}</span>`; }
   }
   if (scene) { scene.majEtats(etats); scene.ambiance(E.creneau); }

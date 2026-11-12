@@ -125,7 +125,7 @@ export async function creerScene(cadre, rappel = {}) {
         Object.assign(V, { e: v.e * 1.16, x: v.x - IMAGE.l * v.e * 0.08, y: v.y - IMAGE.h * v.e * 0.1 }); aller(v, 3.4); cadre.classList.add("i-trace");
         minuteries.push(setTimeout(() => cadre.classList.add("i-rendu"), 1500), setTimeout(finIntro, 2900)); }
       requestAnimationFrame(image); },
-    majEtats(etats) { for (const c in figurines) figurines[c].classList.toggle("la", etats[c] === "pris"); },
+    majEtats(etats) { for (const c in figurines) figurines[c].classList.toggle("la", etats[c] === "pris" || String(etats[c]).startsWith("partiel")); },
     // Lumière du créneau choisi. Si un rendu dédié existe (IMAGE.ambiances), il remplace l'image en fondu ; sinon une teinte l'évoque.
     ambiance(nom) { cadre.dataset.ambiance = nom; for (const k in rendus) rendus[k].classList.toggle("on", k === nom); },
     // Sceau de confirmation posé sur le poste réservé

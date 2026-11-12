@@ -133,6 +133,7 @@ section{padding-block:clamp(72px,9vw,128px)}
 .ap-pt:hover{transform:scale(1.5)}
 .ap-pt.pris{width:8px;height:8px;margin:-4px 0 0 -4px;background:#B0473A;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 2px 5px rgba(90,25,15,.3)}
 .ap-pt.pris:hover{transform:none}
+.ap-pt.partiel{background:linear-gradient(90deg,#4F7A5B 50%,#B0473A 50%)}
 .apercu .ap-monde img.ap-fig{inset:auto;height:auto;object-fit:contain;-webkit-mask-image:none;mask-image:none;pointer-events:none;animation:apFig .9s calc(.5s + var(--d,0s)) both}
 @keyframes apFig{from{opacity:0}}
 .apercu.attend .ap-fig{animation-play-state:paused}
@@ -918,7 +919,7 @@ section.tf-q{padding-block:0}
       <a class="apercu" id="apercu" href="plateau/" aria-label="Le plateau du 1er étage : voir les postes libres et en réserver un">
         <span class="ap-cadre"><span class="ap-monde"><img src="plateau/assets/plateau-2x.webp" alt="Maquette du plateau de coworking : cinq îlots de quatre postes, une bibliothèque vitrée et un lounge" width="1536" height="1024" loading="lazy"><span id="ap-points"></span></span></span>
         <span class="ap-haut label"><span>Le plateau</span><span id="ap-compte">20 postes flexibles</span></span>
-        <span class="ap-legende label" aria-hidden="true"><span><i class="ap-pt"></i>Libre</span><span><i class="ap-pt pris"></i>Occupé</span></span>
+        <span class="ap-legende label" aria-hidden="true"><span><i class="ap-pt"></i>Libre</span><span><i class="ap-pt partiel"></i>Demi-journée</span><span><i class="ap-pt pris"></i>Occupé</span></span>
       </a>
       <div class="pass" id="pass">
         <div class="pass-tete"><div><span class="label">Sans réserver de poste</span><h3>Le pass journée</h3><p>Accès libre au plateau pour la journée. Vous vous installez où il reste de la place.</p></div>
@@ -2187,8 +2188,8 @@ const NIVEAUX = [
     const c = new Date(jourParis(new Date()) + "T12:00:00Z"), auj = c.toISOString().slice(0,10); let d = null, jour = null;
     for (let k = 0; k < 3 && !d; k++){ if (c.getUTCDay() !== 0){ jour = c.toISOString().slice(0,10); const r = await fetch("/api/postes?jour=" + jour); const j = await r.json(); if (r.ok && j.ok && j.postes.some(p => p.etat.journee !== "passe")) d = j; } c.setUTCDate(c.getUTCDate() + 1); }
     if (!d) return;
-    const etat = Object.fromEntries(d.postes.map(p => [p.nom.replace(/^Poste\s+/i, ""), p.etat.journee])), libres = d.postes.filter(p => p.etat.journee === "libre").length;
-    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : etat[p.code] === "pris" ? " pris" : " passe"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("")
+    const etat = Object.fromEntries(d.postes.map(p => [p.nom.replace(/^Poste\s+/i, ""), p.etat.journee === "pris" && (p.etat.matin === "libre" || p.etat.apres === "libre") ? "partiel" : p.etat.journee])), libres = d.postes.filter(p => p.etat.journee === "libre").length;
+    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : etat[p.code] === "pris" ? " pris" : etat[p.code] === "partiel" ? " partiel" : " passe"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("")
       + POSTES_PLAN.map(p => { const o = OCCUPES[p.code]; if (etat[p.code] !== "pris" || !o) return ""; return `<img class="ap-fig" alt="" src="/plateau/assets/occupe/${p.code}.webp" style="left:${(o[0] / IMAGE.l * 100).toFixed(2)}%;top:${(o[1] / IMAGE.h * 100).toFixed(2)}%;width:${(o[2] / IMAGE.l * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s">`; }).join("");
     const quand = jour === auj ? "aujourd'hui" : new Date(jour + "T12:00:00Z").toLocaleDateString("fr-FR", { weekday:"long", timeZone:"UTC" });
     document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "postes libres" : "poste libre"} ${quand}`;
