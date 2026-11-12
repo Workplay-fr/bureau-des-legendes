@@ -500,10 +500,10 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
           '<span class="go">Demander</span>' +
         '</button>' +
         '<div class="bdl-assist-puces">' +
-          '<button type="button" data-q="Réserve-moi une salle pour 6 personnes demain à 10h">Une salle demain à 10h</button>' +
-          '<button type="button" data-q="Je voudrais acheter un pass journée pour demain">Un pass journée demain</button>' +
-          '<button type="button" data-q="Quelles formules d\'abonnement proposez-vous à partir du mois prochain ?">Nos formules</button>' +
-          '<button type="button" data-q="Que pouvez-vous faire pour moi ?">Tout ce qu\'il sait faire</button>' +
+          '<button type="button" data-q="Je cherche une salle de réunion pour 6 personnes demain à 10h au Bureau des Légendes">Une salle pour 6 demain à 10h</button>' +
+          '<button type="button" data-q="Le chauffage ne fonctionne pas dans notre bureau, pouvez-vous prévenir l\'équipe ?">Signaler un souci au bureau</button>' +
+          '<button type="button" data-q="Peut-on accéder à l\'espace le week-end ?">Accès le week-end</button>' +
+          '<button type="button" data-q="Quels sont les horaires d\'ouverture ?">Horaires</button>' +
         '</div>' +
       '</div>';
     s.querySelectorAll("[data-q]").forEach(function (b) {
