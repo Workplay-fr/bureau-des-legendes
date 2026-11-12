@@ -103,8 +103,14 @@ section{padding-block:clamp(72px,9vw,128px)}
 .poste{padding-block:clamp(56px,7vw,96px);border-bottom:1px solid var(--line)}
 .plan .dispo{display:block;margin-top:8px;font-size:12.5px;line-height:1.45;color:#4F7A5B}
 .plan .dispo::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#4F7A5B;margin-right:8px;vertical-align:1px}
-.champ textarea{width:100%;font:inherit;padding:12px 14px;border:1px solid var(--line-2,rgba(25,17,11,.5));background:#fff;resize:vertical;min-height:64px}
 .aide-champ{display:block;margin-top:6px;font-size:12.5px;color:var(--gris,#6B635C)}
+.pass{margin-top:clamp(28px,4vw,48px);padding-top:28px;border-top:1px solid var(--line)}
+.pass-tete{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.pass-tete h3{font-size:20px;letter-spacing:.07em;margin:8px 0 6px}.pass-tete p{margin:0;max-width:46ch;color:var(--gris,#6B635C)}
+.pass-choix{display:flex;gap:10px;flex-wrap:wrap}.pass-choix .btn{display:flex;flex-direction:column;gap:4px;align-items:flex-start;height:auto;padding:12px 18px;text-align:left}
+.pass-choix .btn b{font-weight:400}.pass-choix .btn small{font-size:12px;letter-spacing:.08em;opacity:.75}.pass-choix .btn[aria-pressed="true"]{background:var(--noir,#19110B);color:#fff}
+.pass-form{display:grid;gap:18px;max-width:640px;margin-top:26px}.pass-pied{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.pass-statut{margin:0;font-size:13.5px;color:#B3261E}.pass-fin{margin:26px 0 0;max-width:60ch;font-size:16px;line-height:1.55}
 .ag-liste{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
 .ag-ev{display:flex;flex-direction:column;gap:14px;padding:28px 28px 30px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
 .ag-ev + .ag-ev{padding-left:28px;border-left:1px solid var(--line)}
@@ -914,6 +920,19 @@ section.tf-q{padding-block:0}
         <span class="ap-haut label"><span>The floor</span><span id="ap-compte">20 flexible desks</span></span>
         <span class="ap-legende label" aria-hidden="true"><span><i class="ap-pt"></i>Free</span><span><i class="ap-pt pris"></i>Taken</span></span>
       </a>
+      <div class="pass" id="pass">
+        <div class="pass-tete"><div><span class="label">Without booking a desk</span><h3>The day pass</h3><p>Open access to the coworking floor for the day. You sit wherever there is room.</p></div>
+          <div class="pass-choix" role="group" aria-label="Choisir un pass"><button class="btn btn-fil" type="button" data-pass="unite"><b>Day pass</b><small><span data-pass-prix="unite">25</span> € HT</small></button><button class="btn btn-fil" type="button" data-pass="carnet"><b>Book of 10</b><small><span data-pass-prix="carnet">200</span> € HT</small></button></div></div>
+        <form class="pass-form" id="pass-form" hidden novalidate>
+          <div class="champs"><div class="champ"><label class="t" for="pass-prenom">First name</label><input id="pass-prenom" autocomplete="given-name" required></div><div class="champ"><label class="t" for="pass-nom">Last name</label><input id="pass-nom" autocomplete="family-name" required></div>
+            <div class="champ large"><label class="t" for="pass-email">Email</label><input id="pass-email" type="email" autocomplete="email" required></div></div>
+          <input type="text" id="pass-site" tabindex="-1" autocomplete="off" hidden>
+          <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Demo payment.</b> No card is charged and no bank details are requested. The pass itself is really saved in Nexudus.</span></div>
+          <label class="accord"><input type="checkbox" id="pass-accord"> I accept the terms of sale: pass valid for one year, non-refundable.</label>
+          <div class="pass-pied"><button class="btn btn-or" type="submit" id="pass-payer">Pay</button><p class="pass-statut" id="pass-statut" role="status"></p></div>
+        </form>
+        <p class="pass-fin" id="pass-fin" hidden></p>
+      </div>
     </div>
   </section>
 
@@ -2180,6 +2199,29 @@ const NIVEAUX = [
     a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris") && !pt.classList.contains("passe")){ e.preventDefault(); location.href = `../plateau/en/?jour=${jour}&poste=${pt.dataset.code}`; } });
   } catch(_){ /* sans Nexudus, l'aperçu reste une image : pas de disponibilité inventée */ }
 })();
+/* Pass journée : achat en trois champs, paiement de démonstration, pass créé dans Nexudus par /api/pass. */
+const PASS = { unite:{ total:25 }, carnet:{ total:200 }, choix:null, ouvertLe:0 };
+(function(){
+  const bloc = document.getElementById("pass"); if (!bloc) return;
+  const f = document.getElementById("pass-form"), st = document.getElementById("pass-statut"), b = document.getElementById("pass-payer"), fin = document.getElementById("pass-fin");
+  const libelle = () => { const t = PASS[PASS.choix].total; b.textContent = "Pay " + eur(Math.round(t * 1.2 * 100) / 100) + " incl. VAT"; };
+  bloc.addEventListener("click", e => { const c = e.target.closest("[data-pass]"); if (!c) return; PASS.choix = c.dataset.pass; PASS.ouvertLe = PASS.ouvertLe || Date.now();
+    bloc.querySelectorAll("[data-pass]").forEach(x => x.setAttribute("aria-pressed", x === c)); f.hidden = false; fin.hidden = true; st.textContent = ""; libelle(); document.getElementById("pass-prenom").focus(); });
+  f.addEventListener("submit", async e => { e.preventDefault(); st.textContent = "";
+    const v = { type:PASS.choix, prenom:document.getElementById("pass-prenom").value.trim(), nom:document.getElementById("pass-nom").value.trim(), email:document.getElementById("pass-email").value.trim().toLowerCase(), accord:document.getElementById("pass-accord").checked, site_web:document.getElementById("pass-site").value, ouvert_le:PASS.ouvertLe };
+    if (!v.prenom || !v.nom){ st.textContent = "Indiquez votre prénom et votre nom."; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)){ st.textContent = "This email address is not valid."; return; }
+    if (!v.accord){ st.textContent = "Tick the box to accept the terms of sale."; return; }
+    b.disabled = true; b.textContent = "Processing payment…";
+    try { await new Promise(r => setTimeout(r, 900));
+      const r = await fetch("/api/pass" + (document.documentElement.lang === "en" ? "?lang=en" : ""), { method:"POST", headers:{ "content-type":"application/json" }, body:JSON.stringify(v) }), d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.ok){ st.textContent = d.erreur || "The purchase could not be saved."; return; }
+      f.hidden = true; fin.hidden = false; fin.textContent = `All set, ${v.prenom}. ${d.quantite > 1 ? `Your ${d.quantite} day passes are saved` : "Your day pass is saved"} in Nexudus: come to reception with your email.${d.reference ? " Reference " + d.reference + "." : ""}`;
+    } catch { st.textContent = "The connection was interrupted. Please try again."; }
+    finally { b.disabled = false; libelle(); }
+  });
+})();
+
 /* Catalogue Nexudus : noms, prix, capacités, équipements, horaires et coordonnées sont relus dans Nexudus à chaque visite.
    Les valeurs écrites dans cette page ne servent que de secours si Nexudus ne répond pas. */
 const EQUIP = { NaturalLight:"Natural light", StandingDesk:"Sit-stand desk", QuietZone:"Quiet zone", DualDisplayScreen:"Dual screens", DesktopMonitor:"Monitor", LargeDisplay:"Large screen", DisplayScreen:"Screen", Projector:"Projector", VideoConferencing:"Video conferencing", WirelessPresentation:"Wireless screen sharing", ConferencePhone:"Conference phone", WhiteBoard:"Whiteboard", FlipChart:"Flip chart", Soundproof:"Soundproofed", AirConditioning:"Air conditioning", Internet:"Fibre", WirelessCharger:"Wireless charger", PrivacyScreen:"Privacy screen", SecureStorage:"Secure locker", TeaAndCoffee:"Tea and coffee", Catering:"Catering", Drinks:"Drinks" };
@@ -2208,6 +2250,7 @@ function prixDans(t, n){ return n == null ? t : String(t).replace(/\d+(?:[.,]\d+
       ? (FR ? `${libres.length} ${libres.length > 1 ? "bureaux disponibles" : "bureau disponible"} : ` : `${libres.length} ${libres.length > 1 ? "offices available" : "office available"}: `) + libres.map(b => `${b.nom.replace(/^Bureau /, "")}, ${b.capacite} ${FR ? "postes" : "desks"}, ${nb(b.surface)} m², ${nb(b.prix)} € ${FR ? "par mois" : "per month"}`).join(" · ")
       : (FR ? "Complet pour le moment, liste d'attente ouverte" : "Fully let for now, waiting list open"));
     if (pa && pa.total) dispo(1415397039, pa.libres ? (FR ? `${pa.libres} ${pa.libres > 1 ? "postes disponibles" : "poste disponible"} sur ${pa.total}` : `${pa.libres} of ${pa.total} desks available`) : (FR ? "Complet pour le moment" : "Full for now"));
+    if (c.pass) for (const k of ["unite", "carnet"]) if (c.pass[k]){ PASS[k].total = c.pass[k].total; document.querySelectorAll(`[data-pass-prix="${k}"]`).forEach(x => x.textContent = nb(c.pass[k].total)); }
     // Agenda : les trois prochains événements publiés dans Nexudus.
     const evs = c.evenements || [], LG = FR ? "en-GB" : "en-GB", TZ = { timeZone:"Europe/Paris" }, ech = t => String(t ?? "").replace(/[&<>"]/g, x => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[x]));
     if (evs.length){

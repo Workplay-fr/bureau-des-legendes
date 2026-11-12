@@ -137,6 +137,12 @@ export const PRODUITS_RESA = {
   1415523388: { nom: "Paperboard & fournitures", prix: 8, parPersonne: false },
 };
 
+// Pass journée vendus depuis le site (time passes Nexudus). Noms et prix : valeurs de secours, relues dans Nexudus.
+export const PASS_NX = {
+  unite: { id: 1415370171, nom: "Pass journée", prix: 25, quantite: 1 },
+  carnet: { id: 1415370271, nom: "Pass journée · carnet de 10", prix: 20, quantite: 10 },
+};
+
 // Formules proposées à l'adhésion depuis le site (identifiants et prix mensuels HT Nexudus).
 export const FORMULES_NX = {
   1415397038: { nom: "Nomade", prix: 290, quantite: false },
@@ -166,6 +172,8 @@ const EN = {
   "Ce créneau est en dehors des horaires d'ouverture.": "This slot is outside opening hours.",
   "Ce créneau vient d'être réservé. Choisissez-en un autre.": "This slot has just been booked. Please choose another.",
   "Cette adresse e-mail n'est pas valide.": "This email address is not valid.",
+  "Choisissez un pass.": "Please choose a pass.", "Merci d'accepter les conditions de vente.": "Please accept the terms of sale.", "Trop de demandes envoyées. Réessayez dans quelques minutes.": "Too many requests. Please try again in a few minutes.",
+  "L'achat n'a pas pu être enregistré. Réessayez ou appelez-nous au +33 1 84 80 12 34.": "The purchase could not be saved. Please try again or call us on +33 1 84 80 12 34.",
   "Cette adresse e-mail n'est pas acceptée. Vérifiez-la ou utilisez-en une autre.": "This email address was not accepted. Please check it or use another one.",
   "Choisissez un créneau à venir.": "Please choose an upcoming slot.",
   "Choisissez une date de début.": "Please choose a start date.",

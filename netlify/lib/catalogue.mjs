@@ -2,7 +2,7 @@
 // Le site ne garde en dur que les identifiants (quelle ressource va où sur les pages) et des valeurs de secours.
 // Tout le reste (noms, prix, capacités, équipements, descriptions, horaires, coordonnées) vient de Nexudus,
 // relu au plus toutes les 60 secondes : une modification dans Nexudus apparaît sur le site dans la minute.
-import { CFG, SALLES, HORAIRES, POSTES, TARIFS_POSTE, PRODUITS_RESA, FORMULES_NX, nx } from "./nexudus.mjs";
+import { CFG, SALLES, HORAIRES, POSTES, TARIFS_POSTE, PRODUITS_RESA, FORMULES_NX, PASS_NX, nx } from "./nexudus.mjs";
 
 // Tarifs Nexudus (resource rates) des postes flexibles.
 export const TARIF_DEMI_JOURNEE = Number(process.env.NEXUDUS_RATE_DEMI || 1415437351);
@@ -115,6 +115,9 @@ async function lire() {
     const r = formules.get(Number(id)); if (!r) continue; lu.formules++;
     if (r.Name) f.nom = r.Name; if (nombre(r.Price) !== null) f.prix = r.Price; f.description = texte(r.Description);
   }
+  const passLus = await parIds("/billing/timepasses", `TimePass_Business=${CFG.business}`, Object.values(PASS_NX).map(p => p.id));
+  lu.pass = 0;
+  for (const p of Object.values(PASS_NX)) { const r = passLus.get(p.id); if (!r) continue; lu.pass++; if (r.Name) p.nom = r.Name; if (nombre(r.Price) !== null) p.prix = r.Price; }
   lu.evenements = evenements.length; lu.plan = plan.length;
   return { lu: { ...lu, erreurs: [...erreurs] }, coord, evenements, bureaux, postesAttitres, quand: new Date().toISOString() };
 }
@@ -140,6 +143,7 @@ export async function catalogue() {
     postes: Object.entries(POSTES).map(([id, p]) => ({ id: Number(id), nom: p.nom, zone: p.zone, description: p.description || "", equipements: p.equipements || [] })),
     tarifsPoste: { ...TARIFS_POSTE },
     produits: Object.entries(PRODUITS_RESA).map(([id, p]) => ({ id: Number(id), nom: p.nom, prix: p.prix, description: p.description || "", parPersonne: p.parPersonne })),
+    pass: Object.fromEntries(Object.entries(PASS_NX).map(([k, p]) => [k, { nom: p.nom, prix: p.prix, quantite: p.quantite, total: p.prix * p.quantite }])),
     evenements: etat.evenements || [], bureaux: etat.bureaux || [], postesAttitres: etat.postesAttitres || null,
     formules: Object.entries(FORMULES_NX).map(([id, f]) => ({ id: Number(id), nom: f.nom, prix: f.prix, description: f.description || "" })),
   };

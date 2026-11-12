@@ -57,6 +57,10 @@ TEXT = {
     "Libre": "Free", "Occupé": "Taken",
     "L'agenda": "What's on", "Ce qui se passe au Bureau.": "What's happening at the Bureau.",
     "Les prochains rendez-vous de la maison. L'inscription se fait depuis l'espace membre.": "The next gatherings at the house. You sign up from the member area.",
+    "Sans réserver de poste": "Without booking a desk", "Le pass journée": "The day pass", "Accès libre au plateau pour la journée. Vous vous installez où il reste de la place.": "Open access to the coworking floor for the day. You sit wherever there is room.",
+    "Pass journée": "Day pass", "Carnet de 10": "Book of 10", "Payer": "Pay",
+    "Aucune carte n'est débitée et aucune donnée bancaire n'est demandée. Le pass, lui, est bien enregistré dans Nexudus.": "No card is charged and no bank details are requested. The pass itself is really saved in Nexudus.",
+    "J'accepte les conditions de vente : pass valable un an, non remboursable.": "I accept the terms of sale: pass valid for one year, non-refundable.",
     "Les formules": "Memberships", "Quatre façons d'en être.": "Four ways to belong.",
     "Tarifs mensuels. Le détail de chaque formule est sur la page dédiée.": "Monthly prices. Each membership is detailed on its own page.",
     "Nomade": "Nomad", "Poste flexible, à choisir chaque jour": "A flexible desk, chosen each day",
@@ -219,6 +223,13 @@ ATTR = {
 
 # ---------------------------------------------------------------- 4. script de la page (morceaux exacts, guillemets compris)
 JS = [
+    ('b.textContent = "Payer " + eur(Math.round(t * 1.2 * 100) / 100) + " TTC";', 'b.textContent = "Pay " + eur(Math.round(t * 1.2 * 100) / 100) + " incl. VAT";'),
+    ('b.textContent = "Paiement en cours…";', 'b.textContent = "Processing payment…";'),
+    ('st.textContent = "Cochez la case pour accepter les conditions de vente.";', 'st.textContent = "Tick the box to accept the terms of sale.";'),
+    ('st.textContent = d.erreur || "L\'achat n\'a pas pu être enregistré.";', 'st.textContent = d.erreur || "The purchase could not be saved.";'),
+    ('st.textContent = "La connexion a été interrompue. Réessayez.";', 'st.textContent = "The connection was interrupted. Please try again.";'),
+    ("""fin.textContent = `C'est noté, ${v.prenom}. ${d.quantite > 1 ? `Vos ${d.quantite} pass journée sont enregistrés` : "Votre pass journée est enregistré"} dans Nexudus : présentez-vous à l'accueil avec votre e-mail.${d.reference ? " Référence " + d.reference + "." : ""}`;""",
+     """fin.textContent = `All set, ${v.prenom}. ${d.quantite > 1 ? `Your ${d.quantite} day passes are saved` : "Your day pass is saved"} in Nexudus: come to reception with your email.${d.reference ? " Reference " + d.reference + "." : ""}`;"""),
     ('` · ${e.places} places`', '` · ${e.places} seats`'), ('<span class="lien">S\'inscrire</span>', '<span class="lien">Sign up</span>'),
     ('NaturalLight:"Lumière naturelle", StandingDesk:"Bureau assis-debout", QuietZone:"Zone silencieuse", DualDisplayScreen:"Double écran", DesktopMonitor:"Écran", LargeDisplay:"Grand écran", DisplayScreen:"Écran", Projector:"Vidéoprojecteur", VideoConferencing:"Visio", WirelessPresentation:"Partage d\'écran sans fil", ConferencePhone:"Téléphone de conférence", WhiteBoard:"Tableau blanc", FlipChart:"Paperboard", Soundproof:"Insonorisée", AirConditioning:"Climatisation", Internet:"Fibre", WirelessCharger:"Chargeur sans fil", PrivacyScreen:"Écran de confidentialité", SecureStorage:"Casier sécurisé", TeaAndCoffee:"Thé et café", Catering:"Restauration", Drinks:"Boissons"', 'NaturalLight:"Natural light", StandingDesk:"Sit-stand desk", QuietZone:"Quiet zone", DualDisplayScreen:"Dual screens", DesktopMonitor:"Monitor", LargeDisplay:"Large screen", DisplayScreen:"Screen", Projector:"Projector", VideoConferencing:"Video conferencing", WirelessPresentation:"Wireless screen sharing", ConferencePhone:"Conference phone", WhiteBoard:"Whiteboard", FlipChart:"Flip chart", Soundproof:"Soundproofed", AirConditioning:"Air conditioning", Internet:"Fibre", WirelessCharger:"Wireless charger", PrivacyScreen:"Privacy screen", SecureStorage:"Secure locker", TeaAndCoffee:"Tea and coffee", Catering:"Catering", Drinks:"Drinks"'),
     ('niveau:"Rez-de-chaussée", titre:"Salles de réunion et Verrière", detail:"Quatre salles jusqu\'à 15 personnes, et 120 m² sous verrière. Dès 35 € HT de l\'heure.", cta:"Réserver une salle"',
