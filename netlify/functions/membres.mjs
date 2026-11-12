@@ -26,11 +26,25 @@ const traiter = async (req) => {
 
   try {
     const c = await contact({ ...v, compte: true, note: `Membre inscrit depuis le site vitrine (formule ${f.nom}).` });
-    const k = await nx("POST", "/billing/coworkercontracts", {
+    let k;
+    try { k = await nx("POST", "/billing/coworkercontracts", {
       IssuedById: CFG.business, CoworkerId: c.id, TariffId: tarif, StartDate: `${debut}T00:00:00Z`,
       BillingDay: Math.min(28, t.getUTCDate()), Quantity: quantite, ApplyProRating: true,
       Notes: `Souscription depuis le site vitrine · paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}`,
-    });
+    }); }
+    catch (e) {
+      // La domiciliation (virtual office) n'est pas incluse dans l'abonnement Nexudus de ce lieu : le contrat ne peut pas être créé par l'API.
+      // On enregistre alors une demande dans le pipeline commercial, à traiter par l'équipe (vérification d'identité comprise).
+      if (!/virtual office/i.test(String(e.message))) throw e;
+      const o = await nx("POST", "/crm/crmopportunities", {
+        Name: `${f.nom} · ${v.nom}`, CrmBoardColumnId: CFG.colonne, CoworkerId: c.id, Status: 1, Position: 0, LeadSource: 1,
+        DueDate: `${debut}T09:00:00Z`, Value: f.prix * quantite,
+        Notes: [`Demande de ${f.nom} depuis le site vitrine`, `Début souhaité : ${debut}`, `Paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join("\n"),
+        UtmSource: "site-vitrine", UtmMedium: "adhesion",
+      });
+      const oid = o.Value && o.Value.Id;
+      return json(200, { ok: true, contrat: null, demande: true, reference: oid ? "BDL-D" + String(oid).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
+    }
     const id = k.Value && k.Value.Id;
     return json(200, { ok: true, contrat: id, reference: id ? "BDL-M" + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
   } catch (e) {
