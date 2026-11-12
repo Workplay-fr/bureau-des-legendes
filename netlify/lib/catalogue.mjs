@@ -18,10 +18,19 @@ const nombre = v => (typeof v === "number" && isFinite(v) ? v : null);
 // Catégorie d'un poste sur le plan, déduite de ses équipements Nexudus.
 const zoneDe = r => r.StandingDesk ? "debout" : (r.DualDisplayScreen || r.DesktopMonitor) ? "ecran" : r.QuietZone ? "calme" : r.NaturalLight ? "fenetre" : null;
 
+// Nexudus limite le nombre d'appels simultanés : les lectures se font l'une après l'autre, avec une nouvelle tentative en cas de 429.
+const erreurs = [];
+const noter = (quoi, e) => { console.error("catalogue", quoi, e.message); if (erreurs.length < 8) erreurs.push(`${quoi} : ${String(e.message || "").slice(0, 140)}`); };
+async function lireNx(chemin) {
+  for (let essai = 0; ; essai++) {
+    try { return await nx("GET", chemin); }
+    catch (e) { if (e.status !== 429 || essai >= 2) throw e; await new Promise(r => setTimeout(r, 1500 * (essai + 1))); }
+  }
+}
 async function liste(chemin, filtre) {
   const tout = [];
   for (let page = 1; page <= 4; page++) {
-    const d = await nx("GET", `${chemin}?${filtre}&size=100&page=${page}`);
+    const d = await lireNx(`${chemin}?${filtre}&size=100&page=${page}`);
     tout.push(...(d.Records || []));
     if (!d.HasNextPage) break;
   }
@@ -30,9 +39,9 @@ async function liste(chemin, filtre) {
 // Les fiches attendues, par identifiant : d'abord la liste de l'espace, puis une lecture directe pour celles qui manquent.
 async function parIds(chemin, filtre, ids) {
   let recs = [];
-  try { recs = await liste(chemin, filtre); } catch (e) { console.error("catalogue", chemin, e.message); }
+  try { recs = await liste(chemin, filtre); } catch (e) { noter(chemin, e); }
   const m = new Map(recs.map(r => [Number(r.Id), r]));
-  await Promise.all(ids.filter(id => !m.has(Number(id))).map(async id => { try { m.set(Number(id), await nx("GET", `${chemin}/${id}`)); } catch (e) { console.error("catalogue", chemin, id, e.message); } }));
+  for (const id of ids.filter(id => !m.has(Number(id)))) { try { m.set(Number(id), await lireNx(`${chemin}/${id}`)); } catch (e) { noter(`${chemin}/${id}`, e); if (e.status === 429) break; } }
   return m;
 }
 
@@ -40,13 +49,13 @@ const secours = { horaires: structuredClone(HORAIRES) };
 let memo = null, enCours = null;
 
 async function lire() {
-  const [lieu, ressources, tarifs, produits, formules] = await Promise.all([
-    nx("GET", `/sys/businesses/${CFG.business}`).catch(e => { console.error("catalogue lieu", e.message); return null; }),
-    parIds("/spaces/resources", `Resource_Business=${CFG.business}`, [...Object.keys(SALLES), ...Object.keys(POSTES)]),
-    liste("/spaces/extraservices", `ExtraService_Business=${CFG.business}`).catch(e => { console.error("catalogue tarifs", e.message); return []; }),
-    parIds("/billing/products", `Product_Business=${CFG.business}`, Object.keys(PRODUITS_RESA)),
-    parIds("/billing/tariffs", `Tariff_Business=${CFG.business}`, Object.keys(FORMULES_NX)),
-  ]);
+  erreurs.length = 0;
+  const lieu = await lireNx(`/sys/businesses/${CFG.business}`).catch(e => { noter("lieu", e); return null; });
+  const ressources = await parIds("/spaces/resources", `Resource_Business=${CFG.business}`, [...Object.keys(SALLES), ...Object.keys(POSTES)]);
+  const tarifs = await liste("/spaces/extraservices", `ExtraService_Business=${CFG.business}`).catch(e => { noter("tarifs", e); return []; });
+  const produits = await parIds("/billing/products", `Product_Business=${CFG.business}`, Object.keys(PRODUITS_RESA));
+  const formules = await parIds("/billing/tariffs", `Tariff_Business=${CFG.business}`, Object.keys(FORMULES_NX));
+
   const lu = { lieu: false, ressources: 0, tarifs: 0, produits: 0, formules: 0 };
 
   // Horaires d'ouverture du lieu (minutes depuis minuit dans Nexudus).
@@ -94,7 +103,7 @@ async function lire() {
     const r = formules.get(Number(id)); if (!r) continue; lu.formules++;
     if (r.Name) f.nom = r.Name; if (nombre(r.Price) !== null) f.prix = r.Price; f.description = texte(r.Description);
   }
-  return { lu, coord, quand: new Date().toISOString() };
+  return { lu: { ...lu, erreurs: [...erreurs] }, coord, quand: new Date().toISOString() };
 }
 
 // À appeler au début de chaque fonction : met à jour SALLES, POSTES, HORAIRES, TARIFS_POSTE, PRODUITS_RESA et FORMULES_NX depuis Nexudus.
