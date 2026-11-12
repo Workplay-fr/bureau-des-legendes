@@ -111,13 +111,16 @@ section{padding-block:clamp(72px,9vw,128px)}
 .ap-pt{position:absolute;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#4F7A5B;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 2px 5px rgba(25,17,11,.3);animation:apPose .7s calc(.2s + var(--d,0s)) cubic-bezier(.2,1.5,.4,1) backwards;transition:transform .3s var(--ease)}
 .ap-pt::after{content:"";position:absolute;inset:-9px}
 .ap-pt:hover{transform:scale(1.5)}
-.ap-pt.pris{width:15px;height:15px;margin:-7.5px 0 0 -7.5px;background:#B0473A url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 18 18%27 fill=%27%23fff%27%3E%3Ccircle cx=%279%27 cy=%276.4%27 r=%272.7%27/%3E%3Cpath d=%27M3.9 14.6c.3-3 2.4-4.9 5.1-4.9s4.8 1.9 5.1 4.9z%27/%3E%3C/svg%3E") center/100% no-repeat;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 2px 5px rgba(90,25,15,.32)}
+.ap-pt.pris{width:8px;height:8px;margin:-4px 0 0 -4px;background:#B0473A;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 2px 5px rgba(90,25,15,.3)}
 .ap-pt.pris:hover{transform:none}
+.apercu .ap-monde img.ap-fig{inset:auto;height:auto;object-fit:contain;-webkit-mask-image:none;mask-image:none;pointer-events:none;filter:drop-shadow(0 1px 1px rgba(25,17,11,.28));animation:apFig .6s calc(.5s + var(--d,0s)) both}
+@keyframes apFig{from{opacity:0;transform:translateY(-4px)}}
+.apercu.attend .ap-fig{animation-play-state:paused}
 .ap-pt.passe{width:6px;height:6px;margin:-3px 0 0 -3px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
 .apercu.attend .ap-pt{animation-play-state:paused}
 @keyframes apPose{from{transform:scale(0) translateY(-18px);opacity:0}}
 .ap-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
-@media (hover:hover){.apercu:hover .ap-monde img{filter:brightness(1.03)}}
+@media (hover:hover){.apercu:hover .ap-monde img:not(.ap-fig){filter:brightness(1.03)}}
 @media (prefers-reduced-motion:reduce){.ap-pt{animation:none}.ap-cadre{transform:none}}
 /* Haut de page : l'entrée de l'immeuble, et l'invitation à pousser la porte */
 @media (min-width:901px){.hero-r.entree{position:sticky;top:var(--hdr-h,74px);align-self:start;height:calc(100vh - var(--hdr-h,74px));min-height:540px}}
@@ -214,7 +217,7 @@ section{padding-block:clamp(72px,9vw,128px)}
   .ap-haut{inset:14px 16px auto}
   .ap-legende{display:none}
   .ap-pt{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;box-shadow:0 0 0 1.5px rgba(255,255,255,.92)}
-  .ap-pt.pris{width:10px;height:10px;margin:-5px 0 0 -5px}
+  .ap-pt.pris{width:5px;height:5px;margin:-2.5px 0 0 -2.5px}
   .ap-pt.passe{width:4px;height:4px;margin:-2px 0 0 -2px}
   .fiche span + span{padding-left:0;border-left:0}
 }
@@ -2129,7 +2132,8 @@ const NIVEAUX = [
     for (let k = 0; k < 3 && !d; k++){ if (c.getUTCDay() !== 0){ jour = c.toISOString().slice(0,10); const r = await fetch("/api/postes?jour=" + jour); const j = await r.json(); if (r.ok && j.ok && j.postes.some(p => p.etat.journee !== "passe")) d = j; } c.setUTCDate(c.getUTCDate() + 1); }
     if (!d) return;
     const etat = Object.fromEntries(d.postes.map(p => [p.nom.replace(/^Poste\s+/i, ""), p.etat.journee])), libres = d.postes.filter(p => p.etat.journee === "libre").length;
-    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : etat[p.code] === "pris" ? " pris" : " passe"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("");
+    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : etat[p.code] === "pris" ? " pris" : " passe"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("")
+      + POSTES_PLAN.map((p, i) => { if (etat[p.code] !== "pris") return ""; const face = i % 4 < 2, [ax, ay, l] = face ? [17, 28.1, 28.5] : [11.1, 24.4, 28.8]; return `<img class="ap-fig" alt="" src="/plateau/assets/figurine-${face ? "face" : "dos"}.webp" style="left:${((p.fx - ax) / IMAGE.l * 100).toFixed(2)}%;top:${((p.fy - ay) / IMAGE.h * 100).toFixed(2)}%;width:${(l / IMAGE.l * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s">`; }).join("");
     const quand = jour === auj ? "aujourd'hui" : new Date(jour + "T12:00:00Z").toLocaleDateString("fr-FR", { weekday:"long", timeZone:"UTC" });
     document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "postes libres" : "poste libre"} ${quand}`;
     NIVEAUX[1].detail = `${libres} ${libres > 1 ? "postes libres" : "poste libre"} ${quand} sur vingt, à choisir sur le plan. Dès 15 € HT la demi-journée.`;
