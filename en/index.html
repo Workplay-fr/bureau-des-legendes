@@ -1588,10 +1588,13 @@ const S = { salle:null, jour:null, duree:1, heure:null, occupe:{}, etape:1, ouve
 const salleCourante = () => SALLES_UI.find(s => s.id === S.salle);
 
 // Cartes de l'accueil et choix dans la fenêtre
+function dessinerSalles(){
 document.getElementById("resa-grille").innerHTML = SALLES_UI.map(s => `<button class="resa-carte" type="button" data-salle="${s.id}"><figure class="ph"><img src="../${s.photo}" alt="" loading="lazy"></figure><h3>${s.nom}</h3><span class="infos"><span>${s.etage} · ${s.places} people</span><span>${s.eq}</span></span><span class="prix-h"><span>Per hour</span><b>${eur(s.prix)} excl. VAT</b></span></button>`).join("");
 document.getElementById("ms-salles").innerHTML = SALLES_UI.map((s,i) => `<label class="salle-opt"><input type="radio" name="salle" value="${s.id}"${i===0?" checked":""}><span class="boite"><img src="../${s.photo}" alt=""><span><b>${s.nom}</b><small>${s.etage} · ${s.places} people · ${eur(s.prix)} excl. VAT / h</small></span></span></label>`).join("");
+}
+dessinerSalles();
 document.getElementById("ms-participants").innerHTML = Array.from({length:15},(_,i)=>`<option value="${i+1}"${i===3?" selected":""}>${i+1} ${i?"people":"person"}</option>`).join("");
-(function(){
+function dessinerJours(){
   const box = document.getElementById("ms-jours"), j = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const auj = jourParis(new Date()); const [y,mo,d] = auj.split("-").map(Number); const c = new Date(Date.UTC(y,mo-1,d));
   let n = 0, html = "", k = 0;
@@ -1599,7 +1602,8 @@ document.getElementById("ms-participants").innerHTML = Array.from({length:15},(_
     if (HORAIRES_SALLE[w]){ html += `<label class="choix"><input type="radio" name="jour" value="${v}"${n===0?" checked":""}><span><small>${n===0 && v===auj ? "today" : j[w]}</small><b>${c.getUTCDate()}</b><small>${m[c.getUTCMonth()]}</small></span></label>`; n++; }
     c.setUTCDate(c.getUTCDate()+1); }
   box.innerHTML = html;
-})();
+}
+dessinerJours();
 
 // Carrousel : la salle choisie, puis les services proposés avec la réservation.
 const SERVICES = [
@@ -1908,7 +1912,10 @@ const M = { formule:null, debut:null, debutTxt:"", postes:1, i:0, ouvertLe:0, fo
 const fCour = () => FORMULES_UI.find(f => f.id === M.formule);
 const ordreQ = () => ["formule","debut", ...(fCour() && fCour().postes ? ["postes"] : []), "nom","societe","contact","paiement"];
 
+function dessinerFormules(){
 document.getElementById("tf-plans").innerHTML = FORMULES_UI.map(f => `<article class="pl${f.vedette ? " vedette" : ""}">${f.vedette ? '<span class="badge">Most popular</span>' : ""}<h3>${f.nom}</h3><p class="accroche">${f.accroche}</p><p class="p num">${eur(f.prix).replace(".00","")}<small>excl. VAT ${f.unite || "/ month"}</small></p><ul>${f.inclus.map(x => `<li>${x}</li>`).join("")}</ul>${f.note ? `<p class="note-pl">${f.note}</p>` : ""}<button class="btn ${f.vedette ? "btn-or" : "btn-fil"}" type="button" data-plan="${f.id}">Choose ${f.nom}</button></article>`).join("");
+}
+dessinerFormules();
 (function(){
   const auj = jourParis(new Date()), [y,m,d] = auj.split("-").map(Number), base = new Date(Date.UTC(y,m-1,d));
   const plus = n => { const x = new Date(base); x.setUTCDate(x.getUTCDate()+n); return x; };
@@ -2137,10 +2144,48 @@ const NIVEAUX = [
     const quand = jour === auj ? "today" : new Date(jour + "T12:00:00Z").toLocaleDateString("en-GB", { weekday:"long", timeZone:"UTC" });
     document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand}`;
     NIVEAUX[1].detail = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand} out of twenty, picked on the floor plan. From €15 excl. VAT per half day.`;
+    if (d.creneaux && d.creneaux.matin) NIVEAUX[1].detail = prixDans(NIVEAUX[1].detail, d.creneaux.matin.prix);
     a.href = "../plateau/en/?jour=" + jour; document.getElementById("ap-btn").href = a.href;
     if (window.IntersectionObserver && !RM){ a.classList.add("attend"); new IntersectionObserver((es, o) => { if (es[0].isIntersecting){ a.classList.remove("attend"); o.disconnect(); } }, { threshold:.35 }).observe(a); }
     a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris") && !pt.classList.contains("passe")){ e.preventDefault(); location.href = `../plateau/en/?jour=${jour}&poste=${pt.dataset.code}`; } });
   } catch(_){ /* sans Nexudus, l'aperçu reste une image : pas de disponibilité inventée */ }
+})();
+/* Catalogue Nexudus : noms, prix, capacités, équipements, horaires et coordonnées sont relus dans Nexudus à chaque visite.
+   Les valeurs écrites dans cette page ne servent que de secours si Nexudus ne répond pas. */
+const EQUIP = { NaturalLight:"Natural light", StandingDesk:"Sit-stand desk", QuietZone:"Quiet zone", DualDisplayScreen:"Dual screens", DesktopMonitor:"Monitor", LargeDisplay:"Large screen", DisplayScreen:"Screen", Projector:"Projector", VideoConferencing:"Video conferencing", WirelessPresentation:"Wireless screen sharing", ConferencePhone:"Conference phone", WhiteBoard:"Whiteboard", FlipChart:"Flip chart", Soundproof:"Soundproofed", AirConditioning:"Air conditioning", Internet:"Fibre", WirelessCharger:"Wireless charger", PrivacyScreen:"Privacy screen", SecureStorage:"Secure locker", TeaAndCoffee:"Tea and coffee", Catering:"Catering", Drinks:"Drinks" };
+function prixDans(t, n){ return n == null ? t : String(t).replace(/\d+(?:[.,]\d+)?(?=[\s ]*€)|(?<=€[\s ]?)\d+(?:[.,]\d+)?/, String(n).replace(".", ",")); }
+(async function catalogueNexudus(){
+  if (DANS_CLAUDE) return;
+  let c; try { const r = await fetch("/api/catalogue", { headers:{ accept:"application/json" } }); c = await r.json(); if (!r.ok || !c.ok || c.source !== "nexudus") return; } catch { return; }
+  const FR = document.documentElement.lang !== "en"; // en anglais : chiffres et équipements à jour, textes traduits conservés
+  try {
+    if (c.horaires) for (const k in HORAIRES_SALLE) HORAIRES_SALLE[k] = c.horaires[k] || null;
+    for (const s of c.salles || []){ const u = SALLES_UI.find(x => x.id === s.id); if (!u) continue;
+      if (typeof s.prixHeure === "number") u.prix = s.prixHeure; if (s.places) u.places = s.places; if (FR && s.nom) u.nom = s.nom;
+      const e = (s.equipements || []).filter(k => !["Internet","AirConditioning","NaturalLight"].includes(k)).map(k => EQUIP[k]).filter((x, i, t) => x && t.indexOf(x) === i).slice(0, 3);
+      if (e.length) u.eq = e.join(", ").replace(/, (.)/g, (m, l) => ", " + l.toLowerCase()); }
+    for (const p of c.produits || []){ const u = PRODUITS_RESA.find(x => x.id === p.id); if (!u) continue;
+      if (typeof p.prix === "number") u.prix = p.prix; if (FR){ if (p.nom) u.nom = p.nom; if (p.description) u.txt = p.description; } }
+    for (const f of c.formules || []){ const u = FORMULES_UI.find(x => x.id === f.id); if (!u) continue;
+      if (typeof f.prix === "number") u.prix = f.prix; if (FR){ if (f.nom) u.nom = f.nom; if (f.description) u.accroche = f.description; }
+      document.querySelectorAll(`.plan [data-membre="${f.id}"]`).forEach(b => { const p = b.closest(".plan"), n = p && p.querySelector(".num"); if (n) n.textContent = prixDans(n.textContent, u.prix);
+        if (FR && f.nom && p){ const h = p.querySelector("h3"); if (h) h.textContent = f.nom; if (/^Choisir \S/.test(b.textContent)) b.textContent = "Choisir " + f.nom; } }); }
+    dessinerSalles(); dessinerJours(); dessinerFormules();
+    const mini = Math.min(...SALLES_UI.map(x => x.prix)), petit = document.querySelector(".trio-l[data-salle] small");
+    if (petit) petit.textContent = prixDans(petit.textContent, mini);
+    NIVEAUX[0].detail = prixDans(NIVEAUX[0].detail, mini);
+    const resident = FORMULES_UI.find(x => x.id === 1415397039); if (resident) NIVEAUX[2].detail = prixDans(NIVEAUX[2].detail, resident.prix);
+    const dej = PRODUITS_RESA.find(x => x.id === 1415347146), sv = SERVICES.find(x => /petit-dejeuner/.test(x.photo)); if (dej && sv) sv.texte = prixDans(sv.texte, dej.prix);
+    // Coordonnées du lieu : numéro de rue, téléphone et e-mail de la fiche Nexudus.
+    const L = c.lieu || {}, num = (String(L.adresse || "").match(/^\d+\w*/) || [])[0], rempl = [];
+    if (num && num !== "312") rempl.push([/312(?=,? [Bb]oulevard Haussmann)/g, num]);
+    if (L.telephone && L.telephone !== "+33 1 84 80 12 34") rempl.push([/\+33 1 84 80 12 34/g, L.telephone]);
+    if (L.email && L.email !== "bonjour@bureaudeslegendes.paris") rempl.push([/bonjour@bureaudeslegendes\.paris/g, L.email]);
+    if (rempl.length){ const change = t => rempl.reduce((x, [de, a]) => x.replace(de, a), t);
+      const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())){ if (n.parentNode.nodeName === "SCRIPT" || n.parentNode.nodeName === "STYLE") continue; const t = change(n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
+      document.querySelectorAll('a[href^="tel:"],a[href^="mailto:"]').forEach(a => { if (L.telephone && a.protocol === "tel:") a.href = "tel:" + L.telephone.replace(/[^\d+]/g, ""); if (L.email && a.protocol === "mailto:") a.href = "mailto:" + L.email; });
+      for (const f of FORMULES_UI){ f.accroche = change(f.accroche); f.inclus = f.inclus.map(change); } dessinerFormules(); }
+  } catch (e) { console.warn("catalogue", e); }
 })();
 </script>
 

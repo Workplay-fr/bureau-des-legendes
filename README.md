@@ -51,3 +51,23 @@ Chaque push sur `main` redéploie le site.
 ## Habillage du portail membre
 
 `portail/bdl-portail.js` habille le tableau de bord du portail Nexudus (typo Jost, bandeau photo animé, salutation selon l'heure, grille deux colonnes, apparitions au défilement). Il est chargé par un bloc « Script » du plan de page `personal-dashboard` (éditeur du portail, `/admin/editor/personal-dashboard`). Le dossier `/portail/` est exempté du mot de passe du site. Pour revenir au tableau de bord d'origine : « Supprimer le plan » dans l'éditeur.
+
+## Nexudus comme seule source des données
+
+Le site ne garde en dur que des identifiants (quelle ressource, quel produit, quelle formule apparaît où) et des valeurs de secours.
+Tout le reste est relu dans Nexudus par `netlify/lib/catalogue.mjs`, au plus toutes les 60 secondes, et servi aux pages par `/api/catalogue` :
+
+| Sur le site | Dans Nexudus |
+|---|---|
+| Horaires d'ouverture, créneaux matin / après-midi / journée | Fiche du lieu, horaires d'ouverture |
+| Adresse (numéro de rue), téléphone, e-mail | Fiche du lieu |
+| Salles : nom, capacité, équipements, prix à l'heure | Ressource (nom, capacité, cases d'équipement) et tarif public de son type de ressource |
+| Postes : nom, catégorie sur le plan, description, équipements | Ressource (cases Bureau assis-debout, Double écran, Zone silencieuse, Lumière naturelle, description) |
+| Postes : prix demi-journée et journée | Tarifs « Poste flexible · demi-journée » (1415437351) et « Poste flexible · journée » (1415437449) |
+| Services d'une réservation : nom, prix, description | Produits |
+| Formules : nom, prix, accroche | Formules (tariffs) |
+| Disponibilités | Réservations |
+
+Les fonctions serveur (`/api/salles`, `/api/postes`, `/api/membres`) recalculent les montants avec ces mêmes valeurs.
+En anglais, les chiffres et les équipements suivent Nexudus ; les noms et descriptions gardent leur traduction (`outils/en.py`).
+Si Nexudus ne répond pas, le site affiche les valeurs de secours écrites dans le code.

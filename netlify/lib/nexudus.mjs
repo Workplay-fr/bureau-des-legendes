@@ -7,7 +7,8 @@ export const CFG = {
   fuseau: Number(process.env.NEXUDUS_TIMEZONE_ID || 2024),           // Paris
 };
 
-// Salles de réunion réservables depuis le site (identifiants Nexudus) et tarif horaire HT des rates Nexudus.
+// Salles de réunion réservables depuis le site (identifiants Nexudus). Noms et prix ci-dessous : valeurs de secours,
+// remplacées par celles de Nexudus à chaque appel (voir catalogue.mjs). Idem pour les horaires, postes, services et formules.
 export const SALLES = {
   1415233614: { nom: "Salle des Légendes", prixHeure: 175 },
   1415233716: { nom: "Salle Jason Bourne", prixHeure: 175 },

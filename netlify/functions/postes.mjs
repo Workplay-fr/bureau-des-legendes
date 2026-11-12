@@ -3,6 +3,7 @@
 //   POST /api/postes                  → crée (ou retrouve) le contact puis la réservation du poste dans Nexudus
 // Le paiement affiché sur le site est une simulation : aucune donnée bancaire n'est reçue ici.
 import { POSTES, TARIFS_POSTE, creneauPoste, occupationPostes, nx, contact, parisVersUtc, isoZ, nettoie, emailValide, json, tropDEnvois, vide, bilingue } from "../lib/nexudus.mjs";
+import { synchro } from "../lib/catalogue.mjs";
 
 const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
 const NOMS_CRENEAU = { matin: "matin", apres: "après-midi", journee: "journée" };
@@ -23,13 +24,14 @@ function etatPostes(jour, occ) {
       const de = parisVersUtc(jour, h.de), a = parisVersUtc(jour, h.a);
       etat[c] = a < limite ? "passe" : (occ[id] || []).some(b => new Date(b.a) > de && new Date(b.de) < a) ? "pris" : "libre";
     }
-    return { id: Number(id), nom: p.nom, zone: p.zone, etat };
+    return { id: Number(id), nom: p.nom, zone: p.zone, description: p.description || "", equipements: p.equipements || [], etat };
   }).sort((x, y) => x.nom.localeCompare(y.nom));
   return { jour, ouvert: Object.values(creneaux).some(Boolean), creneaux, postes };
 }
 
 const traiter = async (req) => {
   if (vide()) return json(500, { ok: false, erreur: "Le site n'est pas encore relié à Nexudus." });
+  await synchro(); // noms, prix et horaires relus dans Nexudus (au plus toutes les 60 s)
   const url = new URL(req.url);
 
   if (req.method === "GET") {

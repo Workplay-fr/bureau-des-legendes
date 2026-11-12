@@ -15,6 +15,15 @@ const E = { jour: /^\d{4}-\d{2}-\d{2}$/.test(LIEN.get("jour") || "") ? LIEN.get(
 let scene = null;
 const parCode = Object.fromEntries(POSTES_PLAN.map(p => [p.code, p]));
 const codeDe = nom => String(nom || "").replace(/^Poste\s+/i, "");
+// Fiche de chaque poste telle que Nexudus la donne : catégorie (déduite des équipements cochés), description, équipements.
+const EQUIP = { NaturalLight: "Natural light", StandingDesk: "Sit-stand desk", QuietZone: "Quiet zone", DualDisplayScreen: "Dual screens", DesktopMonitor: "Monitor", LargeDisplay: "Large screen", DisplayScreen: "Screen", Projector: "Projector", VideoConferencing: "Video conferencing", WirelessPresentation: "Wireless screen sharing", ConferencePhone: "Conference phone", WhiteBoard: "Whiteboard", FlipChart: "Flip chart", Soundproof: "Soundproofed", AirConditioning: "Air conditioning", Internet: "Fibre and built-in sockets", WirelessCharger: "Wireless charger", PrivacyScreen: "Privacy screen", SecureStorage: "Day locker", TeaAndCoffee: "Tea and coffee", Catering: "Catering", Drinks: "Drinks" };
+const TEXTES_NEXUDUS = document.documentElement.lang !== "en"; // en anglais, les descriptions traduites de la page sont conservées
+function fichesNexudus(d) {
+  for (const a of (d && d.postes) || []) { const p = POSTES_PLAN.find(q => q.code === codeDe(a.nom)); if (!p) continue;
+    if (ZONES[a.zone]) p.zone = a.zone;
+    p.texte = TEXTES_NEXUDUS && a.description ? a.description : null;
+    const eq = (a.equipements || []).map(k => EQUIP[k]).filter((x, i, t) => x && t.indexOf(x) === i); p.equipements = eq.length ? eq : null; }
+}
 const posteApi = code => E.etat && E.etat.postes.find(p => codeDe(p.nom) === code);
 const etatDe = (code, c = E.creneau) => { const p = posteApi(code); return p ? p.etat[c] : E.erreur ? "passe" : "attente"; };
 const libelleEtat = e => ({ libre: "Free", pris: "Taken", passe: "Unavailable", attente: "…" }[e] || "");
@@ -42,7 +51,7 @@ function dessinerBarre() {
 let jeton = 0;
 async function chargerEtat() {
   const j = ++jeton; E.charge = true; E.erreur = null; rafraichir();
-  try { const d = await donnees.etat(E.jour); if (j !== jeton) return; E.etat = d; }
+  try { const d = await donnees.etat(E.jour); if (j !== jeton) return; E.etat = d; fichesNexudus(d); }
   catch (e) { if (j !== jeton) return; E.etat = null; E.erreur = e.message || "Availability is unavailable at the moment."; }
   E.charge = false; rafraichir();
 }
@@ -170,8 +179,8 @@ function dessinerFiche() {
   const DEMI = { matin: "in the morning", apres: "in the afternoon" };
   box.innerHTML = `${tete}
     <p class="etat"><i class="pt ${libre ? "" : e === "pris" ? "pris" : "passe"}"></i>${e === "attente" ? "Loading availability…" : libre ? `Free · ${esc(jourLong(E.jour))}` : e === "pris" ? `${reste ? `Taken ${DEMI[reste === "matin" ? "apres" : "matin"]}, free ${DEMI[reste]}` : "Already booked for this slot"} · ${esc(jourLong(E.jour))}` : `Unavailable · ${esc(jourLong(E.jour))}`}</p>
-    <p class="texte">${esc(z.texte)}</p>
-    <ul class="equip">${z.equipements.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+    <p class="texte">${esc(p.texte || z.texte)}</p>
+    <ul class="equip">${(p.equipements || z.equipements).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
     <div><span class="label" id="f-l-cr" style="display:block;margin-bottom:8px">Time slot</span><div class="options" role="radiogroup" aria-labelledby="f-l-cr">${Object.entries(CRENEAUX).map(([c, t]) => { const ec = etatDe(p.code, c), ok = ec === "libre";
       return `<button class="option" type="button" role="radio" aria-checked="${c === E.creneau}" data-creneau="${c}" ${ok || c === E.creneau ? "" : "disabled"}><b>${esc(t)}</b><small>${esc(heures(c)) || "—"}</small><span class="prix">${ok ? eur(prix(c)) : esc(libelleEtat(ec))}</span></button>`; }).join("")}</div></div>
     ${E.msg ? `<p class="erreur" role="alert">${esc(E.msg)}</p>` : ""}
@@ -202,7 +211,7 @@ async function envoyer() {
     if (E.etat && !r.simule) { const q = posteApi(code); if (q && q.etat[v.creneau] === "libre") { q.etat[v.creneau] = "pris"; q.etat.journee = "pris"; rafraichir(); } }
   } catch (err) {
     E.envoi = false;
-    if (err.code === "conflit") { if (err.etat) E.etat = err.etat; else await chargerEtat(); E.etape = 1; E.msg = err.message; }
+    if (err.code === "conflit") { if (err.etat) { E.etat = err.etat; fichesNexudus(err.etat); } else await chargerEtat(); E.etape = 1; E.msg = err.message; }
     else E.msg = err instanceof TypeError ? "The connection was interrupted. The booking may have been recorded: check the desk status before trying again." : (err.message || "The booking could not be recorded.");
     rafraichir();
   }

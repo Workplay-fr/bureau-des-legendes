@@ -1,10 +1,12 @@
 // Adhésion depuis le site : crée (ou retrouve) la fiche client avec son compte portail,
 // puis le contrat de la formule choisie dans Nexudus. Le paiement affiché est une simulation.
 import { CFG, FORMULES_NX, nx, contact, nettoie, emailValide, json, tropDEnvois, vide, bilingue } from "../lib/nexudus.mjs";
+import { synchro } from "../lib/catalogue.mjs";
 
 const traiter = async (req) => {
   if (req.method !== "POST") return json(405, { ok: false, erreur: "Méthode non autorisée." });
   if (vide()) return json(500, { ok: false, erreur: "Le site n'est pas encore relié à Nexudus." });
+  await synchro(); // noms, prix et horaires relus dans Nexudus (au plus toutes les 60 s)
   let d; try { d = await req.json(); } catch { return json(400, { ok: false, erreur: "Demande illisible." }); }
   if (d.site_web) return json(200, { ok: true });
   if (!d.ouvert_le || Date.now() - Number(d.ouvert_le) < 5000) return json(429, { ok: false, erreur: "Merci de patienter quelques secondes avant de valider." });
