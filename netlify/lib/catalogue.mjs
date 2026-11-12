@@ -52,7 +52,7 @@ async function lire() {
   erreurs.length = 0;
   const lieu = await lireNx(`/sys/businesses/${CFG.business}`).catch(e => { noter("lieu", e); return null; });
   const ressources = await parIds("/spaces/resources", `Resource_Business=${CFG.business}`, [...Object.keys(SALLES), ...Object.keys(POSTES)]);
-  const tarifs = await liste("/spaces/extraservices", `ExtraService_Business=${CFG.business}`).catch(e => { noter("tarifs", e); return []; });
+  const tarifs = await liste("/billing/extraservices", `ExtraService_Business=${CFG.business}`).catch(e => { noter("tarifs", e); return []; });
   const produits = await parIds("/billing/products", `Product_Business=${CFG.business}`, Object.keys(PRODUITS_RESA));
   const formules = await parIds("/billing/tariffs", `Tariff_Business=${CFG.business}`, Object.keys(FORMULES_NX));
 
@@ -88,7 +88,7 @@ async function lire() {
     const r = ressources.get(Number(id)); if (!r) continue; lu.ressources++;
     if (r.Name) s.nom = r.Name;
     const p = prixHoraire(r.ResourceTypeName); if (p !== null) { s.prixHeure = p; lu.tarifs++; }
-    s.places = nombre(r.Allocation); s.description = texte(r.Description); s.equipements = equip(r); s.visible = r.Visible !== false && !r.Archived;
+    s.groupe = String(r.GroupName || "").replace(/^[^\p{L}\p{N}]+/u, "").trim(); s.places = nombre(r.Allocation); s.description = texte(r.Description); s.equipements = equip(r); s.visible = r.Visible !== false && !r.Archived;
   }
   for (const [id, p] of Object.entries(POSTES)) {
     const r = ressources.get(Number(id)); if (!r) continue; lu.ressources++;
@@ -123,7 +123,7 @@ export async function catalogue() {
   return {
     source: direct ? "nexudus" : "secours", lu: etat.quand, detail: etat.lu, lieu: etat.coord,
     horaires: direct || (etat.lu && etat.lu.lieu) ? HORAIRES : secours.horaires,
-    salles: Object.entries(SALLES).map(([id, s]) => ({ id: Number(id), nom: s.nom, prixHeure: s.prixHeure, places: s.places ?? null, description: s.description || "", equipements: s.equipements || [], visible: s.visible !== false })),
+    salles: Object.entries(SALLES).map(([id, s]) => ({ id: Number(id), nom: s.nom, prixHeure: s.prixHeure, places: s.places ?? null, groupe: s.groupe || "", description: s.description || "", equipements: s.equipements || [], visible: s.visible !== false })),
     postes: Object.entries(POSTES).map(([id, p]) => ({ id: Number(id), nom: p.nom, zone: p.zone, description: p.description || "", equipements: p.equipements || [] })),
     tarifsPoste: { ...TARIFS_POSTE },
     produits: Object.entries(PRODUITS_RESA).map(([id, p]) => ({ id: Number(id), nom: p.nom, prix: p.prix, description: p.description || "", parPersonne: p.parPersonne })),
