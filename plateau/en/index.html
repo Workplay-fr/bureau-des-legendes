@@ -29,10 +29,11 @@
 </header>
 
 <section class="barre" aria-label="Date, time slot and desk type">
-  <div class="groupe"><span class="label" id="l-jour">When</span><div class="ligne-quand"><div class="jours" id="jours" role="group" aria-labelledby="l-jour"></div><div class="segments" id="durees" role="radiogroup" aria-label="Duration"></div></div><div class="segments jsem" id="jsem" role="group" aria-label="Days of the week" hidden></div></div>
+  <div class="groupe"><span class="label" id="l-jour">Dates</span><button class="champ-dates" id="dates" type="button" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="l-jour"></button></div>
   <div class="groupe"><span class="label" id="l-creneau">Time slot</span><div class="segments" id="creneaux" role="radiogroup" aria-labelledby="l-creneau"></div></div>
   <div class="groupe"><span class="label" id="l-zone">Desk type</span><div class="segments" id="zones" role="radiogroup" aria-labelledby="l-zone"></div></div>
 </section>
+<div class="cal" id="cal" role="dialog" aria-label="Choose your dates" hidden></div>
 
 <p class="bandeau" id="bandeau" hidden></p>
 

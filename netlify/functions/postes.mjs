@@ -9,18 +9,18 @@ const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
 const NOMS_CRENEAU = { matin: "matin", apres: "après-midi", journee: "journée" };
 const erreurNx = e => String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "");
 
-// Jours d'une réservation : un seul jour, ou tous les jours ouverts d'une période de 1, 2 ou 4 semaines qui tombent sur les jours de semaine choisis.
+// Jours d'une réservation : un seul jour, ou tous les jours ouverts entre deux dates (31 jours au plus) qui tombent sur les jours de semaine retenus.
 const JOURS_NX = ["Sundays", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays"];
-function joursPeriode(jour, semaines, jsem) {
-  if (!semaines) return [jour];
+function joursPeriode(jour, fin, jsem) {
+  if (!fin) return [jour];
   const [y, m, d] = jour.split("-").map(Number), c = new Date(Date.UTC(y, m - 1, d)), res = [];
-  for (let k = 0; k < semaines * 7; k++, c.setUTCDate(c.getUTCDate() + 1)) { const v = c.toISOString().slice(0, 10); if (jsem.includes(c.getUTCDay()) && creneauPoste(v, "journee")) res.push(v); }
+  for (let k = 0; k < 32; k++, c.setUTCDate(c.getUTCDate() + 1)) { const v = c.toISOString().slice(0, 10); if (v > fin) break; if (jsem.includes(c.getUTCDay()) && creneauPoste(v, "journee")) res.push(v); }
   return res;
 }
-function lirePeriode(src) {
-  const semaines = [1, 2, 4].includes(Number(src.semaines)) ? Number(src.semaines) : 0;
+function lirePeriode(src, jour) {
+  const fin = jourValide(src.fin) && src.fin > jour && (Date.parse(src.fin) - Date.parse(jour)) / 864e5 <= 31 ? src.fin : null;
   const jsem = String(src.jsem ?? "1,2,3,4,5").split(",").map(Number).filter(n => n >= 1 && n <= 6).filter((n, i, t) => t.indexOf(n) === i);
-  return { semaines, jsem: jsem.length ? jsem : [1, 2, 3, 4, 5] };
+  return { fin, jsem: jsem.length ? jsem : [1, 2, 3, 4, 5] };
 }
 const chevauche = (occ, id, de, a) => (occ[id] || []).some(b => new Date(b.a) > de && new Date(b.de) < a);
 
@@ -59,8 +59,8 @@ const traiter = async (req) => {
   if (req.method === "GET") {
     const jour = url.searchParams.get("jour");
     if (!jourValide(jour)) return json(400, { ok: false, erreur: "Jour invalide." });
-    const { semaines, jsem } = lirePeriode({ semaines: url.searchParams.get("semaines"), jsem: url.searchParams.get("jsem") ?? undefined });
-    const jours = joursPeriode(jour, semaines, jsem);
+    const { fin, jsem } = lirePeriode({ fin: url.searchParams.get("fin"), jsem: url.searchParams.get("jsem") ?? undefined }, jour);
+    const jours = joursPeriode(jour, fin, jsem);
     if (!jours.length) return json(200, { ok: true, source: "nexudus", ...etatPostes([], {}) });
     try { return json(200, { ok: true, source: "nexudus", ...etatPostes(jours, await occupationPostes(jours[0], jours[jours.length - 1])) }); }
     catch (e) { console.error(e.message); return json(502, { ok: false, erreur: "Impossible de lire les disponibilités pour le moment.", detail: erreurNx(e) }); }
@@ -76,7 +76,7 @@ const traiter = async (req) => {
   const prenom = nettoie(d.prenom, 60), nomFamille = nettoie(d.nom, 60);
   const v = { nom: `${prenom} ${nomFamille}`.trim(), email: nettoie(d.email, 160).toLowerCase(), tel: nettoie(d.tel, 40), societe: nettoie(d.societe, 120) };
   if (!p || !jourValide(jour) || !TARIFS_POSTE[creneau]) return json(400, { ok: false, erreur: "Poste ou créneau invalide." });
-  const { semaines, jsem } = lirePeriode(d), jours = joursPeriode(jour, semaines, jsem);
+  const { fin, jsem } = lirePeriode(d, jour), jours = joursPeriode(jour, fin, jsem);
   if (!jours.length) return json(400, { ok: false, erreur: "Le Bureau est fermé ce jour-là." });
   const h = creneauPoste(jours[0], creneau);
   if (!h || h[1] <= h[0]) return json(400, { ok: false, erreur: "Le Bureau est fermé ce jour-là." });

@@ -114,7 +114,21 @@ svg.trace *{fill:none;stroke:var(--noir);stroke-width:1;vector-effect:non-scalin
 .puce.pas{padding:0 11px;font-size:16px;line-height:1;letter-spacing:0}.puce.pas:disabled{opacity:.3;cursor:default}
 .puce.date{min-width:112px;text-align:center;cursor:default;border-color:var(--line-2);display:flex;align-items:center;justify-content:center}
 .jsem .puce{min-width:32px;padding-inline:0;text-align:center}.jsem[hidden]{display:none}
-.barre{align-items:flex-start !important}
+.champ-dates{display:flex;align-items:center;gap:14px;height:33px;padding:0 14px;background:#fff;border:1px solid var(--line-2);font:400 12px/1.1 var(--f);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:border-color .25s}
+.champ-dates:hover,.champ-dates[aria-expanded="true"]{border-color:var(--noir)}
+.champ-dates span{display:flex;align-items:baseline;gap:8px}.champ-dates small{font-size:9.5px;letter-spacing:.16em;color:var(--gris)}
+.champ-dates .vide{color:var(--gris)}.champ-dates i{font-style:normal;color:var(--gris)}
+.cal{position:fixed;z-index:80;width:320px;padding:16px;background:#fff;border:1px solid var(--line-2);box-shadow:0 18px 50px rgba(25,17,11,.18)}
+.cal[hidden]{display:none}
+.cal-tete{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.cal-tete b{font-weight:400;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.cal-tete button{width:32px;height:32px;border:1px solid var(--line);background:none;font-size:17px;cursor:pointer}.cal-tete button:disabled{opacity:.3;cursor:default}
+.cal-sem,.cal-jours{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}.cal-sem span{text-align:center;font-size:10px;letter-spacing:.14em;color:var(--gris);padding:4px 0}
+.cal-jours button{aspect-ratio:1;border:0;background:none;font:400 13px/1 var(--f);cursor:pointer;transition:background .2s,color .2s}
+.cal-jours button:hover:not(:disabled){background:var(--creme)}.cal-jours button:disabled{color:rgba(25,17,11,.25);cursor:default}
+.cal-jours button.sel{background:var(--noir);color:#fff}.cal-jours button.entre{background:var(--creme)}
+.cal-aide{margin:10px 0;font-size:12.5px;color:var(--gris)}
+.cal-raccourcis{display:flex;gap:6px;margin-bottom:12px}.cal-raccourcis button{flex:1;padding:8px 6px;border:1px solid var(--line);background:none;font:400 11px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}.cal-raccourcis button:hover{border-color:var(--noir)}
+.cal-pied{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid var(--line)}.cal-pied label{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer;white-space:nowrap}.cal-pied .btn{padding:10px 18px}
 .jours::-webkit-scrollbar{display:none}
 .puce{flex:none;background:none;border:1px solid var(--line);padding:8px 11px;font:400 12px/1.15 var(--f);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .25s,color .25s,border-color .25s}
 .puce small{display:block;font-size:9.5px;letter-spacing:.16em;color:var(--gris);margin-bottom:3px;transition:color .25s}

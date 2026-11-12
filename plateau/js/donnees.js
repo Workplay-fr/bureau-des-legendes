@@ -10,8 +10,8 @@ const lireJson = async r => { try { return await r.json(); } catch { return null
 
 const nexudus = {
   source: "nexudus",
-  async etat(jour, semaines = 0, jsem = [1, 2, 3, 4, 5]) {
-    const r = await fetch(`/api/postes?jour=${jour}${semaines ? `&semaines=${semaines}&jsem=${jsem.join(",")}` : ""}`, { headers: { accept: "application/json" } });
+  async etat(jour, fin = null, samedi = false) {
+    const r = await fetch(`/api/postes?jour=${jour}${fin ? `&fin=${fin}&jsem=${samedi ? "1,2,3,4,5,6" : "1,2,3,4,5"}` : ""}`, { headers: { accept: "application/json" } });
     const d = await lireJson(r);
     if (!d) throw Object.assign(new Error("hors-ligne"), { code: "hors-ligne" });
     if (!r.ok || !d.ok) throw Object.assign(new Error(d.erreur || "Disponibilités indisponibles pour le moment."), { code: "serveur" });
@@ -31,11 +31,11 @@ const prises = new Set();
 function alea(graine) { let h = 2166136261; for (const c of graine) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return ((h >>> 0) % 1000) / 1000; }
 const simule = {
   source: "simule",
-  async etat(jour, semaines = 0, jsem = [1, 2, 3, 4, 5]) {
+  async etat(jour, fin = null, samedi = false) {
     await new Promise(r => setTimeout(r, 350));
     const horaires = j => { const w = new Date(j + "T12:00:00Z").getUTCDay(); return w === 0 ? null : w === 6 ? [9, 18] : [8, 20]; };
     // Mêmes règles que le serveur : un jour, ou les jours ouverts de la période qui tombent sur les jours de semaine choisis.
-    const jours = []; if (!semaines) jours.push(jour); else { const c = new Date(jour + "T12:00:00Z"); for (let k = 0; k < semaines * 7; k++, c.setUTCDate(c.getUTCDate() + 1)) { const v = c.toISOString().slice(0, 10); if (jsem.includes(c.getUTCDay()) && horaires(v)) jours.push(v); } }
+    const jours = []; if (!fin) jours.push(jour); else { const c = new Date(jour + "T12:00:00Z"); for (let k = 0; k < 32; k++, c.setUTCDate(c.getUTCDate() + 1)) { const v = c.toISOString().slice(0, 10); if (v > fin) break; if (horaires(v) && (samedi || c.getUTCDay() !== 6)) jours.push(v); } }
     const h = jours.length ? horaires(jours[0]) : null, n = jours.length;
     const creneaux = h ? { matin: { de: h[0], a: 13, prix: 15 * n, parJour: 15 }, apres: { de: 13, a: h[1], prix: 15 * n, parJour: 15 }, journee: { de: h[0], a: h[1], prix: 25 * n, parJour: 25 } } : { matin: null, apres: null, journee: null };
     const postes = POSTES_PLAN.map((p, i) => {
@@ -59,12 +59,12 @@ const simule = {
 let actif = null;
 export const donnees = {
   get source() { return actif ? actif.source : null; },
-  async etat(jour, semaines, jsem) {
-    if (actif) return actif.etat(jour, semaines, jsem);
-    try { const d = await nexudus.etat(jour, semaines, jsem); actif = nexudus; return d; }
+  async etat(jour, fin, samedi) {
+    if (actif) return actif.etat(jour, fin, samedi);
+    try { const d = await nexudus.etat(jour, fin, samedi); actif = nexudus; return d; }
     catch (e) {
       if (e.code !== "hors-ligne" && !(e instanceof TypeError)) { actif = nexudus; throw e; }
-      actif = simule; return simule.etat(jour, semaines, jsem);
+      actif = simule; return simule.etat(jour, fin, samedi);
     }
   },
   reserver(v) { return (actif || nexudus).reserver(v); },
