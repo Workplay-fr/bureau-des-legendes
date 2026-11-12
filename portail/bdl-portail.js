@@ -41,6 +41,12 @@ html.bdl .btn-primary:hover{ background:#000 !important; }
 html.bdl .btn-outline-primary{ border-color:var(--bdl-noir) !important; color:var(--bdl-noir) !important; text-transform:uppercase; font-size:.72rem; }
 html.bdl .btn-outline-primary:hover{ background:var(--bdl-noir) !important; color:#fff !important; }
 html.bdl .btn-link{ color:var(--bdl-noir) !important; text-underline-offset:4px; }
+/* Liens stylés en bouton (« Retour »…) : jamais noir sur noir */
+html.bdl .btn-primary.btn-link, html.bdl .btn-primary.text-body, html.bdl .btn-primary.bg-light{ background:transparent !important; border:0 !important; color:var(--bdl-noir) !important; box-shadow:none !important;
+  padding:.4rem 0 !important; font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500 !important; }
+html.bdl .btn-primary.btn-link *, html.bdl .btn-primary.text-body *{ color:var(--bdl-noir) !important; }
+html.bdl .btn-primary.btn-link:hover, html.bdl .btn-primary.text-body:hover{ background:transparent !important; color:var(--bdl-gris) !important; text-decoration:underline; }
+html.bdl .bdl-bandeau .btn-primary.btn-link, html.bdl .bdl-bandeau .btn-primary.btn-link *{ color:#fff !important; }
 
 /* ===== Tableau de bord ===== */
 html.bdl-dash .user-main-content{ background:var(--bdl-creme); }
