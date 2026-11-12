@@ -127,6 +127,9 @@ section{padding-block:clamp(72px,9vw,128px)}
 .en-porte::before,.en-porte::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(255,255,255,.75);animation:appel 2.8s var(--ease) infinite}
 .en-porte::after{animation-delay:1.4s}
 @keyframes appel{from{transform:scale(.6);opacity:1}to{transform:scale(4.2);opacity:0}}
+.en-nexudus{position:absolute;top:20px;right:22px;z-index:3;font:400 10.5px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.82);text-decoration:none;padding:8px 10px;border:1px solid rgba(255,255,255,.35);background:rgba(15,10,6,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .3s,color .3s}
+.en-nexudus b{font-weight:500;color:#fff}
+.en-nexudus:hover{background:#fff;color:var(--noir)}.en-nexudus:hover b{color:var(--noir)}
 .en-bas{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;gap:10px;padding:0 32px 36px}
 .en-bas .en-cta{margin-top:10px}
 .en-bas .label{color:#E8DFD2}
@@ -843,6 +846,7 @@ section.tf-q{padding-block:0}
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
       <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explorer l'immeuble : pousser la porte du 34, boulevard Haussmann">
         <img src="img/entree.webp" alt="L'entrée du Bureau des Légendes au crépuscule : porte cochère ouverte sur un intérieur éclairé, plaque en laiton, façade en pierre" width="1536" height="1024" fetchpriority="high">
+        <a class="en-nexudus" href="https://www.nexudus.com/" target="_blank" rel="noopener">Powered by <b>Nexudus</b></a>
         <i class="en-porte" aria-hidden="true"></i>
         <div class="en-bas">
           <b>Poussez la porte.</b>
@@ -2085,7 +2089,7 @@ const NIVEAUX = [
     setTimeout(() => document.getElementById("un-fermer").focus(), 80);
   }
   function fermer(){ if (box.hidden) return; etapes.forEach(clearTimeout); etapes = []; clearTimeout(minuterie); box.hidden = true; document.body.classList.remove("modal-ouverte"); focusAvant?.focus?.(); }
-  entree.addEventListener("click", ouvrirUnivers);
+  entree.addEventListener("click", e => { if (!e.target.closest(".en-nexudus")) ouvrirUnivers(); });
   entree.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); ouvrirUnivers(); } });
   document.getElementById("un-fermer").addEventListener("click", fermer);
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !box.hidden) fermer(); });
