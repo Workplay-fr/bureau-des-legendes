@@ -63,6 +63,40 @@ export async function occupation(salle, jour) {
     .map(b => ({ de: isoZ(b.de), a: isoZ(b.a) }));
 }
 
+// Postes flexibles du 1er étage (ressources Nexudus « Poste C01 » à « Poste C20 »), dans l'ordre du plan.
+const IDS_POSTES = [1415423097,1415423001,1415423002,1415423098,1415423099,1415423003,1415423004,1415423005,1415423100,1415423101,1415423006,1415423102,1415423007,1415423103,1415423104,1415423105,1415423106,1415423107,1415423008,1415423009];
+const ZONES_POSTES = ["fenetre","debout","fenetre","ecran","calme"];
+export const POSTES = Object.fromEntries(IDS_POSTES.map((id, i) => [id, { nom: "Poste C" + String(i + 1).padStart(2, "0"), zone: ZONES_POSTES[Math.floor(i / 4)] }]));
+// Tarifs HT d'un poste flexible réservé depuis le site.
+export const TARIFS_POSTE = { matin: 15, apres: 15, journee: 25 };
+// Créneaux d'un poste, heure de Paris, selon les horaires du jour.
+export function creneauPoste(jour, creneau) {
+  const h = HORAIRES[jourSemaine(jour)];
+  if (!h) return null;
+  if (creneau === "matin") return [h[0], 13];
+  if (creneau === "apres") return [13, h[1]];
+  if (creneau === "journee") return [h[0], h[1]];
+  return null;
+}
+// Réservations de tous les postes un jour donné : { idPoste: [{de, a}] } en ISO UTC.
+export async function occupationPostes(jour) {
+  const debut = parisVersUtc(jour, 0), fin = parisVersUtc(jour, 23, 59);
+  const depuis = new Date(debut.getTime() - 24 * 3600e3);
+  const res = Object.fromEntries(Object.keys(POSTES).map(id => [id, []]));
+  for (let page = 1; page <= 5; page++) {
+    const q = `from_Booking_FromTime=${encodeURIComponent(isoZ(depuis))}&to_Booking_FromTime=${encodeURIComponent(isoZ(fin))}&size=100&page=${page}`;
+    const d = await nx("GET", `/spaces/bookings?${q}`);
+    for (const b of d.Records || []) {
+      const id = String(b.ResourceId || (b.Resource && b.Resource.Id) || "");
+      if (!res[id]) continue;
+      const de = utc(b.FromTime), a = utc(b.ToTime);
+      if (a > debut && de < fin) res[id].push({ de: isoZ(de), a: isoZ(a) });
+    }
+    if (!d.HasNextPage) break;
+  }
+  return res;
+}
+
 // Retrouve un contact par e-mail, ou le crée.
 export async function contact({ nom, email, tel, societe, note, compte }) {
   const liste = await nx("GET", `/spaces/coworkers?Coworker_Email=${encodeURIComponent(email)}&size=1`);
