@@ -468,10 +468,10 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
   }
   function salutation() {
     var h = heureParis();
-    if (h < 5) return ["Belle", "nuit", "au", "<em>Bureau.</em>"];
-    if (h < 12) return ["Bonjour,", "et", "bienvenue", "au", "<em>Bureau.</em>"];
-    if (h < 18) return ["Bel", "après-midi", "au", "<em>Bureau.</em>"];
-    return ["Bonsoir,", "et", "bienvenue", "au", "<em>Bureau.</em>"];
+    if (h < 5) return ["Belle", "nuit", "au", "<em>Bureau</em>", "<em>des</em>", "<em>Légendes.</em>"];
+    if (h < 12) return ["Bonjour,", "et", "bienvenue", "au", "<em>Bureau</em>", "<em>des</em>", "<em>Légendes.</em>"];
+    if (h < 18) return ["Bel", "après-midi", "au", "<em>Bureau</em>", "<em>des</em>", "<em>Légendes.</em>"];
+    return ["Bonsoir,", "et", "bienvenue", "au", "<em>Bureau</em>", "<em>des</em>", "<em>Légendes.</em>"];
   }
 
   function habillerBandeau(hero) {
