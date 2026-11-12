@@ -115,48 +115,93 @@ section{padding-block:clamp(72px,9vw,128px)}
 .ap-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
 @media (hover:hover){.apercu:hover .ap-monde img{filter:brightness(1.03)}}
 @media (prefers-reduced-motion:reduce){.ap-pt{animation:none}.ap-cadre{transform:none}}
-/* L'immeuble en coupe : quatre niveaux qui flottent, celui qui est mis en avant change tout seul, chacun a son offre */
-.immeuble{background:#F3E8E2;container-type:size;color:var(--noir)}
-@media (min-width:901px){.hero-r.immeuble{position:sticky;top:var(--hdr-h,74px);align-self:start;height:calc(100vh - var(--hdr-h,74px));min-height:540px}}
-.im-haut{position:absolute;inset:22px 24px auto;z-index:3;display:flex;justify-content:space-between;gap:16px;margin:0}
-.im-pile{position:absolute;left:54%;top:calc(50% - 56px);translate:-50% -50%;height:min(calc(88cqh - 222px),calc((100cqw - 110px) * 1.5));aspect-ratio:2/3}
-.im-etage{position:absolute;left:0;width:100%;padding:0;border:0;background:none;cursor:pointer;z-index:calc(4 - var(--i));transition:transform .9s var(--ease),opacity .9s var(--ease);transform:translateY(calc(var(--i) * -2cqh + 3cqh)) scale(.94);opacity:.5}
-.immeuble .im-etage img{position:static;width:100%;height:100%;object-fit:fill;display:block;-webkit-mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);animation:flotte 6.5s calc(var(--i) * -1.6s) ease-in-out infinite}
+/* Haut de page : l'entrée de l'immeuble, et l'invitation à pousser la porte */
+@media (min-width:901px){.hero-r.entree{position:sticky;top:var(--hdr-h,74px);align-self:start;height:calc(100vh - var(--hdr-h,74px));min-height:540px}}
+.entree{background:#1b130c;color:#fff;cursor:pointer}
+.hero-r.entree > img{object-position:40% 50%;transform-origin:44% 62%;animation:approche 22s ease-in-out infinite alternate}
+@keyframes approche{from{transform:scale(1)}to{transform:scale(1.13)}}
+.entree::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(12,8,4,.45) 0%,rgba(12,8,4,0) 22%,rgba(12,8,4,0) 40%,rgba(12,8,4,.78) 62%,rgba(12,8,4,.93) 100%);pointer-events:none}
+.en-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;margin:0;color:#fff}
+/* repère lumineux sur la porte */
+.en-porte{position:absolute;left:50%;top:44%;z-index:2;width:14px;height:14px;margin:-7px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.22)}
+.en-porte::before,.en-porte::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(255,255,255,.75);animation:appel 2.8s var(--ease) infinite}
+.en-porte::after{animation-delay:1.4s}
+@keyframes appel{from{transform:scale(.6);opacity:1}to{transform:scale(4.2);opacity:0}}
+.en-bas{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;gap:12px;padding:0 28px 30px}
+.en-bas .label{color:#E8DFD2}
+.en-bas b{font:400 clamp(22px,2.2vw,32px)/1.15 var(--f);letter-spacing:.08em;text-transform:uppercase}
+.en-bas p{font-size:15px;line-height:1.55;color:#E8DFD2;max-width:46ch}
+.en-liste{display:flex;flex-wrap:wrap;gap:6px 8px;list-style:none;margin:2px 0 6px;padding:0}
+.en-liste li{font:400 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;padding:8px 10px;border:1px solid rgba(255,255,255,.45);animation:up .7s calc(.5s + var(--k) * .09s) var(--ease) both}
+.en-cta{display:inline-flex;align-items:center;justify-content:space-between;gap:18px;align-self:start;justify-self:start;border:1px solid #fff;background:#fff;color:var(--noir);padding:17px 22px;font:400 12.5px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--ease)}
+.en-cta::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--noir);transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.en-cta i{font-style:normal;font-size:18px;transition:transform .45s var(--ease)}
+@media (hover:hover){.entree:hover .en-cta{color:#fff}.entree:hover .en-cta::before{transform:scaleX(1);transform-origin:left}.entree:hover .en-cta i{transform:translateX(6px)}}
+
+/* L'univers : on passe la porte, l'immeuble apparaît puis s'ouvre en quatre niveaux, chacun avec son offre */
+.univers{position:fixed;inset:0;z-index:150;background:#F3E7E1;color:var(--noir);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);overflow:hidden}
+.univers[hidden]{display:none}
+.un-porte{position:absolute;inset:0;z-index:5;overflow:hidden;background:#1b130c;transition:opacity .7s .55s var(--ease),visibility 0s 1.3s}
+.un-porte img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 55%;transform-origin:44% 62%;transition:transform 1.25s cubic-bezier(.7,0,.84,0),filter 1.25s}
+.un-porte::after{content:"";position:absolute;inset:0;background:#F7E3BE;opacity:0;transition:opacity .9s .35s var(--ease)}
+.univers.entre .un-porte img{transform:scale(4.6);filter:blur(4px)}
+.univers.entre .un-porte::after{opacity:1}
+.univers.entre .un-porte{opacity:0;visibility:hidden}
+.univers .un-fermer{position:absolute;top:max(20px,env(safe-area-inset-top,0px));right:22px;z-index:8;margin:0;background:rgba(255,255,255,.7)}
+.un-scene{position:relative;min-width:0;min-height:0}
+.im-pile{position:absolute;left:50%;top:50%;translate:-50% -50%;height:min(86vh,calc((58vw - 80px) * 1.5));aspect-ratio:2/3;container-type:size}
+.un-batiment{position:absolute;left:50%;top:50%;translate:-50% -50%;height:min(96vh,calc((58vw - 80px) * 1.5));aspect-ratio:2/3;object-fit:contain;opacity:0;transform:translateY(26px) scale(.94);transition:opacity 1s var(--ease),transform 1.4s var(--ease),filter 1s var(--ease);pointer-events:none}
+.univers.dedans .un-batiment{opacity:1;transform:none;animation:flotte 7s ease-in-out infinite}
+.univers.ouvert .un-batiment{opacity:0;transform:scale(1.07);filter:blur(8px);animation:none}
+.im-etage{position:absolute;left:0;width:100%;padding:0;border:0;background:none;cursor:pointer;z-index:calc(4 - var(--i));opacity:0;transform:translateY(calc((var(--i) - 1.5) * 19cqh)) scale(.8);transition:transform 1.25s calc((3 - var(--i)) * .11s) var(--ease),opacity .9s calc((3 - var(--i)) * .11s) var(--ease)}
+.univers.ouvert .im-etage{opacity:.5;transform:translateY(calc(var(--i) * -1.4cqh + 2.1cqh)) scale(.94)}
+.univers.pret .im-etage{transition-delay:0s;transition-duration:.9s}
+.univers.ouvert .im-etage.on{opacity:1;transform:translateY(calc(var(--i) * -1.4cqh + 2.1cqh)) scale(1.06);z-index:6}
+.im-etage img{width:100%;height:100%;object-fit:fill;display:block;-webkit-mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);animation:flotte 6.5s calc(var(--i) * -1.6s) ease-in-out infinite}
 @keyframes flotte{0%,100%{transform:translateY(-4px)}50%{transform:translateY(5px)}}
-.im-etage.on{transform:translateY(calc(var(--i) * -2cqh + 3cqh)) scale(1.07);opacity:1;z-index:6}
 .im-etage::after{content:"";position:absolute;inset:8% 4%;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 42%,rgba(255,244,220,.5) 50%,rgba(255,255,255,0) 58%);background-size:260% 100%;background-position:130% 0;mix-blend-mode:soft-light;opacity:0}
 .im-etage.on::after{opacity:1;animation:reflet 3.2s .5s var(--ease) infinite}
 @keyframes reflet{to{background-position:-40% 0}}
 .im-etage:focus-visible{outline:1px solid var(--noir);outline-offset:-6px}
-.im-rail{position:absolute;left:22px;top:calc(50% - 56px);translate:0 -50%;z-index:3;list-style:none;margin:0;padding:0;display:grid;gap:26px;font:400 11.5px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
-.im-rail li{display:flex;align-items:center;gap:10px;transition:color .5s var(--ease)}
-.im-rail li::before{content:"";width:14px;height:1px;background:currentColor;transition:width .6s var(--ease)}
-.im-rail li.on{color:var(--noir)}
-.im-rail li.on::before{width:34px}
-.im-fiche{position:absolute;inset:auto 0 0 0;z-index:4;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px 20px;padding:18px 24px 20px;background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
-.im-texte{display:grid;gap:5px;min-width:0}
-.im-texte b{font:400 clamp(16px,1.35vw,20px)/1.25 var(--f);letter-spacing:.1em;text-transform:uppercase}
-.im-texte small{font-size:13.5px;line-height:1.45;color:var(--fg-2)}
-.im-fiche.change .im-texte > *,.im-fiche.change .btn{animation:up .6s var(--ease) both}
-.im-fiche.change .im-texte > :nth-child(2){animation-delay:.05s}.im-fiche.change .im-texte > :nth-child(3){animation-delay:.1s}.im-fiche.change .btn{animation-delay:.14s}
-.im-fiche .btn{padding:15px 22px;white-space:nowrap}
-.im-temps{position:absolute;left:0;top:-1px;height:1px;width:100%;background:var(--noir);transform:scaleX(0);transform-origin:left}
-.immeuble.tourne .im-temps{animation:temps var(--duree,4.2s) linear forwards}
+.un-panneau{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3.4vh,34px);padding:clamp(70px,9vh,110px) clamp(24px,5vw,84px) clamp(28px,6vh,64px) 0;min-width:0;overflow:auto;scrollbar-width:none}
+.un-panneau > *{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.univers.ouvert .un-panneau > *{opacity:1;transform:none;transition-delay:calc(.5s + var(--k,0) * .1s)}
+.un-panneau h2{font-size:clamp(26px,2.9vw,44px);margin-top:14px}
+.un-panneau .lede{color:var(--fg-2);max-width:44ch;font-size:16px}
+.un-niveaux{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
+.un-niveau{display:grid;grid-template-columns:54px minmax(0,1fr);gap:0 14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;cursor:pointer;position:relative;color:var(--gris);transition:color .5s var(--ease),padding .6s var(--ease)}
+.un-niveau .n{font:300 26px/1 var(--f);letter-spacing:.02em;color:inherit}
+.un-niveau b{font:400 15px/1.3 var(--f);letter-spacing:.12em;text-transform:uppercase;align-self:center}
+.un-niveau .plus{grid-column:2;display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s var(--ease)}
+.un-niveau .plus > div{overflow:hidden;min-height:0}
+.un-niveau small{display:block;font-size:14.5px;line-height:1.5;color:var(--fg-2);padding-top:8px;max-width:46ch}
+.un-niveau .btn{margin-top:14px;padding:14px 22px}
+.un-niveau.on{color:var(--noir);padding-block:20px}
+.un-niveau.on .plus{grid-template-rows:1fr}
+.un-niveau::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--noir);transform:scaleX(0);transform-origin:left}
+.univers.tourne .un-niveau.on::after{animation:temps var(--duree,5s) linear forwards}
 @keyframes temps{to{transform:scaleX(1)}}
-@media (prefers-reduced-motion:reduce){.immeuble .im-etage img,.im-etage.on::after,.immeuble.tourne .im-temps{animation:none}}
+@media (max-width:900px){
+  .univers{grid-template-columns:minmax(0,1fr);grid-template-rows:46vh minmax(0,1fr)}
+  .im-pile,.un-batiment{height:min(43vh,calc((100vw - 60px) * 1.5))}
+  .un-scene{margin-top:8px}
+  .un-panneau{justify-content:flex-start;padding:6px var(--gut-r) 24px var(--gut);gap:14px}
+  .un-panneau .lede{display:none}
+  .un-panneau h2{font-size:22px;margin-top:8px}
+  .un-niveau{padding:12px 0}.un-niveau.on{padding-block:14px}
+  .un-niveau .n{font-size:22px}
+  .un-niveau .btn{width:100%}
+  .en-bas{padding:0 var(--gut-r) 24px var(--gut)}
+  .en-haut{inset:14px 16px auto}
+}
+@media (prefers-reduced-motion:reduce){.hero-r.entree > img,.en-porte::before,.en-porte::after,.im-etage img,.im-etage.on::after,.univers.dedans .un-batiment,.univers.tourne .un-niveau.on::after{animation:none}.un-porte{display:none}}
 .hero-r figcaption{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
 @media (max-width:900px){
   .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0}
   .hero-l{padding:36px var(--gut-r) 40px var(--gut);gap:32px}
   .vword{writing-mode:horizontal-tb;transform:none;font-size:clamp(56px,19vw,120px);border-inline:0;border-block:1px solid var(--line);justify-content:flex-start;padding:0 var(--gut-r) 0 var(--gut);line-height:1.3}
   .hero-r{height:86vw;min-height:320px}
-  .hero-r.immeuble{height:172vw}
-  .im-pile{left:57%;top:calc(50% - 84px);height:min(calc(94cqh - 262px),calc((100cqw - 84px) * 1.5))}
-  .im-rail{left:12px;top:calc(50% - 84px);gap:22px;font-size:10.5px}
-  .im-rail li::before{width:8px}.im-rail li.on::before{width:18px}
-  .im-haut{inset:14px 16px auto}
-  .im-fiche{grid-template-columns:minmax(0,1fr);padding:16px var(--gut-r) 18px var(--gut)}
-  .im-fiche .btn{width:100%}
+  .hero-r.entree{height:132vw}
   .apercu{height:78vw}
   .ap-haut{inset:14px 16px auto}
   .ap-legende{display:none}
@@ -795,19 +840,16 @@ section.tf-q{padding-block:0}
         </div>
       </div>
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
-      <div class="hero-r immeuble" id="immeuble">
-        <p class="im-haut label"><span>34, boulevard Haussmann</span><span>Quatre niveaux</span></p>
-        <div class="im-pile" role="group" aria-label="Les quatre niveaux de l'immeuble">
-          <button class="im-etage" type="button" data-e="3" style="top:0;height:30.208%;--i:3" aria-label="3e étage : un étage pour votre équipe"><img src="img/immeuble/etage-3.webp" alt="" width="1536" height="696"></button>
-          <button class="im-etage" type="button" data-e="2" style="top:22.135%;height:32.487%;--i:2" aria-label="2e étage : résidents et bureaux privés"><img src="img/immeuble/etage-2.webp" alt="" width="1536" height="749"></button>
-          <button class="im-etage" type="button" data-e="1" style="top:46.549%;height:32.487%;--i:1" aria-label="1er étage : le plateau de coworking"><img src="img/immeuble/etage-1.webp" alt="" width="1536" height="749"></button>
-          <button class="im-etage" type="button" data-e="0" style="top:70.964%;height:29.036%;--i:0" aria-label="Rez-de-chaussée : salles de réunion et Verrière"><img src="img/immeuble/rdc.webp" alt="" width="1536" height="669" fetchpriority="high"></button>
-        </div>
-        <ol class="im-rail" aria-hidden="true"><li data-e="3">3e</li><li data-e="2">2e</li><li data-e="1">1er</li><li data-e="0">RDC</li></ol>
-        <div class="im-fiche" aria-live="polite">
-          <div class="im-texte"><span class="label" id="im-niveau"></span><b id="im-titre"></b><small id="im-detail"></small></div>
-          <a class="btn btn-or" href="#" id="im-cta"></a>
-          <i class="im-temps" aria-hidden="true"></i>
+      <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explorer l'immeuble : pousser la porte du 34, boulevard Haussmann">
+        <img src="img/entree.webp" alt="L'entrée du Bureau des Légendes au crépuscule : porte cochère ouverte sur un intérieur éclairé, plaque en laiton, façade en pierre" width="1536" height="1024" fetchpriority="high">
+        <p class="en-haut label"><span>34, boulevard Haussmann</span><span>Quatre niveaux</span></p>
+        <i class="en-porte" aria-hidden="true"></i>
+        <div class="en-bas">
+          <span class="label">La porte est ouverte</span>
+          <b>Entrez, et parcourez l'immeuble.</b>
+          <p>Quatre niveaux à explorer en maquette, avec les disponibilités en temps réel et la réservation en ligne.</p>
+          <ul class="en-liste" aria-label="Ce que vous allez trouver"><li style="--k:0">Salles et Verrière</li><li style="--k:1">Plateau de coworking</li><li style="--k:2">Bureaux privés</li><li style="--k:3">Étage privatisé</li></ul>
+          <span class="en-cta">Explorer l'immeuble <i aria-hidden="true">→</i></span>
         </div>
       </div>
     </div>
@@ -1112,6 +1154,25 @@ section.tf-q{padding-block:0}
     <div class="bot"><span>34, boulevard Haussmann, 75009 Paris</span><span>Lieu de démonstration · réservations et espace membre propulsés par Nexudus</span></div>
   </div>
 </footer>
+
+<div class="univers" id="univers" hidden role="dialog" aria-modal="true" aria-labelledby="un-titre">
+  <div class="un-porte" aria-hidden="true"><img src="img/entree.webp" alt=""></div>
+  <button class="mv-fermer un-fermer" type="button" id="un-fermer" aria-label="Refermer et revenir au site"></button>
+  <div class="un-scene">
+    <img class="un-batiment" src="img/immeuble/batiment.webp" alt="Maquette de l'immeuble haussmannien de quatre niveaux, fenêtres éclairées" width="1024" height="1536" loading="lazy">
+    <div class="im-pile" role="group" aria-label="Les quatre niveaux de l'immeuble">
+      <button class="im-etage" type="button" data-e="3" style="top:0;height:30.208%;--i:3" aria-label="3e étage : un étage pour votre équipe"><img src="img/immeuble/etage-3.webp" alt="" width="1536" height="696" loading="lazy"></button>
+      <button class="im-etage" type="button" data-e="2" style="top:22.135%;height:32.487%;--i:2" aria-label="2e étage : résidents et bureaux privés"><img src="img/immeuble/etage-2.webp" alt="" width="1536" height="749" loading="lazy"></button>
+      <button class="im-etage" type="button" data-e="1" style="top:46.549%;height:32.487%;--i:1" aria-label="1er étage : le plateau de coworking"><img src="img/immeuble/etage-1.webp" alt="" width="1536" height="749" loading="lazy"></button>
+      <button class="im-etage" type="button" data-e="0" style="top:70.964%;height:29.036%;--i:0" aria-label="Rez-de-chaussée : salles de réunion et Verrière"><img src="img/immeuble/rdc.webp" alt="" width="1536" height="669" loading="lazy"></button>
+    </div>
+  </div>
+  <div class="un-panneau">
+    <div style="--k:0"><span class="label">34, boulevard Haussmann</span><h2 id="un-titre">Quatre niveaux, une adresse.</h2></div>
+    <p class="lede" style="--k:1">Choisissez un niveau pour voir ce qu'il propose, puis réservez en ligne.</p>
+    <ol class="un-niveaux" id="un-niveaux" style="--k:2"></ol>
+  </div>
+</div>
 
 <div class="mv" id="mv" hidden role="dialog" aria-modal="true" aria-labelledby="mv-titre">
   <div class="mv-voile" data-fermer></div>
@@ -2052,34 +2113,49 @@ route();
 /* L'immeuble en coupe : le niveau mis en avant change tout seul ; survol ou clic pour choisir, chaque niveau mène à son offre. */
 const NIVEAUX = [
   { niveau:"Rez-de-chaussée", titre:"Salles de réunion et Verrière", detail:"Quatre salles jusqu'à 15 personnes, et 120 m² sous verrière. Dès 35 € HT de l'heure.", cta:"Réserver une salle", action:() => ouvrirSalle(null) },
-  { niveau:"1er étage", titre:"Le plateau", detail:"Vingt postes flexibles, à choisir sur le plan. Dès 15 € HT la demi-journée.", cta:"Réserver un poste", action:() => { location.href = document.getElementById("apercu")?.href || "plateau/"; } },
+  { niveau:"1er étage", titre:"Le plateau de coworking", detail:"Vingt postes flexibles, à choisir sur le plan. Dès 15 € HT la demi-journée.", cta:"Réserver un poste", action:() => { location.href = document.getElementById("apercu")?.href || "plateau/"; } },
   { niveau:"2e étage", titre:"Résidents et bureaux privés", detail:"Seize postes attitrés et trois bureaux fermés, avec cheminée et moulures. Dès 490 € HT par mois.", cta:"Devenir membre", action:() => ouvrirMembre(1415397039) },
   { niveau:"3e étage", titre:"Un étage pour votre équipe", detail:"Un plateau privatisé : vos postes, votre bureau de direction, votre salle de réunion.", cta:"Réserver une visite", action:() => ouvrir() },
 ];
 (function(){ const h = document.querySelector(".hdr"); const maj = () => document.documentElement.style.setProperty("--hdr-h", h.offsetHeight + "px"); maj(); addEventListener("resize", maj); })();
-(function immeuble(){
-  const box = document.getElementById("immeuble"); if (!box) return;
-  const fiche = box.querySelector(".im-fiche"), cta = document.getElementById("im-cta"), DUREE = 4200;
-  let actif = -1, minuterie = 0, pause = false, visible = true;
-  function montrer(n, auto){
-    actif = (n + NIVEAUX.length) % NIVEAUX.length; const v = NIVEAUX[actif];
-    box.querySelectorAll("[data-e]").forEach(el => el.classList.toggle("on", Number(el.dataset.e) === actif));
-    document.getElementById("im-niveau").textContent = v.niveau; document.getElementById("im-titre").textContent = v.titre; document.getElementById("im-detail").textContent = v.detail; cta.textContent = v.cta;
-    fiche.classList.remove("change"); box.classList.remove("tourne"); void fiche.offsetWidth; fiche.classList.add("change");
-    clearTimeout(minuterie);
-    if (!RM && !pause && visible){ box.style.setProperty("--duree", DUREE + "ms"); box.classList.add("tourne"); minuterie = setTimeout(() => montrer(actif + 1, true), DUREE); }
+(function univers(){
+  const box = document.getElementById("univers"), entree = document.getElementById("entree"); if (!box || !entree) return;
+  const liste = document.getElementById("un-niveaux"), ordre = ["3e", "2e", "1er", "RDC"], DUREE = 5200;
+  let actif = 0, minuterie = 0, pause = false, etapes = [], focusAvant = null;
+  // Les quatre niveaux, du 3e au rez-de-chaussée, avec leur offre et leur bouton
+  const dessiner = () => { liste.innerHTML = [3, 2, 1, 0].map((n, k) => { const v = NIVEAUX[n]; return `<li><button class="un-niveau" type="button" data-e="${n}" aria-expanded="false"><span class="n">${ordre[k]}</span><b>${esc(v.titre)}</b><span class="plus"><div><small>${esc(v.detail)}</small><span class="btn btn-or" data-cta="${n}">${esc(v.cta)}</span></div></span></button></li>`; }).join(""); };
+  function montrer(n){
+    actif = (n + NIVEAUX.length) % NIVEAUX.length;
+    box.querySelectorAll("[data-e]").forEach(el => { const on = Number(el.dataset.e) === actif; el.classList.toggle("on", on); if (el.classList.contains("un-niveau")) el.setAttribute("aria-expanded", String(on)); });
+    box.classList.remove("tourne"); clearTimeout(minuterie);
+    if (!RM && !pause && box.classList.contains("ouvert")){ void box.offsetWidth; box.style.setProperty("--duree", DUREE + "ms"); box.classList.add("tourne"); minuterie = setTimeout(() => montrer(actif - 1), DUREE); }
   }
-  box.querySelectorAll(".im-etage").forEach(b => {
-    b.addEventListener("pointerenter", e => { if (e.pointerType === "mouse"){ pause = true; if (Number(b.dataset.e) !== actif) montrer(Number(b.dataset.e)); else { clearTimeout(minuterie); box.classList.remove("tourne"); } } });
-    b.addEventListener("click", () => { const n = Number(b.dataset.e); if (n === actif && matchMedia("(hover:hover)").matches) return NIVEAUX[n].action(); pause = true; montrer(n); });
-    b.addEventListener("focus", () => { pause = true; montrer(Number(b.dataset.e)); });
+  const lancer = n => { fermer(); NIVEAUX[n].action(); };
+  function ouvrirUnivers(){
+    focusAvant = document.activeElement; dessiner(); pause = false; actif = 0;
+    box.className = "univers"; box.hidden = false; document.body.classList.add("modal-ouverte");
+    const pas = (t, f) => etapes.push(setTimeout(f, RM ? 0 : t));
+    // on passe la porte, l'immeuble apparaît, puis il s'ouvre en quatre niveaux
+    pas(60, () => box.classList.add("entre", "dedans"));
+    pas(2500, () => { box.classList.add("ouvert"); montrer(0); });
+    pas(4200, () => box.classList.add("pret"));
+    setTimeout(() => document.getElementById("un-fermer").focus(), 80);
+  }
+  function fermer(){ if (box.hidden) return; etapes.forEach(clearTimeout); etapes = []; clearTimeout(minuterie); box.hidden = true; document.body.classList.remove("modal-ouverte"); focusAvant?.focus?.(); }
+  entree.addEventListener("click", ouvrirUnivers);
+  entree.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); ouvrirUnivers(); } });
+  document.getElementById("un-fermer").addEventListener("click", fermer);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !box.hidden) fermer(); });
+  box.addEventListener("click", e => {
+    // un clic pendant l'ouverture passe directement à la vue en coupe
+    if (!box.classList.contains("ouvert")){ etapes.forEach(clearTimeout); etapes = []; box.classList.add("entre", "dedans", "ouvert", "pret"); montrer(0); return; }
+    const c = e.target.closest("[data-cta]"); if (c) return lancer(Number(c.dataset.cta));
+    const el = e.target.closest("[data-e]"); if (!el) return;
+    const n = Number(el.dataset.e); if (n === actif && el.classList.contains("im-etage")) return lancer(n);
+    pause = true; montrer(n);
   });
-  box.addEventListener("pointerleave", () => { if (pause){ pause = false; montrer(actif); } });
-  fiche.addEventListener("pointerenter", () => { pause = true; clearTimeout(minuterie); box.classList.remove("tourne"); });
-  cta.addEventListener("click", e => { e.preventDefault(); NIVEAUX[actif].action(); });
-  if (window.IntersectionObserver) new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible && !pause) montrer(actif); else clearTimeout(minuterie); }, { threshold:.2 }).observe(box);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) clearTimeout(minuterie); else if (!pause && visible) montrer(actif); });
-  montrer(0);
+  box.querySelectorAll(".im-etage").forEach(b => b.addEventListener("pointerenter", e => { if (e.pointerType === "mouse" && box.classList.contains("pret")){ pause = true; if (Number(b.dataset.e) !== actif) montrer(Number(b.dataset.e)); else { clearTimeout(minuterie); box.classList.remove("tourne"); } } }));
+  document.addEventListener("visibilitychange", () => { if (box.hidden) return; if (document.hidden) clearTimeout(minuterie); else if (!pause) montrer(actif); });
 })();
 
 /* Aperçu du plateau en haut de page : rendu de l'étage, postes libres lus dans Nexudus, clic vers /plateau. */
