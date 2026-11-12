@@ -431,6 +431,78 @@ html.bdl .bdl-pied-c{ display:flex; align-items:center; justify-content:space-be
 html.bdl .bdl-pied-liens{ display:flex; gap:24px; flex-wrap:wrap; }
 html.bdl .bdl-pied-liens a{ color:rgba(255,255,255,.8) !important; text-decoration:none; letter-spacing:.04em; }
 html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
+/* ===== Autres pages : même direction artistique que le tableau de bord ===== */
+html.bdl-page body, html.bdl-page main, html.bdl-page main > div{ background:var(--bdl-creme) !important; }
+html.bdl-page main .container{ max-width:1320px; }
+/* Bandeau photo */
+html.bdl .bdl-bandeau{ position:relative; overflow:hidden; background:var(--bdl-noir) !important; border:0 !important; border-radius:0 0 28px 28px !important; box-shadow:none !important;
+  padding-top:clamp(2.75rem,7vh,4.5rem) !important; padding-bottom:2.25rem !important; margin-bottom:1rem; }
+html.bdl .bdl-b-bg{ position:absolute; inset:-4%; background-size:cover; background-position:center 40%; transform-origin:60% 40%; opacity:0; transition:opacity 1.2s var(--bdl-ease); animation:bdlZoom 38s ease-in-out infinite alternate; }
+html.bdl .bdl-b-bg.on{ opacity:1; }
+html.bdl .bdl-b-voile{ position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(25,17,11,.6) 0%,rgba(25,17,11,.7) 55%,rgba(25,17,11,.9) 100%); }
+html.bdl .bdl-bandeau > *:not(.bdl-b-bg):not(.bdl-b-voile){ position:relative; z-index:2; }
+html.bdl .bdl-bandeau, html.bdl .bdl-bandeau h1, html.bdl .bdl-bandeau h2, html.bdl .bdl-bandeau h3, html.bdl .bdl-bandeau label, html.bdl .bdl-bandeau p, html.bdl .bdl-bandeau .btn-link, html.bdl .bdl-bandeau .text-body{ color:#fff !important; }
+html.bdl .bdl-bandeau p{ color:rgba(255,255,255,.78) !important; }
+html.bdl .bdl-bandeau svg{ color:#fff; }
+html.bdl .bdl-bandeau hr{ border-color:rgba(255,255,255,.22) !important; opacity:1; margin:1.5rem 0 !important; }
+html.bdl .bdl-b-sur{ display:flex; align-items:center; gap:.9rem; font-size:.7rem; letter-spacing:.28em; text-transform:uppercase; font-weight:500; color:#fff; margin-bottom:.9rem; opacity:0; animation:bdlMonte .8s var(--bdl-ease) .1s forwards; }
+html.bdl .bdl-b-sur i{ display:block; width:44px; height:1px; background:rgba(255,255,255,.6); }
+html.bdl .bdl-b-titre{ margin:0; font-weight:500 !important; font-size:clamp(2.2rem,4.6vw,4rem) !important; line-height:1.04 !important; letter-spacing:-.015em; color:#fff !important; opacity:0; animation:bdlMonte .9s var(--bdl-ease) .2s forwards; }
+html.bdl .bdl-b-titre em{ font-style:italic; font-weight:inherit; padding-right:.08em;
+  background:linear-gradient(105deg,#3C6A9E 0%,#3C6A9E 38%,#5E8CC2 44%,#D6E6F7 50%,#5E8CC2 56%,#3C6A9E 62%,#3C6A9E 100%); background-size:260% 100%; background-position:120% 0;
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; animation:bdlGloss 7s ease-in-out 1.6s infinite; }
+html.bdl .bdl-b-sous{ margin:.8rem 0 0; font-size:1rem; max-width:44rem; opacity:0; animation:bdlMonte .9s var(--bdl-ease) .35s forwards; }
+/* Titre d'origine conservé sur les pages sans titre éditorial */
+html.bdl .bdl-bandeau:not(.bdl-b-propre) h2.fs-2{ font-weight:500 !important; font-size:clamp(2rem,4vw,3.2rem) !important; letter-spacing:-.01em; line-height:1.05; }
+/* Pages avec titre éditorial : titre Nexudus masqué */
+html.bdl .bdl-bandeau.bdl-b-propre .container > .d-flex.flex-wrap.gap-3.justify-content-between > div:first-child > h2,
+html.bdl .bdl-bandeau.bdl-b-propre .container > .d-flex.flex-wrap.gap-3.justify-content-between > div:first-child > p{ display:none !important; }
+html.bdl .bdl-bandeau .bdl-b-tete{ margin-bottom:1.25rem; }
+/* Filtres en verre sombre */
+html.bdl .bdl-bandeau .form-label{ text-transform:uppercase; letter-spacing:.2em; font-size:.64rem !important; font-weight:500; color:rgba(255,255,255,.72) !important; margin-bottom:.45rem; }
+html.bdl .bdl-bandeau .form-control, html.bdl .bdl-bandeau .form-select, html.bdl .bdl-bandeau .dropdown > button:not(.btn-link), html.bdl .bdl-bandeau .dropdown-toggle:not(.btn-link){
+  background-color:rgba(255,255,255,.1) !important; border:1px solid rgba(255,255,255,.28) !important; color:#fff !important; border-radius:6px !important; box-shadow:none !important;
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+html.bdl .bdl-bandeau .form-control *, html.bdl .bdl-bandeau .dropdown > button *{ color:#fff !important; }
+html.bdl .bdl-bandeau .form-control::placeholder{ color:rgba(255,255,255,.6) !important; }
+html.bdl .bdl-bandeau .form-control:hover, html.bdl .bdl-bandeau .dropdown > button:hover{ border-color:rgba(255,255,255,.55) !important; }
+html.bdl .bdl-bandeau .dropdown-menu, html.bdl .bdl-bandeau .dropdown-menu *{ color:var(--bdl-noir) !important; }
+html.bdl .bdl-bandeau .dropdown-menu{ border:0 !important; border-radius:8px !important; box-shadow:0 20px 50px -20px rgba(25,17,11,.4) !important; }
+/* Cartes */
+html.bdl-page main .card:not(.bdl-bandeau){ background:#fff !important; border:0 !important; border-radius:8px !important; box-shadow:0 0 0 1px var(--bdl-sable) !important; overflow:hidden; transition:box-shadow .25s, transform .35s var(--bdl-ease); }
+html.bdl-page main a.card:not(.bdl-bandeau):hover, html.bdl-page main .card:not(.bdl-bandeau):has(.card-img-top):hover{ box-shadow:0 0 0 1px var(--bdl-noir), 0 24px 50px -28px rgba(25,17,11,.45) !important; transform:translateY(-2px); }
+html.bdl-page main .card img{ border-radius:0 !important; }
+html.bdl-page main .card-title, html.bdl-page main .card .fw-bolder{ font-weight:600 !important; letter-spacing:.005em; }
+html.bdl-page main .text-body-secondary, html.bdl-page main .text-muted{ color:var(--bdl-gris) !important; }
+/* Badges sobres */
+html.bdl-page main [class*="-subtle"], html.bdl-page main .badge{ background:rgba(255,255,255,.94) !important; color:var(--bdl-noir) !important; border:1px solid var(--bdl-noir) !important; border-radius:2px !important; font-weight:500 !important; letter-spacing:.08em; text-transform:uppercase; font-size:.62rem !important; }
+html.bdl-page main [class*="-subtle"] *, html.bdl-page main .badge *{ color:var(--bdl-noir) !important; font-size:inherit !important; }
+/* Titres de section */
+html.bdl-page main h3, html.bdl-page main h4:not(.fw-light){ font-weight:600 !important; }
+/* Agenda : dates éditoriales et cartes */
+html.bdl-page section.py-7 h4.fw-light{ font-size:clamp(1.5rem,2.4vw,2rem) !important; font-weight:300 !important; letter-spacing:-.01em; color:var(--bdl-noir); }
+html.bdl-page section.py-7 .mb-4.d-flex.flex-row.gap-3.align-items-center{ border-bottom:1px solid var(--bdl-sable); padding-bottom:.75rem; margin-bottom:1.25rem !important; }
+html.bdl-page section.py-7 .mb-4.d-flex.flex-row.gap-3.align-items-center hr{ display:none; }
+html.bdl-page section.py-7 a.card{ min-height:200px; }
+html.bdl-page section.py-7 a.card .card-body{ padding:1.5rem 0 1.5rem 1.75rem !important; gap:1.5rem !important; }
+html.bdl-page section.py-7 a.card .card-title{ font-size:1.35rem !important; font-weight:500 !important; }
+html.bdl-page section.py-7 a.card p.fw-bolder{ font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500 !important; color:var(--bdl-gris); }
+html.bdl-page section.py-7 a.card .col-3{ flex:0 0 34% !important; max-width:34% !important; }
+html.bdl-page section.py-7 a.card .col-3 > .position-relative, html.bdl-page section.py-7 a.card .col-3 img{ height:100% !important; }
+html.bdl-page section.py-7 a.card img.card-img{ height:100% !important; min-height:200px; object-fit:cover; border-radius:0 !important; transition:transform 1.2s var(--bdl-ease); }
+html.bdl-page section.py-7 a.card:hover img.card-img{ transform:scale(1.04); }
+html.bdl-page section.py-7 a.card .btn-link{ text-transform:uppercase; letter-spacing:.14em; font-size:.7rem; font-weight:500; border-bottom:1px solid currentColor; padding-bottom:2px !important; text-decoration:none; }
+/* Liste des salles : grandes photos, infos lisibles */
+html.bdl-page main .card .card-img-top{ aspect-ratio:4/3; object-fit:cover; height:auto !important; transition:transform 1.2s var(--bdl-ease); }
+html.bdl-page main .card:hover .card-img-top{ transform:scale(1.04); }
+html.bdl-page main .card .card-body{ padding:1.1rem 1.2rem 1.2rem !important; }
+html.bdl-page main .card .btn-primary{ width:auto; }
+@media (max-width:767px){
+  html.bdl .bdl-bandeau{ border-radius:0 0 18px 18px !important; }
+  html.bdl-page section.py-7 a.card{ flex-direction:column-reverse !important; }
+  html.bdl-page section.py-7 a.card .col-3{ flex:0 0 auto !important; max-width:none !important; }
+  html.bdl-page section.py-7 a.card .card-body{ padding:1.25rem !important; }
+}
 @media (max-width:767px){
   .bdl-hero{ border-radius:0 0 18px 18px !important; min-height:0; }
   .bdl-salut{ padding-top:3rem; }
@@ -557,23 +629,7 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
     obs.observe(el);
   }
 
-  function appliquer() {
-    var dash = /\/user\/dashboard/.test(location.pathname);
-    doc.documentElement.classList.toggle("bdl-dash", dash);
-    if (!dash) return;
-    var c = doc.querySelector(".dashboard-content-container");
-    if (!c) return;
-    var hero = c.querySelector(":scope > .position-relative.rounded-4");
-    if (hero) {
-      if (hero.dataset.bdl && !hero.querySelector(".bdl-salut")) delete hero.dataset.bdl;
-      habillerBandeau(hero);
-    }
-    c.querySelectorAll(":scope > .container > .vstack > div").forEach(reveler);
-    doc.querySelectorAll(".bdl-grille > .row > [class*=col] > * > *, .bdl-pleine > *").forEach(reveler);
-    doc.querySelectorAll(".bdl-pleine h3.card-header-title, .bdl-pleine h3").forEach(function (h) {
-      if (h.textContent.trim() === "Avantages.") h.textContent = "Avantages partenaires";
-    });
-    calendrier();
+  function commun() {
     /* Assistant : retire la distance calculée depuis le navigateur, peu fiable */
     var fen = doc.querySelector(".ai-modal-content");
     if (fen) {
@@ -596,6 +652,62 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
         '<a href="' + base + '/user/activity/events">Mes événements</a>';
       if (pied.children[1]) pied.insertBefore(info, pied.children[1]); else pied.appendChild(info);
     }
+  }
+
+  /* ===== Autres pages : bandeau photo + titre éditorial ===== */
+  var PAGES = [
+    [/\/events(\/|$)/, "Agenda", "La vie du <em>Bureau.</em>", "Petits-déjeuners, ateliers et soirées entre membres.", "verriere-nuit.jpg"],
+    [/\/bookings\/meeting-rooms/, "Réservations", "Salles de <em>réunion.</em>", "Choisissez un créneau : la salle est prête à votre arrivée.", "projection.jpg"],
+    [/\/bookings\/(desks|hot-desks|desk)/, "Réservations", "Postes de <em>travail.</em>", "Réservez votre place sur nos plateaux.", "plateau.jpg"],
+    [/\/bookings\//, "Réservations", "Réserver un <em>espace.</em>", "Salles, bureaux et cabines, au rythme de vos journées.", "projection.jpg"],
+    [/\/user\/activity/, "Mon activité", null, null, "verriere-jour.jpg"],
+    [/\/user\/team/, "Mon équipe", null, null, "bureau.jpg"],
+    [/\/user\//, "Mon compte", null, null, "verriere-jour.jpg"],
+    [/\/(store|products|shop)/, "Magasin", null, null, "plateau.jpg"],
+    [/\/(community|directory|perks|blog|articles)/, "Communauté", null, null, "verriere-nuit.jpg"],
+    [/.*/, "Bureau des Légendes", null, null, "verriere-jour.jpg"]
+  ];
+  function pages() {
+    var band = doc.querySelector("main .card.rounded-top-0.rounded-5.bg-light");
+    if (!band) return;
+    var cle = location.pathname;
+    if (band.dataset.bdl === cle && band.querySelector(".bdl-b-bg")) return;
+    band.querySelectorAll(".bdl-b-bg,.bdl-b-voile,.bdl-b-tete").forEach(function (e) { e.remove(); });
+    band.dataset.bdl = cle;
+    band.classList.add("bdl-bandeau");
+    var p = PAGES.filter(function (x) { return x[0].test(cle); })[0];
+    var bg = doc.createElement("div"); bg.className = "bdl-b-bg"; bg.style.backgroundImage = "url(" + BASE + "/img/" + p[4] + ")";
+    var im = new Image(); im.onload = function () { bg.classList.add("on"); }; im.src = BASE + "/img/" + p[4];
+    var voile = doc.createElement("div"); voile.className = "bdl-b-voile";
+    band.insertBefore(voile, band.firstChild); band.insertBefore(bg, band.firstChild);
+    var cont = band.querySelector(":scope > .container, :scope > div:not(.bdl-b-bg):not(.bdl-b-voile)");
+    if (!cont) return;
+    var tete = doc.createElement("div"); tete.className = "bdl-b-tete";
+    tete.innerHTML = '<div class="bdl-b-sur"><span>' + p[1] + '</span><i></i><span>34, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
+      (p[2] ? '<h1 class="bdl-b-titre">' + p[2] + '</h1>' + (p[3] ? '<p class="bdl-b-sous">' + p[3] + '</p>' : '') : '');
+    cont.insertBefore(tete, cont.firstChild);
+    band.classList.toggle("bdl-b-propre", !!p[2]);
+  }
+
+  function appliquer() {
+    var dash = /\/user\/dashboard/.test(location.pathname);
+    doc.documentElement.classList.toggle("bdl-dash", dash);
+    doc.documentElement.classList.toggle("bdl-page", !dash);
+    commun();
+    if (!dash) { pages(); return; }
+    var c = doc.querySelector(".dashboard-content-container");
+    if (!c) return;
+    var hero = c.querySelector(":scope > .position-relative.rounded-4");
+    if (hero) {
+      if (hero.dataset.bdl && !hero.querySelector(".bdl-salut")) delete hero.dataset.bdl;
+      habillerBandeau(hero);
+    }
+    c.querySelectorAll(":scope > .container > .vstack > div").forEach(reveler);
+    doc.querySelectorAll(".bdl-grille > .row > [class*=col] > * > *, .bdl-pleine > *").forEach(reveler);
+    doc.querySelectorAll(".bdl-pleine h3.card-header-title, .bdl-pleine h3").forEach(function (h) {
+      if (h.textContent.trim() === "Avantages.") h.textContent = "Avantages partenaires";
+    });
+    calendrier();
     doc.querySelectorAll(".bdl-pleine button span, .bdl-pleine .btn span").forEach(function (sp) {
       if (sp.textContent.trim() === "Réclamation") sp.textContent = "En profiter";
     });
