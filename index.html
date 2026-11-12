@@ -2162,6 +2162,7 @@ function prixDans(t, n){ return n == null ? t : String(t).replace(/\d+(?:[.,]\d+
     if (c.horaires) for (const k in HORAIRES_SALLE) HORAIRES_SALLE[k] = c.horaires[k] || null;
     for (const s of c.salles || []){ const u = SALLES_UI.find(x => x.id === s.id); if (!u) continue;
       if (typeof s.prixHeure === "number") u.prix = s.prixHeure; if (s.places) u.places = s.places; if (FR && s.nom) u.nom = s.nom;
+      if (s.groupe) u.etage = FR ? s.groupe.split(" — ")[0] : ({ "Rez-de-chaussée":"Ground floor" }[s.groupe.split(" — ")[0]] || u.etage);
       const e = (s.equipements || []).filter(k => !["Internet","AirConditioning","NaturalLight"].includes(k)).map(k => EQUIP[k]).filter((x, i, t) => x && t.indexOf(x) === i).slice(0, 3);
       if (e.length) u.eq = e.join(", ").replace(/, (.)/g, (m, l) => ", " + l.toLowerCase()); }
     for (const p of c.produits || []){ const u = PRODUITS_RESA.find(x => x.id === p.id); if (!u) continue;
