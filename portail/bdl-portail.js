@@ -501,7 +501,7 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
         '</button>' +
         '<div class="bdl-assist-puces">' +
           '<button type="button" data-q="Réserve-moi une salle pour 6 personnes demain à 10h">Une salle demain à 10h</button>' +
-          '<button type="button" data-q="Je veux inviter un visiteur">Inviter un visiteur</button>' +
+          '<button type="button" data-q="Je voudrais acheter un pass journée pour demain">Un pass journée demain</button>' +
           '<button type="button" data-q="Quelles formules d\'abonnement proposez-vous à partir du mois prochain ?">Nos formules</button>' +
           '<button type="button" data-q="Que pouvez-vous faire pour moi ?">Tout ce qu\'il sait faire</button>' +
         '</div>' +
