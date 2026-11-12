@@ -71,3 +71,8 @@ Tout le reste est relu dans Nexudus par `netlify/lib/catalogue.mjs`, au plus tou
 Les fonctions serveur (`/api/salles`, `/api/postes`, `/api/membres`) recalculent les montants avec ces mêmes valeurs.
 En anglais, les chiffres et les équipements suivent Nexudus ; les noms et descriptions gardent leur traduction (`outils/en.py`).
 Si Nexudus ne répond pas, le site affiche les valeurs de secours écrites dans le code.
+
+### Réservations et adhésions
+- Une réservation créée depuis le site porte son montant dans Nexudus (`OverridePrice`, calculé avec les tarifs lus dans Nexudus) : elle se facture d'un clic depuis Nexudus (« Invoice this booking »).
+- La domiciliation n'est pas contractualisable par l'API pour ce lieu (les « virtual offices » ne font pas partie de son abonnement Nexudus) : `/api/membres` enregistre alors une demande dans le pipeline commercial.
+- Une adresse e-mail refusée par Nexudus (domaine inexistant) renvoie un message clair au visiteur.
