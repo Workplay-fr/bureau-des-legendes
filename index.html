@@ -103,6 +103,8 @@ section{padding-block:clamp(72px,9vw,128px)}
 .poste{padding-block:clamp(56px,7vw,96px);border-bottom:1px solid var(--line)}
 .plan .dispo{display:block;margin-top:8px;font-size:12.5px;line-height:1.45;color:#4F7A5B}
 .plan .dispo::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#4F7A5B;margin-right:8px;vertical-align:1px}
+.champ textarea{width:100%;font:inherit;padding:12px 14px;border:1px solid var(--line-2,rgba(25,17,11,.5));background:#fff;resize:vertical;min-height:64px}
+.aide-champ{display:block;margin-top:6px;font-size:12.5px;color:var(--gris,#6B635C)}
 .ag-liste{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
 .ag-ev{display:flex;flex-direction:column;gap:14px;padding:28px 28px 30px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
 .ag-ev + .ag-ev{padding-left:28px;border-left:1px solid var(--line)}
@@ -1258,6 +1260,7 @@ section.tf-q{padding-block:0}
             <div class="champ"><label class="t" for="ms-email">E-mail</label><input id="ms-email" name="email" type="email" autocomplete="email" required><span class="msg"></span></div>
             <div class="champ"><label class="t" for="ms-tel">Téléphone</label><input id="ms-tel" name="tel" type="tel" autocomplete="tel"><span class="msg"></span></div>
             <div class="champ large"><label class="t" for="ms-objet">Objet de la réunion (facultatif)</label><input id="ms-objet" name="objet"></div>
+            <div class="champ large"><label class="t" for="ms-invites">Vos invités (facultatif)</label><textarea id="ms-invites" name="invites" rows="2" placeholder="Un invité par ligne : Prénom Nom, adresse e-mail"></textarea><small class="aide-champ">L'accueil les attendra : ils sont annoncés à l'équipe avec votre réservation.</small></div>
           </div>
           <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="ms-site">Site web</label><input id="ms-site" name="site_web" tabindex="-1" autocomplete="off"></div>
           <label class="accord"><input type="checkbox" id="ms-accord"> J'accepte les conditions de réservation : annulation gratuite jusqu'à 24 h avant le créneau.</label>
@@ -1848,7 +1851,12 @@ function donneesResa(){
   const f = new FormData(msForm);
   return { salle:S.salle, jour:S.jour, heure:S.heure, duree:S.duree, prenom:f.get("prenom").trim(), nom:f.get("nom").trim(), email:f.get("email").trim().toLowerCase(),
     tel:f.get("tel").trim(), societe:f.get("societe").trim(), participants:Number(f.get("participants")), objet:f.get("objet").trim(), accord:true, site_web:f.get("site_web"), ouvert_le:S.ouvertLe,
-    produits: lignesProduits().map(l => ({ id:l.id, q:l.q })) };
+    produits: lignesProduits().map(l => ({ id:l.id, q:l.q })), invites: lireInvites(f.get("invites")) };
+}
+// « Prénom Nom, adresse » par ligne → [{ nom, email }] ; les lignes sans adresse valide sont ignorées.
+function lireInvites(t){
+  return String(t || "").split(/\n+/).map(l => { const m = l.match(/[^\s,;<>]+@[^\s,;<>]+\.[^\s,;<>]{2,}/); if (!m) return null;
+    const nom = l.replace(m[0], "").replace(/[,;<>]/g, " ").replace(/\s+/g, " ").trim(); return { nom: nom || m[0].split("@")[0], email: m[0].toLowerCase() }; }).filter(Boolean).slice(0, 8);
 }
 async function reserverClaude(v){
   await mcpPret; if (!mcpNs) throw Object.assign(new Error("sans"), { code:"sans" });

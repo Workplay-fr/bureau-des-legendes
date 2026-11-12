@@ -47,6 +47,8 @@ const traiter = async (req) => {
       .map(x => ({ id: Number(x && x.id), q: Math.max(0, Math.min(50, Math.round(Number(x && x.q) || 0))) }))
       .filter(x => PRODUITS_RESA[x.id] && x.q > 0)
       .filter((x, i, t) => t.findIndex(y => y.id === x.id) === i);
+    const invites = (Array.isArray(d.invites) ? d.invites : []).map(x => ({ nom: nettoie(x && x.nom, 80), email: nettoie(x && x.email, 160).toLowerCase() }))
+      .filter(x => x.nom && emailValide(x.email)).filter((x, i, t) => t.findIndex(y => y.email === x.email) === i).slice(0, 8);
     const montantSalle = s.prixHeure * duree;
     const montantProduits = produits.reduce((t, x) => t + PRODUITS_RESA[x.id].prix * x.q, 0);
     const montant = montantSalle + montantProduits;
@@ -59,11 +61,13 @@ const traiter = async (req) => {
       InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: montantSalle, IncludeZoomInvite: false,
       // InternalNotes n'est pas enregistré à la création : le détail passe dans Notes.
       BookingProducts: produits.map(x => ({ ProductId: x.id, Quantity: x.q, InvoiceInMinutes: false })),
-      Notes: [v.objet, `Réservé depuis le site vitrine · paiement de démonstration de ${montant} € HT`, lignes && `Services : ${lignes}`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
+      // Invités annoncés à l'accueil : Nexudus crée un visiteur par personne, rattaché à la réservation.
+      ...(invites.length ? { BookingVisitors: invites.map(x => ({ VisitorFullName: x.nom, VisitorEmail: x.email })) } : {}),
+      Notes: [v.objet, `Réservé depuis le site vitrine · paiement de démonstration de ${montant} € HT`, lignes && `Services : ${lignes}`, invites.length && `Invités : ${invites.map(x => x.nom).join(", ")}`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
       InternalNotes: [`Réservation depuis le site vitrine · paiement simulé (démo) de ${montant} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
     });
     const id = b.Value && b.Value.Id;
-    return json(200, { ok: true, montantHt: montant, reservation: id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau: c.nouveau });
+    return json(200, { ok: true, montantHt: montant, invites: invites.length, reservation: id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau: c.nouveau });
   } catch (e) {
     const refus = emailRefuse(e); if (refus) return refus;
     console.error(e.message, JSON.stringify(e.details || null));

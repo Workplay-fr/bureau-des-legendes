@@ -155,6 +155,7 @@ TEXT = {
     "← Créneau": "← Time", "Continuer sans service": "Continue without services",
     "Prénom": "First name", "Nom": "Last name", "Entreprise": "Company", "Participants": "Attendees",
     "Objet de la réunion (facultatif)": "Meeting subject (optional)",
+    "Vos invités (facultatif)": "Your guests (optional)", "L'accueil les attendra : ils sont annoncés à l'équipe avec votre réservation.": "Reception will expect them: they are announced to the team with your booking.",
     "J'accepte les conditions de réservation : annulation gratuite jusqu'à 24 h avant le créneau.": "I accept the booking terms: free cancellation up to 24 hours before the slot.",
     "← Services": "← Services", "Passer au paiement": "Go to payment",
     "Paiement de démonstration :": "Demo payment:", "aucune carte n'est débitée, la réservation est bien enregistrée.": "no card is charged, and the booking is recorded.",
@@ -186,6 +187,7 @@ TEXT = {
 
 # ---------------------------------------------------------------- 3. attributs (alt, aria-label, placeholder, title)
 ATTR = {
+    "Un invité par ligne : Prénom Nom, adresse e-mail": "One guest per line: First Last, email address",
     "Bureau des Légendes, accueil": "Bureau des Légendes, home", "Navigation principale": "Main navigation", "Accès rapides": "Quick links",
     "Explorer l'immeuble : pousser la porte du 312, boulevard Haussmann": "Explore the building: step through the door of 312, boulevard Haussmann",
     "L'entrée du Bureau des Légendes au crépuscule : porte cochère ouverte sur un intérieur éclairé, plaque en laiton, façade en pierre": "The entrance of Bureau des Légendes at dusk: open carriage door onto a lit interior, brass plate, stone façade",
