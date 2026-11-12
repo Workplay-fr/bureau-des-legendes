@@ -464,6 +464,8 @@ html.bdl .bdl-bandeau .form-control, html.bdl .bdl-bandeau .form-select, html.bd
   background-color:rgba(255,255,255,.1) !important; border:1px solid rgba(255,255,255,.28) !important; color:#fff !important; border-radius:6px !important; box-shadow:none !important;
   backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
 html.bdl .bdl-bandeau .form-control *, html.bdl .bdl-bandeau .dropdown > button *{ color:#fff !important; }
+html.bdl .bdl-bandeau .dropdown > button:not(.btn-link), html.bdl .bdl-bandeau .dropdown > button:not(.btn-link) *{ text-transform:none !important; letter-spacing:.01em !important; font-size:.9rem !important; font-weight:400 !important; }
+html.bdl .bdl-bandeau .dropdown > button:not(.btn-link){ padding:.8rem 1rem !important; min-width:12rem; text-align:left; }
 html.bdl .bdl-bandeau .form-control::placeholder{ color:rgba(255,255,255,.6) !important; }
 html.bdl .bdl-bandeau .form-control:hover, html.bdl .bdl-bandeau .dropdown > button:hover{ border-color:rgba(255,255,255,.55) !important; }
 html.bdl .bdl-bandeau .dropdown-menu, html.bdl .bdl-bandeau .dropdown-menu *{ color:var(--bdl-noir) !important; }
@@ -483,13 +485,14 @@ html.bdl-page main h3, html.bdl-page main h4:not(.fw-light){ font-weight:600 !im
 html.bdl-page section.py-7 h4.fw-light{ font-size:clamp(1.5rem,2.4vw,2rem) !important; font-weight:300 !important; letter-spacing:-.01em; color:var(--bdl-noir); }
 html.bdl-page section.py-7 .mb-4.d-flex.flex-row.gap-3.align-items-center{ border-bottom:1px solid var(--bdl-sable); padding-bottom:.75rem; margin-bottom:1.25rem !important; }
 html.bdl-page section.py-7 .mb-4.d-flex.flex-row.gap-3.align-items-center hr{ display:none; }
-html.bdl-page section.py-7 a.card{ min-height:200px; }
+html.bdl-page section.py-7 a.card{ min-height:0; padding:0 !important; }
+html.bdl-page section.py-7 a.card .col-3 > .position-relative{ margin:0 !important; }
 html.bdl-page section.py-7 a.card .card-body{ padding:1.5rem 0 1.5rem 1.75rem !important; gap:1.5rem !important; }
 html.bdl-page section.py-7 a.card .card-title{ font-size:1.35rem !important; font-weight:500 !important; }
 html.bdl-page section.py-7 a.card p.fw-bolder{ font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500 !important; color:var(--bdl-gris); }
 html.bdl-page section.py-7 a.card .col-3{ flex:0 0 34% !important; max-width:34% !important; }
 html.bdl-page section.py-7 a.card .col-3 > .position-relative, html.bdl-page section.py-7 a.card .col-3 img{ height:100% !important; }
-html.bdl-page section.py-7 a.card img.card-img{ height:100% !important; min-height:200px; object-fit:cover; border-radius:0 !important; transition:transform 1.2s var(--bdl-ease); }
+html.bdl-page section.py-7 a.card img.card-img{ height:100% !important; min-height:220px; max-height:260px; width:100%; object-fit:cover; border-radius:0 !important; transition:transform 1.2s var(--bdl-ease); }
 html.bdl-page section.py-7 a.card:hover img.card-img{ transform:scale(1.04); }
 html.bdl-page section.py-7 a.card .btn-link{ text-transform:uppercase; letter-spacing:.14em; font-size:.7rem; font-weight:500; border-bottom:1px solid currentColor; padding-bottom:2px !important; text-decoration:none; }
 /* Liste des salles : grandes photos, infos lisibles */
@@ -682,10 +685,10 @@ html.bdl-page main .card .btn-primary{ width:auto; }
     band.insertBefore(voile, band.firstChild); band.insertBefore(bg, band.firstChild);
     var cont = band.querySelector(":scope > .container, :scope > div:not(.bdl-b-bg):not(.bdl-b-voile)");
     if (!cont) return;
-    var tete = doc.createElement("div"); tete.className = "bdl-b-tete";
+    var tete = doc.createElement("div"); tete.className = "bdl-b-tete container";
     tete.innerHTML = '<div class="bdl-b-sur"><span>' + p[1] + '</span><i></i><span>34, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
       (p[2] ? '<h1 class="bdl-b-titre">' + p[2] + '</h1>' + (p[3] ? '<p class="bdl-b-sous">' + p[3] + '</p>' : '') : '');
-    cont.insertBefore(tete, cont.firstChild);
+    band.insertBefore(tete, cont);
     band.classList.toggle("bdl-b-propre", !!p[2]);
   }
 
