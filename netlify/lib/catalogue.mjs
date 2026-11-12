@@ -62,6 +62,12 @@ async function lire() {
     .filter(e => Number(e.BusinessId) === CFG.business && e.StartDate && date(e.StartDate).getTime() > maintenant && (!e.PublishDate || date(e.PublishDate).getTime() <= maintenant))
     .sort((a, b) => date(a.StartDate) - date(b.StartDate)).slice(0, 3)
     .map(e => ({ id: Number(e.Id), nom: e.Name, resume: texte(e.ShortDescription), lieu: e.Location || "", debut: date(e.StartDate).toISOString(), fin: e.EndDate ? date(e.EndDate).toISOString() : null, places: nombre(e.Allocation), reserveMembres: !!e.OnlyForMembers }));
+  // Plan d'étage : bureaux privés (type 1) et postes attitrés (type 2) proposés à la location, avec leur occupation. Aucun nom d'occupant n'est transmis.
+  const plan = (await liste("/sys/floorplandesks", `FloorPlanDesk_FloorPlan_Business=${CFG.business}`).catch(e => { noter("plan", e); return []; }))
+    .filter(x => Number(x.FloorPlanBusinessId) === CFG.business && !/^archive/i.test(x.FloorPlanName || "") && x.Available !== false && nombre(x.Price) > 0);
+  const occupe = x => !!(x.CoworkerId || x.CoworkerContractIds);
+  const bureaux = plan.filter(x => x.ItemType === 1).map(x => ({ nom: x.Name, etage: String(x.FloorPlanName || "").split(" — ")[0], capacite: nombre(x.Capacity), surface: nombre(x.Area) ?? nombre(x.Size), prix: x.Price, libre: !occupe(x) }));
+  const attitres = plan.filter(x => x.ItemType === 2), postesAttitres = { total: attitres.length, libres: attitres.filter(x => !occupe(x)).length };
   const lu = { lieu: false, ressources: 0, tarifs: 0, produits: 0, formules: 0 };
 
   // Horaires d'ouverture du lieu (minutes depuis minuit dans Nexudus).
@@ -109,8 +115,8 @@ async function lire() {
     const r = formules.get(Number(id)); if (!r) continue; lu.formules++;
     if (r.Name) f.nom = r.Name; if (nombre(r.Price) !== null) f.prix = r.Price; f.description = texte(r.Description);
   }
-  lu.evenements = evenements.length;
-  return { lu: { ...lu, erreurs: [...erreurs] }, coord, evenements, quand: new Date().toISOString() };
+  lu.evenements = evenements.length; lu.plan = plan.length;
+  return { lu: { ...lu, erreurs: [...erreurs] }, coord, evenements, bureaux, postesAttitres, quand: new Date().toISOString() };
 }
 
 // À appeler au début de chaque fonction : met à jour SALLES, POSTES, HORAIRES, TARIFS_POSTE, PRODUITS_RESA et FORMULES_NX depuis Nexudus.
@@ -134,7 +140,7 @@ export async function catalogue() {
     postes: Object.entries(POSTES).map(([id, p]) => ({ id: Number(id), nom: p.nom, zone: p.zone, description: p.description || "", equipements: p.equipements || [] })),
     tarifsPoste: { ...TARIFS_POSTE },
     produits: Object.entries(PRODUITS_RESA).map(([id, p]) => ({ id: Number(id), nom: p.nom, prix: p.prix, description: p.description || "", parPersonne: p.parPersonne })),
-    evenements: etat.evenements || [],
+    evenements: etat.evenements || [], bureaux: etat.bureaux || [], postesAttitres: etat.postesAttitres || null,
     formules: Object.entries(FORMULES_NX).map(([id, f]) => ({ id: Number(id), nom: f.nom, prix: f.prix, description: f.description || "" })),
   };
 }
