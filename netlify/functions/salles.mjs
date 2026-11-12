@@ -2,7 +2,7 @@
 //   GET  /api/salles?salle=<id>&jour=AAAA-MM-JJ  → créneaux déjà pris ce jour-là (lus dans Nexudus)
 //   POST /api/salles                              → crée (ou retrouve) le contact puis la réservation dans Nexudus
 // Le paiement affiché sur le site est une simulation : aucune donnée bancaire n'est reçue ici.
-import { SALLES, HORAIRES, nx, contact, occupation, parisVersUtc, jourSemaine, isoZ, nettoie, emailValide, json, tropDEnvois, vide, PRODUITS_RESA, bilingue } from "../lib/nexudus.mjs";
+import { SALLES, HORAIRES, nx, contact, occupation, parisVersUtc, jourSemaine, isoZ, nettoie, emailValide, json, tropDEnvois, vide, PRODUITS_RESA, bilingue, emailRefuse } from "../lib/nexudus.mjs";
 import { synchro } from "../lib/catalogue.mjs";
 
 const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
@@ -56,7 +56,7 @@ const traiter = async (req) => {
       // Créée « à confirmer » : Nexudus refuse (erreur 500) une réservation confirmée d'emblée via l'API pour ce compte.
       ChargeNow: false, InvoiceNow: false, Tentative: true,
       // Nexudus refuse la création (erreur 500 générique) si ces champs ne sont pas envoyés explicitement.
-      InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: 0, IncludeZoomInvite: false,
+      InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: montantSalle, IncludeZoomInvite: false,
       // InternalNotes n'est pas enregistré à la création : le détail passe dans Notes.
       BookingProducts: produits.map(x => ({ ProductId: x.id, Quantity: x.q, InvoiceInMinutes: false })),
       Notes: [v.objet, `Réservé depuis le site vitrine · paiement de démonstration de ${montant} € HT`, lignes && `Services : ${lignes}`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
@@ -65,6 +65,7 @@ const traiter = async (req) => {
     const id = b.Value && b.Value.Id;
     return json(200, { ok: true, montantHt: montant, reservation: id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau: c.nouveau });
   } catch (e) {
+    const refus = emailRefuse(e); if (refus) return refus;
     console.error(e.message, JSON.stringify(e.details || null));
     return json(502, { ok: false, erreur: "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
   }

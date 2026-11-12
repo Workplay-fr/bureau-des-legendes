@@ -102,7 +102,12 @@ export async function occupationPostes(jour) {
 export async function contact({ nom, email, tel, societe, note, compte }) {
   const liste = await nx("GET", `/spaces/coworkers?Coworker_Email=${encodeURIComponent(email)}&size=1`);
   const existant = liste.Records && liste.Records[0] && liste.Records[0].Id;
-  if (existant) return { id: existant, nouveau: false, compte: !!liste.Records[0].UserId };
+  if (existant) {
+    let aCompte = !!liste.Records[0].UserId;
+    // Contact déjà connu (une réservation passée, par exemple) qui devient membre : on lui ouvre son compte portail.
+    if (compte && !aCompte) { try { await nx("POST", "/spaces/coworkers/runcommand", { Ids: [existant], Key: "COWORKER_NEW_USER", Parameters: [] }); aCompte = true; } catch (e) { console.error("Compte portail non créé :", e.message); } }
+    return { id: existant, nouveau: false, compte: aCompte };
+  }
   const fiche = {
     CoworkerType: 1, FullName: nom, Email: email, MobilePhone: tel || null, CompanyName: societe || null,
     Gender: 1, TaxRateType: 1, CountryId: CFG.pays, SimpleTimeZoneId: CFG.fuseau, InvoicingBusinessId: CFG.business,
@@ -141,6 +146,8 @@ export const FORMULES_NX = {
 };
 
 // Utilitaires HTTP.
+// Nexudus refuse certaines adresses (domaine inexistant, par exemple) : on le dit clairement au lieu d'une erreur générale.
+export const emailRefuse = e => /invalid email/i.test(String(e && e.message)) ? json(400, { ok: false, erreur: "Cette adresse e-mail n'est pas acceptée. Vérifiez-la ou utilisez-en une autre." }) : null;
 export const nettoie = (v, max) => String(v ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, max);
 export const emailValide = e => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
 export const json = (status, body) => new Response(JSON.stringify(body), {
@@ -159,6 +166,7 @@ const EN = {
   "Ce créneau est en dehors des horaires d'ouverture.": "This slot is outside opening hours.",
   "Ce créneau vient d'être réservé. Choisissez-en un autre.": "This slot has just been booked. Please choose another.",
   "Cette adresse e-mail n'est pas valide.": "This email address is not valid.",
+  "Cette adresse e-mail n'est pas acceptée. Vérifiez-la ou utilisez-en une autre.": "This email address was not accepted. Please check it or use another one.",
   "Choisissez un créneau à venir.": "Please choose an upcoming slot.",
   "Choisissez une date de début.": "Please choose a start date.",
   "Choisissez une date de visite.": "Please choose a visit date.",

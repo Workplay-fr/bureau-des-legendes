@@ -1,6 +1,6 @@
 // Adhésion depuis le site : crée (ou retrouve) la fiche client avec son compte portail,
 // puis le contrat de la formule choisie dans Nexudus. Le paiement affiché est une simulation.
-import { CFG, FORMULES_NX, nx, contact, nettoie, emailValide, json, tropDEnvois, vide, bilingue } from "../lib/nexudus.mjs";
+import { CFG, FORMULES_NX, nx, contact, nettoie, emailValide, json, tropDEnvois, vide, bilingue, emailRefuse } from "../lib/nexudus.mjs";
 import { synchro } from "../lib/catalogue.mjs";
 
 const traiter = async (req) => {
@@ -34,6 +34,7 @@ const traiter = async (req) => {
     const id = k.Value && k.Value.Id;
     return json(200, { ok: true, contrat: id, reference: id ? "BDL-M" + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
   } catch (e) {
+    const refus = emailRefuse(e); if (refus) return refus;
     console.error(e.message, JSON.stringify(e.details || null));
     return json(502, { ok: false, erreur: "L'adhésion n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
   }

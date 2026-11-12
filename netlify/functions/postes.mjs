@@ -2,7 +2,7 @@
 //   GET  /api/postes?jour=AAAA-MM-JJ  → réservations de chacun des 20 postes ce jour-là (lues dans Nexudus)
 //   POST /api/postes                  → crée (ou retrouve) le contact puis la réservation du poste dans Nexudus
 // Le paiement affiché sur le site est une simulation : aucune donnée bancaire n'est reçue ici.
-import { POSTES, TARIFS_POSTE, creneauPoste, occupationPostes, nx, contact, parisVersUtc, isoZ, nettoie, emailValide, json, tropDEnvois, vide, bilingue } from "../lib/nexudus.mjs";
+import { POSTES, TARIFS_POSTE, creneauPoste, occupationPostes, nx, contact, parisVersUtc, isoZ, nettoie, emailValide, json, tropDEnvois, vide, bilingue, emailRefuse } from "../lib/nexudus.mjs";
 import { synchro } from "../lib/catalogue.mjs";
 
 const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
@@ -69,12 +69,14 @@ const traiter = async (req) => {
       ResourceId: poste, CoworkerId: c.id, FromTime: isoZ(de), ToTime: isoZ(a), Repeats: 2, WhichBookingsToUpdate: 1,
       // Mêmes réglages que les salles : créée « à confirmer », champs explicites sinon Nexudus renvoie une erreur 500 générique.
       ChargeNow: false, InvoiceNow: false, Tentative: true,
-      InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: 0, IncludeZoomInvite: false,
+      // OverridePrice : le prix du créneau lu dans Nexudus, pour que la réservation porte son montant et puisse être facturée d'un clic.
+      InvoiceThisCoworker: false, DoNotUseBookingCredit: false, RepeatBooking: false, OverridePrice: montant, IncludeZoomInvite: false,
       Notes: [`Réservé depuis le plan 3D du site vitrine · ${NOMS_CRENEAU[creneau]} · paiement de démonstration de ${montant} € HT`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · "),
     });
     const id = b.Value && b.Value.Id;
     return json(200, { ok: true, montantHt: montant, reservation: id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau: c.nouveau });
   } catch (e) {
+    const refus = emailRefuse(e); if (refus) return refus;
     console.error(e.message, JSON.stringify(e.details || null));
     return json(502, { ok: false, erreur: "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: erreurNx(e) });
   }
