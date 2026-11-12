@@ -17,18 +17,53 @@ a{color:inherit}
 :focus-visible{outline:1px solid var(--noir);outline-offset:3px}
 .label{font:400 11px/1.4 var(--f);letter-spacing:.22em;text-transform:uppercase;color:var(--gris)}
 
-#scene{position:fixed;inset:0;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;opacity:0;transition:opacity 1.4s var(--ease)}
-#scene.pret{opacity:1}
+#scene{position:fixed;inset:0;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;perspective:1700px}
 #scene.glisse{cursor:grabbing}
+.incline{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform}
 .monde{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
-.monde img{display:block;width:100%;height:100%;pointer-events:none;-webkit-mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);mask-composite:intersect}
+.monde > *{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.monde img{display:block;-webkit-mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 4%,#000 96%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);mask-composite:intersect}
+/* Ouverture : le tracé se dessine, puis le rendu fait sa mise au point */
+.monde > img:first-child{opacity:0;filter:blur(22px) saturate(.6);transition:opacity 1.5s var(--ease),filter 1.9s var(--ease)}
+#scene.i-rendu .monde > img:first-child{opacity:1;filter:none}
+svg.trace{overflow:visible}
+svg.trace *{fill:none;stroke:var(--noir);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:.9}
+#scene.i-trace svg.trace *{animation:tracer 1.25s var(--d,0s) cubic-bezier(.65,0,.35,1) forwards}
+#scene.i-rendu svg.trace{opacity:0;transition:opacity 1.3s .2s var(--ease)}
+@keyframes tracer{to{stroke-dashoffset:0}}
+.rais,.poussiere,.teinte,.ombre{opacity:0;transition:opacity 2s .6s var(--ease)}
+/* Lumière vivante : rais de soleil qui glissent sur le parquet, poussières */
+.rais{background:repeating-linear-gradient(112deg,rgba(255,232,190,0) 0 70px,rgba(255,232,190,.85) 110px 150px,rgba(255,232,190,0) 200px 340px);background-size:1100px 100%;mix-blend-mode:soft-light;animation:rais 46s ease-in-out infinite alternate}
+#scene.pret .rais{opacity:.5}
+#scene.pret .poussiere{opacity:.9}
+@keyframes rais{from{background-position:0 0}to{background-position:340px 0}}
+.ombre{mix-blend-mode:multiply}
+.ombre svg{width:100%;height:100%;overflow:visible;will-change:transform}
+.ombre polygon{fill:rgba(88,62,40,.3)}
+#scene.pret .ombre{opacity:1}
+/* Lumière du créneau : une teinte évoque le matin ou la fin de journée tant qu'aucun rendu dédié n'est fourni */
+.teinte{mix-blend-mode:soft-light;transition:opacity 1.6s var(--ease),background 1.6s var(--ease)}
+#scene.pret[data-ambiance="matin"] .teinte{opacity:1;background:linear-gradient(120deg,rgba(205,226,255,.7),rgba(235,244,255,.3) 60%)}
+#scene.pret[data-ambiance="apres"] .teinte{opacity:1;background:linear-gradient(300deg,rgba(255,140,60,.6),rgba(255,190,110,.3) 65%)}
+#scene.pret[data-ambiance="matin"] .rais{opacity:.3}
+#scene.pret[data-ambiance="apres"] .rais{opacity:.72}
+.rendu-ambiance{opacity:0;transition:opacity 1.6s var(--ease)}
+.rendu-ambiance.on{opacity:1}
+#scene.a-des-rendus .teinte{display:none}
+/* Mise au point : autour du poste choisi, le reste du plateau devient flou */
+.flou{opacity:0;transition:opacity .9s var(--ease);-webkit-backdrop-filter:blur(2.2px);backdrop-filter:blur(2.2px);-webkit-mask-image:radial-gradient(ellipse 330px 250px at var(--x,50%) var(--y,50%),transparent 45%,#000 100%);mask-image:radial-gradient(ellipse 330px 250px at var(--x,50%) var(--y,50%),transparent 45%,#000 100%)}
+.flou.on{opacity:1}
 /* Mise en avant du poste choisi : le reste du plateau s'assombrit légèrement */
-.voile{position:absolute;left:var(--x,0px);top:var(--y,0px);width:300px;height:230px;margin:-115px 0 0 -150px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .7s var(--ease);box-shadow:0 0 120px 6000px rgba(25,17,11,.32)}
+.monde > .voile{inset:auto;left:var(--x,0px);top:var(--y,0px);width:300px;height:230px;margin:-115px 0 0 -150px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .7s var(--ease);box-shadow:0 0 120px 6000px rgba(25,17,11,.32)}
 .voile.on{opacity:1}
-.contours{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.contours{overflow:visible}
 .contours ellipse{fill:rgba(255,255,255,0);stroke:rgba(25,17,11,0);stroke-width:1.2;vector-effect:non-scaling-stroke;transition:fill .3s,stroke .3s}
 .contours .c-survol.on{fill:rgba(255,255,255,.16);stroke:rgba(25,17,11,.55)}
 .contours .c-choix.on{fill:rgba(255,255,255,.12);stroke:#C9A25B;stroke-width:1.8}
+/* Sceau de confirmation : une onde laiton part du poste réservé */
+.contours .c-sceau{fill:none;stroke:#C9A25B;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.contours .c-sceau.on{animation:onde 1.5s var(--ease) forwards}
+@keyframes onde{0%{opacity:.95;transform:scale(.2)}100%{opacity:0;transform:scale(3.4)}}
 #reperes{position:fixed;inset:0;pointer-events:none;overflow:hidden}
 
 /* Repères de disponibilité : petits points, couleurs retenues */
@@ -41,6 +76,17 @@ a{color:inherit}
 .rep.survol b,.rep.choisi b{opacity:1;transform:translate(-50%,0)}
 .rep.survol i{transform:scale(1.35)}
 .rep.choisi i{background:var(--noir);box-shadow:0 0 0 2.5px #fff,0 0 0 4px var(--laiton);transform:scale(1.2)}
+#reperes:not(.arrive) .rep{opacity:0}
+#reperes.arrive .rep i{animation:pose .7s var(--d,0s) cubic-bezier(.2,1.5,.4,1) backwards}
+@keyframes pose{from{transform:scale(0) translateY(-26px);opacity:0}}
+.rep b::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:9px;background:var(--noir);transform:scaleY(0);transform-origin:top;transition:transform .35s .1s var(--ease)}
+.rep.survol b::after,.rep.choisi b::after{transform:scaleY(1)}
+.rep.choisi i{animation:halo 2.4s ease-in-out infinite}
+@keyframes halo{50%{box-shadow:0 0 0 2.5px #fff,0 0 0 4px var(--laiton),0 0 0 11px rgba(184,145,78,.22)}}
+.rep.scelle i{width:26px;height:26px;background:var(--laiton) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Cpath d='M7.5 13.5l3.8 3.8 7.4-8.2' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat;box-shadow:0 0 0 2.5px #fff,0 6px 16px rgba(25,17,11,.35);animation:tampon .75s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes tampon{0%{transform:scale(3.2) rotate(-24deg);opacity:0}55%{transform:scale(.86) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+.compte b{display:inline-block;transition:color .3s}
+.compte b.change{color:var(--laiton)}
 .rep.estompe{opacity:.16}
 .rep.cache{opacity:0}
 @keyframes pouls{50%{opacity:.35}}

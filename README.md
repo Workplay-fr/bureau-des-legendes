@@ -19,6 +19,8 @@ Page à part : le rendu du 1er étage, dans lequel on zoome et on clique un post
 - `plateau/js/main.js` : interface (date, créneau, filtres, repères, fiche, liste utilisable au clavier).
 - `netlify/functions/postes.mjs` : état des 20 postes par créneau (GET) et réservation dans Nexudus (POST). Le serveur revérifie la disponibilité et fixe le prix.
 
+Mouvement : tracé d'ouverture, légère inclinaison à la souris, rais de soleil et poussières, mise au point sur le poste choisi, sceau de confirmation. La lumière suit le créneau : par une teinte aujourd'hui, par des rendus dédiés dès qu'ils sont déclarés dans `IMAGE.ambiances` (`plan.js`).
+
 Provisoire : tarifs des postes (15 € HT la demi-journée, 25 € HT la journée, dans `netlify/lib/nexudus.mjs`). Le paiement est simulé. Une première version en 3D temps réel (three.js) reste dans l'historique git.
 
 ## Accès protégé

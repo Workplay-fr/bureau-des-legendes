@@ -49,7 +49,7 @@ async function chargerEtat() {
 const reperes = {};
 function creerReperes() {
   const box = $("reperes");
-  for (const p of POSTES_PLAN) { const el = document.createElement("div"); el.className = "rep"; el.innerHTML = `<i></i><b></b>`; box.appendChild(el); reperes[p.code] = el; }
+  for (const p of POSTES_PLAN) { const el = document.createElement("div"); el.className = "rep"; el.innerHTML = `<i></i><b></b>`; el.style.setProperty("--d", ((p.x + p.y * 0.6 - 560) / 1100 * 0.9).toFixed(2) + "s"); box.appendChild(el); reperes[p.code] = el; }
 }
 function placerReperes() {
   if (!scene) return;
@@ -66,10 +66,13 @@ function rafraichir() {
     if (el) { el.dataset.etat = e; el.classList.toggle("estompe", !!E.zone && p.zone !== E.zone); el.classList.toggle("choisi", E.choix === p.code); el.classList.toggle("survol", E.survol === p.code && E.choix !== p.code);
       el.lastElementChild.innerHTML = `${esc(p.nom)}<span>${esc(libelleEtat(e))}</span>`; }
   }
-  if (scene) scene.majEtats(etats);
+  if (scene) { scene.majEtats(etats); scene.ambiance(E.creneau); }
+  for (const c in reperes) reperes[c].classList.toggle("scelle", !!E.fin && E.choix === c);
   // compteur
   const visibles = POSTES_PLAN.filter(p => !E.zone || p.zone === E.zone), libres = visibles.filter(p => etats[p.code] === "libre").length;
-  $("compte").innerHTML = E.charge && !E.etat ? "Lecture des disponibilités…" : E.erreur ? "" : `<b>${libres}</b> ${libres > 1 ? "postes libres" : "poste libre"} sur ${visibles.length} · ${esc(jourLong(E.jour))} · ${esc(CRENEAUX[E.creneau].toLowerCase())}`;
+  const avant = Number($("compte").querySelector("b")?.dataset.n);
+  $("compte").innerHTML = E.charge && !E.etat ? "Lecture des disponibilités…" : E.erreur ? "" : `<b data-n="${libres}">${libres}</b> ${libres > 1 ? "postes libres" : "poste libre"} sur ${visibles.length} · ${esc(jourLong(E.jour))} · ${esc(CRENEAUX[E.creneau].toLowerCase())}`;
+  compter($("compte").querySelector("b"), avant, libres);
   // bandeau : erreur ou données simulées
   const b = $("bandeau");
   if (E.erreur) { b.hidden = false; b.className = "bandeau"; b.innerHTML = `${esc(E.erreur)}<button type="button" id="reessayer">Réessayer</button>`; $("reessayer").onclick = chargerEtat; }
@@ -79,6 +82,10 @@ function rafraichir() {
   dessinerListe(); if (E.choix) dessinerFiche();
 }
 
+// Le nombre de postes libres défile jusqu'à sa nouvelle valeur
+function compter(el, de, a) { if (!el || !Number.isFinite(de) || de === a || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const t0 = performance.now(), duree = 700; el.textContent = de; el.classList.add("change");
+  const pas = now => { const k = Math.min(1, (now - t0) / duree); if (!el.isConnected) return; el.textContent = Math.round(de + (a - de) * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(pas); else el.classList.remove("change"); }; requestAnimationFrame(pas); }
 function dessinerListe() {
   const box = $("liste-corps"); if ($("liste").hidden && !document.body.classList.contains("sans-3d")) return;
   const actif = document.activeElement && box.contains(document.activeElement) ? document.activeElement.dataset.code : null;
@@ -163,7 +170,7 @@ async function envoyer() {
     if (attente) await new Promise(r => setTimeout(r, attente));
     const r = await donnees.reserver(v), px = prix(v.creneau);
     E.fin = { ...r, prenom: v.prenom, email: v.email, jour: v.jour, creneau: v.creneau, heures: heures(v.creneau), ttc: (r.montantHt ?? px) * 1.2 };
-    E.envoi = false; await chargerEtat();
+    E.envoi = false; scene && scene.tamponner(code); await chargerEtat();
     // si la relecture échoue, on reflète quand même la réservation qui vient d'être faite
     if (E.etat && !r.simule) { const q = posteApi(code); if (q && q.etat[v.creneau] === "libre") { q.etat[v.creneau] = "pris"; q.etat.journee = "pris"; rafraichir(); } }
   } catch (err) {
@@ -204,6 +211,7 @@ const pretDonnees = chargerEtat();
     onChoix: code => { if (code) choisir(code); },
     onGeste: () => $("aide").classList.add("vu"),
     onImage: placerReperes,
+    onIntroFin: () => $("reperes").classList.add("arrive"),
   }); } catch (err) { console.error(err); }
   if (!s) {
     // Si le rendu ne se charge pas, la liste remplace la scène.
