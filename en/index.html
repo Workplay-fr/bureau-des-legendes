@@ -111,7 +111,9 @@ section{padding-block:clamp(72px,9vw,128px)}
 .ap-pt{position:absolute;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#4F7A5B;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 2px 5px rgba(25,17,11,.3);animation:apPose .7s calc(.2s + var(--d,0s)) cubic-bezier(.2,1.5,.4,1) backwards;transition:transform .3s var(--ease)}
 .ap-pt::after{content:"";position:absolute;inset:-9px}
 .ap-pt:hover{transform:scale(1.5)}
-.ap-pt.pris{width:6px;height:6px;margin:-3px 0 0 -3px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
+.ap-pt.pris{width:15px;height:15px;margin:-7.5px 0 0 -7.5px;background:#B0473A url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 18 18%27 fill=%27%23fff%27%3E%3Ccircle cx=%279%27 cy=%276.4%27 r=%272.7%27/%3E%3Cpath d=%27M3.9 14.6c.3-3 2.4-4.9 5.1-4.9s4.8 1.9 5.1 4.9z%27/%3E%3C/svg%3E") center/100% no-repeat;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 2px 5px rgba(90,25,15,.32)}
+.ap-pt.pris:hover{transform:none}
+.ap-pt.passe{width:6px;height:6px;margin:-3px 0 0 -3px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
 .apercu.attend .ap-pt{animation-play-state:paused}
 @keyframes apPose{from{transform:scale(0) translateY(-18px);opacity:0}}
 .ap-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
@@ -212,7 +214,8 @@ section{padding-block:clamp(72px,9vw,128px)}
   .ap-haut{inset:14px 16px auto}
   .ap-legende{display:none}
   .ap-pt{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;box-shadow:0 0 0 1.5px rgba(255,255,255,.92)}
-  .ap-pt.pris{width:4px;height:4px;margin:-2px 0 0 -2px}
+  .ap-pt.pris{width:10px;height:10px;margin:-5px 0 0 -5px}
+  .ap-pt.passe{width:4px;height:4px;margin:-2px 0 0 -2px}
   .fiche span + span{padding-left:0;border-left:0}
 }
 
@@ -2126,13 +2129,13 @@ const NIVEAUX = [
     for (let k = 0; k < 3 && !d; k++){ if (c.getUTCDay() !== 0){ jour = c.toISOString().slice(0,10); const r = await fetch("/api/postes?jour=" + jour + "&lang=en"); const j = await r.json(); if (r.ok && j.ok && j.postes.some(p => p.etat.journee !== "passe")) d = j; } c.setUTCDate(c.getUTCDate() + 1); }
     if (!d) return;
     const etat = Object.fromEntries(d.postes.map(p => [p.nom.replace(/^Poste\s+/i, ""), p.etat.journee])), libres = d.postes.filter(p => p.etat.journee === "libre").length;
-    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : " pris"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("");
+    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : etat[p.code] === "pris" ? " pris" : " passe"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("");
     const quand = jour === auj ? "today" : new Date(jour + "T12:00:00Z").toLocaleDateString("en-GB", { weekday:"long", timeZone:"UTC" });
     document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand}`;
     NIVEAUX[1].detail = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand} out of twenty, picked on the floor plan. From €15 excl. VAT per half day.`;
     a.href = "../plateau/en/?jour=" + jour; document.getElementById("ap-btn").href = a.href;
     if (window.IntersectionObserver && !RM){ a.classList.add("attend"); new IntersectionObserver((es, o) => { if (es[0].isIntersecting){ a.classList.remove("attend"); o.disconnect(); } }, { threshold:.35 }).observe(a); }
-    a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris")){ e.preventDefault(); location.href = `../plateau/en/?jour=${jour}&poste=${pt.dataset.code}`; } });
+    a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris") && !pt.classList.contains("passe")){ e.preventDefault(); location.href = `../plateau/en/?jour=${jour}&poste=${pt.dataset.code}`; } });
   } catch(_){ /* sans Nexudus, l'aperçu reste une image : pas de disponibilité inventée */ }
 })();
 </script>

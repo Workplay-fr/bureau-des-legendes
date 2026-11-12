@@ -91,7 +91,7 @@ function dessinerListe() {
   const box = $("liste-corps"); if ($("liste").hidden && !document.body.classList.contains("sans-3d")) return;
   const actif = document.activeElement && box.contains(document.activeElement) ? document.activeElement.dataset.code : null;
   box.innerHTML = Object.entries(ZONES).filter(([z]) => !E.zone || z === E.zone).map(([z, info]) => `<h3>${esc(info.nom)}</h3>` + POSTES_PLAN.filter(p => p.zone === z).map(p => { const e = etatDe(p.code), px = prix(E.creneau);
-    return `<button class="ligne" type="button" data-code="${p.code}">${esc(p.nom)}<span><i class="pt ${e === "libre" ? "" : "pris"}"></i>${esc(libelleEtat(e))}${e === "libre" && px ? " · " + eur(px) + " HT" : ""}</span></button>`; }).join("")).join("");
+    return `<button class="ligne" type="button" data-code="${p.code}">${esc(p.nom)}<span><i class="pt ${e === "libre" ? "" : e === "pris" ? "pris" : "passe"}"></i>${esc(libelleEtat(e))}${e === "libre" && px ? " · " + eur(px) + " HT" : ""}</span></button>`; }).join("")).join("");
   if (actif) box.querySelector(`[data-code="${actif}"]`)?.focus();
 }
 
@@ -165,7 +165,7 @@ function dessinerFiche() {
   }
   const libre = e === "libre";
   box.innerHTML = `${tete}
-    <p class="etat"><i class="pt ${libre ? "" : "pris"}"></i>${e === "attente" ? "Lecture des disponibilités…" : libre ? `Libre · ${esc(jourLong(E.jour))}` : e === "pris" ? `Déjà réservé sur ce créneau · ${esc(jourLong(E.jour))}` : `Indisponible · ${esc(jourLong(E.jour))}`}</p>
+    <p class="etat"><i class="pt ${libre ? "" : e === "pris" ? "pris" : "passe"}"></i>${e === "attente" ? "Lecture des disponibilités…" : libre ? `Libre · ${esc(jourLong(E.jour))}` : e === "pris" ? `Déjà réservé sur ce créneau · ${esc(jourLong(E.jour))}` : `Indisponible · ${esc(jourLong(E.jour))}`}</p>
     <p class="texte">${esc(z.texte)}</p>
     <ul class="equip">${z.equipements.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
     <div><span class="label" id="f-l-cr" style="display:block;margin-bottom:8px">Créneau</span><div class="options" role="radiogroup" aria-labelledby="f-l-cr">${Object.entries(CRENEAUX).map(([c, t]) => { const ec = etatDe(p.code, c), ok = ec === "libre";

@@ -1,5 +1,5 @@
 :root{
-  --noir:#19110B; --blanc:#FFFFFF; --creme:#F6F1EB; --gris:#6B635C; --laiton:#B8914E; --vert:#4F7A5B;
+  --noir:#19110B; --blanc:#FFFFFF; --creme:#F6F1EB; --gris:#6B635C; --laiton:#B8914E; --vert:#4F7A5B; --rouge:#B0473A;
   --line:rgba(25,17,11,.13); --line-2:rgba(25,17,11,.5);
   --f:"Jost","Futura","Century Gothic","Avenir Next",system-ui,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -69,7 +69,8 @@ svg.trace *{fill:none;stroke:var(--noir);stroke-width:1;vector-effect:non-scalin
 /* Repères de disponibilité : petits points, couleurs retenues */
 .rep{position:absolute;left:0;top:0;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;will-change:transform;transition:opacity .4s var(--ease)}
 .rep i{flex:none;width:11px;height:11px;border-radius:50%;background:var(--vert);box-shadow:0 0 0 2.5px rgba(255,255,255,.92),0 2px 6px rgba(25,17,11,.28);transition:transform .35s var(--ease),background .3s,box-shadow .3s}
-.rep[data-etat="pris"] i,.rep[data-etat="passe"] i{width:7px;height:7px;background:rgba(25,17,11,.34);box-shadow:0 0 0 2px rgba(255,255,255,.7)}
+.rep[data-etat="pris"] i{width:17px;height:17px;background:var(--rouge) url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 18 18%27 fill=%27%23fff%27%3E%3Ccircle cx=%279%27 cy=%276.4%27 r=%272.7%27/%3E%3Cpath d=%27M3.9 14.6c.3-3 2.4-4.9 5.1-4.9s4.8 1.9 5.1 4.9z%27/%3E%3C/svg%3E") center/100% no-repeat;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 2px 7px rgba(90,25,15,.35)}
+.rep[data-etat="passe"] i{width:7px;height:7px;background:rgba(25,17,11,.34);box-shadow:0 0 0 2px rgba(255,255,255,.7)}
 .rep[data-etat="attente"] i{background:rgba(25,17,11,.18);box-shadow:0 0 0 2px rgba(255,255,255,.6);animation:pouls 1.2s ease-in-out infinite}
 .rep b{position:absolute;left:50%;bottom:calc(100% + 9px);transform:translate(-50%,6px);white-space:nowrap;font:400 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;background:var(--noir);color:#fff;padding:8px 10px;opacity:0;transition:opacity .25s var(--ease),transform .35s var(--ease)}
 .rep b span{color:#C7C0B8;margin-left:8px}
@@ -126,7 +127,8 @@ svg.trace *{fill:none;stroke:var(--noir);stroke-width:1;vector-effect:non-scalin
 .legende{display:flex;gap:16px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gris)}
 .legende span{display:flex;align-items:center;gap:7px}
 .pt{width:9px;height:9px;border-radius:50%;background:var(--vert);box-shadow:0 0 0 2px #fff}
-.pt.pris{width:7px;height:7px;background:rgba(25,17,11,.34)}
+.pt.pris{width:13px;height:13px;background:var(--rouge) url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 18 18%27 fill=%27%23fff%27%3E%3Ccircle cx=%279%27 cy=%276.4%27 r=%272.7%27/%3E%3Cpath d=%27M3.9 14.6c.3-3 2.4-4.9 5.1-4.9s4.8 1.9 5.1 4.9z%27/%3E%3C/svg%3E") center/100% no-repeat;box-shadow:0 0 0 1.5px #fff}
+.pt.passe{width:7px;height:7px;background:rgba(25,17,11,.34)}
 .outils{position:fixed;right:var(--bord);bottom:max(18px,env(safe-area-inset-bottom,0px));display:flex;gap:6px;transition:right .6s var(--ease)}
 .carre{width:38px;padding:0;height:38px;font-size:18px;letter-spacing:0;line-height:1}
 .outils .bouton-fil{height:38px;padding-block:0}
