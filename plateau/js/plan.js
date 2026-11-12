@@ -3,13 +3,13 @@
 // exprimées dans le repère d'origine de l'image, 1536 × 1024. Ce fichier ne contient ni disponibilité ni prix.
 
 export const IMAGE = {
-  l: 1536, h: 1024, src: "assets/plateau-2x.webp", leger: "assets/plateau.webp", maquette: [70, 110, 1440, 990],
+  l: 1536, h: 1024, src: "/plateau/assets/plateau-2x.webp", leger: "/plateau/assets/plateau.webp", maquette: [70, 110, 1440, 990],
   // Contours relevés sur l'image : emprise du sol, silhouette de la maquette, arêtes des murs (tracé d'ouverture, lumière, ombre)
   sol: [[455, 290], [1415, 455], [1250, 972], [78, 655]],
   silhouette: [[72, 508], [460, 122], [1424, 343], [1424, 470], [1256, 988], [70, 670]],
   murs: [[[78, 655], [75, 510], [460, 125], [455, 290]], [[460, 125], [1420, 345], [1415, 455]], [[1148, 292], [1148, 402], [1030, 625], [1030, 520], [1148, 292]], [[1030, 625], [1335, 640]], [[905, 800], [935, 700]], [[985, 715], [1010, 610]]],
   // Rendus de l'étage sous une autre lumière, par créneau (même cadrage que l'image principale, vérifié au pixel près).
-  ambiances: { matin: "assets/plateau-matin-2x.webp", apres: "assets/plateau-apres-2x.webp" },
+  ambiances: { matin: "/plateau/assets/plateau-matin-2x.webp", apres: "/plateau/assets/plateau-apres-2x.webp" },
 };
 
 // Un îlot = quatre postes dos à dos. cadre : zone de l'image qui le contient.

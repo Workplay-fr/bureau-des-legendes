@@ -152,3 +152,47 @@ export function tropDEnvois(req, max = 5) {
   const l = (vus.get(ip) || []).filter(t => now - t < fen); l.push(now); vus.set(ip, l);
   return l.length > max;
 }
+
+// Messages d'erreur en anglais pour la version anglaise du site (lang=en dans l'adresse ou dans la demande).
+const EN = {
+  "Ce créneau est en dehors des horaires d'ouverture.": "This slot is outside opening hours.",
+  "Ce créneau vient d'être réservé. Choisissez-en un autre.": "This slot has just been booked. Please choose another.",
+  "Cette adresse e-mail n'est pas valide.": "This email address is not valid.",
+  "Choisissez un créneau à venir.": "Please choose an upcoming slot.",
+  "Choisissez une date de début.": "Please choose a start date.",
+  "Choisissez une date de visite.": "Please choose a visit date.",
+  "Choisissez une formule.": "Please choose a membership.",
+  "Créneau invalide.": "Invalid slot.",
+  "Demande illisible.": "Unreadable request.",
+  "Impossible de lire les disponibilités pour le moment.": "Availability cannot be read at the moment.",
+  "Indiquez votre nom.": "Please enter your name.",
+  "Indiquez votre prénom et votre nom.": "Please enter your first and last name.",
+  "Jour invalide.": "Invalid day.",
+  "L'adhésion n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.": "The membership could not be recorded. Please try again or call us on +33 1 84 80 12 34.",
+  "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.": "The booking could not be recorded. Please try again or call us on +33 1 84 80 12 34.",
+  "Le Bureau est fermé ce jour-là.": "The Bureau is closed that day.",
+  "Le site n'est pas encore relié à Nexudus.": "The site is not connected to Nexudus yet.",
+  "Merci d'accepter d'être recontacté.": "Please agree to be contacted.",
+  "Merci d'accepter les conditions d'adhésion.": "Please accept the membership terms.",
+  "Merci d'accepter les conditions de réservation.": "Please accept the booking terms.",
+  "Merci de patienter quelques secondes avant d'envoyer.": "Please wait a few seconds before sending.",
+  "Merci de patienter quelques secondes avant de valider.": "Please wait a few seconds before confirming.",
+  "Méthode non autorisée.": "Method not allowed.",
+  "Poste ou créneau invalide.": "Invalid desk or slot.",
+  "Salle ou jour invalide.": "Invalid room or day.",
+  "Trop d'adhésions envoyées. Réessayez dans quelques minutes.": "Too many sign-ups. Please try again in a few minutes.",
+  "Trop de demandes envoyées. Réessayez dans quelques minutes.": "Too many requests. Please try again in a few minutes.",
+  "Trop de réservations envoyées. Réessayez dans quelques minutes.": "Too many bookings. Please try again in a few minutes.",
+  "Votre demande n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.": "Your request could not be recorded. Please try again or call us on +33 1 84 80 12 34.",
+};
+const enAnglais = m => EN[m] || String(m).replace(/^Poste (C\d+) vient d'être réservé sur ce créneau\. Choisissez un autre poste\.$/, "Desk $1 has just been booked for this slot. Please choose another desk.");
+// Enveloppe une fonction : si la page est en anglais, le champ « erreur » de la réponse est traduit.
+export const bilingue = traiter => async req => {
+  let lang = new URL(req.url).searchParams.get("lang");
+  if (!lang && req.method === "POST") { try { lang = (await req.clone().json()).lang; } catch { /* corps illisible : la fonction répondra */ } }
+  const r = await traiter(req);
+  if (lang !== "en") return r;
+  let d; try { d = await r.clone().json(); } catch { return r; }
+  if (!d || !d.erreur) return r;
+  return new Response(JSON.stringify({ ...d, erreur: enAnglais(d.erreur) }), { status: r.status, headers: r.headers });
+};

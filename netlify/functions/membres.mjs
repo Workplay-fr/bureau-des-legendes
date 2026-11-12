@@ -1,8 +1,8 @@
 // Adhésion depuis le site : crée (ou retrouve) la fiche client avec son compte portail,
 // puis le contrat de la formule choisie dans Nexudus. Le paiement affiché est une simulation.
-import { CFG, FORMULES_NX, nx, contact, nettoie, emailValide, json, tropDEnvois, vide } from "../lib/nexudus.mjs";
+import { CFG, FORMULES_NX, nx, contact, nettoie, emailValide, json, tropDEnvois, vide, bilingue } from "../lib/nexudus.mjs";
 
-export default async (req) => {
+const traiter = async (req) => {
   if (req.method !== "POST") return json(405, { ok: false, erreur: "Méthode non autorisée." });
   if (vide()) return json(500, { ok: false, erreur: "Le site n'est pas encore relié à Nexudus." });
   let d; try { d = await req.json(); } catch { return json(400, { ok: false, erreur: "Demande illisible." }); }
@@ -36,5 +36,7 @@ export default async (req) => {
     return json(502, { ok: false, erreur: "L'adhésion n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
   }
 };
+
+export default bilingue(traiter);
 
 export const config = { path: "/api/membres" };

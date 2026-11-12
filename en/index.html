@@ -1,0 +1,2141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/png" href="../img/mark-blanc.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Bureau des Légendes</title>
+<meta name="description" content="Bureau des Légendes: coworking, private offices and meeting rooms at 312 boulevard Haussmann, Paris 9th.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout : maison parisienne, sobre. Blanc, noir chaud, un seul panneau crème. Une seule famille géométrique,
+   titres en capitales espacées, angles droits, filets fins. Les animations portent le caractère. */
+:root{
+  --noir:#19110B; --blanc:#FFFFFF; --creme:#F6F1EB; --gris:#6B635C; --bleu:#3C6A9E;
+  --bg:var(--blanc); --fg:var(--noir); --fg-2:var(--gris); --line:rgba(25,17,11,.13); --line-2:rgba(25,17,11,.5);
+  --btn:var(--noir); --on-btn:var(--blanc);
+  --f:"Jost","Futura","Century Gothic","Avenir Next",system-ui,sans-serif;
+  --gut:max(clamp(16px,4vw,56px),env(safe-area-inset-left,0px));
+  --gut-r:max(clamp(16px,4vw,56px),env(safe-area-inset-right,0px));
+  --wrap:1280px; --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+.salon{--bg:var(--creme);background:var(--bg)}
+.deep,.ftr{--bg:var(--noir);--fg:var(--blanc);--fg-2:#C7C0B8;--line:rgba(255,255,255,.18);--line-2:rgba(255,255,255,.55);--btn:var(--blanc);--on-btn:var(--noir);background:var(--bg);color:var(--fg)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.65 var(--f);-webkit-font-smoothing:antialiased;margin:0;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--blanc)}
+img{max-width:100%;display:block}
+a{color:inherit;text-underline-offset:5px;text-decoration-thickness:1px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:1px solid var(--fg);outline-offset:3px}
+h1,h2,h3,p,figure{margin:0}
+h1,h2,h3{text-wrap:balance;overflow-wrap:break-word;color:var(--fg);font-weight:400;text-transform:uppercase}
+h1{font-size:clamp(32px,4.5vw,68px);line-height:1.1;letter-spacing:.05em}
+h2{font-size:clamp(24px,2.8vw,40px);line-height:1.18;letter-spacing:.07em}
+h3{font-size:17px;line-height:1.3;letter-spacing:.12em}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:var(--gut);padding-right:var(--gut-r)}
+.label{font:400 12px/1.4 var(--f);letter-spacing:.22em;text-transform:uppercase;color:var(--fg-2)}
+.lede{font-size:18px;color:var(--fg-2);max-width:52ch}
+.num{font-variant-numeric:tabular-nums lining-nums}
+section{padding-block:clamp(72px,9vw,128px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px 64px;align-items:end;margin-bottom:56px}
+.sec-head .label{display:block;margin-bottom:18px}
+.sec-head p{color:var(--fg-2);max-width:48ch}
+@media (max-width:860px){.sec-head{grid-template-columns:minmax(0,1fr);margin-bottom:40px}}
+
+/* Boutons : balayage, comme sur France Coworking */
+.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--btn);padding:16px 30px;font:400 12.5px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;text-align:center;max-width:100%;transition:color .35s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+@media (hover:hover){.btn:hover::before{transform:scaleX(1);transform-origin:left}}
+.btn-or{background:var(--btn);color:var(--on-btn)}
+.btn-or::before{background:var(--on-btn)}
+@media (hover:hover){.btn-or:hover{color:var(--btn)}}
+.btn-fil{background:transparent;color:var(--btn)}
+.btn-fil::before{background:var(--btn)}
+@media (hover:hover){.btn-fil:hover{color:var(--on-btn)}}
+.lien{font:400 12.5px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;color:var(--fg);white-space:nowrap}
+.lien:hover{text-decoration-thickness:2px}
+
+/* En-tête */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--blanc);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:24px;min-height:74px}
+.brand{margin-right:auto;display:block;flex:none}
+.brand img{height:40px;width:auto}
+.nav{display:flex;gap:6px;align-items:center}
+.nav a{font:400 12.5px/1 var(--f);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:10px 12px;position:relative}
+.nav a::after{content:"";position:absolute;left:12px;right:12px;bottom:2px;height:1px;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.nav a:hover::after,.nav a[aria-current="page"]::after{transform:scaleX(1)}
+.hdr .btn{padding:12px 20px}
+.menu-btn{display:none;background:none;border:1px solid var(--fg);padding:10px 14px;font:400 12px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.mnav{display:none}
+@media (max-width:1040px){
+  .nav,.hdr-cta{display:none}
+  .menu-btn{display:inline-flex}
+  .mnav{display:block;border-top:1px solid var(--line)}
+  .nav a.langue{padding-left:16px;margin-left:4px;border-left:1px solid var(--line-2);letter-spacing:.2em}
+.hdr .mnav .wrap{flex-direction:column;align-items:stretch;gap:0;min-height:0;padding-block:6px 26px}
+  .mnav a:not(.btn){display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);text-decoration:none;font:400 clamp(22px,6vw,30px)/1 var(--f);letter-spacing:.08em;text-transform:uppercase;animation:up .5s var(--ease) both}
+  .mnav a:not(.btn)::after{content:"→";font-size:.7em}
+  .mnav a:nth-child(2){animation-delay:.04s}.mnav a:nth-child(3){animation-delay:.08s}.mnav a:nth-child(4){animation-delay:.12s}.mnav a:nth-child(5){animation-delay:.16s}
+  .mnav .btn{margin-top:24px}
+  .mnav a.langue::after{content:""}
+}
+
+/* Hero : texte, mot vertical, scène 3D */
+.hero{padding:0;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) clamp(100px,10.5vw,170px) minmax(0,1fr);min-height:clamp(560px,78vh,820px)}
+.hero-l{display:flex;flex-direction:column;justify-content:flex-start;gap:clamp(28px,5vh,52px);padding:48px 44px 52px max(16px,env(safe-area-inset-left,0px),calc((100vw - var(--wrap))/2 + 16px));min-width:0}
+@media (min-width:901px){.hero-l .entre{margin-block:auto}.hero-l{padding-bottom:clamp(40px,7vh,80px)}}
+.hero-l .lede{margin-top:26px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.fiche{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center}
+.fiche span + span{padding-left:28px;border-left:1px solid var(--line-2)}
+.vword{writing-mode:vertical-rl;transform:rotate(180deg);font:500 clamp(72px,8vw,124px)/1.25 var(--f);letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;border-inline:1px solid var(--line)}
+.vword span{display:inline-block;animation:rise 1.1s var(--ease) both}
+.hero-r{position:relative;overflow:hidden;min-height:340px;background:var(--creme)}
+.hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:32% 50%}
+/* Aperçu du plateau : la maquette s'incline à la souris, les postes libres sont lus dans Nexudus */
+.poste{padding-block:clamp(56px,7vw,96px);border-bottom:1px solid var(--line)}
+.apercu{position:relative;overflow:hidden;height:clamp(300px,50vw,660px);display:block;background:#F3EAE4;color:var(--noir);text-decoration:none;container-type:size;perspective:1400px}
+.ap-cadre{position:absolute;inset:0;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+.ap-monde{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(104cqw,150cqh);aspect-ratio:3/2}
+.apercu .ap-monde img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;-webkit-mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);mask-composite:intersect}
+.ap-legende{position:absolute;inset:auto 24px 20px auto;z-index:2;display:flex;gap:18px}
+.ap-legende span{display:flex;align-items:center;gap:8px}
+.ap-legende .ap-pt{position:static;margin:0;animation:none}
+.ap-pt{position:absolute;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#4F7A5B;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 2px 5px rgba(25,17,11,.3);animation:apPose .7s calc(.2s + var(--d,0s)) cubic-bezier(.2,1.5,.4,1) backwards;transition:transform .3s var(--ease)}
+.ap-pt::after{content:"";position:absolute;inset:-9px}
+.ap-pt:hover{transform:scale(1.5)}
+.ap-pt.pris{width:6px;height:6px;margin:-3px 0 0 -3px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
+.apercu.attend .ap-pt{animation-play-state:paused}
+@keyframes apPose{from{transform:scale(0) translateY(-18px);opacity:0}}
+.ap-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
+@media (hover:hover){.apercu:hover .ap-monde img{filter:brightness(1.03)}}
+@media (prefers-reduced-motion:reduce){.ap-pt{animation:none}.ap-cadre{transform:none}}
+/* Haut de page : l'entrée de l'immeuble, et l'invitation à pousser la porte */
+@media (min-width:901px){.hero-r.entree{position:sticky;top:var(--hdr-h,74px);align-self:start;height:calc(100vh - var(--hdr-h,74px));min-height:540px}}
+.entree{background:#1b130c;color:#fff;cursor:pointer}
+.hero-r.entree > img{object-position:40% 50%;transform-origin:44% 62%;animation:approche 22s ease-in-out infinite alternate}
+@keyframes approche{from{transform:scale(1)}to{transform:scale(1.13)}}
+.entree::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(12,8,4,.15) 0%,rgba(12,8,4,0) 22%,rgba(12,8,4,0) 52%,rgba(12,8,4,.8) 78%,rgba(12,8,4,.93) 100%);pointer-events:none}
+.en-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;margin:0;color:#fff}
+/* repère lumineux sur la porte */
+.en-porte{position:absolute;left:50%;top:44%;z-index:2;width:14px;height:14px;margin:-7px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.22)}
+.en-porte::before,.en-porte::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(255,255,255,.75);animation:appel 2.8s var(--ease) infinite}
+.en-porte::after{animation-delay:1.4s}
+@keyframes appel{from{transform:scale(.6);opacity:1}to{transform:scale(4.2);opacity:0}}
+.en-nexudus{position:absolute;top:20px;right:22px;z-index:3;font:400 10.5px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.82);text-decoration:none;padding:8px 10px;border:1px solid rgba(255,255,255,.35);background:rgba(15,10,6,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .3s,color .3s}
+.en-nexudus b{font-weight:500;color:#fff}
+.en-nexudus:hover{background:#fff;color:var(--noir)}.en-nexudus:hover b{color:var(--noir)}
+.en-bas{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;gap:10px;padding:0 32px 36px}
+.en-bas .en-cta{margin-top:10px}
+.en-bas .label{color:#E8DFD2}
+.en-bas b{font:400 clamp(22px,2.2vw,32px)/1.15 var(--f);letter-spacing:.08em;text-transform:uppercase}
+.en-bas p{font-size:15px;line-height:1.55;color:#E8DFD2;max-width:46ch}
+.en-liste{display:flex;flex-wrap:wrap;gap:6px 8px;list-style:none;margin:2px 0 6px;padding:0}
+.en-liste li{font:400 11px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;padding:8px 10px;border:1px solid rgba(255,255,255,.45);animation:up .7s calc(.5s + var(--k) * .09s) var(--ease) both}
+.en-cta{display:inline-flex;align-items:center;justify-content:space-between;gap:18px;align-self:start;justify-self:start;border:1px solid #fff;background:#fff;color:var(--noir);padding:17px 22px;font:400 12.5px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--ease)}
+.en-cta::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--noir);transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.en-cta i{font-style:normal;font-size:18px;transition:transform .45s var(--ease)}
+@media (hover:hover){.entree:hover .en-cta{color:#fff}.entree:hover .en-cta::before{transform:scaleX(1);transform-origin:left}.entree:hover .en-cta i{transform:translateX(6px)}}
+
+/* L'univers : on passe la porte, l'immeuble apparaît puis s'ouvre en quatre niveaux, chacun avec son offre */
+.univers{position:fixed;inset:0;z-index:150;background:#F3E7E1;color:var(--noir);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);overflow:hidden}
+.univers[hidden]{display:none}
+.un-porte{position:absolute;inset:0;z-index:5;overflow:hidden;background:#1b130c;transition:opacity .7s .55s var(--ease),visibility 0s 1.3s}
+.un-porte img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 55%;transform-origin:44% 62%;transition:transform 1.25s cubic-bezier(.7,0,.84,0),filter 1.25s}
+.un-porte::after{content:"";position:absolute;inset:0;background:#F7E3BE;opacity:0;transition:opacity .9s .35s var(--ease)}
+.univers.entre .un-porte img{transform:scale(4.6);filter:blur(4px)}
+.univers.entre .un-porte::after{opacity:1}
+.univers.entre .un-porte{opacity:0;visibility:hidden}
+.univers .un-fermer{position:absolute;top:max(20px,env(safe-area-inset-top,0px));right:22px;z-index:8;margin:0;background:rgba(255,255,255,.7)}
+.un-scene{position:relative;min-width:0;min-height:0}
+.im-pile{position:absolute;left:50%;top:50%;translate:-50% -50%;height:min(86vh,calc((58vw - 80px) * 1.5));aspect-ratio:2/3;container-type:size}
+.un-batiment{position:absolute;left:50%;top:50%;translate:-50% -50%;height:min(96vh,calc((58vw - 80px) * 1.5));aspect-ratio:2/3;object-fit:contain;opacity:0;transform:translateY(26px) scale(.94);transition:opacity 1s var(--ease),transform 1.4s var(--ease),filter 1s var(--ease);pointer-events:none}
+.univers.dedans .un-batiment{opacity:1;transform:none;animation:flotte 7s ease-in-out infinite}
+.univers.ouvert .un-batiment{opacity:0;transform:scale(1.07);filter:blur(8px);animation:none}
+.im-etage{position:absolute;left:0;width:100%;padding:0;border:0;background:none;cursor:pointer;z-index:calc(4 - var(--i));opacity:0;transform:translateY(calc((var(--i) - 1.5) * 19cqh)) scale(.8);transition:transform 1.25s calc((3 - var(--i)) * .11s) var(--ease),opacity .9s calc((3 - var(--i)) * .11s) var(--ease)}
+.univers.ouvert .im-etage{opacity:.5;transform:translateY(calc(var(--i) * -1.4cqh + 2.1cqh)) scale(.94)}
+.univers.pret .im-etage{transition-delay:0s;transition-duration:.9s}
+.univers.ouvert .im-etage.on{opacity:1;transform:translateY(calc(var(--i) * -1.4cqh + 2.1cqh)) scale(1.06);z-index:6}
+.im-etage img{width:100%;height:100%;object-fit:fill;display:block;-webkit-mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(to right,transparent,#000 7%,#000 93%,transparent);animation:flotte 6.5s calc(var(--i) * -1.6s) ease-in-out infinite}
+@keyframes flotte{0%,100%{transform:translateY(-4px)}50%{transform:translateY(5px)}}
+.im-etage::after{content:"";position:absolute;inset:8% 4%;pointer-events:none;background:linear-gradient(105deg,rgba(255,255,255,0) 42%,rgba(255,244,220,.5) 50%,rgba(255,255,255,0) 58%);background-size:260% 100%;background-position:130% 0;mix-blend-mode:soft-light;opacity:0}
+.im-etage.on::after{opacity:1;animation:reflet 3.2s .5s var(--ease) infinite}
+@keyframes reflet{to{background-position:-40% 0}}
+.im-etage:focus-visible{outline:1px solid var(--noir);outline-offset:-6px}
+.un-panneau{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,3.4vh,34px);padding:clamp(70px,9vh,110px) clamp(24px,5vw,84px) clamp(28px,6vh,64px) 0;min-width:0;overflow:auto;scrollbar-width:none}
+.un-panneau > *{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.univers.ouvert .un-panneau > *{opacity:1;transform:none;transition-delay:calc(.5s + var(--k,0) * .1s)}
+.un-panneau h2{font-size:clamp(26px,2.9vw,44px);margin-top:14px}
+.un-panneau .lede{color:var(--fg-2);max-width:44ch;font-size:16px}
+.un-niveaux{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
+.un-niveau{display:grid;grid-template-columns:54px minmax(0,1fr);gap:0 14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;cursor:pointer;position:relative;color:var(--gris);transition:color .5s var(--ease),padding .6s var(--ease)}
+.un-niveau .n{font:300 26px/1 var(--f);letter-spacing:.02em;color:inherit}
+.un-niveau b{font:400 15px/1.3 var(--f);letter-spacing:.12em;text-transform:uppercase;align-self:center}
+.un-niveau .plus{grid-column:2;display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s var(--ease)}
+.un-niveau .plus > div{overflow:hidden;min-height:0}
+.un-niveau small{display:block;font-size:14.5px;line-height:1.5;color:var(--fg-2);padding-top:8px;max-width:46ch}
+.un-niveau .btn{margin-top:14px;padding:14px 22px}
+.un-niveau.on{color:var(--noir);padding-block:20px}
+.un-niveau.on .plus{grid-template-rows:1fr}
+.un-niveau::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--noir);transform:scaleX(0);transform-origin:left}
+.univers.tourne .un-niveau.on::after{animation:temps var(--duree,5s) linear forwards}
+@keyframes temps{to{transform:scaleX(1)}}
+@media (max-width:900px){
+  .univers{grid-template-columns:minmax(0,1fr);grid-template-rows:46vh minmax(0,1fr)}
+  .im-pile,.un-batiment{height:min(43vh,calc((100vw - 60px) * 1.5))}
+  .un-scene{margin-top:8px}
+  .un-panneau{justify-content:flex-start;padding:6px var(--gut-r) 24px var(--gut);gap:14px}
+  .un-panneau .lede{display:none}
+  .un-panneau h2{font-size:22px;margin-top:8px}
+  .un-niveau{padding:12px 0}.un-niveau.on{padding-block:14px}
+  .un-niveau .n{font-size:22px}
+  .un-niveau .btn{width:100%}
+  .en-bas{padding:0 var(--gut-r) 24px var(--gut)}
+  .en-haut{inset:14px 16px auto}
+}
+@media (prefers-reduced-motion:reduce){.hero-r.entree > img,.en-porte::before,.en-porte::after,.im-etage img,.im-etage.on::after,.univers.dedans .un-batiment,.univers.tourne .un-niveau.on::after{animation:none}.un-porte{display:none}}
+.hero-r figcaption{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0}
+  .hero-l{padding:36px var(--gut-r) 40px var(--gut);gap:32px}
+  .vword{writing-mode:horizontal-tb;transform:none;font-size:clamp(56px,19vw,120px);border-inline:0;border-block:1px solid var(--line);justify-content:flex-start;padding:0 var(--gut-r) 0 var(--gut);line-height:1.3}
+  .hero-r{height:86vw;min-height:320px}
+  .hero-r.entree{height:132vw}
+  .apercu{height:78vw}
+  .ap-haut{inset:14px 16px auto}
+  .ap-legende{display:none}
+  .ap-pt{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;box-shadow:0 0 0 1.5px rgba(255,255,255,.92)}
+  .ap-pt.pris{width:4px;height:4px;margin:-2px 0 0 -2px}
+  .fiche span + span{padding-left:0;border-left:0}
+}
+
+/* Chiffres du lieu */
+.faits{padding:0;border-bottom:1px solid var(--line)}
+.faits .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.fait{padding:30px 24px 30px 0;min-width:0}
+.fait + .fait{padding-left:28px;border-left:1px solid var(--line)}
+.fait b{display:block;font:300 clamp(38px,4.2vw,58px)/1 var(--f)}
+.fait b small{font:400 12px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;margin-left:10px}
+.fait span{display:block;margin-top:10px;font-size:14.5px;color:var(--fg-2)}
+@media (max-width:760px){.faits .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.fait,.fait + .fait{padding:24px 12px 24px 0;border-left:0;border-bottom:1px solid var(--line)}.fait:nth-child(even){padding-left:20px;border-left:1px solid var(--line)}.fait:nth-last-child(-n+2){border-bottom:0}}
+
+/* Défilé des noms */
+.marquee{overflow:hidden;padding-block:20px;border-bottom:1px solid var(--line)}
+.mq-track{display:flex;width:max-content;animation:mq 46s linear infinite}
+.marquee:hover .mq-track{animation-play-state:paused}
+.mq-track span{display:flex;align-items:center;gap:36px;padding-right:36px;font:400 clamp(26px,3.6vw,50px)/1.1 var(--f);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.mq-track span::after{content:"";width:10px;height:10px;background:var(--bleu);flex:none}
+
+/* Esprit du lieu */
+.why{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:start}
+.why > *{min-width:0}
+.ph{position:relative;overflow:hidden;background:var(--creme)}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.why .ph{aspect-ratio:5/4;position:sticky;top:110px}
+.reason{padding:24px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:24px}
+.reason:first-of-type{border-top:1px solid var(--line-2);margin-top:36px}
+.reason p{color:var(--fg-2)}
+@media (max-width:860px){.why{grid-template-columns:minmax(0,1fr);gap:40px}.why .ph{position:relative;top:0;aspect-ratio:16/10}.reason{grid-template-columns:minmax(0,1fr);gap:8px}}
+
+/* Liste des espaces */
+.splist{border-top:1px solid var(--line-2)}
+.sprow{display:grid;grid-template-columns:190px calc((100% - 64px) * 1.2 / 2.2 - 190px) minmax(0,1fr) 200px;gap:32px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;position:relative}
+.sprow::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease)}
+.sprow:hover::before{transform:scaleX(1)}
+.sprow .ph{aspect-ratio:16/10}
+.sprow:hover .ph img{transform:scale(1.06)}
+.sprow h3{font-size:clamp(20px,2.1vw,30px);letter-spacing:.08em}
+.sprow p{color:var(--fg-2);font-size:15px}
+.sprow .cap{text-align:right;white-space:nowrap}
+@media (max-width:900px){.sprow{grid-template-columns:120px minmax(0,1fr);gap:8px 20px}.sprow .ph{grid-row:span 3}.sprow p,.sprow .cap{grid-column:2;text-align:left;white-space:normal}}
+
+/* Façade */
+.facade{padding:0;position:relative;overflow:hidden;min-height:clamp(380px,50vw,620px);display:grid;align-items:end;color:#fff;--fg:#fff;--btn:#fff;--on-btn:var(--noir)}
+.facade img{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover}
+.facade::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,10,6,.8) 0,rgba(15,10,6,.3) 55%,rgba(15,10,6,.05) 100%)}
+.facade .wrap{position:relative;z-index:2;width:100%;padding-block:56px}
+.facade .label{color:#E8E2DA}
+.facade h2{max-width:18ch}
+.facade p{color:#E8E2DA;max-width:44ch;margin:18px 0 28px}
+
+/* Étapes */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));counter-reset:st;border-top:1px solid var(--line-2)}
+.step{padding:26px 26px 0 0;min-width:0}
+.step + .step{padding-left:26px;border-left:1px solid var(--line)}
+.step::before{counter-increment:st;content:counter(st,decimal-leading-zero);display:block;font:300 56px/1 var(--f);margin-bottom:22px}
+.step p{color:var(--fg-2);margin-top:10px;font-size:15px}
+@media (max-width:860px){.steps{grid-template-columns:minmax(0,1fr)}.step,.step + .step{padding:22px 0;border-left:0;border-bottom:1px solid var(--line)}.step::before{font-size:44px;margin-bottom:12px}}
+
+/* Formules */
+.plans{border-top:1px solid var(--line-2)}
+.plan{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr) minmax(0,.7fr) auto;gap:20px 40px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line)}
+.plan h3{font-size:clamp(20px,2.2vw,30px);letter-spacing:.08em}
+.plan .pour{display:block;margin-top:8px;font-size:14.5px;color:var(--fg-2)}
+.plan ul{list-style:none;margin:0;padding:0;columns:2;column-gap:28px;font-size:15px;color:var(--fg-2)}
+.plan li{padding:4px 0 4px 16px;position:relative;break-inside:avoid}
+.plan li::before{content:"";position:absolute;left:0;top:15px;width:6px;height:1px;background:var(--fg)}
+.prix{white-space:nowrap;font-size:14px;color:var(--fg-2)}
+.prix b{display:block;font:300 clamp(34px,3.6vw,50px)/1.05 var(--f);color:var(--fg)}
+.plan.court{grid-template-columns:minmax(0,1fr) auto 120px}
+@media (max-width:980px){.plan{grid-template-columns:minmax(0,1fr) auto}.plan ul{grid-column:1/-1;grid-row:2}.plan .btn{grid-column:1/-1;justify-self:start}}
+@media (max-width:620px){.plan.court{grid-template-columns:minmax(0,1fr) auto}.plan.court .lien{grid-column:1/-1;justify-self:start}}
+@media (max-width:520px){.plan ul{columns:1}}
+.note{margin-top:22px;font-size:14.5px;color:var(--fg-2)}
+
+.appel .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) auto;gap:32px 64px;align-items:end}
+.appel h2{max-width:20ch}
+@media (max-width:820px){.appel .wrap{grid-template-columns:minmax(0,1fr)}}
+
+/* Pages intérieures */
+.page-head{padding-block:64px 44px;border-bottom:1px solid var(--line)}
+.page-head .label{display:block;margin-bottom:22px}
+.page-head h1{font-size:clamp(32px,5.4vw,84px)}
+.page-head .lede{margin-top:26px}
+.bloc{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:64px;align-items:center;padding-block:clamp(56px,7vw,104px);border-bottom:1px solid var(--line)}
+.bloc > *{min-width:0}
+.bloc:nth-of-type(even) .ph{order:2}
+.bloc .ph{aspect-ratio:16/11}
+.bloc:hover .ph img{transform:scale(1.04)}
+.bloc .label{display:block;margin-bottom:16px}
+.bloc > div > p{color:var(--fg-2);margin-top:18px;max-width:50ch}
+.res{list-style:none;margin:28px 0 30px;padding:0;border-top:1px solid var(--line-2)}
+.res li{display:flex;justify-content:space-between;align-items:baseline;gap:8px 20px;flex-wrap:wrap;padding:13px 0;border-bottom:1px solid var(--line)}
+.res b{font:400 14px/1.3 var(--f);letter-spacing:.12em;text-transform:uppercase}
+.res span{font-size:14.5px;color:var(--fg-2)}
+@media (max-width:900px){.bloc{grid-template-columns:minmax(0,1fr);gap:32px}.bloc:nth-of-type(even) .ph{order:0}}
+
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.duo figure{position:relative;aspect-ratio:16/10;overflow:hidden}
+.duo img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.duo figure:hover img{transform:scale(1.04)}
+.duo figcaption{position:absolute;left:18px;bottom:16px;z-index:2;color:#fff;font:400 12.5px/1 var(--f);letter-spacing:.22em;text-transform:uppercase;text-shadow:0 1px 14px rgba(0,0,0,.7)}
+@media (max-width:700px){.duo{grid-template-columns:minmax(0,1fr)}}
+.specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-2);margin-top:56px}
+.spec{padding:26px 26px 6px 0;min-width:0}
+.spec + .spec{padding-left:26px;border-left:1px solid var(--line)}
+.spec b{display:block;font:300 clamp(38px,4vw,54px)/1 var(--f)}
+.spec b small{font:400 12px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;margin-left:8px}
+.spec h3{margin-top:14px}
+.spec p{font-size:15px;color:var(--fg-2);margin-top:6px}
+@media (max-width:760px){.specs{grid-template-columns:minmax(0,1fr)}.spec,.spec + .spec{padding:22px 0;border-left:0;border-bottom:1px solid var(--line)}}
+.cartes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 32px}
+.carte{min-width:0;display:flex;flex-direction:column;gap:14px}
+.carte .ph{aspect-ratio:4/3}
+.carte:hover .ph img{transform:scale(1.06)}
+.carte p{color:var(--fg-2);font-size:15px}
+@media (max-width:860px){.cartes{grid-template-columns:minmax(0,1fr)}.carte .ph{aspect-ratio:16/10}}
+
+.faq{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:64px}
+.faq > *{min-width:0}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-of-type{border-top:1px solid var(--line-2)}
+.faq summary{cursor:pointer;list-style:none;padding:22px 40px 22px 0;font:400 15px/1.4 var(--f);letter-spacing:.1em;text-transform:uppercase;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:4px;top:50%;width:13px;height:13px;margin-top:-6px;background:linear-gradient(var(--fg),var(--fg)) center/13px 1px no-repeat,linear-gradient(var(--fg),var(--fg)) center/1px 13px no-repeat;transition:transform .4s var(--ease)}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 24px;color:var(--fg-2);max-width:60ch}
+@media (max-width:860px){.faq{grid-template-columns:minmax(0,1fr);gap:28px}}
+
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:72px;align-items:start}
+.contact > *{min-width:0}
+.contact .ph{aspect-ratio:5/4}
+.coord{border-top:1px solid var(--line-2);margin-top:8px}
+.coord > div{display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:6px 20px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line)}
+.coord .v{font:400 clamp(18px,1.8vw,22px)/1.4 var(--f);user-select:all;overflow-wrap:anywhere}
+.copie{background:none;border:0;padding:0;cursor:pointer;font:400 11.5px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;text-underline-offset:5px;color:var(--fg-2)}
+.copie:hover{color:var(--fg)}
+@media (max-width:900px){.contact{grid-template-columns:minmax(0,1fr);gap:40px}.contact .ph{aspect-ratio:16/9}}
+@media (max-width:520px){.coord > div{grid-template-columns:minmax(0,1fr) auto}.coord .label{grid-column:1/-1}}
+
+.appel.deep{border-bottom:1px solid var(--line)}
+.ftr{padding-block:64px 36px}
+.ftr .top{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:40px}
+.ftr img{height:60px;width:auto}
+.ftr .sig{margin-top:22px;max-width:30ch;color:var(--fg-2)}
+.ftr h4{margin:0 0 14px;font:400 12px/1.4 var(--f);letter-spacing:.22em;text-transform:uppercase;color:var(--fg)}
+.ftr ul{list-style:none;margin:0;padding:0}
+.ftr li{padding:4px 0;color:var(--fg-2)}
+.ftr li a{text-decoration:none}
+.ftr li a:hover{color:var(--fg);text-decoration:underline}
+.ftr .bot{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;color:var(--fg-2)}
+@media (max-width:760px){.ftr .top{grid-template-columns:minmax(0,1fr)}}
+
+/* Rideau de transition entre les pages */
+#rideau{position:fixed;inset:0;z-index:300;background:var(--noir);transform:translateY(100%);display:grid;place-items:center;pointer-events:none;padding:0 24px;visibility:hidden}
+#rideau div{text-align:center}
+#rideau img{height:54px;width:auto;margin:0 auto 28px}
+#rideau span{font:400 clamp(30px,6.4vw,92px)/1.05 var(--f);letter-spacing:.1em;text-transform:uppercase;color:#fff}
+
+/* Titres mot à mot */
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:.18em 0 .08em;margin:-.18em 0 -.08em}
+.w > span{display:inline-block}
+.on .w > span{animation:rise .9s var(--ease) both;animation-delay:calc(var(--i)*55ms + var(--d0,120ms))}
+.on .entre > *:not(h1){animation:up .8s var(--ease) both;animation-delay:calc(var(--d0,120ms) + .35s)}
+.on .entre > .hero-cta{animation-delay:calc(var(--d0,120ms) + .5s)}
+
+@keyframes rise{from{transform:translateY(112%)}to{transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes rv{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes clipIn{from{clip-path:inset(0 0 100% 0);transform:translateY(50px)}to{clip-path:inset(0 0 0 0);transform:none}}
+@keyframes px{from{transform:translateY(-5%)}to{transform:translateY(5%)}}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .sprow,.reason,.step,.plan,.res li,.spec,.carte,.fait,.sec-head{animation:rv linear both;animation-timeline:view();animation-range:entry 0% entry 75%}
+  .bloc .ph,.why .ph,.duo figure,.contact .ph{animation:clipIn linear both;animation-timeline:view();animation-range:entry 0% entry 90%}
+  .facade img{animation:px linear both;animation-timeline:view()}
+}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* Formulaire de visite : fenêtre modale reliée au CRM Nexudus */
+.mv{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.mv[hidden]{display:none!important}
+.mv-voile{position:absolute;inset:0;background:rgba(25,17,11,.62);backdrop-filter:blur(3px);animation:fade .45s var(--ease) both}
+.mv-panneau{position:relative;width:min(1040px,100%);max-height:min(720px,calc(100vh - 32px));display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);grid-template-rows:minmax(0,1fr);background:var(--blanc);color:var(--noir);overflow:hidden;animation:ouvre .75s cubic-bezier(.76,0,.24,1) both}
+.mv-photo{position:relative;margin:0;height:100%;min-height:0;background:var(--creme);overflow:hidden}
+.mv-photo img{object-position:50% 40%}
+.mv-photo img.apres{opacity:0;transition:opacity 1.2s var(--ease)}
+.mv.fini .mv-photo img.apres{opacity:1}
+.mv-photo p{transition:opacity .5s var(--ease)}
+.mv-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 2.4s var(--ease) both}
+.mv-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,6,0) 45%,rgba(15,10,6,.7) 100%)}
+.mv-photo p{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;color:#fff;font:400 12px/1.6 var(--f);letter-spacing:.2em;text-transform:uppercase}
+.mv-photo p b{display:block;font:400 22px/1.25 var(--f);letter-spacing:.08em;margin-bottom:8px}
+.mv-corps{display:flex;flex-direction:column;min-width:0;overflow:auto;padding:30px 36px 28px}
+.mv-tete{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.mv-fermer{flex:none;width:40px;height:40px;border:1px solid var(--line-2);background:none;cursor:pointer;position:relative;margin:-6px -8px 0 0;transition:background .3s}
+.mv-fermer::before,.mv-fermer::after{content:"";position:absolute;left:11px;right:11px;top:50%;height:1px;background:var(--noir);transform:rotate(45deg);transition:background .3s}
+.mv-fermer::after{transform:rotate(-45deg)}
+.mv-fermer:hover{background:var(--noir)}
+.mv-fermer:hover::before,.mv-fermer:hover::after{background:#fff}
+.mv h2{font-size:clamp(22px,2.3vw,30px);margin-top:12px}
+.mv-etapes{display:flex;gap:6px;margin:22px 0 4px}
+.mv-etapes span{flex:1;height:2px;background:var(--line);position:relative;overflow:hidden}
+.mv-etapes span::after{content:"";position:absolute;inset:0;background:var(--noir);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease)}
+.mv-etapes span.ok::after{transform:scaleX(1)}
+.mv-etape{display:none;flex-direction:column;gap:22px;padding-top:22px}
+.mv-etape.on{display:flex}
+.mv-etape.on > *{animation:up .6s var(--ease) both}
+.mv-etape.on > :nth-child(2){animation-delay:.06s}.mv-etape.on > :nth-child(3){animation-delay:.12s}.mv-etape.on > :nth-child(4){animation-delay:.18s}.mv-etape.on > :nth-child(5){animation-delay:.24s}
+.mv fieldset{border:0;margin:0;padding:0;min-width:0}
+.mv legend,.mv label.t{display:block;padding:0;margin-bottom:10px;font:400 11.5px/1.4 var(--f);letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.jours{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.choix{position:relative;flex:none}
+.choix input{position:absolute;opacity:0;pointer-events:none}
+.choix span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:66px;padding:11px 12px;border:1px solid var(--line-2);cursor:pointer;font:400 13px/1.2 var(--f);letter-spacing:.06em;text-transform:uppercase;scroll-snap-align:start;transition:background .3s,color .3s,border-color .3s}
+.choix span b{font:300 24px/1 var(--f);letter-spacing:0}
+.choix span small{font-size:10.5px;letter-spacing:.16em;color:var(--gris);transition:color .3s}
+.choix:hover span{border-color:var(--noir)}
+.choix input:checked + span{background:var(--noir);color:#fff;border-color:var(--noir)}
+.choix input:checked + span small{color:#C7C0B8}
+.choix input:focus-visible + span{outline:1px solid var(--noir);outline-offset:3px}
+.lignes{display:flex;flex-wrap:wrap;gap:6px}
+.lignes .choix span{min-width:0;flex-direction:row;padding:11px 16px}
+.champs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px}
+.champs .large{grid-column:1/-1}
+.champ{min-width:0}
+.champ input,.champ select,.champ textarea{display:block;width:100%;border:0;border-bottom:1px solid var(--line-2);background:transparent;padding:8px 0 10px;font:400 16px/1.4 var(--f);color:var(--noir);border-radius:0;outline:none;transition:border-color .3s}
+.champ textarea{resize:vertical;min-height:62px}
+.champ input:focus,.champ select:focus,.champ textarea:focus{border-bottom-color:var(--noir);box-shadow:0 1px 0 var(--noir)}
+.champ.err input{border-bottom-color:#B3261E}
+.champ .msg{display:block;min-height:1.2em;margin-top:4px;font-size:12.5px;color:#B3261E}
+.accord{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--gris);line-height:1.5;cursor:pointer}
+.accord input{margin:3px 0 0;accent-color:var(--noir);width:16px;height:16px;flex:none}
+.mv-pied{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:auto;padding-top:24px}
+.mv-pied .lien{background:none;border:0;padding:0;cursor:pointer}
+.mv .btn[disabled]{opacity:.45;cursor:not-allowed}
+.mv .btn[disabled]::before{display:none}
+.mv-statut{font-size:13.5px;color:var(--gris);min-height:1.4em}
+.mv-statut.err{color:#B3261E;padding:10px 12px;border:1px solid rgba(179,38,30,.35);background:rgba(179,38,30,.05)}
+.envoi{display:inline-block;width:14px;height:14px;border:1px solid currentColor;border-right-color:transparent;border-radius:50%;animation:tourne .8s linear infinite;vertical-align:-2px;margin-right:8px}
+.mv-fin{display:none;flex-direction:column;gap:18px;padding-top:28px}
+.mv-fin.on{display:flex}
+.sceau{position:relative;width:76px;height:76px;display:grid;place-items:center}
+.sceau svg{width:76px;height:76px;overflow:visible}
+.sceau .anneau{fill:none;stroke:var(--noir);stroke-width:1;stroke-dasharray:226;stroke-dashoffset:226;transform:rotate(-90deg);transform-origin:50% 50%;animation:trait 1s .1s cubic-bezier(.65,0,.35,1) forwards}
+.sceau .coche{fill:none;stroke:var(--noir);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:trait .55s .95s var(--ease) forwards}
+.sceau::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--noir);opacity:0;animation:onde 1.6s 1.3s var(--ease) forwards}
+@keyframes onde{0%{opacity:.35;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+.mv-fin.on > :not(.sceau){animation:up .8s var(--ease) both}
+.mv-fin.on > :nth-child(2){animation-delay:1.05s}.mv-fin.on > :nth-child(3){animation-delay:1.15s}.mv-fin.on > :nth-child(4){animation-delay:1.25s}
+.mv-fin.on > :nth-child(5){animation-delay:1.35s}.mv-fin.on > :nth-child(6){animation-delay:1.5s}.mv-fin.on > :nth-child(7){animation-delay:1.6s}
+.mv-fin.on .recap li{animation:glisse .6s var(--ease) both}
+.mv-fin.on .recap li:nth-child(1){animation-delay:1.45s}.mv-fin.on .recap li:nth-child(2){animation-delay:1.55s}.mv-fin.on .recap li:nth-child(3){animation-delay:1.65s}
+@keyframes glisse{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.mv-fin h2 .m{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+.mv-fin h2 .m > span{display:inline-block;transform:translateY(105%);animation:monteMot .9s var(--ease) forwards}
+@keyframes monteMot{to{transform:none}}
+@media (prefers-reduced-motion:reduce){.sceau .anneau,.sceau .coche{animation:none;stroke-dashoffset:0}.sceau::after,.mv-fin.on > *,.mv-fin.on .recap li,.mv-fin h2 .m > span{animation:none;transform:none;opacity:1}}
+.recap{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
+.recap li{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.recap li span{color:var(--gris);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+.crm{font-size:13px;color:var(--gris)}
+.crm b{color:var(--noir);font-weight:500}
+.mv-corps{padding:26px 36px 22px;scrollbar-width:none}
+.mv-corps::-webkit-scrollbar{display:none}
+.ms.fini #ms-points{opacity:0;pointer-events:none;transition:opacity .5s}
+#mv .mv-fermer{margin:0}
+@media (min-height:781px){ #mv .mv-corps{overflow:hidden} }
+#ms .mv-fin .recap li{padding:6px 0}
+#ms .mv-fin{gap:10px}
+#ms .sceau,#ms .sceau svg{width:48px;height:48px}
+.mv .mv-etapes{margin:16px 0 0}
+.mv .mv-etape{gap:16px;padding-top:16px}
+.mv .mv-pied{padding-top:12px}
+.mv textarea{min-height:44px;height:44px;resize:none}
+.mv .mv-fin{gap:12px;padding-top:16px}
+.mv .sceau,.mv .sceau svg{width:56px;height:56px}
+.mv .recap li{padding:8px 0}
+.mv .mv-fin .mv-pied{padding-top:4px !important}
+@media (max-height:780px){
+  .mv .mv-corps{padding:20px 32px 18px}
+  .mv .mv-etape{gap:12px;padding-top:12px}
+  .mv .mv-fin{gap:10px;padding-top:10px}
+  .mv .mv-fin p.muted{font-size:14px;line-height:1.5}
+  .mv .sceau,.mv .sceau svg{width:46px;height:46px}
+}
+/* Fenêtres agrandies (visite, salle) */
+@media (min-width:900px){
+  .mv-panneau{width:min(1360px,100%) !important;height:min(880px,calc(100vh - 48px));max-height:none !important;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) !important}
+  .mv .mv-corps{padding:clamp(32px,5vh,56px) clamp(36px,4vw,64px) clamp(24px,4vh,44px) !important;display:flex;flex-direction:column}
+  .mv .mv-corps form, .mv .mv-corps .mv-fin{flex:1 1 auto}
+  .mv h2#mv-titre, .mv h2#ms-titre{font-size:clamp(30px,2.6vw,42px)}
+  .mv .mv-etapes{margin-top:24px !important}
+  #mv .mv-etape, #ms .mv-etape{gap:clamp(16px,2.6vh,28px) !important;padding-top:clamp(16px,2.6vh,28px) !important}
+  #mv .mv-fin, #ms .mv-fin{gap:clamp(10px,1.8vh,18px) !important;padding-top:clamp(12px,2.4vh,28px) !important}
+  #mv .sceau, #mv .sceau svg, #ms .sceau, #ms .sceau svg{width:clamp(48px,7vh,72px) !important;height:clamp(48px,7vh,72px) !important}
+  .mv .mv-pied{margin-top:auto}
+  .mv-photo p{left:40px;right:40px;bottom:36px}
+  .mv-photo p b{font-size:28px}
+}
+@media (min-width:900px) and (min-height:760px){
+  .mv .mv-corps form{display:flex;flex-direction:column}
+  .mv .mv-etape.on{flex:1 1 auto}
+  .mv .label{font-size:13px}
+  .mv legend, .mv .champ .t{font-size:13px !important}
+  .mv .jours{flex-wrap:wrap;overflow:visible;gap:8px}
+  .mv .choix span{min-width:78px;padding:14px 14px;font-size:14px}
+  .mv .choix span b{font-size:30px}
+  .mv .choix span small{font-size:11.5px}
+  .mv .lignes{gap:8px}
+  .mv .lignes .choix span{padding:14px 20px;font-size:14px}
+  .mv .champ input, .mv .champ select, .mv .champ textarea{font-size:20px;padding:10px 0 12px}
+  #mv textarea, #ms textarea{height:52px;min-height:52px}
+  .mv .accord{font-size:15px}
+  .mv .btn{padding:19px 36px;font-size:13px}
+  .mv .mv-statut{font-size:15px}
+  .mv .mv-fin p.muted, .mv .mv-fin > p{font-size:17px;line-height:1.6}
+  .mv .recap li{font-size:17px;padding:12px 0}
+  .mv .crm{font-size:14px}
+  .mv .salles-choix{gap:16px}
+  .mv .salle-opt .boite{grid-template-columns:minmax(0,1fr);gap:0;padding:0;align-items:stretch}
+  .mv .salle-opt img{width:100%;height:clamp(100px,15vh,150px)}
+  .mv .salle-opt .boite > span{padding:14px 16px 16px}
+  .mv .salle-opt b{font-size:15px}
+  .mv .salle-opt small{font-size:13.5px}
+}
+/* Panier de services (réservation de salle) */
+.panier{display:flex;flex-direction:column;gap:10px}
+.panier-t{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.panier-t small{color:var(--gris);font-size:12.5px}
+.produits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.prod{display:flex;align-items:center;border:1px solid var(--line-2);transition:border-color .3s,background .3s;min-width:0}
+.prod .prod-choix{flex:1 1 auto;min-width:0}
+.prod.on{border-color:var(--noir)}
+.prod-choix{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;padding:10px 12px;background:none;border:0;cursor:pointer;text-align:left;color:var(--noir);font:inherit}
+.prod-choix i{width:16px;height:16px;border:1px solid var(--noir);position:relative}
+.prod.on .prod-choix i{background:var(--noir)}
+.prod.on .prod-choix i::after{content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;border:solid #fff;border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+.prod-choix b{display:block;font:500 13.5px/1.25 var(--f);letter-spacing:.02em}
+.prod-choix small{display:block;font-size:12px;color:var(--gris);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod-choix em{font-style:normal;font-size:13px;white-space:nowrap}
+.prod-q{display:flex;align-items:center;gap:6px;padding:0 10px 0 0;flex:none}
+.prod-q button{width:26px;height:26px;border:1px solid var(--line-2);background:#fff;cursor:pointer;font-size:16px;line-height:1;color:var(--noir)}
+.prod-q button:hover{border-color:var(--noir)}
+.prod-q span{min-width:22px;text-align:center;font-size:13.5px}
+.prod.on .prod-choix em{display:none}
+.panier-lignes{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--line-2)}
+.panier-lignes li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:13.5px;color:var(--gris)}
+.panier-lignes li b{font-weight:400;color:var(--noir)}
+.panier-lignes li.tva{border-top:1px dashed var(--line)}
+@media (max-width:640px){ .produits{grid-template-columns:minmax(0,1fr)} }
+#ms [data-e="5"] .recap-salle, #ms [data-e="5"] .carte-ico, #ms [data-e="5"] .paiement > .champ{display:none}
+#ms [data-e="5"]{gap:10px !important;padding-top:12px !important}
+#ms [data-e="5"] .panier-lignes li{padding:3px 0}
+#ms [data-e="5"] .total b{font-size:26px}
+#ms [data-e="5"] #ms-statut4:empty{display:none}
+#ms [data-e="5"] .mv-pied{padding-top:6px !important}
+#ms [data-e="3"] .produits{gap:10px}
+.ticket{display:none}
+#ms [data-e="3"] .panier{gap:14px}
+.panier-aide{color:var(--gris);font-size:14px;margin:0}
+.pers{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--gris)}
+.pers button{width:28px;height:28px;border:1px solid var(--line-2);background:#fff;cursor:pointer;font-size:16px;line-height:1;color:var(--noir)}
+.pers button:hover{border-color:var(--noir)}
+.pers b{min-width:22px;text-align:center;font-weight:500;color:var(--noir);font-size:15px}
+#ms [data-e="3"] .produits{grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){ #ms [data-e="3"] .produits{grid-template-columns:repeat(2,minmax(0,1fr))} #ms [data-e="3"] .prod-choix small{white-space:normal} }
+@media (min-width:900px){
+  #ms.e4 .ticket{display:flex;flex-direction:column;gap:6px;position:absolute;left:32px;right:32px;bottom:32px;z-index:3;background:rgba(246,241,235,.97);color:var(--noir);padding:22px 24px 20px;box-shadow:0 30px 60px -30px rgba(0,0,0,.7);animation:up .6s var(--ease) both}
+  #ms.e4 .ticket .ticket-salle{font:400 18px/1.25 var(--f);letter-spacing:.1em;text-transform:uppercase;margin-top:4px}
+  #ms.e4 .ticket .ticket-quand{font-size:13.5px;color:var(--gris)}
+  #ms.e4 .ticket .panier-lignes{margin-top:10px}
+  #ms.e4 .ticket .panier-lignes li{padding:6px 0;font-size:14px}
+  #ms.e4 .ticket-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--noir);padding-top:12px;margin-top:6px}
+  #ms.e4 .ticket-total span{font-size:12px;letter-spacing:.2em;text-transform:uppercase}
+  #ms.e4 .ticket-total b{font:300 30px/1 var(--f)}
+  #ms.e4 .ticket small{text-align:right;color:var(--gris);font-size:12.5px}
+  #ms.e4 .car-slide p, #ms.e4 #ms-points{opacity:0;transition:opacity .4s}
+  #ms [data-e="5"] .paiement .panier-lignes, #ms [data-e="5"] .paiement .total{display:none}
+}
+#ms [data-e="5"] .paiement{padding:14px 16px;gap:10px}
+#ms [data-e="5"] .demo-badge{padding:8px 10px;font-size:12.5px}
+#ms [data-e="5"] .carte-l .champ input{font-size:15px !important;padding:4px 0 6px !important}
+#ms [data-e="5"] .carte-l .champ .t{font-size:11px !important}
+#ms [data-e="5"] .total{padding-top:4px}
+#ms [data-e="3"] .prod-choix{padding:12px 14px}
+/* Réservation de salle · créneau : jours sur une ligne, heures en grille serrée */
+#ms .jours{flex-wrap:nowrap !important;overflow-x:auto !important;scrollbar-width:none;padding-bottom:2px}
+#ms .jours::-webkit-scrollbar{display:none}
+#ms .jours .choix span{min-width:64px !important;padding:9px 8px !important}
+#ms .jours .choix span b{font-size:22px !important}
+#ms .heures{grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+#ms .heures .choix span{padding:9px 4px !important;font-size:13px !important}
+#ms [data-e="2"], #ms [data-e="4"]{gap:14px !important}
+/* Devenir membre : même fenêtre que les autres */
+@media (min-width:900px){
+  .tf{inset:auto !important;top:50% !important;left:50% !important;transform:translate(-50%,-50%) !important;width:min(1360px,calc(100vw - 48px)) !important;height:min(880px,calc(100vh - 48px)) !important;
+    box-shadow:0 40px 120px -40px rgba(0,0,0,.6) !important;animation:tfOuvre .75s cubic-bezier(.76,0,.24,1) both !important}
+  .tf.ferme{animation:tfOuvre .5s cubic-bezier(.76,0,.24,1) reverse both !important}
+  .tf-haut{padding:18px 32px}
+  .tf-corps{padding:clamp(24px,4vh,48px) clamp(32px,4vw,64px) 28px !important;scrollbar-width:none}
+  .tf .tf-q{margin:auto !important}
+  .tf .tf-q.large{margin:0 auto !important;align-self:flex-start}
+  .tf section.tf-q{padding-block:0 !important}
+  .tf .tf-corps{align-items:flex-start}
+  .tf .tf-q:not(.large){margin:auto !important;align-self:center}
+  .tf .tf-q.large h2{font-size:clamp(26px,2.4vw,36px) !important}
+  .tf .tf-q.large .tf-aide{margin-top:8px}
+  .tf .plans-tf{margin-top:24px !important}
+  .tf-corps::-webkit-scrollbar{display:none}
+}
+.tf-voile{position:fixed;inset:0;z-index:219;background:rgba(25,17,11,.62);backdrop-filter:blur(3px);animation:fade .45s var(--ease) both}
+.tf-voile[hidden]{display:none!important}
+.tf-voile.ferme{animation:fade .4s var(--ease) reverse both}
+@media (max-width:899px){ .tf-voile{display:none} }
+@keyframes tfOuvre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
+@keyframes fade{from{opacity:0}}
+@keyframes ouvre{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
+@keyframes tourne{to{transform:rotate(360deg)}}
+@keyframes sceau{from{transform:scale(.6) rotate(-12deg);opacity:0}}
+@keyframes trait{to{stroke-dashoffset:0}}
+.mv.ferme .mv-voile{animation:fade .4s var(--ease) reverse both}
+.mv.ferme .mv-panneau{animation:ouvre .5s cubic-bezier(.76,0,.24,1) reverse both}
+@media (max-width:820px){
+  .mv{padding:0;place-items:end stretch}
+  .mv-panneau{grid-template-columns:minmax(0,1fr);max-height:calc(100vh - env(safe-area-inset-top,0px) - 24px)}
+  .mv-photo{display:none}
+  .mv-corps{padding:24px max(18px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px))}
+  .champs{grid-template-columns:minmax(0,1fr)}
+}
+body.modal-ouverte{overflow:hidden}
+
+/* Réservation de salle : section d'accueil et fenêtre en quatre étapes */
+.resa{padding-block:clamp(56px,7vw,96px);border-bottom:1px solid var(--line)}
+.resa-tete{display:grid;grid-template-columns:minmax(0,1.2fr) auto;gap:20px 48px;align-items:end;margin-bottom:36px}
+.resa-tete .label{display:block;margin-bottom:16px}
+.resa-tete p{color:var(--fg-2);margin-top:14px;max-width:52ch}
+.resa-grille{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.resa-carte{display:flex;flex-direction:column;gap:12px;height:100%;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;min-width:0}
+.resa-carte .ph{aspect-ratio:4/3}
+.resa-carte:hover .ph img{transform:scale(1.06)}
+.resa-carte h3{font-size:16px}
+.resa-carte span{font-size:14px;color:var(--fg-2)}
+.resa-carte .infos{display:flex;flex-direction:column;gap:2px}
+.resa-carte .prix-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;border-top:1px solid var(--line);padding-top:12px;margin-top:auto}
+.resa-carte .prix-h b{font-weight:400;color:var(--fg);font-size:15px}
+.resa-carte:focus-visible{outline:1px solid var(--fg);outline-offset:6px}
+@media (max-width:900px){.resa-tete{grid-template-columns:minmax(0,1fr)}.resa-grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ms .mv-etapes span{flex:1}
+.salles-choix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.salle-opt{position:relative;display:block;cursor:pointer}
+.salle-opt input{position:absolute;opacity:0;pointer-events:none}
+.salle-opt .boite{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;padding:10px;border:1px solid var(--line-2);transition:border-color .3s,background .3s}
+.salle-opt img{width:72px;height:56px;object-fit:cover}
+.salle-opt b{display:block;font:400 13.5px/1.3 var(--f);letter-spacing:.1em;text-transform:uppercase}
+.salle-opt small{display:block;font-size:12.5px;color:var(--gris);margin-top:3px}
+.salle-opt:hover .boite{border-color:var(--noir)}
+.salle-opt input:checked + .boite{border-color:var(--noir);background:var(--noir);color:#fff}
+.salle-opt input:checked + .boite small{color:#C7C0B8}
+.salle-opt input:focus-visible + .boite{outline:1px solid var(--noir);outline-offset:3px}
+.heures{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:6px;min-height:44px}
+.heures .choix span{min-width:0;width:100%;flex-direction:row;padding:11px 6px}
+.heures .choix input:disabled + span{color:#B9B2AA;border-color:var(--line);text-decoration:line-through;cursor:not-allowed;background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(25,17,11,.04) 6px 12px)}
+.heures .attente{grid-column:1/-1;font-size:13.5px;color:var(--gris);padding:12px 0}
+.heures .sq{height:42px;background:linear-gradient(90deg,var(--creme),#fff,var(--creme));background-size:200% 100%;animation:sk 1.2s linear infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.legende-h{display:flex;gap:16px;font-size:12px;color:var(--gris);margin-top:8px}
+.legende-h i{display:inline-block;width:12px;height:12px;border:1px solid var(--line-2);vertical-align:-2px;margin-right:6px}
+.legende-h i.pris{background:repeating-linear-gradient(135deg,transparent 0 3px,rgba(25,17,11,.15) 3px 6px)}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-top:1px solid var(--line-2);padding-top:14px}
+.total b{font:300 26px/1 var(--f)}
+.total small{display:block;font-size:12px;color:var(--gris);margin-top:4px;text-align:right}
+.paiement{border:1px solid var(--line-2);padding:18px;display:grid;gap:14px}
+.demo-badge{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;color:var(--noir);background:var(--creme);padding:10px 12px}
+.demo-badge b{font-weight:500}
+.carte-l{display:grid;grid-template-columns:minmax(0,1fr) 92px 74px;gap:10px}
+.carte-l .champ input{font-variant-numeric:tabular-nums;letter-spacing:.06em;color:var(--gris)}
+.carte-ico{display:flex;gap:6px;align-items:center}
+.carte-ico i{display:block;width:30px;height:20px;border:1px solid var(--line-2);border-radius:3px;background:linear-gradient(135deg,#fff,var(--creme))}
+.recap-salle{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:center}
+.recap-salle img{width:84px;height:64px;object-fit:cover}
+.recap-salle b{display:block;font:400 14px/1.3 var(--f);letter-spacing:.1em;text-transform:uppercase}
+.recap-salle span{font-size:14px;color:var(--gris)}
+@media (max-width:620px){.salles-choix{grid-template-columns:minmax(0,1fr)}.carte-l{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.carte-l .champ:first-child{grid-column:1/-1}}
+
+/* Carrousel de la fenêtre de réservation : la salle puis les services */
+#ms-car::after{display:none}
+.car-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.1s var(--ease)}
+.car-slide.on{opacity:1}
+.car-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.car-slide.on img{animation:kb 6s var(--ease) both}
+.car-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,6,.45) 0,rgba(15,10,6,0) 22%,rgba(15,10,6,0) 45%,rgba(15,10,6,.78) 100%)}
+.car-slide p{position:absolute;left:28px;right:28px;bottom:26px;z-index:2;margin:0;color:#fff;font:400 14px/1.55 var(--f);letter-spacing:.01em;text-transform:none;max-width:44ch}
+.car-slide p b{display:block;font:400 22px/1.25 var(--f);letter-spacing:.08em;text-transform:uppercase;margin:8px 0 6px}
+.car-slide .tag{display:inline-block;font:400 10.5px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(255,255,255,.7);padding:5px 8px}
+.car-slide.on p > *{animation:up .8s var(--ease) both}
+.car-slide.on p > :nth-child(2){animation-delay:.08s}.car-slide.on p > :nth-child(3){animation-delay:.16s}
+.car-points{position:absolute;top:22px;left:28px;right:28px;z-index:3;display:flex;gap:6px}
+.car-points button{flex:1;height:18px;border:0;padding:8px 0;background:none;cursor:pointer;position:relative}
+.car-points button::before,.car-points button::after{content:"";position:absolute;left:0;right:0;top:8px;height:2px;background:rgba(255,255,255,.35)}
+.car-points button::after{background:#fff;transform:scaleX(0);transform-origin:left}
+.car-points button.vu::after{transform:scaleX(1)}
+.car-points button.on::after{animation:barre var(--duree,5s) linear forwards}
+.car-figee .car-points button.on::after{animation:none;transform:scaleX(1)}
+.car-points button:focus-visible{outline:1px solid #fff;outline-offset:2px}
+@keyframes barre{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.car-fl{position:absolute;top:50%;z-index:4;width:48px;height:48px;margin-top:-24px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(15,10,6,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:grid;place-items:center;cursor:pointer;opacity:.75;transition:opacity .3s,background .3s,transform .3s var(--ease)}
+.car-fl svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.car-prec{left:20px}.car-suiv{right:20px}
+.mv-photo:hover .car-fl{opacity:1}
+.car-fl:hover{background:rgba(15,10,6,.6);border-color:#fff}
+.car-prec:hover{transform:translateX(-2px)}.car-suiv:hover{transform:translateX(2px)}
+.car-fl:focus-visible{outline:1px solid #fff;outline-offset:3px}
+#ms.e4 .car-fl,#ms.fini .car-fl{display:none}
+@media (max-width:899px){.car-fl{width:40px;height:40px;margin-top:-20px}.car-prec{left:12px}.car-suiv{right:12px}}
+
+/* Trois accès principaux du hero */
+.trio{margin-top:34px;border-top:1px solid var(--line-2);max-width:560px}
+.trio-l{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 20px;width:100%;padding:18px 18px 18px 0;border:0;border-bottom:1px solid var(--line-2);background:none;color:var(--fg);font:inherit;text-align:left;text-decoration:none;cursor:pointer;position:relative;isolation:isolate;transition:color .45s var(--ease),padding .45s var(--ease)}
+.trio-l::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--noir);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
+.trio-l b{font:400 clamp(17px,1.5vw,21px)/1.2 var(--f);letter-spacing:.12em;text-transform:uppercase}
+.trio-l small{grid-column:1;font-size:14px;color:var(--fg-2);transition:color .45s var(--ease)}
+.trio-l i{grid-row:1/3;grid-column:2;font-style:normal;font-size:22px;line-height:1;transition:transform .45s var(--ease)}
+/* le premier accès est en noir par défaut ; au survol, seul l'accès survolé est en noir */
+.trio-l.premier{color:#fff;padding-left:18px;border-bottom-color:var(--noir)}
+.trio-l.premier small{color:#C7C0B8}
+.trio-l.premier::before{transform:scaleX(1);transform-origin:left}
+@media (hover:hover){
+  .trio-l:hover{color:#fff;padding-left:18px}
+  .trio-l:hover::before{transform:scaleX(1);transform-origin:left}
+  .trio-l:hover small{color:#C7C0B8}
+  .trio-l:hover i{transform:translateX(6px)}
+  .trio:hover .trio-l.premier:not(:hover){color:var(--fg);padding-left:0;border-bottom-color:var(--line-2)}
+  .trio:hover .trio-l.premier:not(:hover) small{color:var(--fg-2)}
+  .trio:hover .trio-l.premier:not(:hover)::before{transform:scaleX(0);transform-origin:right}
+}
+.trio-l:focus-visible{outline:1px solid var(--fg);outline-offset:3px}
+
+/* Adhésion façon formulaire conversationnel */
+.tf{position:fixed;inset:0;z-index:220;background:var(--blanc);color:var(--noir);display:flex;flex-direction:column;animation:fade .4s var(--ease) both}
+.tf[hidden]{display:none!important}
+.tf.ferme{animation:fade .35s var(--ease) reverse both}
+.tf-haut{display:flex;align-items:center;gap:20px;padding:16px max(20px,env(safe-area-inset-right,0px)) 16px max(20px,env(safe-area-inset-left,0px));padding-top:calc(16px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--line)}
+.tf-haut img{height:34px;width:auto}
+.tf-haut .label{margin-left:auto}
+.tf-prog{height:2px;background:var(--line);position:relative}
+.tf-prog span{position:absolute;inset:0 auto 0 0;background:var(--noir);width:0;transition:width .7s var(--ease)}
+.tf-corps{flex:1;overflow:auto;display:flex;padding:clamp(28px,6vh,72px) max(20px,env(safe-area-inset-right,0px)) 40px max(20px,env(safe-area-inset-left,0px))}
+.tf-q{display:none;width:100%;max-width:760px;margin:auto}
+.tf-q.on{display:block;animation:tfIn .7s var(--ease) both}
+.tf-q.large{max-width:1180px}
+section.tf-q{padding-block:0}
+@keyframes tfIn{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+.tf-num{display:flex;align-items:center;gap:10px;font:400 13px/1 var(--f);letter-spacing:.16em;color:var(--gris);margin-bottom:16px}
+.tf-q h2{font-size:clamp(26px,3.4vw,44px);letter-spacing:.04em;line-height:1.15}
+.tf-aide{color:var(--gris);margin-top:12px;max-width:56ch}
+.tf-champ{margin-top:34px;display:grid;gap:22px}
+.tf-champ.deux{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tf-champ input{width:100%;border:0;border-bottom:1px solid var(--line-2);background:transparent;padding:6px 0 12px;font:300 clamp(22px,2.6vw,32px)/1.3 var(--f);color:var(--noir);outline:none;border-radius:0}
+.tf-champ input::placeholder{color:#C9C2BA}
+.tf-champ input:focus{border-bottom-color:var(--noir);box-shadow:0 1px 0 var(--noir)}
+.tf-champ .msg{display:block;min-height:1.2em;margin-top:6px;font-size:14px;color:#B3261E}
+.tf-choix{margin-top:30px;display:grid;gap:10px;max-width:520px}
+.tf-choix button{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;border:1px solid var(--line-2);background:#fff;font:400 17px/1.3 var(--f);color:var(--noir);text-align:left;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.tf-choix button kbd{flex:none;display:grid;place-items:center;width:26px;height:26px;border:1px solid var(--line-2);font:500 12px/1 var(--f);transition:inherit}
+.tf-choix button small{display:block;color:var(--gris);font-size:13.5px;margin-top:2px}
+.tf-choix button:hover{border-color:var(--noir)}
+.tf-choix button.on{background:var(--noir);color:#fff;border-color:var(--noir)}
+.tf-choix button.on kbd{border-color:#fff}
+.tf-choix button.on small{color:#C7C0B8}
+.tf-ok{margin-top:30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tf-ok .astuce{font-size:13px;color:var(--gris)}
+.tf-ok .astuce b{font-weight:500;color:var(--noir)}
+.tf-err{min-height:1.4em;margin-top:12px;font-size:14px;color:#B3261E}
+.tf-nav{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;z-index:2}
+.tf-nav button{width:40px;height:40px;border:0;background:var(--noir);color:#fff;font-size:16px;cursor:pointer}
+.tf-nav button:disabled{opacity:.3;cursor:default}
+/* Formules */
+.plans-tf{margin-top:34px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.pl{display:flex;flex-direction:column;border:1px solid var(--line-2);padding:22px 20px 20px;min-width:0;position:relative;transition:border-color .3s,transform .5s var(--ease)}
+.pl:hover{border-color:var(--noir);transform:translateY(-4px)}
+.pl .badge{position:absolute;top:-1px;right:-1px;background:var(--noir);color:#fff;font:400 10.5px/1 var(--f);letter-spacing:.18em;text-transform:uppercase;padding:7px 10px}
+.pl h3{font-size:19px;letter-spacing:.12em}
+.pl .accroche{font-size:14px;color:var(--gris);margin-top:8px;min-height:3em}
+.pl .p{margin-top:18px;font:300 40px/1 var(--f)}
+.pl .p small{font:400 12px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--gris);margin-left:6px}
+.pl ul{list-style:none;margin:18px 0 22px;padding:14px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:14px;color:var(--gris);flex:1}
+.pl li{padding-left:16px;position:relative}
+.pl li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:1px;background:var(--noir)}
+.pl .note-pl{font-size:12.5px;color:var(--gris);margin:-10px 0 16px;font-style:italic}
+.pl .btn{width:100%}
+.pl.vedette{border-color:var(--noir)}
+@media (max-width:1100px){.plans-tf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.plans-tf{grid-template-columns:minmax(0,1fr)}.tf-champ.deux{grid-template-columns:minmax(0,1fr)}.tf-nav{display:none}}
+.tf .paiement{max-width:520px;margin-top:28px}
+.tf .recap{margin-top:24px;max-width:520px}
+</style>
+</head>
+<body>
+
+
+<div id="rideau" aria-hidden="true"><div><img src="../img/mark-blanc.png" alt=""><br><span id="rideau-t"></span></div></div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a class="brand" href="#accueil" aria-label="Bureau des Légendes, home"><img src="../img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220"></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#espaces">Spaces</a><a href="#formules">Memberships</a><a href="#evenements">Events</a><a href="#contact">Contact</a>
+      <a data-portal="login" href="#">Member area</a>
+      <a class="langue" href="../" hreflang="fr" lang="fr" aria-label="Version française">FR</a>
+    </nav>
+    <a class="btn btn-or hdr-cta" data-portal="tour" href="#">Book a visit</a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="mnav">Menu</button>
+  </div>
+  <div class="mnav" id="mnav" hidden>
+    <div class="wrap">
+      <a href="#accueil">Home</a><a href="../plateau/en/">Book a desk</a><a href="#espaces">Spaces</a><a href="#formules">Memberships</a><a href="#evenements">Events</a><a href="#contact">Contact</a>
+      <a class="langue" href="../" hreflang="fr" lang="fr">Français</a>
+      <a class="btn btn-or" data-portal="tour" href="#">Book a visit</a>
+    </div>
+  </div>
+</header>
+
+<!-- ACCUEIL -->
+<main data-view="accueil">
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-l">
+        <div class="fiche label q"><span>312, boulevard Haussmann</span><span>Paris 9<sup>th</sup></span><span>Coworking and offices</span></div>
+        <div class="entre">
+          <h1>An address to write your legend.</h1>
+          <p class="lede">Coworking, private offices and meeting rooms in a Haussmann building.</p>
+          <nav class="trio" aria-label="Quick links"><button class="trio-l premier" type="button" data-salle=""><b>Book a room</b><small>From €35 excl. VAT per hour · live availability</small><i aria-hidden="true">→</i></button><a class="trio-l" data-portal="tour" href="#"><b>Visit the space</b><small>30 minutes, coffee included ;)</small><i aria-hidden="true">→</i></a><button class="trio-l" type="button" data-membre=""><b>Become a member</b><small>From €90 excl. VAT per month · sign up in 2 minutes</small><i aria-hidden="true">→</i></button></nav>
+        </div>
+      </div>
+      <p class="vword" aria-hidden="true"><span>Legends</span></p>
+      <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explore the building: step through the door of 312, boulevard Haussmann">
+        <img src="../img/entree.webp" alt="The entrance of Bureau des Légendes at dusk: open carriage door onto a lit interior, brass plate, stone façade" width="1536" height="1024" fetchpriority="high">
+        <a class="en-nexudus" href="https://www.nexudus.com/" target="_blank" rel="noopener">Powered by <b>Nexudus</b></a>
+        <i class="en-porte" aria-hidden="true"></i>
+        <div class="en-bas">
+          <b>Step inside.</b>
+          <p>Four floors to explore as a scale model: rooms, coworking, private offices.</p>
+          <span class="en-cta">Explore the building <i aria-hidden="true">→</i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faits" aria-label="The place in figures">
+    <div class="wrap">
+      <div class="fait"><b class="num">20<small>desks</small></b><span>flexible, picked on the floor plan</span></div>
+      <div class="fait"><b class="num">4<small>rooms</small></b><span>meeting rooms, up to 15 people</span></div>
+      <div class="fait"><b class="num">120<small>m²</small></b><span>under glass for your events</span></div>
+      <div class="fait"><b class="num">12<small>spaces</small></b><span>bookable online</span></div>
+    </div>
+  </section>
+
+
+  <section class="resa" id="resa">
+    <div class="wrap">
+      <div class="resa-tete">
+        <div><span class="label">Meeting rooms</span><h2>A room for tomorrow morning?</h2><p>Four rooms, up to 15 people. Live availability.</p></div>
+        <button class="btn btn-or" type="button" data-salle="">Book a meeting room</button>
+      </div>
+      <div class="resa-grille" id="resa-grille"></div>
+    </div>
+  </section>
+
+  <section class="poste" id="poste">
+    <div class="wrap">
+      <div class="resa-tete">
+        <div><span class="label">Coworking · 1<sup>st</sup> floor</span><h2>A desk for today?</h2><p>Twenty flexible desks. Pick yours on the floor plan.</p></div>
+        <a class="btn btn-or" href="../plateau/en/" id="ap-btn">Choose my desk</a>
+      </div>
+      <a class="apercu" id="apercu" href="../plateau/en/" aria-label="The 1st-floor coworking space: see free desks and book one">
+        <span class="ap-cadre"><span class="ap-monde"><img src="../plateau/assets/plateau-2x.webp" alt="Scale model of the coworking floor: five clusters of four desks, a glazed library and a lounge" width="1536" height="1024" loading="lazy"><span id="ap-points"></span></span></span>
+        <span class="ap-haut label"><span>The floor</span><span id="ap-compte">20 flexible desks</span></span>
+        <span class="ap-legende label" aria-hidden="true"><span><i class="ap-pt"></i>Free</span><span><i class="ap-pt pris"></i>Taken</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="label">Memberships</span><h2>Four ways to belong.</h2></div>
+        <p>Monthly prices. Each membership is detailed on its own page.</p>
+      </div>
+      <div class="plans">
+        <div class="plan court"><div><h3>Nomad</h3><span class="pour">A flexible desk, chosen each day</span></div><div class="prix"><b class="num">290&nbsp;€</b>per month</div><a class="lien" href="#" data-membre="1415397038">Choose</a></div>
+        <div class="plan court"><div><h3>Resident</h3><span class="pour">Your own dedicated desk</span></div><div class="prix"><b class="num">490&nbsp;€</b>per month</div><a class="lien" href="#" data-membre="1415397039">Choose</a></div>
+        <div class="plan court"><div><h3>Private office</h3><span class="pour">A closed office for your team</span></div><div class="prix"><b class="num">750&nbsp;€</b>per month</div><a class="lien" href="#" data-membre="1415397447">Choose</a></div>
+        <div class="plan court"><div><h3>Business address</h3><span class="pour">Your registered office at 312 boulevard Haussmann</span></div><div class="prix"><b class="num">90&nbsp;€</b>per month</div><a class="lien" href="#" data-membre="1415397040">Choose</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ESPACES -->
+<main data-view="espaces" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">The spaces</span>
+    <h1>Twelve rooms, twelve missions.</h1>
+    <p class="lede">From a coworking desk to the 120&nbsp;m² glass hall, every space can be booked online from the member area.</p>
+  </div>
+  <div class="wrap">
+    <article class="bloc">
+      <figure class="ph"><img src="../img/plateau.jpg" alt="Coworking floor with a long walnut table and tall windows onto the boulevard" width="1600" height="900"></figure>
+      <div>
+        <span class="label">Coworking</span>
+        <h2>The floors</h2>
+        <p>Twenty flexible desks on the 1<sup>st</sup> floor, sixteen dedicated desks on the 2<sup>nd</sup>. Oak desks, brass lamps, a socket at every seat and light from the boulevard.</p>
+        <ul class="res">
+          <li><b>1<sup>st</sup> floor</b><span>20 flexible desks · <a href="../plateau/en/">see free desks</a></span></li>
+          <li><b>2<sup>nd</sup> floor</b><span>16 dedicated desks</span></li>
+        </ul>
+        <button class="btn btn-or" type="button" data-membre="">Become a member</button>
+      </div>
+    </article>
+    <article class="bloc">
+      <figure class="ph"><img src="../img/bureau.jpg" alt="Private office with a marble fireplace, large gilt mirror and wooden lockers" width="1600" height="900" loading="lazy"></figure>
+      <div>
+        <span class="label">Private offices</span>
+        <h2>Your own quarters</h2>
+        <p>Two closed offices, by the day, the month or the year. Bespoke furniture, secure storage, dedicated fibre and your name plate on the door.</p>
+        <ul class="res">
+          <li><b>George Smiley office</b><span>5 to 6 people · 1<sup>st</sup> floor, boulevard side</span></li>
+          <li><b>Mata Hari office</b><span>3 to 4 people · 2<sup>nd</sup> floor, courtyard side</span></li>
+        </ul>
+        <a class="btn btn-or" data-portal="tour" href="#">Visit an office</a>
+      </div>
+    </article>
+    <article class="bloc">
+      <figure class="ph"><img src="../img/projection.jpg" alt="Screening room with leather armchairs, large screen and lit bookcases" width="1280" height="520" loading="lazy"></figure>
+      <div>
+        <span class="label">Meeting rooms</span>
+        <h2>The briefing rooms</h2>
+        <p>Four rooms for your board meetings, video calls and presentations. Large screen, projector, very fast connection and daylight.</p>
+        <ul class="res">
+          <li><b>Legends Room</b><span>15 people · 1<sup>st</sup> floor</span></li>
+          <li><b>Jason Bourne Room</b><span>15 people · 1<sup>st</sup> floor</span></li>
+          <li><b>Ethan Hunt Room</b><span>15 people · 2<sup>nd</sup> floor</span></li>
+          <li><b>James Bond Room</b><span>15 people · 3<sup>rd</sup> floor</span></li>
+        </ul>
+        <button class="btn btn-or" type="button" data-salle="">Book a room</button>
+      </div>
+    </article>
+    <article class="bloc">
+      <figure class="ph"><img src="../img/cabines.jpg" alt="Two padded midnight-blue phone booths in a Haussmann corridor" width="1600" height="900" loading="lazy"></figure>
+      <div>
+        <span class="label">Booths</span>
+        <h2>Secure line</h2>
+        <p>Two padded, soundproofed booths for a quiet call or a one-to-one video meeting. Comfortable seat, shelf, socket and USB-C.</p>
+        <ul class="res">
+          <li><b>Enigma booth</b><span>1 person · 2<sup>nd</sup> floor</span></li>
+          <li><b>Morse booth</b><span>1 person · 3<sup>rd</sup> floor</span></li>
+        </ul>
+        <a class="btn btn-or" data-portal="bookings" href="#">Book a booth</a>
+      </div>
+    </article>
+    <article class="bloc" style="border-bottom:0">
+      <figure class="ph"><img src="../img/verriere-jour.jpg" alt="La Verrière set up for a conference, rows of chairs under the glass roof" width="1600" height="900" loading="lazy"></figure>
+      <div>
+        <span class="label">Events</span>
+        <h2>La Verrière</h2>
+        <p>A 120&nbsp;m² workshop glass hall on the ground floor, with old parquet and tall plants. It can be set up for a conference, a reception or workshops.</p>
+        <ul class="res">
+          <li><b>Conference</b><span>60 seated</span></li>
+          <li><b>Reception</b><span>90 standing</span></li>
+        </ul>
+        <a class="btn btn-or" href="#evenements">Discover La Verrière</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<!-- FORMULES -->
+<main data-view="formules" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">Memberships</span>
+    <h1>Choose your cover.</h1>
+    <p class="lede">Four monthly memberships. Sign up online and manage everything from your member area.</p>
+  </div>
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="plans" style="border-top:0">
+        <div class="plan"><div><h3>Nomad</h3><span class="pour">Come whenever you like</span></div>
+          <ul><li>Flexible desk on the 1<sup>st</sup> floor</li><li>Very fast fibre</li><li>Access to the Enigma and Morse booths</li><li>Meeting rooms on booking</li></ul>
+          <div class="prix"><b class="num">290&nbsp;€</b>per month</div><button class="btn btn-or" type="button" data-membre="1415397038">Choose Nomad</button></div>
+        <div class="plan"><div><h3>Resident</h3><span class="pour">A place of your own</span></div>
+          <ul><li>A dedicated desk on a floor</li><li>Secure locker</li><li>Access to the Enigma and Morse booths</li><li>Meeting rooms on booking</li></ul>
+          <div class="prix"><b class="num">490&nbsp;€</b>per month</div><button class="btn btn-or" type="button" data-membre="1415397039">Choose Resident</button></div>
+        <div class="plan"><div><h3>Private office</h3><span class="pour">For a team of 3 to 6</span></div>
+          <ul><li>George Smiley or Mata Hari closed office</li><li>Dedicated fibre line</li><li>Secure storage</li><li>Your name plate on the door</li></ul>
+          <div class="prix"><b class="num">750&nbsp;€</b>per month</div><button class="btn btn-or" type="button" data-membre="1415397447">Choose Private office</button></div>
+        <div class="plan"><div><h3>Business address</h3><span class="pour">To set up your head office in Paris</span></div>
+          <ul><li>Address at 312 boulevard Haussmann</li><li>Mail handling</li><li>Meeting rooms on booking</li><li>Managed from the member area</li></ul>
+          <div class="prix"><b class="num">90&nbsp;€</b>per month</div><button class="btn btn-or" type="button" data-membre="1415397040">Choose Business address</button></div>
+      </div>
+      <p class="note">A question about a membership? <a href="#contact">Write to us</a> or drop by.</p>
+    </div>
+  </section>
+  <section class="salon">
+    <div class="wrap faq">
+      <div><span class="label">FAQ</span><h2 style="margin-top:18px">Before you sign.</h2></div>
+      <div>
+        <details open><summary>Can I visit before choosing?</summary><p>Yes. Book a visit online and we will show you the three floors and La Verrière.</p></details>
+        <details><summary>How do I book a meeting room?</summary><p>From your member area. You see live availability, choose your slot and receive the confirmation by email.</p></details>
+        <details><summary>Where can I find my invoices?</summary><p>In your member area, with your contract and your booking history.</p></details>
+        <details><summary>Can I change membership?</summary><p>Yes. Talk to the team on site or write to us, and we will adjust your membership to suit you.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ÉVÉNEMENTS -->
+<main data-view="evenements" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">Events</span>
+    <h1>Under the glass roof, day and night.</h1>
+    <p class="lede">A conference in the morning, a reception in the evening. La Verrière can be hired privately, and the house has its own programme too.</p>
+  </div>
+  <section style="padding-top:48px">
+    <div class="wrap">
+      <div class="duo">
+        <figure><img src="../img/verriere-jour.jpg" alt="La Verrière by day, set up for a conference" width="1600" height="900"><figcaption>By day</figcaption></figure>
+        <figure><img src="../img/verriere-nuit.jpg" alt="La Verrière by night, string lights, candles and high tables" width="1600" height="900"><figcaption>By night</figcaption></figure>
+      </div>
+      <div class="specs">
+        <div class="spec"><b class="num">60<small> seated</small></b><h3>Conference</h3><p>A stage, speakers' armchairs and rows of chairs facing the fireplace.</p></div>
+        <div class="spec"><b class="num">90<small> standing</small></b><h3>Reception</h3><p>High tables, soft lighting and tall plants under the Paris sky.</p></div>
+        <div class="spec"><b class="num">120<small> m²</small></b><h3>Workshops</h3><p>Sound system, large screen and projection. The room adapts to your format.</p></div>
+      </div>
+      <div class="hero-cta" style="margin-top:44px"><a class="btn btn-or" href="#contact">Hire La Verrière</a><a class="btn btn-fil" data-portal="bookings" href="#">See availability</a></div>
+    </div>
+  </section>
+  <section class="salon">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="label">The house programme</span><h2>Gatherings for those in the know.</h2></div>
+        <p>Dates and sign-ups are in the online calendar.</p>
+      </div>
+      <div class="cartes">
+        <div class="carte"><figure class="ph"><img src="../img/petit-dejeuner.jpg" alt="Breakfast table with croissants, orange juice and coffee" loading="lazy"></figure><h3>Breakfasts</h3><p>Croissants, coffee and new faces. The easiest way to meet other members.</p></div>
+        <div class="carte"><figure class="ph"><img src="../img/projection.jpg" alt="Screening room with leather armchairs" loading="lazy"></figure><h3>Masterclasses</h3><p>One guest, one topic, one hour. A small group, in the leather armchairs of the screening room.</p></div>
+        <div class="carte"><figure class="ph"><img src="../img/degustation.jpg" alt="Tasting table with wine, charcuterie and cheese" loading="lazy"></figure><h3>Tastings</h3><p>Wine, cheese and sharing boards at the end of the day, when the floor turns into a lounge.</p></div>
+      </div>
+      <div style="margin-top:48px"><a class="btn btn-or" data-portal="events" href="#">See the calendar</a></div>
+    </div>
+  </section>
+</main>
+
+<!-- CONTACT -->
+<main data-view="contact" hidden>
+  <div class="wrap page-head entre">
+    <span class="label">Contact</span>
+    <h1>Let's meet.</h1>
+    <p class="lede">The simplest way is to come and see. Otherwise, call or write, and we will get back to you the same day.</p>
+  </div>
+  <section style="padding-top:56px">
+    <div class="wrap contact">
+      <figure class="ph"><img src="../img/courrier.jpg" alt="Leather desk with an envelope, brass stamp and pen" width="1280" height="520"></figure>
+      <div>
+        <span class="label">Details</span>
+        <div class="coord" style="margin-top:18px">
+          <div><span class="label q">Address</span><span class="v">312, boulevard Haussmann<br>75009 Paris</span><button class="copie" data-copie="312 boulevard Haussmann, 75009 Paris">Copy</button></div>
+          <div><span class="label q">Phone</span><span class="v num">+33 1 84 80 12 34</span><button class="copie" data-copie="+33 1 84 80 12 34">Copy</button></div>
+          <div><span class="label q">Email</span><span class="v">bonjour@bureaudeslegendes.paris</span><button class="copie" data-copie="bonjour@bureaudeslegendes.paris">Copy</button></div>
+        </div>
+        <div class="hero-cta"><a class="btn btn-or" data-portal="tour" href="#">Book a visit</a><a class="btn btn-fil" data-portal="login" href="#">Member area</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="appel deep" id="appel">
+  <div class="wrap">
+    <div><span class="label">Your mission, should you choose to accept it</span><h2 style="margin-top:18px">Come and see the place for yourself.</h2></div>
+    <div class="hero-cta" style="margin:0"><a class="btn btn-or" data-portal="tour" href="#">Book a visit</a><button class="btn btn-fil" type="button" data-membre="">Become a member</button></div>
+  </div>
+</section>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="top">
+      <div><img src="../img/logo-blanc.png" alt="Bureau des Légendes" width="496" height="220"><p class="sig">Coworking and private offices, boulevard Haussmann.</p></div>
+      <div><h4>The place</h4><ul><li><a href="#espaces">Spaces</a></li><li><a href="#formules">Memberships</a></li><li><a href="#evenements">Events</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h4>Members</h4><ul><li><a data-portal="login" href="#">Member area</a></li><li><a data-portal="bookings" href="#">Book a room</a></li><li><a data-portal="events" href="#">Calendar</a></li><li><a href="#" data-membre="">Become a member</a></li></ul></div>
+    </div>
+    <div class="bot"><span>312, boulevard Haussmann, 75009 Paris</span><span>Demo venue · bookings and member area powered by Nexudus</span></div>
+  </div>
+</footer>
+
+<div class="univers" id="univers" hidden role="dialog" aria-modal="true" aria-labelledby="un-titre">
+  <div class="un-porte" aria-hidden="true"><img src="../img/entree.webp" alt=""></div>
+  <button class="mv-fermer un-fermer" type="button" id="un-fermer" aria-label="Close and return to the site"></button>
+  <div class="un-scene">
+    <img class="un-batiment" src="../img/immeuble/batiment.webp" alt="Scale model of the four-storey Haussmann building, windows lit" width="1024" height="1536" loading="lazy">
+    <div class="im-pile" role="group" aria-label="The four floors of the building">
+      <button class="im-etage" type="button" data-e="3" style="top:0;height:30.208%;--i:3" aria-label="3rd floor: a floor for your team"><img src="../img/immeuble/etage-3.webp" alt="" width="1536" height="696" loading="lazy"></button>
+      <button class="im-etage" type="button" data-e="2" style="top:22.135%;height:32.487%;--i:2" aria-label="2nd floor: residents and private offices"><img src="../img/immeuble/etage-2.webp" alt="" width="1536" height="749" loading="lazy"></button>
+      <button class="im-etage" type="button" data-e="1" style="top:46.549%;height:32.487%;--i:1" aria-label="1st floor: the coworking floor"><img src="../img/immeuble/etage-1.webp" alt="" width="1536" height="749" loading="lazy"></button>
+      <button class="im-etage" type="button" data-e="0" style="top:70.964%;height:29.036%;--i:0" aria-label="Ground floor: meeting rooms and La Verrière"><img src="../img/immeuble/rdc.webp" alt="" width="1536" height="669" loading="lazy"></button>
+    </div>
+  </div>
+  <div class="un-panneau">
+    <div style="--k:0"><span class="label">312, boulevard Haussmann</span><h2 id="un-titre">Four floors, one address.</h2></div>
+    <p class="lede" style="--k:1">Choose a floor to see what it offers, then book online.</p>
+    <ol class="un-niveaux" id="un-niveaux" style="--k:2"></ol>
+  </div>
+</div>
+
+<div class="mv" id="mv" hidden role="dialog" aria-modal="true" aria-labelledby="mv-titre">
+  <div class="mv-voile" data-fermer></div>
+  <div class="mv-panneau">
+    <figure class="mv-photo"><img src="../img/facade.jpg" alt=""><img class="apres" src="../img/verriere-nuit.jpg" alt="" loading="lazy"><p id="mv-legende"><b>312, boulevard Haussmann</b>Paris 9<sup>th</sup> · Monday to Saturday</p></figure>
+    <div class="mv-corps">
+      <div class="mv-tete">
+        <div><span class="label">Book a visit</span><h2 id="mv-titre">Come and see the place.</h2></div>
+        <button class="mv-fermer" type="button" data-fermer aria-label="Close"></button>
+      </div>
+      <div class="mv-etapes" aria-hidden="true"><span class="ok"></span><span id="mv-e2"></span></div>
+      <form id="mv-form" novalidate>
+        <div class="mv-etape on" id="mv-etape1">
+          <fieldset><legend>Your day</legend><div class="jours" id="mv-jours"></div></fieldset>
+          <fieldset><legend>Your time</legend><div class="lignes">
+            <label class="choix"><input type="radio" name="creneau" value="10:00" checked><span>Morning · 10:00</span></label>
+            <label class="choix"><input type="radio" name="creneau" value="14:30"><span>Afternoon · 14:30</span></label>
+            <label class="choix"><input type="radio" name="creneau" value="18:00"><span>Evening · 18:00</span></label>
+          </div></fieldset>
+          <fieldset><legend>What interests you</legend><div class="lignes" id="mv-formules">
+            <label class="choix"><input type="radio" name="formule" value="Nomade" data-prix="290"><span>Nomad</span></label>
+            <label class="choix"><input type="radio" name="formule" value="Résident" data-prix="490" checked><span>Resident</span></label>
+            <label class="choix"><input type="radio" name="formule" value="Bureau privé" data-prix="750"><span>Private office</span></label>
+            <label class="choix"><input type="radio" name="formule" value="Domiciliation" data-prix="90"><span>Business address</span></label>
+            <label class="choix"><input type="radio" name="formule" value="À définir" data-prix=""><span>Not sure yet</span></label>
+          </div></fieldset>
+          <div class="mv-pied"><span class="mv-statut">A 30-minute visit, coffee included ;)</span><button class="btn btn-or" type="button" id="mv-suite">Continue</button></div>
+        </div>
+        <div class="mv-etape" id="mv-etape2">
+          <div class="champs">
+            <div class="champ"><label class="t" for="mv-nom">First and last name</label><input id="mv-nom" name="nom" autocomplete="name" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="mv-societe">Company</label><input id="mv-societe" name="societe" autocomplete="organization"><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="mv-email">Email</label><input id="mv-email" name="email" type="email" autocomplete="email" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="mv-tel">Phone</label><input id="mv-tel" name="tel" type="tel" autocomplete="tel"><span class="msg"></span></div>
+            <div class="champ large"><label class="t" for="mv-equipe">Team size</label><select id="mv-equipe" name="equipe"><option>Just me</option><option>2 to 5 people</option><option>6 people or more</option></select><span class="msg"></span></div>
+            <div class="champ large"><label class="t" for="mv-message">A note for the team (optional)</label><textarea id="mv-message" name="message" rows="1"></textarea></div>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="mv-site">Website</label><input id="mv-site" name="site_web" tabindex="-1" autocomplete="off"></div>
+          <label class="accord"><input type="checkbox" id="mv-accord" required> I agree that Bureau des Légendes may contact me about this visit.</label>
+          <div class="mv-pied"><button class="lien" type="button" id="mv-retour">← Back</button><button class="btn btn-or" type="submit" id="mv-envoyer">Send my request</button></div>
+          <p class="mv-statut" id="mv-statut" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div class="mv-fin" id="mv-fin">
+        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 76 76"><circle class="anneau" cx="38" cy="38" r="36"/><path class="coche" d="M25 39l9 9 17-19"/></svg></div>
+        <span class="label">Thank you <span id="mv-prenom"></span></span>
+        <h2 id="mv-fin-titre">All set.</h2>
+        <p class="muted" style="color:var(--gris)">Your visit request has been recorded. We will email you at <b id="mv-mail-conf"></b> to confirm your time, usually the same day.</p>
+        <ul class="recap" id="mv-recap"></ul>
+        <p class="crm" id="mv-crm"></p>
+        <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer>Close</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mv ms" id="ms" hidden role="dialog" aria-modal="true" aria-labelledby="ms-titre">
+  <div class="mv-voile" data-fermer-ms></div>
+  <div class="mv-panneau">
+    <figure class="mv-photo" id="ms-car" aria-roledescription="carrousel" aria-label="The room and its services"><div id="ms-slides"></div><div class="car-points" id="ms-points"></div><button type="button" class="car-fl car-prec" id="ms-prec" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="car-fl car-suiv" id="ms-suiv" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      <div class="ticket" id="ms-ticket" aria-hidden="true"><span class="label">Your basket</span><b class="ticket-salle" id="ms-t-salle"></b><span class="ticket-quand" id="ms-t-quand"></span><ul class="panier-lignes" id="ms-t-lignes"></ul><div class="ticket-total"><span>Total incl. VAT</span><b id="ms-t-ttc"></b></div><small id="ms-t-ht"></small></div></figure>
+    <div class="mv-corps">
+      <div class="mv-tete">
+        <div><span class="label" id="ms-sur">Book a room · 1 of 5</span><h2 id="ms-titre">Choose your room.</h2></div>
+        <button class="mv-fermer" type="button" data-fermer-ms aria-label="Close"></button>
+      </div>
+      <div class="mv-etapes" aria-hidden="true"><span class="ok"></span><span></span><span></span><span></span><span></span></div>
+      <form id="ms-form" novalidate>
+        <div class="mv-etape on" data-e="1">
+          <div class="salles-choix" id="ms-salles"></div>
+          <div class="mv-pied"><span class="mv-statut">Hourly prices, excluding VAT.</span><button class="btn btn-or" type="button" data-suite="2">See time slots</button></div>
+        </div>
+        <div class="mv-etape" data-e="2">
+          <fieldset><legend>Day</legend><div class="jours" id="ms-jours"></div></fieldset>
+          <fieldset><legend>Duration</legend><div class="lignes" id="ms-durees">
+            <label class="choix"><input type="radio" name="duree" value="1" checked><span>1 hour</span></label>
+            <label class="choix"><input type="radio" name="duree" value="2"><span>2 hours</span></label>
+            <label class="choix"><input type="radio" name="duree" value="3"><span>3 hours</span></label>
+            <label class="choix"><input type="radio" name="duree" value="4"><span>Half day · 4 h</span></label>
+          </div></fieldset>
+          <fieldset><legend>Arrival time</legend><div class="heures" id="ms-heures"></div>
+            <div class="legende-h"><span><i></i>Free</span><span><i class="pris"></i>Already booked</span></div></fieldset>
+          <div class="total"><span id="ms-quand" class="mv-statut">Choose a time.</span><div><b id="ms-prix">—</b><small id="ms-prix-ttc"></small></div></div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="1">← Room</button><button class="btn btn-or" type="button" data-suite="3" id="ms-vers3" disabled>Add services to your booking</button></div>
+          <p class="mv-statut" id="ms-statut2" role="status" aria-live="polite"></p>
+        </div>
+        <div class="mv-etape" data-e="3">
+          <div class="panier">
+            <div class="panier-t"><span class="label">Services for your meeting</span>
+              <div class="pers"><span>For</span><button type="button" id="ms-pers-moins" aria-label="One person fewer">−</button><b id="ms-pers">4</b><button type="button" id="ms-pers-plus" aria-label="One more person">+</button><span id="ms-pers-l">people</span></div></div>
+            <p class="panier-aide">Optional: everything is set up in the room before you arrive and added to your booking in Nexudus.</p>
+            <div class="produits" id="ms-produits"></div>
+          </div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="2">← Time</button><button class="btn btn-or" type="button" data-suite="4" id="ms-vers4">Continue without services</button></div>
+        </div>
+        <div class="mv-etape" data-e="4">
+          <div class="champs">
+            <div class="champ"><label class="t" for="ms-prenom">First name</label><input id="ms-prenom" name="prenom" autocomplete="given-name" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-nom">Last name</label><input id="ms-nom" name="nom" autocomplete="family-name" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-societe">Company</label><input id="ms-societe" name="societe" autocomplete="organization"><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-participants">Attendees</label><select id="ms-participants" name="participants"></select><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-email">Email</label><input id="ms-email" name="email" type="email" autocomplete="email" required><span class="msg"></span></div>
+            <div class="champ"><label class="t" for="ms-tel">Phone</label><input id="ms-tel" name="tel" type="tel" autocomplete="tel"><span class="msg"></span></div>
+            <div class="champ large"><label class="t" for="ms-objet">Meeting subject (optional)</label><input id="ms-objet" name="objet"></div>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="ms-site">Website</label><input id="ms-site" name="site_web" tabindex="-1" autocomplete="off"></div>
+          <label class="accord"><input type="checkbox" id="ms-accord"> I accept the booking terms: free cancellation up to 24 hours before the slot.</label>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="3">← Services</button><button class="btn btn-or" type="button" data-suite="5">Go to payment</button></div>
+          <p class="mv-statut" id="ms-statut3" role="status" aria-live="polite"></p>
+        </div>
+        <div class="mv-etape" data-e="5">
+          <div class="recap-salle"><img id="ms-r-photo" src="../img/projection.jpg" alt=""><div><b id="ms-r-salle"></b><span id="ms-r-quand"></span></div></div>
+
+          <div class="paiement">
+            <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Demo payment:</b> no card is charged, and the booking is recorded.</span></div>
+            <div class="carte-ico" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="carte-l">
+              <div class="champ"><label class="t" for="ms-cb">Card number</label><input id="ms-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
+              <div class="champ"><label class="t" for="ms-exp">Expiry</label><input id="ms-exp" value="12 / 34" readonly tabindex="-1"></div>
+              <div class="champ"><label class="t" for="ms-cvc">CVC</label><input id="ms-cvc" value="123" readonly tabindex="-1"></div>
+            </div>
+            <div class="champ"><label class="t" for="ms-titulaire">Cardholder</label><input id="ms-titulaire" readonly tabindex="-1"></div>
+            <ul class="panier-lignes" id="ms-lignes"></ul>
+            <div class="total"><span class="mv-statut">Total incl. VAT</span><div><b id="ms-r-ttc"></b><small id="ms-r-ht"></small></div></div>
+          </div>
+          <div class="mv-pied"><button class="lien" type="button" data-suite="4">← Details</button><button class="btn btn-or" type="submit" id="ms-payer">Pay</button></div>
+          <p class="mv-statut" id="ms-statut4" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <div class="mv-fin" id="ms-fin">
+        <div class="sceau" aria-hidden="true"><svg viewBox="0 0 76 76"><circle class="anneau" cx="38" cy="38" r="36"/><path class="coche" d="M25 39l9 9 17-19"/></svg></div>
+        <span class="label">Thank you <span id="ms-merci"></span></span>
+        <h2 id="ms-fin-titre">All set.</h2>
+        <p class="muted" style="color:var(--gris)">The room is held in your name. We will email you at <b id="ms-mail-conf"></b> to confirm the booking, and the team will welcome you at 312, boulevard Haussmann.</p>
+        <ul class="recap" id="ms-recap"></ul>
+        <p class="crm" id="ms-crm"></p>
+        <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer-ms>Close</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tf-voile" id="tf-voile" hidden></div>
+<div class="tf" id="tf" hidden role="dialog" aria-modal="true" aria-label="Become a member">
+  <div class="tf-haut"><img src="../img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220"><span class="label" id="tf-etat">Become a member</span><button class="mv-fermer" type="button" data-fermer-tf aria-label="Close" style="margin:0"></button></div>
+  <div class="tf-prog" aria-hidden="true"><span id="tf-prog"></span></div>
+  <div class="tf-corps" id="tf-corps">
+    <section class="tf-q large" data-q="formule">
+      <div class="tf-num">01 →</div>
+      <h2>Choose your membership.</h2>
+      <p class="tf-aide">Monthly, no joining fee. You can change membership at any time from your member area.</p>
+      <div class="plans-tf" id="tf-plans"></div>
+    </section>
+    <section class="tf-q" data-q="debut">
+      <div class="tf-num">02 →</div>
+      <h2>When would you like to start?</h2>
+      <p class="tf-aide">The first month is prorated from this date.</p>
+      <div class="tf-choix" id="tf-debuts"></div>
+      <p class="tf-err" data-err></p>
+    </section>
+    <section class="tf-q" data-q="postes">
+      <div class="tf-num">03 →</div>
+      <h2>How many desks in your office?</h2>
+      <p class="tf-aide">Our private offices seat up to 6 people. The price is per desk.</p>
+      <div class="tf-choix" id="tf-postes"></div>
+      <p class="tf-err" data-err></p>
+    </section>
+    <section class="tf-q" data-q="nom">
+      <div class="tf-num">04 →</div>
+      <h2>What is your name?</h2>
+      <div class="tf-champ deux">
+        <div><input id="tf-prenom" placeholder="First name" autocomplete="given-name" aria-label="First name"><span class="msg"></span></div>
+        <div><input id="tf-nom" placeholder="Last name" autocomplete="family-name" aria-label="Last name"><span class="msg"></span></div>
+      </div>
+      <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">press <b>Enter ↵</b></span></div>
+    </section>
+    <section class="tf-q" data-q="societe">
+      <div class="tf-num">05 →</div>
+      <h2>Nice to meet you, <span id="tf-prenom-echo"></span>. Which company?</h2>
+      <p class="tf-aide">Optional: leave blank if you are joining as an individual.</p>
+      <div class="tf-champ"><div><input id="tf-societe" placeholder="Your company name" autocomplete="organization" aria-label="Company"><span class="msg"></span></div></div>
+      <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">press <b>Enter ↵</b></span></div>
+    </section>
+    <section class="tf-q" data-q="contact">
+      <div class="tf-num">06 →</div>
+      <h2>Where can we write to you?</h2>
+      <p class="tf-aide">Your member area access will be linked to this address.</p>
+      <div class="tf-champ">
+        <div><input id="tf-email" type="email" placeholder="you@company.com" autocomplete="email" aria-label="Email"><span class="msg"></span></div>
+        <div><input id="tf-tel" type="tel" placeholder="Phone (optional)" autocomplete="tel" aria-label="Phone"><span class="msg"></span></div>
+      </div>
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="tf-site">Website</label><input id="tf-site" tabindex="-1" autocomplete="off"></div>
+      <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">press <b>Enter ↵</b></span></div>
+    </section>
+    <section class="tf-q" data-q="paiement">
+      <div class="tf-num">07 →</div>
+      <h2>Last step: payment.</h2>
+      <ul class="recap" id="tf-recap"></ul>
+      <div class="paiement">
+        <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Demo payment.</b> No card is charged and no bank details are requested: the fields below are test values. The membership itself is recorded.</span></div>
+        <div class="carte-l">
+          <div class="champ"><label class="t" for="tf-cb">Card number</label><input id="tf-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
+          <div class="champ"><label class="t" for="tf-exp">Expiry</label><input id="tf-exp" value="12 / 34" readonly tabindex="-1"></div>
+          <div class="champ"><label class="t" for="tf-cvc">CVC</label><input id="tf-cvc" value="123" readonly tabindex="-1"></div>
+        </div>
+        <div class="total"><span class="mv-statut">First month incl. VAT</span><div><b id="tf-ttc"></b><small id="tf-ht"></small></div></div>
+      </div>
+      <label class="accord" style="margin-top:22px;max-width:520px"><input type="checkbox" id="tf-accord"> I accept the membership terms: monthly plan, cancellable with a notice of <span id="tf-preavis">30</span> days.</label>
+      <div class="tf-ok"><button class="btn btn-or" type="button" id="tf-payer">Pay</button></div>
+      <p class="tf-err" id="tf-statut" role="status" aria-live="polite"></p>
+    </section>
+    <section class="tf-q" data-q="fin">
+      <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
+      <h2 style="margin-top:22px">Welcome to Bureau des Légendes, <span id="tf-fin-prenom"></span>.</h2>
+      <p class="tf-aide">Your membership is recorded. We look forward to seeing you on <span id="tf-fin-date"></span> to hand over your badge.</p>
+      <ul class="recap" id="tf-fin-recap"></ul>
+      <p class="crm" id="tf-crm" style="margin-top:16px;max-width:560px"></p>
+      <div class="tf-ok"><a class="btn btn-or" data-portal="login" href="#">Go to the member area</a><button class="btn btn-fil" type="button" data-fermer-tf>Back to the site</button></div>
+    </section>
+  </div>
+  <div class="tf-nav"><button type="button" id="tf-prec" aria-label="Previous question">↑</button><button type="button" id="tf-suiv" aria-label="Next question">↓</button></div>
+</div>
+
+<script>
+// Portail membre Nexudus : une seule adresse à changer ici.
+const PORTAL = "https://bureaudeslegendesparis.nexudus.site/bureaudeslegendesparis";
+const PATHS = { login:"/login", signup:"/signup", tour:"/tour", bookings:"/bookings", events:"/events" };
+document.querySelectorAll("[data-portal]").forEach(a => { a.href = PORTAL + (PATHS[a.dataset.portal] || "/"); a.target = "_blank"; a.rel = "noopener"; });
+
+const NOMS = ["Ethan Hunt","James Bond","Jason Bourne","George Smiley","Mata Hari","Enigma","Morse","La Verrière"];
+
+const RM = matchMedia("(prefers-reduced-motion:reduce)").matches;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function fitVword(){
+  document.querySelectorAll(".vword").forEach(el => {
+    const sp = el.firstElementChild; if (!sp || !el.clientHeight) return;
+    el.style.fontSize = "";
+    const cs = getComputedStyle(el), vertical = cs.writingMode.indexOf("vertical") === 0;
+    const cur = parseFloat(cs.fontSize), r = sp.getBoundingClientRect();
+    const len = vertical ? r.height : r.width;
+    const avail = vertical ? el.clientHeight * 0.9 : el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (len > 0 && avail > 0){ let fs = cur * avail / len; if (vertical) fs = Math.min(fs, cur); el.style.fontSize = Math.min(240, Math.floor(fs * 0.98)) + "px"; }
+  });
+}
+window.addEventListener("resize", () => requestAnimationFrame(fitVword));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitVword());
+
+function splitWords(el){
+  if (el.classList.contains("split")) return;
+  let i = 0;
+  el.innerHTML = el.textContent.split(/(\s+)/).map(t => !t ? "" : /^\s+$/.test(t) ? " " : `<span class="w"><span style="--i:${i++}">${esc(t)}</span></span>`).join("");
+  el.classList.add("split");
+}
+
+const VIEWS = { accueil:"Bureau des Légendes", espaces:"Spaces", formules:"Memberships", evenements:"Events", contact:"Contact" };
+const cur = () => { const h = location.hash.slice(1); return VIEWS[h] ? h : "accueil"; };
+let shown = null, transitioning = false;
+function show(v, d0){
+  document.querySelectorAll("main[data-view]").forEach(m => {
+    m.hidden = m.dataset.view !== v; m.classList.remove("on");
+    if (!m.hidden){ m.querySelectorAll("h1").forEach(splitWords); m.style.setProperty("--d0", d0 + "ms"); void m.offsetWidth; m.classList.add("on"); }
+  });
+  document.querySelectorAll('.nav a[href^="#"],.mnav a[href^="#"]').forEach(a => a.getAttribute("href") === "#" + v ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"));
+  document.getElementById("appel").hidden = v === "contact";
+  closeMenu(); window.scrollTo(0,0); shown = v; requestAnimationFrame(fitVword);
+}
+function route(){
+  const v = cur(); if (v === shown) return;
+  const c = document.getElementById("rideau");
+  if (RM || shown === null || !c.animate || transitioning){ show(v, 120); return; }
+  transitioning = true; c.style.visibility = "visible";
+  document.getElementById("rideau-t").textContent = VIEWS[v];
+  const ease = "cubic-bezier(.76,0,.24,1)";
+  c.animate([{transform:"translateY(100%)"},{transform:"translateY(0)"}], {duration:420, easing:ease, fill:"forwards"}).finished
+    .then(() => { show(v, 560); return c.animate([{transform:"translateY(0)"},{transform:"translateY(-100%)"}], {duration:620, delay:140, easing:ease, fill:"forwards"}).finished; })
+    .catch(() => show(v, 120))
+    .finally(() => { transitioning = false; c.style.visibility = ""; });
+}
+const btn = document.getElementById("menu-btn"), mnav = document.getElementById("mnav");
+function closeMenu(){ mnav.hidden = true; btn.setAttribute("aria-expanded","false"); btn.textContent = "Menu"; }
+btn.addEventListener("click", () => { const o = mnav.hidden; mnav.hidden = !o; btn.setAttribute("aria-expanded", String(o)); btn.textContent = o ? "Close" : "Menu"; });
+document.addEventListener("click", e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (a && a.getAttribute("href").slice(1) === shown){ e.preventDefault(); closeMenu(); window.scrollTo({top:0,behavior:RM?"auto":"smooth"}); }
+  const c = e.target.closest(".copie");
+  if (c){
+    const done = () => { c.textContent = "Copied"; setTimeout(() => c.textContent = "Copy", 1800); };
+    const sel = () => { const r = document.createRange(); r.selectNodeContents(c.previousElementSibling); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(c.dataset.copie).then(done, sel); } catch(_) { sel(); }
+  }
+});
+
+/* Formulaire de visite : la demande arrive dans le CRM Nexudus (Sales Pipeline, colonne « Demande de visite en ligne »). */
+const NX = { server:"Nexudus", business:1420978704, colonne:1415241903, pays:1072, fuseau:2024 };
+let mcpNs = null;
+const mcpPret = (async () => { try { mcpNs = window.claude && window.claude.use ? await window.claude.use("mcp") : null; } catch(_) { mcpNs = null; } return mcpNs; })();
+const mv = document.getElementById("mv"), form = document.getElementById("mv-form");
+let dernierFocus = null, ouvertLe = 0;
+const DANS_CLAUDE = !!(window.claude && window.claude.use);
+
+(function jours(){
+  const box = document.getElementById("mv-jours"), j = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const d = new Date(); d.setHours(0,0,0,0); let n = 0, html = "";
+  while (n < 10){ d.setDate(d.getDate()+1); if (d.getDay() === 0) continue;
+    const v = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    html += `<label class="choix"><input type="radio" name="jour" value="${v}"${n===0?" checked":""}><span><small>${j[d.getDay()]}</small><b>${d.getDate()}</b><small>${m[d.getMonth()]}</small></span></label>`; n++; }
+  box.innerHTML = html;
+})();
+
+function ouvrir(){
+  dernierFocus = document.activeElement;
+  mv.hidden = false; mv.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  ouvertLe = Date.now(); etape(1); document.getElementById("mv-fin").classList.remove("on"); form.hidden = false; statut("");
+  mv.classList.remove("fini"); document.getElementById("mv-legende").innerHTML = "<b>312, boulevard Haussmann</b>Paris 9<sup>th</sup> · Monday to Saturday";
+  setTimeout(() => mv.querySelector(".jours input:checked")?.focus(), 60);
+}
+function fermer(){
+  if (mv.hidden) return;
+  const fin = () => { mv.hidden = true; mv.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); dernierFocus?.focus?.(); };
+  if (RM) return fin();
+  mv.classList.add("ferme"); setTimeout(fin, 480);
+}
+function etape(n){
+  document.getElementById("mv-etape1").classList.toggle("on", n === 1);
+  document.getElementById("mv-etape2").classList.toggle("on", n === 2);
+  document.getElementById("mv-e2").classList.toggle("ok", n === 2);
+  if (n === 2) setTimeout(() => document.getElementById("mv-nom").focus(), 60);
+}
+function statut(t, err){ const s = document.getElementById("mv-statut"); s.innerHTML = t; s.classList.toggle("err", !!err); if (err && t) s.scrollIntoView({ block:"nearest", behavior:"smooth" }); }
+
+document.querySelectorAll('[data-portal="tour"]').forEach(a => a.addEventListener("click", e => { e.preventDefault(); closeMenu(); ouvrir(); }));
+mv.addEventListener("click", e => { if (e.target.closest("[data-fermer]")) fermer(); });
+document.addEventListener("keydown", e => {
+  if (mv.hidden) return;
+  if (e.key === "Escape") return fermer();
+  if (e.key === "Tab"){
+    const f = [...mv.querySelectorAll('button,input,select,textarea,a[href]')].filter(x => x.offsetParent !== null && !x.disabled);
+    if (!f.length) return; const a = f[0], z = f[f.length-1];
+    if (e.shiftKey && document.activeElement === a){ e.preventDefault(); z.focus(); }
+    else if (!e.shiftKey && document.activeElement === z){ e.preventDefault(); a.focus(); }
+  }
+});
+document.getElementById("mv-suite").addEventListener("click", () => etape(2));
+document.getElementById("mv-retour").addEventListener("click", () => etape(1));
+
+function valider(){
+  let ok = true;
+  const regle = (id, test, msg) => { const el = document.getElementById(id), c = el.closest(".champ"), bad = !test(el.value.trim()); c.classList.toggle("err", bad); c.querySelector(".msg").textContent = bad ? msg : ""; if (bad && ok){ el.focus(); ok = false; } };
+  regle("mv-nom", v => v.length >= 2, "Please enter your name.");
+  regle("mv-email", v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), "This email address is not valid.");
+  regle("mv-tel", v => !v || v.replace(/\D/g,"").length >= 8, "This number looks incomplete.");
+  if (ok && !document.getElementById("mv-accord").checked){ statut("Tick the box so that we can contact you.", true); ok = false; }
+  return ok;
+}
+function lire(){
+  const f = new FormData(form), jour = f.get("jour"), creneau = f.get("creneau");
+  const formule = form.querySelector('input[name="formule"]:checked');
+  const [y,mo,d] = jour.split("-").map(Number), [h,mi] = creneau.split(":").map(Number);
+  const quand = new Date(y, mo-1, d, h, mi);
+  return { nom:f.get("nom").trim(), email:f.get("email").trim().toLowerCase(), tel:f.get("tel").trim(), societe:f.get("societe").trim(),
+    equipe:f.get("equipe"), message:f.get("message").trim(), formule:formule.value, prix:formule.dataset.prix ? Number(formule.dataset.prix) : null, quand,
+    quandTxt: quand.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"}) + " at " + creneau };
+}
+const charge = r => r && (r.payload !== undefined ? r.payload : r);
+const idDe = p => p && (p.Value && p.Value.Id || p.Id || p.value && p.value.id);
+async function appel(outil, input){
+  const p = charge(await mcpNs.callTool(NX.server, outil, input, {cache:false}));
+  if (p && p.WasSuccessful === false){ const e = new Error((p.Errors && JSON.stringify(p.Errors)) || p.Message || "Rejected by Nexudus"); e.code = "tool_error"; throw e; }
+  return p;
+}
+async function enregistrer(v){
+  const trouve = await appel("nexudus_list", { entity:"coworkers", filters:{ Coworker_Email:v.email }, pageSize:1 });
+  let client = trouve && trouve.Records && trouve.Records[0] ? trouve.Records[0].Id : null, nouveau = !client;
+  if (!client){
+    const c = await appel("nexudus_create", { entity:"coworkers", body:{ CoworkerType:1, FullName:v.nom, Email:v.email, MobilePhone:v.tel || null, CompanyName:v.societe || null,
+      CountryId:NX.pays, SimpleTimeZoneId:NX.fuseau, InvoicingBusinessId:NX.business, Notes:"Contact créé depuis le site vitrine (demande de visite)." } });
+    client = idDe(c);
+    if (!client){ const e = new Error("Nexudus did not return the contact ID."); e.code = "tool_error"; throw e; }
+  }
+  const notes = [`Visite souhaitée : ${v.quandTxt}`, `Intérêt : ${v.formule}`, `Équipe : ${v.equipe}`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`, v.message && `Message : ${v.message}`].filter(Boolean).join("\n");
+  const o = await appel("nexudus_create", { entity:"crmopportunities", body:{ Name:`Visite · ${v.nom}`, CrmBoardColumnId:NX.colonne, CoworkerId:client, Status:1, Position:0,
+    LeadSource:1, DueDate:v.quand.toISOString().replace(/\.\d{3}Z$/,"Z"), Value:v.prix, Notes:notes, UtmSource:"site-vitrine", UtmMedium:"formulaire-visite" } });
+  return { opportunite:idDe(o), nouveau };
+}
+function fini(v, res){
+  form.hidden = true;
+  document.getElementById("mv-prenom").textContent = (v.nom.split(/\s+/)[0] || "") + ",";
+  document.getElementById("mv-mail-conf").textContent = v.email;
+  document.getElementById("mv-recap").innerHTML = [["Visit", v.quandTxt], ["Interest", v.formule], ["Contact", v.email]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+  document.getElementById("mv-crm").innerHTML = res
+    ? `Added to the Nexudus CRM: <b>Sales Pipeline · Online visit request</b>${res.nouveau ? ", with a new contact record" : ", on the existing contact record"}.`
+    : "";
+  const t = document.getElementById("mv-fin-titre");
+  t.innerHTML = ["All", "set."].map((m, i) => `<span class="m"><span style="animation-delay:${(0.95 + i * 0.12).toFixed(2)}s">${m}</span></span>`).join(" ");
+  const fin = document.getElementById("mv-fin");
+  fin.classList.remove("on"); void fin.offsetWidth; fin.classList.add("on");
+  mv.classList.add("fini");
+  document.getElementById("mv-legende").innerHTML = "<b>See you soon</b>Under the glass roof, at 312, boulevard Haussmann";
+}
+async function viaSite(v){
+  const q = new URLSearchParams(location.search);
+  const r = await fetch("/api/visite", { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ lang:"en",
+    nom:v.nom, email:v.email, tel:v.tel, societe:v.societe, equipe:v.equipe, message:v.message, formule:v.formule,
+    quand:v.quand.toISOString(), quandTxt:v.quandTxt, accord:true, site_web:document.getElementById("mv-site").value, ouvert_le:ouvertLe,
+    utm_source:q.get("utm_source"), utm_medium:q.get("utm_medium"), utm_campaign:q.get("utm_campaign") }) });
+  let d = {}; try { d = await r.json(); } catch(_) {}
+  if (!r.ok || !d.ok){ const e = new Error(d.erreur || "The request could not be sent."); e.code = "site"; throw e; }
+  return { nouveau: !!d.nouveau };
+}
+const PORTAIL_VISITE = PORTAL + "/tour";
+const SANS_NEXUDUS = `This demo form records requests in Nexudus from an account linked to the Nexudus connector. You can also <a href="../${PORTAIL_VISITE}" target="_blank" rel="noopener">request your visit on the portal</a>.`;
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!valider()) return;
+  const v = lire(), b = document.getElementById("mv-envoyer");
+  if (DANS_CLAUDE){ await mcpPret; if (!mcpNs){ statut(SANS_NEXUDUS, true); return; } }
+  b.disabled = true; b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Sending'; statut("Saving in Nexudus…");
+  try { const res = DANS_CLAUDE ? await enregistrer(v) : await viaSite(v); statut(""); fini(v, res); }
+  catch (err){
+    const c = err && err.code;
+    if (c === "site"){ statut(esc(err.message), true); return; }
+    if (c === "server_not_connected" || c === "not_granted" || c === "capability_disabled" || c === "capability_removed" || c === "selection_required" || c === "not_in_manifest" || c === "blocked_by_policy") statut(SANS_NEXUDUS, true);
+    else if (c === "needs_reauth") statut("The Nexudus connection has expired. Reconnect Nexudus in Settings → Connectors on claude.ai, then send the request again.", true);
+    else if (c === "approval_required" || c === "consent_required") statut("Nexudus needs your permission for this page. Click “Send my request” again and allow access.", true);
+    else if (c === "tool_error") statut("Nexudus rejected the request: " + esc(String(err.message || "").slice(0,220)), true);
+    else statut("No response from Nexudus. The request may have been recorded: check the CRM before sending again.", true);
+  } finally { b.disabled = false; b.textContent = "Send my request"; }
+});
+
+
+/* Réservation de salle : créneaux réels lus dans Nexudus, paiement simulé, réservation réelle créée dans Nexudus. */
+const SALLES_UI = [
+  { id:1415233614, nom:"Legends Room", etage:"1st floor", places:15, prix:175, photo:"img/projection.jpg", eq:"Large screen, video" },
+  { id:1415233716, nom:"Jason Bourne Room", etage:"1st floor", places:15, prix:175, photo:"img/bureau.jpg", eq:"Screen, video" },
+  { id:1415233715, nom:"Ethan Hunt Room", etage:"2nd floor", places:15, prix:175, photo:"img/salon.jpg", eq:"Large screen, video" },
+  { id:1415233717, nom:"James Bond Room", etage:"3rd floor", places:15, prix:35, photo:"img/plateau.jpg", eq:"Screen, video" },
+];
+const HORAIRES_SALLE = { 0:null, 1:[8,20], 2:[8,20], 3:[8,20], 4:[8,20], 5:[8,20], 6:[9,18] };
+const eur = n => n.toLocaleString("en-GB", { style:"currency", currency:"EUR" });
+const hTxt = h => h + ":00";
+function decalageParis(date){
+  const p = new Intl.DateTimeFormat("en-US",{timeZone:"Europe/Paris",hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}).formatToParts(date);
+  const g = t => Number(p.find(x => x.type === t).value);
+  return (Date.UTC(g("year"),g("month")-1,g("day"),g("hour"),g("minute"),g("second")) - date.getTime())/60000;
+}
+function parisVersUtc(jour, h, m){ const [y,mo,d] = jour.split("-").map(Number); const n = Date.UTC(y,mo-1,d,h,m||0); return new Date(n - decalageParis(new Date(n))*60000); }
+const isoZ = d => d.toISOString().replace(/\.\d{3}Z$/,"Z");
+const utcDe = s => new Date(/Z$|[+-]\d\d:?\d\d$/.test(s) ? s : s + "Z");
+const jourParis = d => new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Paris"}).format(d);
+
+const ms = document.getElementById("ms"), msForm = document.getElementById("ms-form");
+const S = { salle:null, jour:null, duree:1, heure:null, occupe:{}, etape:1, ouvertLe:0, focus:null };
+const salleCourante = () => SALLES_UI.find(s => s.id === S.salle);
+
+// Cartes de l'accueil et choix dans la fenêtre
+document.getElementById("resa-grille").innerHTML = SALLES_UI.map(s => `<button class="resa-carte" type="button" data-salle="${s.id}"><figure class="ph"><img src="../${s.photo}" alt="" loading="lazy"></figure><h3>${s.nom}</h3><span class="infos"><span>${s.etage} · ${s.places} people</span><span>${s.eq}</span></span><span class="prix-h"><span>Per hour</span><b>${eur(s.prix)} excl. VAT</b></span></button>`).join("");
+document.getElementById("ms-salles").innerHTML = SALLES_UI.map((s,i) => `<label class="salle-opt"><input type="radio" name="salle" value="${s.id}"${i===0?" checked":""}><span class="boite"><img src="../${s.photo}" alt=""><span><b>${s.nom}</b><small>${s.etage} · ${s.places} people · ${eur(s.prix)} excl. VAT / h</small></span></span></label>`).join("");
+document.getElementById("ms-participants").innerHTML = Array.from({length:15},(_,i)=>`<option value="${i+1}"${i===3?" selected":""}>${i+1} ${i?"people":"person"}</option>`).join("");
+(function(){
+  const box = document.getElementById("ms-jours"), j = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const auj = jourParis(new Date()); const [y,mo,d] = auj.split("-").map(Number); const c = new Date(Date.UTC(y,mo-1,d));
+  let n = 0, html = "", k = 0;
+  while (n < 12 && k < 30){ const v = c.toISOString().slice(0,10), w = c.getUTCDay(); k++;
+    if (HORAIRES_SALLE[w]){ html += `<label class="choix"><input type="radio" name="jour" value="${v}"${n===0?" checked":""}><span><small>${n===0 && v===auj ? "today" : j[w]}</small><b>${c.getUTCDate()}</b><small>${m[c.getUTCMonth()]}</small></span></label>`; n++; }
+    c.setUTCDate(c.getUTCDate()+1); }
+  box.innerHTML = html;
+})();
+
+// Carrousel : la salle choisie, puis les services proposés avec la réservation.
+const SERVICES = [
+  { photo:"img/hero.jpg", tag:"Included", titre:"Everything ready when you arrive", texte:"Screen, room camera and microphone, fibre Wi-Fi, flip chart. Plug in and start." },
+  { photo:"img/petit-dejeuner.jpg", tag:"Optional", titre:"Welcome breakfast", texte:"Coffee, fresh juice and pastries served in the room · €12 excl. VAT per person." },
+  { photo:"img/courrier.jpg", tag:"Included", titre:"Guest welcome", texte:"Your attendees are announced at reception and shown to the room." },
+  { photo:"img/degustation.jpg", tag:"Optional", titre:"After-meeting drinks", texte:"Wine and sharing boards, in the room or the lounge · from €18 excl. VAT per person." },
+];
+const CAR = { i:0, minuterie:null, survol:false, duree:5000 };
+function photoSalle(){
+  const s = salleCourante(); if (!s) return;
+  CAR.fin = false; ms.classList.remove("fini");
+  const slides = [{ photo:s.photo, tag:"Your room", titre:s.nom, texte:`${s.etage} · up to ${s.places} people · ${s.eq} · ${eur(s.prix)} excl. VAT / h` }, ...SERVICES];
+  document.getElementById("ms-slides").innerHTML = slides.map((x,k) => `<div class="car-slide" role="group" aria-roledescription="diapositive" aria-label="${k+1} of ${slides.length}"><img src="../${x.photo}" alt="" loading="lazy"><p><span class="tag">${x.tag}</span><b>${esc(x.titre)}</b><span>${esc(x.texte)}</span></p></div>`).join("");
+  document.getElementById("ms-points").innerHTML = slides.map((x,k) => `<button type="button" data-car="${k}" aria-label="View: ${esc(x.titre)}"></button>`).join("");
+  document.getElementById("ms-car").style.setProperty("--duree", CAR.duree + "ms");
+  montrerSlide(0);
+}
+function montrerSlide(k){
+  const slides = [...document.querySelectorAll("#ms-slides .car-slide")], pts = [...document.querySelectorAll("#ms-points button")];
+  if (!slides.length) return;
+  CAR.i = (k + slides.length) % slides.length;
+  slides.forEach((x,j) => x.classList.toggle("on", j === CAR.i));
+  pts.forEach((b,j) => { b.classList.remove("on"); b.classList.toggle("vu", j < CAR.i); });
+  void pts[CAR.i].offsetWidth; pts[CAR.i].classList.add("on");
+  clearTimeout(CAR.minuterie);
+  const fige = RM || CAR.survol || ms.hidden || CAR.fin;
+  document.getElementById("ms-car").classList.toggle("car-figee", fige);
+  if (!fige) CAR.minuterie = setTimeout(() => montrerSlide(CAR.i + 1), CAR.duree);
+}
+document.getElementById("ms-points").addEventListener("click", e => { const b = e.target.closest("[data-car]"); if (b) montrerSlide(Number(b.dataset.car)); });
+document.getElementById("ms-prec").addEventListener("click", e => { e.stopPropagation(); montrerSlide(CAR.i - 1); });
+document.getElementById("ms-suiv").addEventListener("click", e => { e.stopPropagation(); montrerSlide(CAR.i + 1); });
+const carEl = document.getElementById("ms-car");
+carEl.addEventListener("mouseenter", () => { CAR.survol = true; montrerSlide(CAR.i); });
+carEl.addEventListener("mouseleave", () => { CAR.survol = false; montrerSlide(CAR.i); });
+const TITRES = { 1:"Choose your room.", 2:"Choose your time.", 3:"Your services.", 4:"Your details.", 5:"Payment." };
+function etapeMs(n){
+  S.etape = n;
+  ms.querySelectorAll(".mv-etape").forEach(e => e.classList.toggle("on", Number(e.dataset.e) === n));
+  ms.querySelectorAll(".mv-etapes span").forEach((s,i) => s.classList.toggle("ok", i < n));
+  document.getElementById("ms-sur").textContent = `Book a room · ${n} of 5`;
+  document.getElementById("ms-titre").textContent = TITRES[n];
+  if (n === 2) chargerHeures();
+  if (n === 3) rendrePanier();
+  if (n === 5) remplirPaiement();
+  ms.classList.toggle("e4", n === 3 || n === 5);
+  setTimeout(() => ms.querySelector(".mv-etape.on input:not([readonly]):not([type=hidden]), .mv-etape.on button")?.focus(), 60);
+}
+function ouvrirSalle(id){
+  S.focus = document.activeElement; S.ouvertLe = Date.now();
+  const r = msForm.querySelector(`input[name="salle"][value="${id || SALLES_UI[0].id}"]`); if (r) r.checked = true;
+  S.salle = Number(msForm.querySelector('input[name="salle"]:checked').value);
+  S.jour = msForm.querySelector('input[name="jour"]:checked').value; S.heure = null; S.produits = {};
+  photoSalle(); msForm.hidden = false; document.getElementById("ms-fin").classList.remove("on");
+  ms.hidden = false; ms.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  montrerSlide(0);
+  etapeMs(id ? 2 : 1);
+}
+function fermerSalle(){
+  if (ms.hidden) return;
+  clearTimeout(CAR.minuterie);
+  const fin = () => { ms.hidden = true; ms.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); S.focus?.focus?.(); };
+  if (RM) return fin(); ms.classList.add("ferme"); setTimeout(fin, 480);
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-salle]"); if (t){ e.preventDefault(); closeMenu(); ouvrirSalle(Number(t.dataset.salle) || null); return; }
+  if (e.target.closest("[data-fermer-ms]")) fermerSalle();
+  const s = e.target.closest("[data-suite]"); if (s && ms.contains(s)){ const n = Number(s.dataset.suite); if (n === 5 && !validerCoord()) return; etapeMs(n); }
+});
+document.addEventListener("keydown", e => {
+  if (ms.hidden) return;
+  if (e.key === "Escape") return fermerSalle();
+  if (e.key === "Tab"){ const f = [...ms.querySelectorAll('button,input:not([readonly]),select,textarea,a[href]')].filter(x => x.offsetParent !== null && !x.disabled && x.tabIndex !== -1);
+    if (!f.length) return; const a = f[0], z = f[f.length-1];
+    if (e.shiftKey && document.activeElement === a){ e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z){ e.preventDefault(); a.focus(); } }
+});
+msForm.addEventListener("change", e => {
+  if (e.target.name === "salle"){ S.salle = Number(e.target.value); S.heure = null; photoSalle(); }
+  if (e.target.name === "jour"){ S.jour = e.target.value; S.heure = null; chargerHeures(); }
+  if (e.target.name === "duree"){ S.duree = Number(e.target.value); S.heure = null; dessinerHeures(); }
+  if (e.target.name === "heure"){ S.heure = Number(e.target.value); majTotal(); }
+});
+
+// Disponibilités
+async function lireOccupation(salle, jour){
+  if (DANS_CLAUDE){
+    await mcpPret; if (!mcpNs) throw Object.assign(new Error("sans"), { code:"sans" });
+    const de = parisVersUtc(jour,0), fin = parisVersUtc(jour,23,59);
+    const p = charge(await mcpNs.callTool(NX.server, "nexudus_fetch_bookings", { resourceId:salle, fromTime:isoZ(new Date(de - 864e5)), toTime:isoZ(fin), pageSize:100 }, { cache:false }));
+    return (p && p.Records || []).map(b => ({ de:utcDe(b.FromTime), a:utcDe(b.ToTime) })).filter(b => b.a > de && b.de < fin).map(b => ({ de:isoZ(b.de), a:isoZ(b.a) }));
+  }
+  const r = await fetch(`/api/salles?salle=${salle}&jour=${jour}&lang=en`); let d = {}; try { d = await r.json(); } catch(_){}
+  if (!r.ok || !d.ok) throw new Error(d.erreur || "Availability unavailable.");
+  return d.occupe || [];
+}
+async function chargerHeures(){
+  const cle = S.salle + "|" + S.jour, box = document.getElementById("ms-heures"), st = document.getElementById("ms-statut2");
+  st.textContent = ""; st.classList.remove("err");
+  if (!S.occupe[cle]){
+    box.innerHTML = '<span class="sq"></span>'.repeat(8);
+    try { S.occupe[cle] = (await lireOccupation(S.salle, S.jour)).map(b => [new Date(b.de), new Date(b.a)]); }
+    catch(err){
+      box.innerHTML = "";
+      st.innerHTML = err.code === "sans" ? SANS_NEXUDUS : esc(err.message || "Availability is unavailable at the moment."); st.classList.add("err");
+      return;
+    }
+  }
+  if (S.salle + "|" + S.jour === cle) dessinerHeures();
+}
+function dessinerHeures(){
+  const box = document.getElementById("ms-heures"), occ = S.occupe[S.salle + "|" + S.jour];
+  if (!occ) return;
+  const w = new Date(S.jour + "T12:00:00Z").getUTCDay(), h = HORAIRES_SALLE[w], limite = Date.now() + 15*60e3;
+  let html = "", libres = 0;
+  for (let x = h[0]; x + S.duree <= h[1]; x++){
+    const de = parisVersUtc(S.jour, x), a = parisVersUtc(S.jour, x + S.duree);
+    const pris = occ.some(([b0,b1]) => b1 > de && b0 < a), passe = de.getTime() < limite, off = pris || passe;
+    if (!off) libres++;
+    html += `<label class="choix" title="${pris ? "Already booked" : passe ? "Past slot" : hTxt(x) + " – " + hTxt(x + S.duree)}"><input type="radio" name="heure" value="${x}"${off ? " disabled" : ""}${S.heure === x && !off ? " checked" : ""}><span>${hTxt(x)}</span></label>`;
+  }
+  box.innerHTML = libres ? html : html + '<p class="attente">No free slot left that day for this duration. Try another day or a shorter duration.</p>';
+  if (S.heure !== null && !box.querySelector(`input[value="${S.heure}"]:not(:disabled)`)) S.heure = null;
+  majTotal();
+}
+const PRODUITS_RESA = [
+  { id:1415347146, nom:"Breakfast", prix:7, pers:true, txt:"Pastries, fresh juice, hot drinks" },
+  { id:1415523484, nom:"Afternoon treats", prix:9, pers:true, txt:"Home-made pastries, fruit, coffee and tea" },
+  { id:1415347147, nom:"Lunch tray", prix:29, pers:true, txt:"Starter, main, dessert and water, by Lenôtre" },
+  { id:1415458044, nom:"Drinks tray", prix:18, pers:false, txt:"Coffee, tea, water and juice laid out in the room" },
+  { id:1415523387, nom:"Video-call kit", prix:15, pers:false, txt:"Wide-angle camera, microphone and speaker" },
+  { id:1415523388, nom:"Flip chart & supplies", prix:8, pers:false, txt:"Flip chart, markers, sticky notes, pads" },
+];
+const nbParticipants = () => Math.max(1, Number(document.getElementById("ms-participants")?.value) || 1);
+const lignesProduits = () => PRODUITS_RESA.filter(p => (S.produits || {})[p.id] > 0).map(p => ({ ...p, q:S.produits[p.id], total:p.prix * S.produits[p.id] }));
+function montant(){
+  const s = salleCourante(), salle = s.prix * S.duree, prod = lignesProduits().reduce((t, l) => t + l.total, 0), ht = salle + prod;
+  const ttc = Math.round(ht * 1.2 * 100) / 100;
+  return { ht, ttc, salle, prod, tva: Math.round((ttc - ht) * 100) / 100 };
+}
+function rendrePanier(){
+  S.produits = S.produits || {};
+  document.getElementById("ms-produits").innerHTML = PRODUITS_RESA.map(p => {
+    const q = S.produits[p.id] || 0, on = q > 0;
+    return `<div class="prod${on ? " on" : ""}" data-p="${p.id}">
+      <button type="button" class="prod-choix" data-ajout="${p.id}" aria-pressed="${on}"><i aria-hidden="true"></i><span><b>${esc(p.nom)}</b><small>${esc(p.txt)}</small></span><em>${eur(p.prix)}${p.pers ? " / person" : ""}</em></button>
+      ${on ? `<div class="prod-q"><button type="button" data-moins="${p.id}" aria-label="Remove one">−</button><span>${q}${p.pers ? " pers." : ""}</span><button type="button" data-plus="${p.id}" aria-label="Add one">+</button></div>` : ""}
+    </div>`;
+  }).join("");
+  const m = montant(), s = salleCourante();
+  document.getElementById("ms-lignes").innerHTML = [[`${s.nom} · ${S.duree} h`, m.salle], ...lignesProduits().map(l => [`${l.nom} × ${l.q}`, l.total])]
+    .map(([k, x]) => `<li><span>${esc(k)}</span><b>${eur(x)}</b></li>`).join("") + `<li class="tva"><span>VAT 20%</span><b>${eur(m.tva)}</b></li>`;
+  document.getElementById("ms-r-ttc").textContent = eur(m.ttc);
+  document.getElementById("ms-r-ht").textContent = eur(m.ht) + " HT";
+  document.getElementById("ms-payer").textContent = "Pay " + eur(m.ttc);
+  const np = nbParticipants();
+  document.getElementById("ms-pers").textContent = np;
+  document.getElementById("ms-pers-l").textContent = np > 1 ? "personnes" : "personne";
+  const nbServ = lignesProduits().length, v4 = document.getElementById("ms-vers4");
+  v4.textContent = nbServ ? `Continue · ${eur(m.ttc)} incl. VAT` : "Continue without services";
+  document.getElementById("ms-t-salle").textContent = s.nom;
+  document.getElementById("ms-t-quand").textContent = quandTxt();
+  document.getElementById("ms-t-lignes").innerHTML = document.getElementById("ms-lignes").innerHTML;
+  document.getElementById("ms-t-ttc").textContent = eur(m.ttc);
+  document.getElementById("ms-t-ht").textContent = eur(m.ht) + " excl. VAT · VAT 20% " + eur(m.tva);
+}
+function fixerPersonnes(n){
+  n = Math.max(1, Math.min(15, n));
+  const avant = nbParticipants(), sel = document.getElementById("ms-participants"); sel.value = String(n);
+  PRODUITS_RESA.filter(p => p.pers && (S.produits || {})[p.id] === avant).forEach(p => { S.produits[p.id] = n; });
+  rendrePanier();
+}
+document.getElementById("ms-pers-moins").addEventListener("click", () => fixerPersonnes(nbParticipants() - 1));
+document.getElementById("ms-pers-plus").addEventListener("click", () => fixerPersonnes(nbParticipants() + 1));
+document.getElementById("ms-participants").addEventListener("change", () => rendrePanier());
+document.getElementById("ms-produits").addEventListener("click", e => {
+  const a = e.target.closest("[data-ajout]"), plus = e.target.closest("[data-plus]"), moins = e.target.closest("[data-moins]");
+  S.produits = S.produits || {};
+  if (a){ const p = PRODUITS_RESA.find(x => x.id === Number(a.dataset.ajout)); S.produits[p.id] = S.produits[p.id] ? 0 : (p.pers ? nbParticipants() : 1); }
+  else if (plus){ const id = Number(plus.dataset.plus); S.produits[id] = Math.min(50, (S.produits[id] || 0) + 1); }
+  else if (moins){ const id = Number(moins.dataset.moins); S.produits[id] = Math.max(0, (S.produits[id] || 0) - 1); }
+  else return;
+  rendrePanier();
+});
+function quandTxt(){
+  const d = new Date(S.jour + "T12:00:00Z").toLocaleDateString("en-GB",{ weekday:"long", day:"numeric", month:"long", timeZone:"UTC" });
+  return `${d} · ${hTxt(S.heure)} – ${hTxt(S.heure + S.duree)}`;
+}
+function majTotal(){
+  const ok = S.heure !== null, m = montant();
+  document.getElementById("ms-vers3").disabled = !ok;
+  document.getElementById("ms-quand").textContent = ok ? quandTxt() : "Choose a time.";
+  document.getElementById("ms-prix").textContent = eur(m.ht) + " HT";
+  document.getElementById("ms-prix-ttc").textContent = eur(m.ttc) + " incl. VAT · " + S.duree + " h × " + eur(salleCourante().prix);
+}
+
+// Coordonnées
+function validerCoord(){
+  let ok = true; const st = document.getElementById("ms-statut3"); st.textContent = ""; st.classList.remove("err");
+  const regle = (id, test, msg) => { const el = document.getElementById(id), c = el.closest(".champ"), bad = !test(el.value.trim()); c.classList.toggle("err", bad); c.querySelector(".msg").textContent = bad ? msg : ""; if (bad && ok){ el.focus(); ok = false; } };
+  regle("ms-prenom", v => v.length >= 1, "Please enter your first name.");
+  regle("ms-nom", v => v.length >= 1, "Please enter your name.");
+  regle("ms-email", v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), "This email address is not valid.");
+  regle("ms-tel", v => !v || v.replace(/\D/g,"").length >= 8, "This number looks incomplete.");
+  if (ok && !document.getElementById("ms-accord").checked){ st.textContent = "Tick the box to accept the booking terms."; st.classList.add("err"); ok = false; }
+  return ok;
+}
+function remplirPaiement(){
+  const s = salleCourante(), m = montant();
+  document.getElementById("ms-r-photo").src = s.photo;
+  document.getElementById("ms-r-salle").textContent = s.nom;
+  document.getElementById("ms-r-quand").textContent = quandTxt();
+  document.getElementById("ms-titulaire").value = (document.getElementById("ms-prenom").value + " " + document.getElementById("ms-nom").value).trim().toUpperCase();
+  rendrePanier();
+  document.getElementById("ms-statut4").textContent = "";
+}
+
+// Réservation
+function donneesResa(){
+  const f = new FormData(msForm);
+  return { salle:S.salle, jour:S.jour, heure:S.heure, duree:S.duree, prenom:f.get("prenom").trim(), nom:f.get("nom").trim(), email:f.get("email").trim().toLowerCase(),
+    tel:f.get("tel").trim(), societe:f.get("societe").trim(), participants:Number(f.get("participants")), objet:f.get("objet").trim(), accord:true, site_web:f.get("site_web"), ouvert_le:S.ouvertLe,
+    produits: lignesProduits().map(l => ({ id:l.id, q:l.q })) };
+}
+async function reserverClaude(v){
+  await mcpPret; if (!mcpNs) throw Object.assign(new Error("sans"), { code:"sans" });
+  const nom = (v.prenom + " " + v.nom).trim();
+  const trouve = await appel("nexudus_list", { entity:"coworkers", filters:{ Coworker_Email:v.email }, pageSize:1 });
+  let client = trouve && trouve.Records && trouve.Records[0] ? trouve.Records[0].Id : null, nouveau = !client;
+  if (!client){
+    client = idDe(await appel("nexudus_create", { entity:"coworkers", body:{ CoworkerType:1, FullName:nom, Email:v.email, MobilePhone:v.tel || null, CompanyName:v.societe || null,
+      CountryId:NX.pays, SimpleTimeZoneId:NX.fuseau, InvoicingBusinessId:NX.business, Notes:"Contact créé depuis le site vitrine (réservation de salle)." } }));
+    if (!client) throw Object.assign(new Error("Nexudus did not return the contact ID."), { code:"tool_error" });
+  }
+  const de = parisVersUtc(v.jour, v.heure), a = parisVersUtc(v.jour, v.heure + v.duree), m = montant();
+  const pris = await lireOccupation(v.salle, v.jour);
+  if (pris.some(b => new Date(b.a) > de && new Date(b.de) < a)) throw Object.assign(new Error("This slot has just been booked. Please choose another."), { code:"pris", occupe:pris });
+  const b = await appel("nexudus_create", { entity:"bookings", body:{ ResourceId:v.salle, CoworkerId:client, FromTime:isoZ(de), ToTime:isoZ(a), Repeats:2, WhichBookingsToUpdate:1,
+    ChargeNow:false, InvoiceNow:false, Tentative:true, InvoiceThisCoworker:false, DoNotUseBookingCredit:false, RepeatBooking:false, OverridePrice:0, IncludeZoomInvite:false, Notes:v.objet || null,
+    BookingProducts:(v.produits || []).map(x => ({ ProductId:x.id, Quantity:x.q, InvoiceInMinutes:false })),
+    InternalNotes:[`Réservation depuis le site vitrine · paiement simulé (démo) de ${m.ht} € HT`, `${v.participants} participant(s)`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join(" · ") } });
+  const id = idDe(b);
+  return { reservation:id, reference: id ? "BDL-" + String(id).slice(-6) : null, nouveau };
+}
+async function reserverSite(v){
+  const r = await fetch("/api/salles", { method:"POST", headers:{ "content-type":"application/json" }, body:JSON.stringify({ ...v, lang:"en" }) });
+  let d = {}; try { d = await r.json(); } catch(_){}
+  if (r.status === 409) throw Object.assign(new Error(d.erreur), { code:"pris", occupe:d.occupe || [] });
+  if (!r.ok || !d.ok) throw Object.assign(new Error(d.erreur || "The booking could not be recorded."), { code:"site" });
+  return d;
+}
+const pause = ms => new Promise(r => setTimeout(r, ms));
+msForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (S.etape !== 5) return;
+  const b = document.getElementById("ms-payer"), st = document.getElementById("ms-statut4"), v = donneesResa();
+  st.classList.remove("err");
+  b.disabled = true; b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Processing payment'; st.textContent = "Authorising the demo payment…";
+  try {
+    await pause(RM ? 0 : 1100);
+    b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Booking'; st.textContent = "Booking the room in Nexudus…";
+    const res = DANS_CLAUDE ? await reserverClaude(v) : await reserverSite(v);
+    st.textContent = ""; finSalle(v, res);
+  } catch (err){
+    const c = err && err.code;
+    if (c === "pris"){ S.occupe[v.salle + "|" + v.jour] = (err.occupe || []).map(x => [new Date(x.de), new Date(x.a)]); S.heure = null; etapeMs(2);
+      const s2 = document.getElementById("ms-statut2"); s2.textContent = err.message; s2.classList.add("err"); }
+    else if (c === "sans" || c === "server_not_connected" || c === "not_granted" || c === "capability_disabled" || c === "not_in_manifest" || c === "blocked_by_policy" || c === "selection_required"){ st.innerHTML = SANS_NEXUDUS; st.classList.add("err"); }
+    else if (c === "needs_reauth"){ st.textContent = "The Nexudus connection has expired. Reconnect Nexudus in Settings → Connectors on claude.ai, then try again."; st.classList.add("err"); }
+    else if (c === "approval_required" || c === "consent_required"){ st.textContent = "Nexudus needs your permission for this page. Click “Pay” again and allow access."; st.classList.add("err"); }
+    else if (c === "site" || c === "tool_error"){ st.textContent = String(err.message || "The booking could not be recorded.").slice(0,240); st.classList.add("err"); }
+    else { st.textContent = "No response from Nexudus. The booking may have been created: check the calendar before trying again."; st.classList.add("err"); }
+  } finally { b.disabled = false; b.textContent = "Pay " + eur(montant().ttc); }
+});
+function finSalle(v, res){
+  const s = salleCourante(), m = montant();
+  msForm.hidden = true;
+  document.getElementById("ms-merci").textContent = (v.prenom || "").split(/\s+/)[0] + ",";
+  document.getElementById("ms-mail-conf").textContent = v.email;
+  document.getElementById("ms-fin-titre").innerHTML = ["All", "set."].map((x, i) => `<span class="m"><span style="animation-delay:${(0.95 + i * 0.12).toFixed(2)}s">${x}</span></span>`).join(" ");
+  // La photo s'arrête sur la salle réservée.
+  CAR.fin = true; clearTimeout(CAR.minuterie); ms.classList.add("fini"); ms.classList.remove("e4");
+  ms.querySelectorAll(".mv-etapes span").forEach(x => x.classList.add("ok"));
+  const box = document.getElementById("ms-slides");
+  box.insertAdjacentHTML("beforeend", `<div class="car-slide" role="group" aria-label="Your booking"><img src="../${s.photo}" alt=""><p><span class="tag">See you soon</span><b>${esc(s.nom)}</b><span>${esc(quandTxt())} · ${esc(s.etage)}</span></p></div>`);
+  const sl = [...box.querySelectorAll(".car-slide")];
+  requestAnimationFrame(() => sl.forEach((x, j) => x.classList.toggle("on", j === sl.length - 1)));
+  document.getElementById("ms-titre").textContent = s.nom + ".";
+  document.getElementById("ms-sur").textContent = "Book a room · slot held";
+  document.getElementById("ms-recap").innerHTML = [["Room", s.nom], ["Time", quandTxt()], ...(lignesProduits().length ? [["Services", lignesProduits().map(l => `${l.nom} × ${l.q}`).join(", ")]] : []), ["Amount", eur(m.ttc) + " incl. VAT (demo payment)"], ["Reference", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+  document.getElementById("ms-crm").innerHTML = `Added to the Nexudus calendar: <b>${esc(s.nom)} · awaiting confirmation</b>${res.nouveau ? ", with a new contact record" : ", on the existing contact record"}.`;
+  const fin = document.getElementById("ms-fin"); fin.classList.remove("on"); void fin.offsetWidth; fin.classList.add("on");
+  delete S.occupe[v.salle + "|" + v.jour];
+}
+
+
+/* Devenir membre : formules, questions une à une, paiement simulé, fiche membre et contrat créés dans Nexudus. */
+const FORMULES_UI = [
+  { id:1415397038, nom:"Nomad", prix:290, accroche:"Free access to the coworking floor, daytime, Monday to Saturday.", inclus:["Flexible desk on the 1st floor","10 Gb/s fibre and printing","Unlimited coffee at the bar","2 h of meeting room / month","Member events"], note:"No commitment.", preavis:30 },
+  { id:1415397039, nom:"Resident", prix:490, accroche:"Your own dedicated desk, in a quiet area.", inclus:["Named desk, screen on request","24/7 access and secure locker","5 h of meeting room / month","Business address and mail","Coffee and member events"], vedette:true, preavis:30 },
+  { id:1415397447, nom:"Private office", prix:750, unite:"/ poste", accroche:"A closed office just for you or your team.", inclus:["Bespoke furniture, name plate on the door","24/7 access and secure lockers","10 h of meeting room / month","Mail and concierge","Dedicated fibre line"], postes:true, preavis:60 },
+  { id:1415397040, nom:"Business address", prix:90, accroche:"Your address at 312 boulevard Haussmann, without the office.", inclus:["Registered business address","Mail received, scanned, notified","Forwarding on request","Meeting rooms à la carte","Identity check (KYC)"], note:"Activated after identity check.", preavis:30 },
+];
+const tf = document.getElementById("tf");
+const M = { formule:null, debut:null, debutTxt:"", postes:1, i:0, ouvertLe:0, focus:null, envoi:false };
+const fCour = () => FORMULES_UI.find(f => f.id === M.formule);
+const ordreQ = () => ["formule","debut", ...(fCour() && fCour().postes ? ["postes"] : []), "nom","societe","contact","paiement"];
+
+document.getElementById("tf-plans").innerHTML = FORMULES_UI.map(f => `<article class="pl${f.vedette ? " vedette" : ""}">${f.vedette ? '<span class="badge">Most popular</span>' : ""}<h3>${f.nom}</h3><p class="accroche">${f.accroche}</p><p class="p num">${eur(f.prix).replace(".00","")}<small>excl. VAT ${f.unite || "/ month"}</small></p><ul>${f.inclus.map(x => `<li>${x}</li>`).join("")}</ul>${f.note ? `<p class="note-pl">${f.note}</p>` : ""}<button class="btn ${f.vedette ? "btn-or" : "btn-fil"}" type="button" data-plan="${f.id}">Choose ${f.nom}</button></article>`).join("");
+(function(){
+  const auj = jourParis(new Date()), [y,m,d] = auj.split("-").map(Number), base = new Date(Date.UTC(y,m-1,d));
+  const plus = n => { const x = new Date(base); x.setUTCDate(x.getUTCDate()+n); return x; };
+  const lundi = (() => { const x = plus(1); while (x.getUTCDay() !== 1) x.setUTCDate(x.getUTCDate()+1); return x; })();
+  const premier = new Date(Date.UTC(y, m, 1));
+  const deux = plus(14);
+  const fmt = x => x.toLocaleDateString("en-GB",{ weekday:"long", day:"numeric", month:"long", timeZone:"UTC" });
+  const opts = [["From next Monday", lundi], ["The 1st of next month", premier], ["In two weeks", deux]];
+  document.getElementById("tf-debuts").innerHTML = opts.map(([t,x],k) => `<button type="button" data-val="${x.toISOString().slice(0,10)}" data-txt="${fmt(x)}"><kbd>${"ABC"[k]}</kbd><span>${t}<small>${fmt(x)}</small></span></button>`).join("");
+  document.getElementById("tf-postes").innerHTML = [1,2,3,4,5,6].map((n,k) => `<button type="button" data-val="${n}"><kbd>${"ABCDEF"[k]}</kbd><span>${n} ${n > 1 ? "desks" : "desk"}<small>${eur(750*n)} excl. VAT / month</small></span></button>`).join("");
+})();
+
+function ouvrirMembre(plan){
+  M.focus = document.activeElement; M.ouvertLe = Date.now(); M.envoi = false;
+  tf.hidden = false; tf.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
+  const voile = document.getElementById("tf-voile"); voile.hidden = false; voile.classList.remove("ferme");
+  if (plan){ M.formule = plan; allerQ("debut"); } else allerQ("formule");
+}
+document.getElementById("tf-voile").addEventListener("click", () => fermerMembre());
+/* Aucune fenêtre ne défile : si un contenu dépasse la carte, il est légèrement réduit pour tenir. */
+function ajusterFenetres(){
+  [["#mv .mv-corps", "#mv-form:not([hidden]), #mv-fin.on"], ["#ms .mv-corps", "#ms-form:not([hidden]), #ms-fin.on"], ["#tf-corps", ".tf-q.on"]].forEach(([c, interne]) => {
+    const corps = document.querySelector(c); if (!corps || !corps.offsetParent) return;
+    corps.querySelectorAll(interne).forEach(el => {
+      el.style.zoom = "";
+      for (let i = 0; i < 3 && corps.scrollHeight > corps.clientHeight + 1; i++){
+        const z = parseFloat(el.style.zoom || 1) * Math.max(.62, (corps.clientHeight - 2) / corps.scrollHeight);
+        el.style.zoom = Math.max(.62, z).toFixed(3);
+      }
+      corps.scrollTop = 0;
+    });
+  });
+}
+let ajusteT = 0;
+const planifierAjuste = () => { clearTimeout(ajusteT); ajusteT = setTimeout(ajusterFenetres, 60); };
+new MutationObserver(planifierAjuste).observe(document.body, { subtree:true, childList:true, attributes:true, attributeFilter:["class","hidden"] });
+window.addEventListener("resize", planifierAjuste);
+function fermerMembre(){
+  if (tf.hidden) return;
+  const voile = document.getElementById("tf-voile");
+  const fin = () => { tf.hidden = true; voile.hidden = true; tf.classList.remove("ferme"); voile.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); M.focus?.focus?.(); };
+  if (RM) return fin(); tf.classList.add("ferme"); voile.classList.add("ferme"); setTimeout(fin, 480);
+}
+function allerQ(nom){
+  const ordre = ordreQ(); M.i = nom === "fin" ? ordre.length : Math.max(0, ordre.indexOf(nom));
+  tf.querySelectorAll(".tf-q").forEach(q => q.classList.toggle("on", q.dataset.q === nom));
+  tf.querySelectorAll(".tf-q").forEach(q => { const k = ordre.indexOf(q.dataset.q); if (k >= 0) q.querySelector(".tf-num").textContent = String(k+1).padStart(2,"0") + " →"; });
+  document.getElementById("tf-prog").style.width = (nom === "fin" ? 100 : Math.round(M.i / ordre.length * 100)) + "%";
+  document.getElementById("tf-etat").textContent = nom === "fin" ? "Membership confirmed" : `Become a member · ${M.i+1} of ${ordre.length}`;
+  document.getElementById("tf-prec").disabled = M.i === 0 || nom === "fin";
+  document.getElementById("tf-suiv").disabled = nom === "fin" || nom === "paiement";
+  if (nom === "debut") marquer("tf-debuts", M.debut);
+  if (nom === "postes") marquer("tf-postes", String(M.postes));
+  if (nom === "societe") document.getElementById("tf-prenom-echo").textContent = document.getElementById("tf-prenom").value.trim();
+  if (nom === "paiement") remplirRecapM();
+  document.getElementById("tf-corps").scrollTop = 0;
+  setTimeout(() => { const q = tf.querySelector(".tf-q.on"); (q.querySelector("input:not([readonly]):not([tabindex='-1'])") || q.querySelector(".tf-choix button.on, .tf-choix button, button"))?.focus({ preventScroll:true }); }, 80);
+}
+function marquer(id, val){ document.querySelectorAll(`#${id} button`).forEach(b => b.classList.toggle("on", b.dataset.val === val)); }
+const qCour = () => tf.querySelector(".tf-q.on")?.dataset.q;
+function champ(id, test, msg){ const el = document.getElementById(id), m = el.parentElement.querySelector(".msg"), bad = !test(el.value.trim()); if (m) m.textContent = bad ? msg : ""; if (bad) el.focus(); return !bad; }
+function valider(nom){
+  if (nom === "formule") return !!M.formule;
+  if (nom === "debut"){ if (!M.debut){ tf.querySelector('[data-q="debut"] [data-err]').textContent = "Choose a start date."; return false; } return true; }
+  if (nom === "postes") return M.postes >= 1;
+  if (nom === "nom") return champ("tf-prenom", v => v.length >= 1, "Please enter your first name.") && champ("tf-nom", v => v.length >= 1, "Please enter your name.");
+  if (nom === "contact") return champ("tf-email", v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), "This email address is not valid.") && champ("tf-tel", v => !v || v.replace(/\D/g,"").length >= 8, "This number looks incomplete.");
+  return true;
+}
+function suivante(){ const n = qCour(), o = ordreQ(); if (!n || n === "paiement" || n === "fin") return; if (!valider(n)) return; allerQ(o[o.indexOf(n)+1]); }
+function precedente(){ const n = qCour(), o = ordreQ(); const k = o.indexOf(n); if (k > 0) allerQ(o[k-1]); }
+
+tf.addEventListener("click", e => {
+  if (e.target.closest("[data-fermer-tf]")) return fermerMembre();
+  const p = e.target.closest("[data-plan]"); if (p){ M.formule = Number(p.dataset.plan); if (!fCour().postes) M.postes = 1; return allerQ("debut"); }
+  const c = e.target.closest(".tf-choix button");
+  if (c){ const box = c.parentElement.id; if (box === "tf-debuts"){ M.debut = c.dataset.val; M.debutTxt = c.dataset.txt; } else M.postes = Number(c.dataset.val);
+    marquer(box, c.dataset.val); const er = c.closest(".tf-q").querySelector("[data-err]"); if (er) er.textContent = ""; setTimeout(suivante, RM ? 0 : 380); return; }
+  if (e.target.closest("[data-ok]")) suivante();
+});
+document.getElementById("tf-prec").addEventListener("click", precedente);
+document.getElementById("tf-suiv").addEventListener("click", suivante);
+document.addEventListener("keydown", e => {
+  if (tf.hidden) return;
+  if (e.key === "Escape") return fermerMembre();
+  const n = qCour();
+  if (e.key === "Enter" && !e.shiftKey && e.target.tagName !== "BUTTON" && n !== "paiement"){ e.preventDefault(); suivante(); return; }
+  const q = tf.querySelector(".tf-q.on .tf-choix");
+  if (q && e.target.tagName !== "INPUT" && /^[a-f]$/i.test(e.key)){ const b = q.querySelectorAll("button")["abcdef".indexOf(e.key.toLowerCase())]; if (b){ e.preventDefault(); b.click(); } }
+});
+document.addEventListener("click", e => { const t = e.target.closest("[data-membre]"); if (t){ e.preventDefault(); closeMenu(); fermerSalle?.(); ouvrirMembre(Number(t.dataset.membre) || null); } });
+
+function montantM(){ const f = fCour(), ht = f.prix * (f.postes ? M.postes : 1); return { ht, ttc: Math.round(ht*1.2*100)/100 }; }
+function remplirRecapM(){
+  const f = fCour(), m = montantM(), nom = (document.getElementById("tf-prenom").value + " " + document.getElementById("tf-nom").value).trim();
+  const lignes = [["Membership", f.nom + (f.postes ? ` · ${M.postes} ${M.postes > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["Member", nom], ["E-mail", document.getElementById("tf-email").value.trim()]];
+  const soc = document.getElementById("tf-societe").value.trim(); if (soc) lignes.splice(3, 0, ["Company", soc]);
+  document.getElementById("tf-recap").innerHTML = lignes.map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+  document.getElementById("tf-ttc").textContent = eur(m.ttc);
+  document.getElementById("tf-ht").textContent = eur(m.ht) + " excl. VAT + VAT 20%";
+  document.getElementById("tf-preavis").textContent = f.preavis;
+  document.getElementById("tf-payer").textContent = "Pay " + eur(m.ttc) + " and become a member";
+  document.getElementById("tf-statut").textContent = "";
+}
+async function adhererClaude(v){
+  await mcpPret; if (!mcpNs) throw Object.assign(new Error("sans"), { code:"sans" });
+  const nom = (v.prenom + " " + v.nom).trim(), f = fCour();
+  const trouve = await appel("nexudus_list", { entity:"coworkers", filters:{ Coworker_Email:v.email }, pageSize:1 });
+  let client = trouve && trouve.Records && trouve.Records[0] ? trouve.Records[0].Id : null, nouveau = !client, compte = !!(trouve && trouve.Records && trouve.Records[0] && trouve.Records[0].UserId);
+  if (!client){
+    const fiche = { CoworkerType:1, FullName:nom, Email:v.email, MobilePhone:v.tel || null, CompanyName:v.societe || null, CountryId:NX.pays, SimpleTimeZoneId:NX.fuseau, InvoicingBusinessId:NX.business, Notes:`Membre inscrit depuis le site vitrine (formule ${f.nom}).` };
+    try { client = idDe(await appel("nexudus_create", { entity:"coworkers", body:{ ...fiche, CreateUser:true } })); compte = true; }
+    catch(err){ if (err.code !== "tool_error") throw err; client = idDe(await appel("nexudus_create", { entity:"coworkers", body:fiche })); compte = false; }
+    if (!client) throw Object.assign(new Error("Nexudus did not return the contact ID."), { code:"tool_error" });
+  }
+  const m = montantM();
+  const k = await appel("nexudus_create", { entity:"coworkercontracts", body:{ IssuedById:NX.business, CoworkerId:client, TariffId:f.id, StartDate:v.debut + "T00:00:00Z",
+    BillingDay:Math.min(28, Number(v.debut.slice(8,10))), Quantity:f.postes ? M.postes : 1, ApplyProRating:true,
+    Notes:`Souscription depuis le site vitrine · paiement simulé (démo) de ${m.ht} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}` } });
+  const id = idDe(k);
+  return { contrat:id, reference: id ? "BDL-M" + String(id).slice(-5) : null, nouveau, compte };
+}
+async function adhererSite(v){
+  const r = await fetch("/api/membres", { method:"POST", headers:{ "content-type":"application/json" }, body:JSON.stringify({ ...v, lang:"en" }) });
+  let d = {}; try { d = await r.json(); } catch(_){}
+  if (!r.ok || !d.ok) throw Object.assign(new Error(d.erreur || "The membership could not be recorded."), { code:"site" });
+  return d;
+}
+document.getElementById("tf-payer").addEventListener("click", async () => {
+  if (M.envoi) return;
+  const st = document.getElementById("tf-statut"), b = document.getElementById("tf-payer");
+  if (!document.getElementById("tf-accord").checked){ st.textContent = "Tick the box to accept the membership terms."; return; }
+  const f = fCour();
+  const v = { formule:f.id, quantite:f.postes ? M.postes : 1, debut:M.debut, prenom:document.getElementById("tf-prenom").value.trim(), nom:document.getElementById("tf-nom").value.trim(),
+    societe:document.getElementById("tf-societe").value.trim(), email:document.getElementById("tf-email").value.trim().toLowerCase(), tel:document.getElementById("tf-tel").value.trim(),
+    accord:true, site_web:document.getElementById("tf-site").value, ouvert_le:M.ouvertLe };
+  M.envoi = true; b.disabled = true; st.textContent = "";
+  b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Processing payment';
+  try {
+    await pause(RM ? 0 : 1100);
+    b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Creating your member area';
+    const res = DANS_CLAUDE ? await adhererClaude(v) : await adhererSite(v);
+    document.getElementById("tf-fin-prenom").textContent = v.prenom;
+    document.getElementById("tf-fin-date").textContent = M.debutTxt;
+    document.getElementById("tf-fin-recap").innerHTML = [["Membership", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["First month", eur(montantM().ttc) + " incl. VAT (demo payment)"], ["Reference", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+    document.getElementById("tf-crm").innerHTML = `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.`;
+    allerQ("fin");
+  } catch (err){
+    const c = err && err.code;
+    if (c === "sans" || c === "server_not_connected" || c === "not_granted" || c === "capability_disabled" || c === "not_in_manifest" || c === "blocked_by_policy" || c === "selection_required") st.innerHTML = SANS_NEXUDUS;
+    else if (c === "needs_reauth") st.textContent = "The Nexudus connection has expired. Reconnect Nexudus in Settings → Connectors on claude.ai, then try again.";
+    else if (c === "approval_required" || c === "consent_required") st.textContent = "Nexudus needs your permission for this page. Click “Pay” again and allow access.";
+    else if (c === "site" || c === "tool_error") st.textContent = String(err.message || "The membership could not be recorded.").slice(0,240);
+    else st.textContent = "No response from Nexudus. The membership may have been created: check the customer list before trying again.";
+  } finally { M.envoi = false; b.disabled = false; if (qCour() === "paiement") b.textContent = "Pay " + eur(montantM().ttc) + " and become a member"; }
+});
+
+window.addEventListener("hashchange", route);
+route();
+
+/* L'immeuble en coupe : le niveau mis en avant change tout seul ; survol ou clic pour choisir, chaque niveau mène à son offre. */
+const NIVEAUX = [
+  { niveau:"Ground floor", titre:"Meeting rooms and La Verrière", detail:"Four rooms for up to 15 people, and 120 m² under glass. From €35 excl. VAT per hour.", cta:"Book a room", action:() => ouvrirSalle(null) },
+  { niveau:"1st floor", titre:"The coworking floor", detail:"Twenty flexible desks, picked on the floor plan. From €15 excl. VAT per half day.", cta:"Book a desk", action:() => { location.href = document.getElementById("apercu")?.href || "../plateau/en/"; } },
+  { niveau:"2nd floor", titre:"Residents and private offices", detail:"Sixteen dedicated desks and three closed offices, with fireplaces and mouldings. From €490 excl. VAT per month.", cta:"Become a member", action:() => ouvrirMembre(1415397039) },
+  { niveau:"3rd floor", titre:"A floor for your team", detail:"A private floor: your desks, your executive office, your meeting room.", cta:"Book a visit", action:() => ouvrir() },
+];
+(function(){ const h = document.querySelector(".hdr"); const maj = () => document.documentElement.style.setProperty("--hdr-h", h.offsetHeight + "px"); maj(); addEventListener("resize", maj); })();
+(function univers(){
+  const box = document.getElementById("univers"), entree = document.getElementById("entree"); if (!box || !entree) return;
+  const liste = document.getElementById("un-niveaux"), ordre = ["3rd", "2nd", "1st", "GF"], DUREE = 5200;
+  let actif = 0, minuterie = 0, pause = false, etapes = [], focusAvant = null;
+  // Les quatre niveaux, du 3e au rez-de-chaussée, avec leur offre et leur bouton
+  const dessiner = () => { liste.innerHTML = [3, 2, 1, 0].map((n, k) => { const v = NIVEAUX[n]; return `<li><button class="un-niveau" type="button" data-e="${n}" aria-expanded="false"><span class="n">${ordre[k]}</span><b>${esc(v.titre)}</b><span class="plus"><div><small>${esc(v.detail)}</small><span class="btn btn-or" data-cta="${n}">${esc(v.cta)}</span></div></span></button></li>`; }).join(""); };
+  function montrer(n){
+    actif = (n + NIVEAUX.length) % NIVEAUX.length;
+    box.querySelectorAll("[data-e]").forEach(el => { const on = Number(el.dataset.e) === actif; el.classList.toggle("on", on); if (el.classList.contains("un-niveau")) el.setAttribute("aria-expanded", String(on)); });
+    box.classList.remove("tourne"); clearTimeout(minuterie);
+    if (!RM && !pause && box.classList.contains("ouvert")){ void box.offsetWidth; box.style.setProperty("--duree", DUREE + "ms"); box.classList.add("tourne"); minuterie = setTimeout(() => montrer(actif - 1), DUREE); }
+  }
+  const lancer = n => { fermer(); NIVEAUX[n].action(); };
+  function ouvrirUnivers(){
+    focusAvant = document.activeElement; dessiner(); pause = false; actif = 0;
+    box.className = "univers"; box.hidden = false; document.body.classList.add("modal-ouverte");
+    const pas = (t, f) => etapes.push(setTimeout(f, RM ? 0 : t));
+    // on passe la porte, l'immeuble apparaît, puis il s'ouvre en quatre niveaux
+    pas(60, () => box.classList.add("entre", "dedans"));
+    pas(2500, () => { box.classList.add("ouvert"); montrer(0); });
+    pas(4200, () => box.classList.add("pret"));
+    setTimeout(() => document.getElementById("un-fermer").focus(), 80);
+  }
+  function fermer(){ if (box.hidden) return; etapes.forEach(clearTimeout); etapes = []; clearTimeout(minuterie); box.hidden = true; document.body.classList.remove("modal-ouverte"); focusAvant?.focus?.(); }
+  entree.addEventListener("click", e => { if (!e.target.closest(".en-nexudus")) ouvrirUnivers(); });
+  entree.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); ouvrirUnivers(); } });
+  document.getElementById("un-fermer").addEventListener("click", fermer);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !box.hidden) fermer(); });
+  box.addEventListener("click", e => {
+    // un clic pendant l'ouverture passe directement à la vue en coupe
+    if (!box.classList.contains("ouvert")){ etapes.forEach(clearTimeout); etapes = []; box.classList.add("entre", "dedans", "ouvert", "pret"); montrer(0); return; }
+    const c = e.target.closest("[data-cta]"); if (c) return lancer(Number(c.dataset.cta));
+    const el = e.target.closest("[data-e]"); if (!el) return;
+    const n = Number(el.dataset.e); if (n === actif && el.classList.contains("im-etage")) return lancer(n);
+    pause = true; montrer(n);
+  });
+  box.querySelectorAll(".im-etage").forEach(b => b.addEventListener("pointerenter", e => { if (e.pointerType === "mouse" && box.classList.contains("pret")){ pause = true; if (Number(b.dataset.e) !== actif) montrer(Number(b.dataset.e)); else { clearTimeout(minuterie); box.classList.remove("tourne"); } } }));
+  document.addEventListener("visibilitychange", () => { if (box.hidden) return; if (document.hidden) clearTimeout(minuterie); else if (!pause) montrer(actif); });
+})();
+
+/* Aperçu du plateau en haut de page : rendu de l'étage, postes libres lus dans Nexudus, clic vers /plateau. */
+(async function apercuPlateau(){
+  const a = document.getElementById("apercu"); if (!a) return;
+  if (!RM && matchMedia("(hover:hover)").matches){
+    a.addEventListener("pointermove", e => { const r = a.getBoundingClientRect(); a.style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 7 + "deg"); a.style.setProperty("--rx", -((e.clientY - r.top) / r.height - .5) * 5 + "deg"); });
+    a.addEventListener("pointerleave", () => { a.style.setProperty("--ry", "0deg"); a.style.setProperty("--rx", "0deg"); });
+  }
+  if (DANS_CLAUDE) return;
+  try {
+    const { POSTES_PLAN, IMAGE } = await import("../plateau/js/plan.js");
+    // premier jour ouvert dont la journée n'est pas terminée
+    const c = new Date(jourParis(new Date()) + "T12:00:00Z"), auj = c.toISOString().slice(0,10); let d = null, jour = null;
+    for (let k = 0; k < 3 && !d; k++){ if (c.getUTCDay() !== 0){ jour = c.toISOString().slice(0,10); const r = await fetch("/api/postes?jour=" + jour + "&lang=en"); const j = await r.json(); if (r.ok && j.ok && j.postes.some(p => p.etat.journee !== "passe")) d = j; } c.setUTCDate(c.getUTCDate() + 1); }
+    if (!d) return;
+    const etat = Object.fromEntries(d.postes.map(p => [p.nom.replace(/^Poste\s+/i, ""), p.etat.journee])), libres = d.postes.filter(p => p.etat.journee === "libre").length;
+    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : " pris"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("");
+    const quand = jour === auj ? "today" : new Date(jour + "T12:00:00Z").toLocaleDateString("en-GB", { weekday:"long", timeZone:"UTC" });
+    document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand}`;
+    NIVEAUX[1].detail = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand} out of twenty, picked on the floor plan. From €15 excl. VAT per half day.`;
+    a.href = "../plateau/en/?jour=" + jour; document.getElementById("ap-btn").href = a.href;
+    if (window.IntersectionObserver && !RM){ a.classList.add("attend"); new IntersectionObserver((es, o) => { if (es[0].isIntersecting){ a.classList.remove("attend"); o.disconnect(); } }, { threshold:.35 }).observe(a); }
+    a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris")){ e.preventDefault(); location.href = `../plateau/en/?jour=${jour}&poste=${pt.dataset.code}`; } });
+  } catch(_){ /* sans Nexudus, l'aperçu reste une image : pas de disponibilité inventée */ }
+})();
+</script>
+
+</body>
+</html>

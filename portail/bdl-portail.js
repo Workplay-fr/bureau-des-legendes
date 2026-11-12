@@ -375,7 +375,7 @@ html.bdl .ai-modal-content .modal-body:has(> .text-center)::before{ content:""; 
   background:url(https://bdl.workplay.fr/img/verriere-nuit.jpg) center 35%/cover no-repeat;
   -webkit-mask-image:linear-gradient(180deg,#000 45%,transparent); mask-image:linear-gradient(180deg,#000 45%,transparent);
   animation:bdlConcierge 18s ease-in-out infinite alternate, bdlFondu .9s ease-out both; transform-origin:60% 40%; }
-html.bdl .ai-modal-content .modal-body:has(> .text-center)::after{ content:"34, bd Haussmann · à votre service"; position:absolute; left:20px; top:18px; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.9); text-shadow:0 1px 8px rgba(0,0,0,.4); }
+html.bdl .ai-modal-content .modal-body:has(> .text-center)::after{ content:"312, bd Haussmann · à votre service"; position:absolute; left:20px; top:18px; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.9); text-shadow:0 1px 8px rgba(0,0,0,.4); }
 html.bdl .ai-modal-content .modal-body > .text-center{ position:relative; z-index:1; }
 @keyframes bdlConcierge{ from{ transform:scale(1.02); } to{ transform:scale(1.12) translateY(-2%); } }
 @keyframes bdlFondu{ from{ opacity:0; } to{ opacity:1; } }
@@ -575,7 +575,7 @@ html.bdl-page main .card .btn-primary{ width:auto; }
       return '<span class="m"><span style="animation-delay:' + (0.35 + i * 0.09).toFixed(2) + 's">' + m + "</span></span>";
     }).join(" ");
     var s = doc.createElement("div"); s.className = "bdl-salut";
-    s.innerHTML = '<div class="bdl-sur"><span>' + date + '</span><i></i><span>34, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
+    s.innerHTML = '<div class="bdl-sur"><span>' + date + '</span><i></i><span>312, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
       '<h1 class="bdl-titre">' + mots + "</h1>" +
       '<p class="bdl-sous">Vos réservations, vos invités et la vie du lieu, réunis sur une seule page.</p>' +
       '<div class="bdl-assist">' +
@@ -657,7 +657,7 @@ html.bdl-page main .card .btn-primary{ width:auto; }
       var base = (location.pathname.match(/^\/[^/]+/) || [""])[0];
       var info = doc.createElement("div");
       info.className = "bdl-pied-info";
-      info.innerHTML = '<span>34, boulevard Haussmann · 75009 Paris</span>' +
+      info.innerHTML = '<span>312, boulevard Haussmann · 75009 Paris</span>' +
         '<a href="' + base + '/bookings/meeting-rooms/list">Salles de réunion</a>' +
         '<a href="' + base + '/events/agenda">Agenda des événements</a>' +
         '<a href="' + base + '/user/activity/events">Mes événements</a>';
@@ -695,7 +695,7 @@ html.bdl-page main .card .btn-primary{ width:auto; }
     var cont = band.querySelector(":scope > .container, :scope > div:not(.bdl-b-bg):not(.bdl-b-voile)");
     if (!cont) return;
     var tete = doc.createElement("div"); tete.className = "bdl-b-tete container";
-    tete.innerHTML = '<div class="bdl-b-sur"><span>' + p[1] + '</span><i></i><span>34, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
+    tete.innerHTML = '<div class="bdl-b-sur"><span>' + p[1] + '</span><i></i><span>312, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
       (p[2] ? '<h1 class="bdl-b-titre">' + p[2] + '</h1>' + (p[3] ? '<p class="bdl-b-sous">' + p[3] + '</p>' : '') : '');
     band.insertBefore(tete, cont);
     band.classList.toggle("bdl-b-propre", !!p[2]);

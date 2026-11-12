@@ -58,14 +58,28 @@ export default async (req, context) => {
   return page(p === "/connexion" ? "/" : p + url.search, "", 401);
 };
 
+// Textes de l'écran d'accès : en anglais quand la page demandée est celle de la version anglaise.
+const TEXTES = {
+  fr: { lang: "fr", photo: "Façade haussmannienne au crépuscule", sous: "Paris IX<sup>e</sup> · Coworking et bureaux", label: "Accès réservé", titre: "Bienvenue au Bureau des Légendes.",
+    intro: "Ce site de démonstration est accessible sur invitation. Saisissez le mot de passe qui vous a été communiqué.", mdp: "Mot de passe", afficher: "Afficher", masquer: "Masquer", entrer: "Entrer",
+    fictif: "<b>Un lieu imaginaire.</b> Le Bureau des Légendes est un espace de coworking fictif, créé pour une démonstration. L'adresse, les salles, les tarifs et les photos ne correspondent à aucun lieu réel.",
+    nx: "Réservations, demandes de visite, contacts et portail membre fonctionnent avec <b>Nexudus</b>, la plateforme de gestion utilisée par plus de 4 000 espaces de coworking et centres d'affaires dans 90 pays. <a href=\"https://nexudus.com\" target=\"_blank\" rel=\"noopener\">Découvrir Nexudus</a>" },
+  en: { lang: "en", photo: "Haussmann façade at dusk", sous: "Paris 9<sup>th</sup> · Coworking and offices", label: "Restricted access", titre: "Welcome to Bureau des Légendes.",
+    intro: "This demo site is available by invitation. Enter the password you were given.", mdp: "Password", afficher: "Show", masquer: "Hide", entrer: "Enter",
+    fictif: "<b>An imaginary place.</b> Bureau des Légendes is a fictional coworking space created for a demo. The address, rooms, prices and photos do not match any real place.",
+    nx: "Bookings, visit requests, contacts and the member portal run on <b>Nexudus</b>, the management platform used by more than 4,000 coworking spaces and business centres in 90 countries. <a href=\"https://nexudus.com\" target=\"_blank\" rel=\"noopener\">Discover Nexudus</a>" },
+};
+const ERREURS_EN = { "Ce mot de passe n'est pas le bon.": "This password is incorrect.", "L'accès n'est pas encore configuré. Revenez un peu plus tard.": "Access is not set up yet. Please come back a little later." };
 function page(suite, erreur, status) {
+  const en = /^\/(en|plateau\/en)(\/|$|\?)/.test(suite), T = TEXTES[en ? "en" : "fr"];
+  if (en && erreur) erreur = ERREURS_EN[erreur] || erreur;
   const html = `<!doctype html>
-<html lang="fr">
+<html lang="${T.lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Bureau des Légendes · Accès</title>
+<title>Bureau des Légendes · ${en ? "Access" : "Accès"}</title>
 <link rel="icon" type="image/png" href="/img/mark-blanc.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
@@ -113,28 +127,28 @@ input:focus-visible{outline:none}
 </head>
 <body>
 <main class="cadre">
-  <figure class="photo" style="margin:0"><img src="/img/facade.jpg" alt="Façade haussmannienne au crépuscule"><p><b>34, boulevard Haussmann</b>Paris IX<sup>e</sup> · Coworking et bureaux</p></figure>
+  <figure class="photo" style="margin:0"><img src="/img/facade.jpg" alt="${T.photo}"><p><b>312, boulevard Haussmann</b>${T.sous}</p></figure>
   <div class="droite">
     <img class="logo" src="/img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220">
     <form class="boite" method="post" action="/connexion">
-      <span class="label">Accès réservé</span>
-      <h1>Bienvenue au Bureau des Légendes.</h1>
-      <p class="intro">Ce site de démonstration est accessible sur invitation. Saisissez le mot de passe qui vous a été communiqué.</p>
-      <label class="t" for="mdp">Mot de passe</label>
-      <div class="champ"><input id="mdp" name="mot_de_passe" type="password" autocomplete="current-password" required autofocus><button class="oeil" type="button" id="oeil" aria-controls="mdp" aria-pressed="false">Afficher</button></div>
+      <span class="label">${T.label}</span>
+      <h1>${T.titre}</h1>
+      <p class="intro">${T.intro}</p>
+      <label class="t" for="mdp">${T.mdp}</label>
+      <div class="champ"><input id="mdp" name="mot_de_passe" type="password" autocomplete="current-password" required autofocus><button class="oeil" type="button" id="oeil" aria-controls="mdp" aria-pressed="false">${T.afficher}</button></div>
       <input type="hidden" name="suite" value="${sur(suite)}">
       <p class="err" role="alert">${sur(erreur)}</p>
-      <button class="btn" type="submit">Entrer</button>
+      <button class="btn" type="submit">${T.entrer}</button>
     </form>
     <div class="note">
-      <p style="margin:0"><b>Un lieu imaginaire.</b> Le Bureau des Légendes est un espace de coworking fictif, créé pour une démonstration. L'adresse, les salles, les tarifs et les photos ne correspondent à aucun lieu réel.</p>
-      <div class="nx"><span class="m" aria-hidden="true">N</span><p style="margin:0">Réservations, demandes de visite, contacts et portail membre fonctionnent avec <b>Nexudus</b>, la plateforme de gestion utilisée par plus de 4 000 espaces de coworking et centres d'affaires dans 90 pays. <a href="https://nexudus.com" target="_blank" rel="noopener">Découvrir Nexudus</a></p></div>
+      <p style="margin:0">${T.fictif}</p>
+      <div class="nx"><span class="m" aria-hidden="true">N</span><p style="margin:0">${T.nx}</p></div>
     </div>
   </div>
 </main>
 <script>
 const b=document.getElementById("oeil"),i=document.getElementById("mdp");
-b.addEventListener("click",()=>{const v=i.type==="password";i.type=v?"text":"password";b.textContent=v?"Masquer":"Afficher";b.setAttribute("aria-pressed",String(v));i.focus();});
+b.addEventListener("click",()=>{const v=i.type==="password";i.type=v?"text":"password";b.textContent=v?"${T.masquer}":"${T.afficher}";b.setAttribute("aria-pressed",String(v));i.focus();});
 </script>
 </body>
 </html>`;

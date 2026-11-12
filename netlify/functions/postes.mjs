@@ -2,7 +2,7 @@
 //   GET  /api/postes?jour=AAAA-MM-JJ  → réservations de chacun des 20 postes ce jour-là (lues dans Nexudus)
 //   POST /api/postes                  → crée (ou retrouve) le contact puis la réservation du poste dans Nexudus
 // Le paiement affiché sur le site est une simulation : aucune donnée bancaire n'est reçue ici.
-import { POSTES, TARIFS_POSTE, creneauPoste, occupationPostes, nx, contact, parisVersUtc, isoZ, nettoie, emailValide, json, tropDEnvois, vide } from "../lib/nexudus.mjs";
+import { POSTES, TARIFS_POSTE, creneauPoste, occupationPostes, nx, contact, parisVersUtc, isoZ, nettoie, emailValide, json, tropDEnvois, vide, bilingue } from "../lib/nexudus.mjs";
 
 const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
 const NOMS_CRENEAU = { matin: "matin", apres: "après-midi", journee: "journée" };
@@ -28,7 +28,7 @@ function etatPostes(jour, occ) {
   return { jour, ouvert: Object.values(creneaux).some(Boolean), creneaux, postes };
 }
 
-export default async (req) => {
+const traiter = async (req) => {
   if (vide()) return json(500, { ok: false, erreur: "Le site n'est pas encore relié à Nexudus." });
   const url = new URL(req.url);
 
@@ -77,5 +77,7 @@ export default async (req) => {
     return json(502, { ok: false, erreur: "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: erreurNx(e) });
   }
 };
+
+export default bilingue(traiter);
 
 export const config = { path: "/api/postes" };

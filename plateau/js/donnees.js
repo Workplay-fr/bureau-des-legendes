@@ -40,7 +40,7 @@ const simule = {
       const m = alea(jour + p.code + "m") < 0.38 || prises.has(`${jour}|${p.code}|matin`) || prises.has(`${jour}|${p.code}|journee`);
       const a = alea(jour + p.code + "a") < 0.3 || prises.has(`${jour}|${p.code}|apres`) || prises.has(`${jour}|${p.code}|journee`);
       const e = h ? { matin: m ? "pris" : "libre", apres: a ? "pris" : "libre", journee: m || a ? "pris" : "libre" } : { matin: "passe", apres: "passe", journee: "passe" };
-      return { id: 1000 + i, nom: p.nom, zone: p.zone, etat: e };
+      return { id: 1000 + i, nom: "Poste " + p.code, zone: p.zone, etat: e }; // même nom que les ressources Nexudus
     });
     return { ok: true, source: "simule", jour, ouvert: !!h, creneaux, postes };
   },

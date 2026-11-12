@@ -1,6 +1,6 @@
 # Bureau des Légendes — site vitrine
 
-Site vitrine du coworking fictif Bureau des Légendes (34, boulevard Haussmann), relié à Nexudus.
+Site vitrine du coworking fictif Bureau des Légendes (312, boulevard Haussmann), relié à Nexudus.
 
 - `index.html` : le site (une page, navigation par ancres, animations, scène 3D).
 - `netlify/functions/salles.mjs` : disponibilités réelles des salles de réunion (GET) et réservation dans Nexudus (POST). Le paiement affiché est simulé, aucune donnée bancaire n'est envoyée.
@@ -24,6 +24,12 @@ Page à part : le rendu du 1er étage, dans lequel on zoome et on clique un post
 Mouvement : tracé d'ouverture, légère inclinaison à la souris, rais de soleil et poussières, mise au point sur le poste choisi, sceau de confirmation. La lumière suit le créneau : un rendu du matin et un rendu de fin de journée remplacent l'image en fondu (`IMAGE.ambiances` dans `plan.js`).
 
 Provisoire : tarifs des postes (15 € HT la demi-journée, 25 € HT la journée, dans `netlify/lib/nexudus.mjs`). Le paiement est simulé. Une première version en 3D temps réel (three.js) reste dans l'historique git.
+
+## Version anglaise (`/en/`, `/plateau/en/`)
+
+Générée à partir des pages françaises par `python3 outils/en.py`, à relancer après chaque modification de `index.html` ou des fichiers de `plateau/`. Le script contient toutes les traductions et s'arrête en listant le texte concerné si une phrase française a changé ou n'est pas traduite : on ajoute la traduction dans le script et on relance. Ne pas modifier `en/` ni `plateau/en/` à la main.
+
+Les pages anglaises envoient `lang=en` aux fonctions : leurs messages d'erreur reviennent en anglais (`bilingue()` dans `netlify/lib/nexudus.mjs`). L'écran d'accès passe en anglais pour les adresses en `/en/`. Les notes enregistrées dans Nexudus restent en français.
 
 ## Accès protégé
 

@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" href="img/mark-blanc.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Bureau des Légendes</title>
-<meta name="description" content="Bureau des Légendes : coworking, bureaux privés et salles de réunion au 34 boulevard Haussmann, Paris 9e.">
+<meta name="description" content="Bureau des Légendes : coworking, bureaux privés et salles de réunion au 312 boulevard Haussmann, Paris 9e.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
@@ -77,11 +77,13 @@ section{padding-block:clamp(72px,9vw,128px)}
   .nav,.hdr-cta{display:none}
   .menu-btn{display:inline-flex}
   .mnav{display:block;border-top:1px solid var(--line)}
-  .hdr .mnav .wrap{flex-direction:column;align-items:stretch;gap:0;min-height:0;padding-block:6px 26px}
+  .nav a.langue{padding-left:16px;margin-left:4px;border-left:1px solid var(--line-2);letter-spacing:.2em}
+.hdr .mnav .wrap{flex-direction:column;align-items:stretch;gap:0;min-height:0;padding-block:6px 26px}
   .mnav a:not(.btn){display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);text-decoration:none;font:400 clamp(22px,6vw,30px)/1 var(--f);letter-spacing:.08em;text-transform:uppercase;animation:up .5s var(--ease) both}
   .mnav a:not(.btn)::after{content:"→";font-size:.7em}
   .mnav a:nth-child(2){animation-delay:.04s}.mnav a:nth-child(3){animation-delay:.08s}.mnav a:nth-child(4){animation-delay:.12s}.mnav a:nth-child(5){animation-delay:.16s}
   .mnav .btn{margin-top:24px}
+  .mnav a.langue::after{content:""}
 }
 
 /* Hero : texte, mot vertical, scène 3D */
@@ -821,6 +823,7 @@ section.tf-q{padding-block:0}
     <nav class="nav" aria-label="Navigation principale">
       <a href="#espaces">Espaces</a><a href="#formules">Formules</a><a href="#evenements">Événements</a><a href="#contact">Contact</a>
       <a data-portal="login" href="#">Espace membre</a>
+      <a class="langue" href="en/" hreflang="en" lang="en" aria-label="English version">EN</a>
     </nav>
     <a class="btn btn-or hdr-cta" data-portal="tour" href="#">Réserver une visite</a>
     <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="mnav">Menu</button>
@@ -828,6 +831,7 @@ section.tf-q{padding-block:0}
   <div class="mnav" id="mnav" hidden>
     <div class="wrap">
       <a href="#accueil">Accueil</a><a href="plateau/">Réserver un poste</a><a href="#espaces">Espaces</a><a href="#formules">Formules</a><a href="#evenements">Événements</a><a href="#contact">Contact</a>
+      <a class="langue" href="en/" hreflang="en" lang="en">English</a>
       <a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a>
     </div>
   </div>
@@ -838,7 +842,7 @@ section.tf-q{padding-block:0}
   <section class="hero">
     <div class="hero-grid">
       <div class="hero-l">
-        <div class="fiche label q"><span>34, boulevard Haussmann</span><span>Paris IX<sup>e</sup></span><span>Coworking et bureaux</span></div>
+        <div class="fiche label q"><span>312, boulevard Haussmann</span><span>Paris IX<sup>e</sup></span><span>Coworking et bureaux</span></div>
         <div class="entre">
           <h1>Une adresse pour écrire sa légende.</h1>
           <p class="lede">Coworking, bureaux privés et salles de réunion, dans un immeuble haussmannien.</p>
@@ -846,7 +850,7 @@ section.tf-q{padding-block:0}
         </div>
       </div>
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
-      <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explorer l'immeuble : pousser la porte du 34, boulevard Haussmann">
+      <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explorer l'immeuble : pousser la porte du 312, boulevard Haussmann">
         <img src="img/entree.webp" alt="L'entrée du Bureau des Légendes au crépuscule : porte cochère ouverte sur un intérieur éclairé, plaque en laiton, façade en pierre" width="1536" height="1024" fetchpriority="high">
         <a class="en-nexudus" href="https://www.nexudus.com/" target="_blank" rel="noopener">Powered by <b>Nexudus</b></a>
         <i class="en-porte" aria-hidden="true"></i>
@@ -903,7 +907,7 @@ section.tf-q{padding-block:0}
         <div class="plan court"><div><h3>Nomade</h3><span class="pour">Poste flexible, à choisir chaque jour</span></div><div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397038">Choisir</a></div>
         <div class="plan court"><div><h3>Résident</h3><span class="pour">Votre poste attitré</span></div><div class="prix"><b class="num">490&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397039">Choisir</a></div>
         <div class="plan court"><div><h3>Bureau privé</h3><span class="pour">Un bureau fermé pour votre équipe</span></div><div class="prix"><b class="num">750&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397447">Choisir</a></div>
-        <div class="plan court"><div><h3>Domiciliation</h3><span class="pour">Votre siège au 34 boulevard Haussmann</span></div><div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397040">Choisir</a></div>
+        <div class="plan court"><div><h3>Domiciliation</h3><span class="pour">Votre siège au 312 boulevard Haussmann</span></div><div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397040">Choisir</a></div>
       </div>
     </div>
   </section>
@@ -1007,7 +1011,7 @@ section.tf-q{padding-block:0}
           <ul><li>Bureau fermé George Smiley ou Mata Hari</li><li>Ligne fibre dédiée</li><li>Rangements sécurisés</li><li>Votre plaque à la porte</li></ul>
           <div class="prix"><b class="num">750&nbsp;€</b>par mois</div><button class="btn btn-or" type="button" data-membre="1415397447">Choisir Bureau privé</button></div>
         <div class="plan"><div><h3>Domiciliation</h3><span class="pour">Pour installer votre siège à Paris</span></div>
-          <ul><li>Adresse au 34 boulevard Haussmann</li><li>Réception de votre courrier</li><li>Salles de réunion à la réservation</li><li>Gestion depuis l'espace membre</li></ul>
+          <ul><li>Adresse au 312 boulevard Haussmann</li><li>Réception de votre courrier</li><li>Salles de réunion à la réservation</li><li>Gestion depuis l'espace membre</li></ul>
           <div class="prix"><b class="num">90&nbsp;€</b>par mois</div><button class="btn btn-or" type="button" data-membre="1415397040">Choisir Domiciliation</button></div>
       </div>
       <p class="note">Une question sur une formule ? <a href="#contact">Écrivez-nous</a> ou passez nous voir.</p>
@@ -1076,7 +1080,7 @@ section.tf-q{padding-block:0}
       <div>
         <span class="label">Coordonnées</span>
         <div class="coord" style="margin-top:18px">
-          <div><span class="label q">Adresse</span><span class="v">34, boulevard Haussmann<br>75009 Paris</span><button class="copie" data-copie="34 boulevard Haussmann, 75009 Paris">Copier</button></div>
+          <div><span class="label q">Adresse</span><span class="v">312, boulevard Haussmann<br>75009 Paris</span><button class="copie" data-copie="312 boulevard Haussmann, 75009 Paris">Copier</button></div>
           <div><span class="label q">Téléphone</span><span class="v num">+33 1 84 80 12 34</span><button class="copie" data-copie="+33 1 84 80 12 34">Copier</button></div>
           <div><span class="label q">E-mail</span><span class="v">bonjour@bureaudeslegendes.paris</span><button class="copie" data-copie="bonjour@bureaudeslegendes.paris">Copier</button></div>
         </div>
@@ -1100,7 +1104,7 @@ section.tf-q{padding-block:0}
       <div><h4>Le lieu</h4><ul><li><a href="#espaces">Espaces</a></li><li><a href="#formules">Formules</a></li><li><a href="#evenements">Événements</a></li><li><a href="#contact">Contact</a></li></ul></div>
       <div><h4>Membres</h4><ul><li><a data-portal="login" href="#">Espace membre</a></li><li><a data-portal="bookings" href="#">Réserver une salle</a></li><li><a data-portal="events" href="#">Agenda</a></li><li><a href="#" data-membre="">Devenir membre</a></li></ul></div>
     </div>
-    <div class="bot"><span>34, boulevard Haussmann, 75009 Paris</span><span>Lieu de démonstration · réservations et espace membre propulsés par Nexudus</span></div>
+    <div class="bot"><span>312, boulevard Haussmann, 75009 Paris</span><span>Lieu de démonstration · réservations et espace membre propulsés par Nexudus</span></div>
   </div>
 </footer>
 
@@ -1117,7 +1121,7 @@ section.tf-q{padding-block:0}
     </div>
   </div>
   <div class="un-panneau">
-    <div style="--k:0"><span class="label">34, boulevard Haussmann</span><h2 id="un-titre">Quatre niveaux, une adresse.</h2></div>
+    <div style="--k:0"><span class="label">312, boulevard Haussmann</span><h2 id="un-titre">Quatre niveaux, une adresse.</h2></div>
     <p class="lede" style="--k:1">Choisissez un niveau pour voir ce qu'il propose, puis réservez en ligne.</p>
     <ol class="un-niveaux" id="un-niveaux" style="--k:2"></ol>
   </div>
@@ -1126,7 +1130,7 @@ section.tf-q{padding-block:0}
 <div class="mv" id="mv" hidden role="dialog" aria-modal="true" aria-labelledby="mv-titre">
   <div class="mv-voile" data-fermer></div>
   <div class="mv-panneau">
-    <figure class="mv-photo"><img src="img/facade.jpg" alt=""><img class="apres" src="img/verriere-nuit.jpg" alt="" loading="lazy"><p id="mv-legende"><b>34, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi</p></figure>
+    <figure class="mv-photo"><img src="img/facade.jpg" alt=""><img class="apres" src="img/verriere-nuit.jpg" alt="" loading="lazy"><p id="mv-legende"><b>312, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi</p></figure>
     <div class="mv-corps">
       <div class="mv-tete">
         <div><span class="label">Réserver une visite</span><h2 id="mv-titre">Venez voir le lieu.</h2></div>
@@ -1255,7 +1259,7 @@ section.tf-q{padding-block:0}
         <div class="sceau" aria-hidden="true"><svg viewBox="0 0 76 76"><circle class="anneau" cx="38" cy="38" r="36"/><path class="coche" d="M25 39l9 9 17-19"/></svg></div>
         <span class="label">Merci <span id="ms-merci"></span></span>
         <h2 id="ms-fin-titre">C'est noté.</h2>
-        <p class="muted" style="color:var(--gris)">Votre salle est bloquée à votre nom. Nous vous envoyons un e-mail à <b id="ms-mail-conf"></b> pour confirmer la réservation, puis l'équipe vous accueille au 34, boulevard Haussmann.</p>
+        <p class="muted" style="color:var(--gris)">Votre salle est bloquée à votre nom. Nous vous envoyons un e-mail à <b id="ms-mail-conf"></b> pour confirmer la réservation, puis l'équipe vous accueille au 312, boulevard Haussmann.</p>
         <ul class="recap" id="ms-recap"></ul>
         <p class="crm" id="ms-crm"></p>
         <div class="mv-pied" style="padding-top:8px"><button class="btn btn-or" type="button" data-fermer-ms>Fermer</button></div>
@@ -1436,7 +1440,7 @@ function ouvrir(){
   dernierFocus = document.activeElement;
   mv.hidden = false; mv.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
   ouvertLe = Date.now(); etape(1); document.getElementById("mv-fin").classList.remove("on"); form.hidden = false; statut("");
-  mv.classList.remove("fini"); document.getElementById("mv-legende").innerHTML = "<b>34, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi";
+  mv.classList.remove("fini"); document.getElementById("mv-legende").innerHTML = "<b>312, boulevard Haussmann</b>Paris IX<sup>e</sup> · du lundi au samedi";
   setTimeout(() => mv.querySelector(".jours input:checked")?.focus(), 60);
 }
 function fermer(){
@@ -1520,7 +1524,7 @@ function fini(v, res){
   const fin = document.getElementById("mv-fin");
   fin.classList.remove("on"); void fin.offsetWidth; fin.classList.add("on");
   mv.classList.add("fini");
-  document.getElementById("mv-legende").innerHTML = "<b>À très vite</b>Sous la verrière, au 34, boulevard Haussmann";
+  document.getElementById("mv-legende").innerHTML = "<b>À très vite</b>Sous la verrière, au 312, boulevard Haussmann";
 }
 async function viaSite(v){
   const q = new URLSearchParams(location.search);
@@ -1891,7 +1895,7 @@ const FORMULES_UI = [
   { id:1415397038, nom:"Nomade", prix:290, accroche:"L'accès libre aux plateaux, en journée, du lundi au samedi.", inclus:["Poste flexible au 1er étage","Fibre 10 Gb/s et impression","Café de comptoir à volonté","2 h de salle de réunion / mois","Événements membres"], note:"Sans engagement.", preavis:30 },
   { id:1415397039, nom:"Résident", prix:490, accroche:"Votre poste attitré, à vous seul, dans une zone au calme.", inclus:["Bureau nominatif, écran sur demande","Accès 24/7 et casier sécurisé","5 h de salle de réunion / mois","Adresse professionnelle et courrier","Café et événements membres"], vedette:true, preavis:30 },
   { id:1415397447, nom:"Bureau privé", prix:750, unite:"/ poste", accroche:"Un bureau fermé rien qu'à vous, ou à votre équipe.", inclus:["Mobilier sur mesure, plaque à la porte","Accès 24/7 et casiers sécurisés","10 h de salle de réunion / mois","Courrier et conciergerie","Ligne fibre dédiée"], postes:true, preavis:60 },
-  { id:1415397040, nom:"Domiciliation", prix:90, accroche:"Votre adresse au 34 boulevard Haussmann, sans le bureau.", inclus:["Domiciliation commerciale","Courrier reçu, numérisé, notifié","Réexpédition sur demande","Salles de réunion à la carte","Vérification d'identité (KYC)"], note:"Activation après vérification d'identité.", preavis:30 },
+  { id:1415397040, nom:"Domiciliation", prix:90, accroche:"Votre adresse au 312 boulevard Haussmann, sans le bureau.", inclus:["Domiciliation commerciale","Courrier reçu, numérisé, notifié","Réexpédition sur demande","Salles de réunion à la carte","Vérification d'identité (KYC)"], note:"Activation après vérification d'identité.", preavis:30 },
 ];
 const tf = document.getElementById("tf");
 const M = { formule:null, debut:null, debutTxt:"", postes:1, i:0, ouvertLe:0, focus:null, envoi:false };

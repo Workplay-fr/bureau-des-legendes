@@ -2,11 +2,11 @@
 //   GET  /api/salles?salle=<id>&jour=AAAA-MM-JJ  → créneaux déjà pris ce jour-là (lus dans Nexudus)
 //   POST /api/salles                              → crée (ou retrouve) le contact puis la réservation dans Nexudus
 // Le paiement affiché sur le site est une simulation : aucune donnée bancaire n'est reçue ici.
-import { SALLES, HORAIRES, nx, contact, occupation, parisVersUtc, jourSemaine, isoZ, nettoie, emailValide, json, tropDEnvois, vide, PRODUITS_RESA } from "../lib/nexudus.mjs";
+import { SALLES, HORAIRES, nx, contact, occupation, parisVersUtc, jourSemaine, isoZ, nettoie, emailValide, json, tropDEnvois, vide, PRODUITS_RESA, bilingue } from "../lib/nexudus.mjs";
 
 const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
 
-export default async (req) => {
+const traiter = async (req) => {
   if (vide()) return json(500, { ok: false, erreur: "Le site n'est pas encore relié à Nexudus." });
   const url = new URL(req.url);
 
@@ -67,5 +67,7 @@ export default async (req) => {
     return json(502, { ok: false, erreur: "La réservation n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
   }
 };
+
+export default bilingue(traiter);
 
 export const config = { path: "/api/salles" };

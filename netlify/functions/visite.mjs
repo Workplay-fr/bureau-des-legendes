@@ -1,12 +1,12 @@
 // Reçoit le formulaire « Réserver une visite » et l'enregistre dans le CRM Nexudus :
 // un contact (retrouvé ou créé) et une opportunité dans « Sales Pipeline · Demande de visite en ligne ».
 // Accès Nexudus : variables d'environnement Netlify NEXUDUS_USER et NEXUDUS_PASSWORD.
-import { CFG, nx, contact, nettoie, emailValide, json, tropDEnvois, vide, isoZ } from "../lib/nexudus.mjs";
+import { CFG, nx, contact, nettoie, emailValide, json, tropDEnvois, vide, isoZ, bilingue } from "../lib/nexudus.mjs";
 
 const FORMULES = { "Nomade": 290, "Résident": 490, "Bureau privé": 750, "Domiciliation": 90, "À définir": null };
 const EQUIPES = ["Seul·e", "2 à 5 personnes", "6 personnes et plus"];
 
-export default async (req) => {
+const traiter = async (req) => {
   if (req.method !== "POST") return json(405, { ok: false, erreur: "Méthode non autorisée." });
   if (vide()) return json(500, { ok: false, erreur: "Le site n'est pas encore relié à Nexudus." });
   let d; try { d = await req.json(); } catch { return json(400, { ok: false, erreur: "Demande illisible." }); }
@@ -40,5 +40,7 @@ export default async (req) => {
     return json(502, { ok: false, erreur: "Votre demande n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.", detail: String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "") });
   }
 };
+
+export default bilingue(traiter);
 
 export const config = { path: "/api/visite" };

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The floor · Bureau des Légendes</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../../img/mark-blanc.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="../plateau.css">
+<link rel="preload" as="image" href="../assets/plateau-2x.webp" media="(min-width:821px)">
+</head>
+<body>
+
+<div id="scene" aria-hidden="true"></div>
+<div id="reperes" aria-hidden="true"></div>
+
+<header class="haut">
+  <a class="retour" href="/en/">← Bureau des Légendes</a>
+  <div class="titre">
+    <h1>The floor</h1>
+    <p>1<sup>st</sup> floor · 20 flexible desks</p>
+  </div>
+  <div class="actions">
+    <button class="bouton-fil" type="button" id="b-liste" aria-expanded="false" aria-controls="liste">Desk list</button>
+  </div>
+</header>
+
+<section class="barre" aria-label="Date, time slot and desk type">
+  <div class="groupe"><span class="label" id="l-jour">Day</span><div class="jours" id="jours" role="radiogroup" aria-labelledby="l-jour"></div></div>
+  <div class="groupe"><span class="label" id="l-creneau">Time slot</span><div class="segments" id="creneaux" role="radiogroup" aria-labelledby="l-creneau"></div></div>
+  <div class="groupe"><span class="label" id="l-zone">Desk type</span><div class="segments" id="zones" role="radiogroup" aria-labelledby="l-zone"></div></div>
+</section>
+
+<p class="bandeau" id="bandeau" hidden></p>
+
+<div class="pied">
+  <p class="compte" id="compte" role="status" aria-live="polite"></p>
+  <p class="aide" id="aide">Click a desk to book it · drag to move around · scroll or pinch to zoom</p>
+  <div class="legende" aria-hidden="true"><span><i class="pt libre"></i>Free</span><span><i class="pt pris"></i>Taken</span></div>
+</div>
+<div class="outils"><button class="bouton-fil" type="button" id="b-ensemble" hidden>Overview</button><button class="bouton-fil carre" type="button" id="z-moins" aria-label="Zoom out">−</button><button class="bouton-fil carre" type="button" id="z-plus" aria-label="Zoom in">+</button></div>
+
+<aside class="liste" id="liste" hidden aria-label="Desk list">
+  <div class="liste-tete"><h2>The desks</h2><button class="fermer" type="button" id="liste-fermer" aria-label="Close the list"></button></div>
+  <div id="liste-corps"></div>
+</aside>
+
+<aside class="fiche" id="fiche" hidden aria-labelledby="f-nom">
+  <button class="fermer" type="button" id="f-fermer" aria-label="Close the desk details"></button>
+  <div class="fiche-corps" id="f-corps"></div>
+</aside>
+
+<div class="charge" id="charge" role="status"><div><span class="label">Bureau des Légendes</span><p>Preparing the floor…</p><i></i></div></div>
+
+<noscript><p class="sans-js">This page needs JavaScript. You can book a desk from the <a href="https://bureaudeslegendesparis.nexudus.site/bureaudeslegendesparis/bookings">member area</a>.</p></noscript>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
