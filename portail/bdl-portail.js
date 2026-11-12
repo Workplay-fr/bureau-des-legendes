@@ -25,6 +25,7 @@
 }
 html.bdl body, html.bdl{ --bs-body-font-family:var(--bdl-f); --bs-font-sans-serif:var(--bdl-f); }
 html.bdl body{ font-family:var(--bdl-f) !important; color:var(--bdl-noir); -webkit-font-smoothing:antialiased; }
+html.bdl body *:not(svg):not(path):not(code):not(pre){ font-family:var(--bdl-f) !important; }
 html.bdl h1,html.bdl h2,html.bdl h3,html.bdl h4,html.bdl h5,html.bdl h6,
 html.bdl .btn,html.bdl .nav-link,html.bdl input,html.bdl select,html.bdl textarea{ font-family:var(--bdl-f) !important; }
 
@@ -487,7 +488,8 @@ html.bdl-page section.py-7 .mb-4.d-flex.flex-row.gap-3.align-items-center{ borde
 html.bdl-page section.py-7 .mb-4.d-flex.flex-row.gap-3.align-items-center hr{ display:none; }
 html.bdl-page section.py-7 a.card{ min-height:0; padding:0 !important; }
 html.bdl-page section.py-7 a.card .col-3 > .position-relative{ margin:0 !important; }
-html.bdl-page section.py-7 a.card .card-body{ padding:1.5rem 0 1.5rem 1.75rem !important; gap:1.5rem !important; }
+html.bdl-page section.py-7 a.card .card-body{ padding:0 !important; gap:0 !important; }
+html.bdl-page section.py-7 a.card .card-body > div:first-child{ padding:1.5rem 1.75rem !important; gap:.9rem !important; }
 html.bdl-page section.py-7 a.card .card-title{ font-size:1.35rem !important; font-weight:500 !important; }
 html.bdl-page section.py-7 a.card p.fw-bolder{ font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500 !important; color:var(--bdl-gris); }
 html.bdl-page section.py-7 a.card .col-3{ flex:0 0 34% !important; max-width:34% !important; }
