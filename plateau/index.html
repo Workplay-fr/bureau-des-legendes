@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le plateau · Bureau des Légendes</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../img/mark-blanc.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="plateau.css">
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/" } }</script>
+</head>
+<body>
+
+<canvas id="scene" aria-hidden="true"></canvas>
+<div id="reperes" aria-hidden="true"></div>
+
+<header class="haut">
+  <a class="retour" href="/">← Bureau des Légendes</a>
+  <div class="titre">
+    <h1>Le plateau</h1>
+    <p>1<sup>er</sup> étage · 20 postes flexibles</p>
+  </div>
+  <div class="actions">
+    <button class="bouton-fil" type="button" id="b-liste" aria-expanded="false" aria-controls="liste">Liste des postes</button>
+  </div>
+</header>
+
+<a class="credits" href="credits.html">Crédits 3D</a>
+
+<section class="barre" aria-label="Date, créneau et type de poste">
+  <div class="groupe"><span class="label" id="l-jour">Jour</span><div class="jours" id="jours" role="radiogroup" aria-labelledby="l-jour"></div></div>
+  <div class="groupe"><span class="label" id="l-creneau">Créneau</span><div class="segments" id="creneaux" role="radiogroup" aria-labelledby="l-creneau"></div></div>
+  <div class="groupe"><span class="label" id="l-zone">Type de poste</span><div class="segments" id="zones" role="radiogroup" aria-labelledby="l-zone"></div></div>
+</section>
+
+<p class="bandeau" id="bandeau" hidden></p>
+
+<div class="pied">
+  <p class="compte" id="compte" role="status" aria-live="polite"></p>
+  <p class="aide" id="aide">Glissez pour tourner · molette ou pincement pour zoomer · cliquez un poste</p>
+  <div class="legende" aria-hidden="true"><span><i class="pt libre"></i>Libre</span><span><i class="pt pris"></i>Occupé</span></div>
+</div>
+<button class="bouton-fil ensemble" type="button" id="b-ensemble" hidden>Vue d'ensemble</button>
+
+<aside class="liste" id="liste" hidden aria-label="Liste des postes">
+  <div class="liste-tete"><h2>Les postes</h2><button class="fermer" type="button" id="liste-fermer" aria-label="Fermer la liste"></button></div>
+  <div id="liste-corps"></div>
+</aside>
+
+<aside class="fiche" id="fiche" hidden aria-labelledby="f-nom">
+  <button class="fermer" type="button" id="f-fermer" aria-label="Fermer la fiche"></button>
+  <div class="fiche-corps" id="f-corps"></div>
+</aside>
+
+<div class="charge" id="charge" role="status"><div><span class="label">Bureau des Légendes</span><p>Le plateau se prépare…</p><i></i></div></div>
+
+<noscript><p class="sans-js">Cette page a besoin de JavaScript. Vous pouvez réserver un poste depuis <a href="https://bureaudeslegendesparis.nexudus.site/bureaudeslegendesparis/bookings">l'espace membre</a>.</p></noscript>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

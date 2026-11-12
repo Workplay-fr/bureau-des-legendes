@@ -8,6 +8,26 @@ const jourValide = j => /^\d{4}-\d{2}-\d{2}$/.test(j || "");
 const NOMS_CRENEAU = { matin: "matin", apres: "après-midi", journee: "journée" };
 const erreurNx = e => String(e.message || "").slice(0, 300) + (e.details ? " " + JSON.stringify(e.details).slice(0, 300) : "");
 
+// État de chaque poste pour chaque créneau du jour : "libre", "pris" ou "passe" (créneau terminé ou jour fermé).
+function etatPostes(jour, occ) {
+  const limite = new Date(Date.now() + 30 * 60e3);
+  const creneaux = {};
+  for (const c of Object.keys(TARIFS_POSTE)) {
+    const h = creneauPoste(jour, c);
+    creneaux[c] = h && h[1] > h[0] ? { de: h[0], a: h[1], prix: TARIFS_POSTE[c] } : null;
+  }
+  const postes = Object.entries(POSTES).map(([id, p]) => {
+    const etat = {};
+    for (const [c, h] of Object.entries(creneaux)) {
+      if (!h) { etat[c] = "passe"; continue; }
+      const de = parisVersUtc(jour, h.de), a = parisVersUtc(jour, h.a);
+      etat[c] = a < limite ? "passe" : (occ[id] || []).some(b => new Date(b.a) > de && new Date(b.de) < a) ? "pris" : "libre";
+    }
+    return { id: Number(id), nom: p.nom, zone: p.zone, etat };
+  }).sort((x, y) => x.nom.localeCompare(y.nom));
+  return { jour, ouvert: Object.values(creneaux).some(Boolean), creneaux, postes };
+}
+
 export default async (req) => {
   if (vide()) return json(500, { ok: false, erreur: "Le site n'est pas encore relié à Nexudus." });
   const url = new URL(req.url);
@@ -15,7 +35,7 @@ export default async (req) => {
   if (req.method === "GET") {
     const jour = url.searchParams.get("jour");
     if (!jourValide(jour)) return json(400, { ok: false, erreur: "Jour invalide." });
-    try { return json(200, { ok: true, occupe: await occupationPostes(jour) }); }
+    try { return json(200, { ok: true, source: "nexudus", ...etatPostes(jour, await occupationPostes(jour)) }); }
     catch (e) { console.error(e.message); return json(502, { ok: false, erreur: "Impossible de lire les disponibilités pour le moment.", detail: erreurNx(e) }); }
   }
   if (req.method !== "POST") return json(405, { ok: false, erreur: "Méthode non autorisée." });
@@ -40,7 +60,7 @@ export default async (req) => {
 
   try {
     const occ = await occupationPostes(jour);
-    if ((occ[poste] || []).some(b => new Date(b.a) > de && new Date(b.de) < a)) return json(409, { ok: false, erreur: `${p.nom} vient d'être réservé sur ce créneau. Choisissez un autre poste.`, occupe: occ });
+    if ((occ[poste] || []).some(b => new Date(b.a) > de && new Date(b.de) < a)) return json(409, { ok: false, erreur: `${p.nom} vient d'être réservé sur ce créneau. Choisissez un autre poste.`, ...etatPostes(jour, occ) });
     const c = await contact({ ...v, note: "Contact créé depuis le site vitrine (réservation de poste)." });
     const montant = TARIFS_POSTE[creneau];
     const b = await nx("POST", "/spaces/bookings", {
