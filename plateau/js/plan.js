@@ -1,60 +1,30 @@
-// Plan du 1er étage, repris du plan Nexudus (floor plan 1415059895). Unités : mètres.
-// Origine au centre de l'étage. x = (X − 52 000) / 1000, z = (Y − 47 500) / 1000 par rapport aux coordonnées Nexudus.
-// Ce fichier ne contient que l'implantation : aucune disponibilité, aucun prix.
+// Plan du 1er étage : les postes réservables et leur position sur le rendu du plateau.
+// Le rendu (assets/plateau-2x.webp) est une image générée d'après l'implantation Nexudus ; ses coordonnées sont
+// exprimées dans le repère d'origine de l'image, 1536 × 1024. Ce fichier ne contient ni disponibilité ni prix.
 
-export const ETAGE = { x1: -12, x2: 12, z1: -7.5, z2: 7.5, hauteur: 2.9 };
+export const IMAGE = { l: 1536, h: 1024, src: "assets/plateau-2x.webp", leger: "assets/plateau.webp", maquette: [70, 110, 1440, 990] };
 
-// Zones du plan Nexudus.
-export const ZONES_PLAN = [
-  { nom: "Open space coworking", x1: -12, z1: -7.5, x2: 6, z2: 7.5 },
-  { nom: "Bibliothèque silencieuse", x1: 6, z1: -7.5, x2: 12, z2: 0.5 },
-  { nom: "Lounge & impression", x1: 6, z1: 0.5, x2: 12, z2: 7.5 },
-];
-
-// Murs extérieurs. n = normale vers l'extérieur. fenetres : centres le long du mur.
-// PROVISOIRE : la position des fenêtres ne figure pas dans le plan Nexudus, elle est proposée ici.
-export const MURS_EXT = [
-  { id: "ouest", a: [-12, -7.5], b: [-12, 7.5], n: [-1, 0], fenetres: [-5.6, -2.8, 0, 2.8, 5.6] },
-  { id: "nord", a: [-12, -7.5], b: [12, -7.5], n: [0, -1], fenetres: [-9, -6, -3, 0, 3, 9] },
-  { id: "est", a: [12, -7.5], b: [12, 7.5], n: [1, 0], fenetres: [] },
-  { id: "sud", a: [-12, 7.5], b: [12, 7.5], n: [0, 1], fenetres: [] },
-];
-
-// Îlots de quatre postes dos à dos (positions des tables et chaises du plan Nexudus).
-// ordre des postes dans un îlot : nord-ouest, nord-est, sud-ouest, sud-est.
+// Un îlot = quatre postes dos à dos. cadre : zone de l'image qui le contient.
+// Chaque poste : [x, y du repère posé sur le plateau, x, y du fauteuil]. Ordre : fond gauche, fond droit, devant gauche, devant droit.
 const ILOTS = [
-  { cx: -7.5, cz: -4.0, zone: "fenetre" }, // C01–C04
-  { cx: 0.5, cz: -4.0, zone: "debout" },   // C05–C08
-  { cx: -7.5, cz: 3.7, zone: "fenetre" },  // C09–C12
-  { cx: 0.5, cz: 3.7, zone: "ecran" },     // C13–C16
-  { cx: 9.0, cz: -3.5, zone: "calme" },    // C17–C20
+  { zone: "fenetre", cadre: [455, 255, 665, 420], postes: [[545, 303, 555, 290], [615, 318, 622, 308], [515, 338, 502, 370], [588, 352, 572, 385]] }, // C01–C04
+  { zone: "debout", cadre: [755, 325, 965, 505], postes: [[845, 371, 850, 361], [912, 387, 924, 379], [817, 402, 806, 450], [892, 420, 879, 464]] },   // C05–C08
+  { zone: "fenetre", cadre: [275, 455, 490, 630], postes: [[360, 503, 377, 489], [432, 519, 445, 506], [337, 537, 320, 567], [410, 555, 387, 584]] }, // C09–C12
+  { zone: "ecran", cadre: [605, 540, 825, 735], postes: [[706, 588, 710, 579], [785, 604, 787, 596], [662, 650, 649, 672], [750, 665, 732, 690]] },   // C13–C16
+  { zone: "calme", cadre: [1125, 445, 1325, 625], postes: [[1200, 493, 1211, 481], [1275, 510, 1287, 495], [1180, 526, 1171, 560], [1257, 545, 1250, 576]] }, // C17–C20
 ];
-
-// Objets réservables : un poste = un code (C01…C20) relié à la ressource Nexudus par son nom.
-export const POSTES_PLAN = ILOTS.flatMap((il, i) =>
-  [[-0.75, -0.35, 0], [0.75, -0.35, 0], [-0.75, 0.35, Math.PI], [0.75, 0.35, Math.PI]].map(([dx, dz, rot], k) => ({
-    code: "C" + String(i * 4 + k + 1).padStart(2, "0"),
-    nom: "Poste C" + String(i * 4 + k + 1).padStart(2, "0"),
-    zone: il.zone, ilot: i, x: il.cx + dx, z: il.cz + dz, rot,
-  })));
 export const ILOTS_PLAN = ILOTS;
+
+// Objets réservables : un poste = un code (C01…C20), relié à la ressource Nexudus par son nom.
+export const POSTES_PLAN = ILOTS.flatMap((il, i) => il.postes.map(([x, y, fx, fy], k) => ({
+  code: "C" + String(i * 4 + k + 1).padStart(2, "0"),
+  nom: "Poste C" + String(i * 4 + k + 1).padStart(2, "0"),
+  zone: il.zone, ilot: i, x, y, fx, fy,
+})));
 
 export const ZONES = {
   fenetre: { nom: "Côté fenêtre", texte: "Face au boulevard, la meilleure lumière de l'étage.", equipements: ["Lumière naturelle", "Bureau en chêne 150 cm", "Fibre et prises intégrées", "Casier à la journée"] },
   debout: { nom: "Assis-debout", texte: "Plateau réglable en hauteur, pour les longues journées.", equipements: ["Bureau assis-debout", "Fibre et prises intégrées", "Casier à la journée"] },
   ecran: { nom: "Double écran", texte: "Deux écrans 27 pouces, pour les dossiers à comparer.", equipements: ["Deux écrans 27 pouces", "Station d'accueil USB-C", "Fibre et prises intégrées", "Casier à la journée"] },
-  calme: { nom: "Bibliothèque", titre: "Bibliothèque silencieuse", texte: "Derrière la verrière d'atelier. Ici, on ne téléphone pas.", equipements: ["Zone silencieuse", "Bureau en chêne 150 cm", "Fibre et prises intégrées", "Casier à la journée"] },
-};
-
-// Mobilier non réservable (positions du plan Nexudus).
-export const MOBILIER = {
-  plantes: [[-11.3, -6.8, 1.9], [-11.3, 6.8, 2.1], [5.2, -6.8, 1.7], [-3.5, -0.2, 2.3], [11.3, 1.3, 1.8]],
-  bibliotheques: [{ x: -3.5, z: 7.15, rot: Math.PI, l: 3.2, h: 1.12 }, { x: 11.65, z: -3.5, rot: -Math.PI / 2, l: 6.4 }],
-  canape: { x: 9.0, z: 1.55, rot: 0 },
-  poufs: [[7.9, 3.35], [10.1, 3.35]],
-  tableBasse: [9.0, 2.75],
-  tableAppoint: [10.75, 1.5],
-  tableHaute: { x: 9.0, z: 5.6 },
-  imprimante: [11.45, 6.75],
-  cafe: [6.95, 6.95],
+  calme: { nom: "Bibliothèque", texte: "Derrière la verrière d'atelier. Ici, on ne téléphone pas.", equipements: ["Zone silencieuse", "Bureau en chêne 150 cm", "Fibre et prises intégrées", "Casier à la journée"] },
 };

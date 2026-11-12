@@ -8,17 +8,18 @@ Site vitrine du coworking fictif Bureau des Légendes (34, boulevard Haussmann),
 - `netlify/lib/nexudus.mjs` : appels à l'API Nexudus, heure de Paris, contacts, liste des salles et horaires.
 - `netlify/functions/visite.mjs` : reçoit le formulaire « Réserver une visite » et crée le contact puis l'opportunité dans le CRM Nexudus (Sales Pipeline · Demande de visite en ligne).
 
-## Le plateau en 3D (`/plateau`)
+## Le plateau (`/plateau`)
 
-Page à part : le 1er étage en 3D, on clique un poste flexible (C01 à C20) pour le réserver.
+Page à part : le rendu du 1er étage, dans lequel on zoome et on clique un poste flexible (C01 à C20) pour le réserver.
 
-- `plateau/js/plan.js` : implantation reprise du plan Nexudus (murs, zones, postes). Aucune donnée de disponibilité.
-- `plateau/js/scene.js` : décor, mobilier, caméra, survol et sélection (three.js, copié dans `plateau/vendor`).
+- `plateau/assets/plateau-2x.webp` : rendu de l'étage, image générée d'après l'implantation Nexudus (agrandie deux fois depuis 1536 × 1024).
+- `plateau/js/plan.js` : position de chaque poste sur l'image, placée à la main. Aucune donnée de disponibilité.
+- `plateau/js/scene.js` : déplacement, zoom, survol et sélection dans l'image.
 - `plateau/js/donnees.js` : disponibilités, prix et réservation. Passe par `/api/postes` ; si la fonction ne répond pas (aperçu hors ligne), bascule sur des données simulées, signalées à l'écran.
-- `plateau/js/main.js` : interface (date, créneau, filtres, fiche, liste utilisable au clavier).
+- `plateau/js/main.js` : interface (date, créneau, filtres, repères, fiche, liste utilisable au clavier).
 - `netlify/functions/postes.mjs` : état des 20 postes par créneau (GET) et réservation dans Nexudus (POST). Le serveur revérifie la disponibilité et fixe le prix.
 
-Provisoire : parquet dessiné par le code (en attendant la texture photo), position des fenêtres (absente du plan Nexudus), une seule essence de plante, tarifs des postes (15 € HT la demi-journée, 25 € HT la journée, dans `netlify/lib/nexudus.mjs`). Le paiement est simulé. Crédits des modèles : `plateau/credits.html`.
+Provisoire : tarifs des postes (15 € HT la demi-journée, 25 € HT la journée, dans `netlify/lib/nexudus.mjs`). Le paiement est simulé. Une première version en 3D temps réel (three.js) reste dans l'historique git.
 
 ## Accès protégé
 

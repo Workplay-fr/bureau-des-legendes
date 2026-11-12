@@ -10,11 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="plateau.css">
-<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js", "three/addons/": "./vendor/addons/" } }</script>
+<link rel="preload" as="image" href="assets/plateau-2x.webp" media="(min-width:821px)">
 </head>
 <body>
 
-<canvas id="scene" aria-hidden="true"></canvas>
+<div id="scene" aria-hidden="true"></div>
 <div id="reperes" aria-hidden="true"></div>
 
 <header class="haut">
@@ -28,8 +28,6 @@
   </div>
 </header>
 
-<a class="credits" href="credits.html">Crédits 3D</a>
-
 <section class="barre" aria-label="Date, créneau et type de poste">
   <div class="groupe"><span class="label" id="l-jour">Jour</span><div class="jours" id="jours" role="radiogroup" aria-labelledby="l-jour"></div></div>
   <div class="groupe"><span class="label" id="l-creneau">Créneau</span><div class="segments" id="creneaux" role="radiogroup" aria-labelledby="l-creneau"></div></div>
@@ -40,10 +38,10 @@
 
 <div class="pied">
   <p class="compte" id="compte" role="status" aria-live="polite"></p>
-  <p class="aide" id="aide">Glissez pour tourner · molette ou pincement pour zoomer · cliquez un poste</p>
+  <p class="aide" id="aide">Cliquez un poste pour le réserver · glissez pour vous déplacer · molette ou pincement pour zoomer</p>
   <div class="legende" aria-hidden="true"><span><i class="pt libre"></i>Libre</span><span><i class="pt pris"></i>Occupé</span></div>
 </div>
-<button class="bouton-fil ensemble" type="button" id="b-ensemble" hidden>Vue d'ensemble</button>
+<div class="outils"><button class="bouton-fil" type="button" id="b-ensemble" hidden>Vue d'ensemble</button><button class="bouton-fil carre" type="button" id="z-moins" aria-label="Dézoomer">−</button><button class="bouton-fil carre" type="button" id="z-plus" aria-label="Zoomer">+</button></div>
 
 <aside class="liste" id="liste" hidden aria-label="Liste des postes">
   <div class="liste-tete"><h2>Les postes</h2><button class="fermer" type="button" id="liste-fermer" aria-label="Fermer la liste"></button></div>

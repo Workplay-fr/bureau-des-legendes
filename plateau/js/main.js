@@ -1,5 +1,5 @@
 // Interface du plateau : date, créneau, filtres, repères, fiche du poste et réservation.
-import { POSTES_PLAN, ZONES, ZONES_PLAN } from "./plan.js";
+import { POSTES_PLAN, ZONES } from "./plan.js";
 import { donnees } from "./donnees.js";
 
 const $ = id => document.getElementById(id);
@@ -46,17 +46,15 @@ async function chargerEtat() {
 }
 
 /* ---------- Repères sur la scène ---------- */
-const reperes = {}, etiquettes = [];
+const reperes = {};
 function creerReperes() {
   const box = $("reperes");
   for (const p of POSTES_PLAN) { const el = document.createElement("div"); el.className = "rep"; el.innerHTML = `<i></i><b></b>`; box.appendChild(el); reperes[p.code] = el; }
-  for (const z of ZONES_PLAN) { const el = document.createElement("div"); el.className = "etq"; el.textContent = z.nom; box.appendChild(el); etiquettes.push({ el, x: z.nom.startsWith("Open") ? -3.5 : (z.x1 + z.x2) / 2, z: z.nom.startsWith("Open") ? -0.2 + 1.4 : z.nom.startsWith("Lounge") ? 4.25 : -6.6 }); }
 }
 function placerReperes() {
   if (!scene) return;
   for (const code in reperes) { const q = scene.projeter(code), el = reperes[code]; el.style.transform = `translate(${q.x.toFixed(1)}px,${q.y.toFixed(1)}px) translate(-50%,-50%)`; el.classList.toggle("cache", !q.visible); }
   const loin = scene.loin();
-  for (const t of etiquettes) { const q = scene.projeterPoint(t.x, 0.05, t.z); t.el.style.transform = `translate(${q.x.toFixed(1)}px,${q.y.toFixed(1)}px) translate(-50%,-50%)`; t.el.classList.toggle("cache", !q.visible || !loin || !!E.choix); }
   $("b-ensemble").hidden = loin && !E.choix && !E.zone;
 }
 
@@ -77,6 +75,7 @@ function rafraichir() {
   if (E.erreur) { b.hidden = false; b.className = "bandeau"; b.innerHTML = `${esc(E.erreur)}<button type="button" id="reessayer">Réessayer</button>`; $("reessayer").onclick = chargerEtat; }
   else if (donnees.source === "simule") { b.hidden = false; b.className = "bandeau info"; b.textContent = "Aperçu hors ligne : les disponibilités sont simulées et aucune réservation n'est enregistrée."; }
   else b.hidden = true;
+  if (E.zone || E.choix) $("aide").classList.add("vu");
   dessinerListe(); if (E.choix) dessinerFiche();
 }
 
@@ -99,7 +98,7 @@ function choisir(code, o = {}) {
   cadrer(); scene && scene.choisir(code, o); rafraichir();
   if (o.focus) $("f-corps").querySelector("button,input")?.focus();
 }
-function cadrer() { if (!scene) return; const etroit = matchMedia("(max-width:820px)").matches, f = $("fiche"); if (!E.choix) return scene.decaler(0, etroit ? -40 : -44); etroit ? scene.decaler(0, f.offsetHeight / 2 - 30) : scene.decaler(f.offsetWidth / 2, 0); }
+function cadrer() { if (!scene) return; const etroit = matchMedia("(max-width:820px)").matches, f = $("fiche"); if (!E.choix) return scene.decaler(0, 0); etroit ? scene.decaler(0, f.offsetHeight / 2) : scene.decaler(f.offsetWidth / 2, 0); }
 
 function dessinerFiche() {
   const p = parCode[E.choix], z = ZONES[p.zone], box = $("f-corps"), e = etatDe(p.code), px = prix(E.creneau);
@@ -192,6 +191,8 @@ $("liste-fermer").addEventListener("click", () => ouvrirListe(false));
 $("liste-corps").addEventListener("click", e => { const l = e.target.closest("[data-code]"); if (!l) return; if (!document.body.classList.contains("sans-3d")) ouvrirListe(false); choisir(l.dataset.code, { focus: true }); });
 document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if (!$("liste").hidden && !document.body.classList.contains("sans-3d")) return ouvrirListe(false); if (E.choix && !E.envoi) choisir(null); });
 addEventListener("resize", () => cadrer());
+$("z-plus").addEventListener("click", () => scene && scene.zoom(1.5));
+$("z-moins").addEventListener("click", () => scene && scene.zoom(1 / 1.5));
 
 /* ---------- Démarrage ---------- */
 creerReperes(); dessinerBarre(); rafraichir();
@@ -205,9 +206,9 @@ const pretDonnees = chargerEtat();
     onImage: placerReperes,
   }); } catch (err) { console.error(err); }
   if (!s) {
-    // Sans WebGL : la liste remplace la scène.
+    // Si le rendu ne se charge pas, la liste remplace la scène.
     document.body.classList.add("sans-3d"); $("reperes").hidden = true; $("liste").hidden = false;
-    const b = document.createElement("p"); b.className = "bandeau info"; b.style.cssText = "position:static;transform:none;margin:0 auto 12px"; b.textContent = "La vue 3D n'est pas disponible sur cet appareil. Vous pouvez réserver depuis la liste."; $("liste").prepend(b);
+    const b = document.createElement("p"); b.className = "bandeau info"; b.style.cssText = "position:static;transform:none;margin:0 auto 12px"; b.textContent = "La vue du plateau n'a pas pu se charger. Vous pouvez réserver depuis la liste."; $("liste").prepend(b);
     dessinerListe(); $("charge").classList.add("fini"); return;
   }
   scene = s; window.__plateau = { scene, E }; cadrer(); rafraichir();
