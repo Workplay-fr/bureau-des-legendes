@@ -665,11 +665,12 @@ html.bdl-page main .card .btn-primary{ width:auto; }
     [/\/bookings\/meeting-rooms/, "Réservations", "Salles de <em>réunion.</em>", "Choisissez un créneau : la salle est prête à votre arrivée.", "projection.jpg"],
     [/\/bookings\/(desks|hot-desks|desk)/, "Réservations", "Postes de <em>travail.</em>", "Réservez votre place sur nos plateaux.", "plateau.jpg"],
     [/\/bookings\//, "Réservations", "Réserver un <em>espace.</em>", "Salles, bureaux et cabines, au rythme de vos journées.", "projection.jpg"],
+    [/\/user\/perks|\/community|\/directory|\/blog|\/courses/, "Communauté", null, null, "verriere-nuit.jpg"],
+    [/\/store/, "Magasin", "Le <em>comptoir.</em>", "Fournitures, pass et services, ajoutés à votre compte.", "plateau.jpg"],
+    [/\/checkout\/tariffs/, "Adhésions", "Nos <em>formules.</em>", "Du poste nomade au bureau privé, sans paperasse.", "bureau.jpg"],
     [/\/user\/activity/, "Mon activité", null, null, "verriere-jour.jpg"],
     [/\/user\/team/, "Mon équipe", null, null, "bureau.jpg"],
     [/\/user\//, "Mon compte", null, null, "verriere-jour.jpg"],
-    [/\/(store|products|shop)/, "Magasin", null, null, "plateau.jpg"],
-    [/\/(community|directory|perks|blog|articles)/, "Communauté", null, null, "verriere-nuit.jpg"],
     [/.*/, "Bureau des Légendes", null, null, "verriere-jour.jpg"]
   ];
   function pages() {
