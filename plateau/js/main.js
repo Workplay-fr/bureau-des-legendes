@@ -9,8 +9,14 @@ const CRENEAUX = { matin: "Matin", apres: "Après-midi", journee: "Journée" };
 const jourParis = d => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(d);
 const jourLong = j => new Date(j + "T12:00:00Z").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
 
+const jourCourt = j => new Date(j + "T12:00:00Z").toLocaleDateString("fr-FR", { day: "numeric", month: "short", timeZone: "UTC" });
+const DUREES = [[0, "1 jour"], [1, "1 sem."], [2, "2 sem."], [4, "1 mois"]];
+const JSEM = [[1, "L", "lundi"], [2, "M", "mardi"], [3, "M", "mercredi"], [4, "J", "jeudi"], [5, "V", "vendredi"], [6, "S", "samedi"]];
+// Le ou les jours demandés, en clair : « lundi 16 novembre » ou « 16 jours, du 16 nov. au 11 déc. ».
+const quand = () => { const js = E.etat && E.etat.jours; return !E.semaines || !js || js.length < 2 ? jourLong(E.jour) : `${js.length} jours, du ${jourCourt(js[0])} au ${jourCourt(js[js.length - 1])}`; };
+
 const LIEN = new URLSearchParams(location.search);
-const E = { jour: /^\d{4}-\d{2}-\d{2}$/.test(LIEN.get("jour") || "") ? LIEN.get("jour") : null, creneau: "journee", zone: null, etat: null, charge: false, erreur: null, choix: null, etape: 1, envoi: false, ouvertLe: 0, fin: null, survol: null, form: {} };
+const E = { jour: /^\d{4}-\d{2}-\d{2}$/.test(LIEN.get("jour") || "") ? LIEN.get("jour") : null, creneau: "journee", zone: null, etat: null, charge: false, erreur: null, choix: null, etape: 1, envoi: false, ouvertLe: 0, fin: null, survol: null, form: {}, semaines: 0, jsem: [1, 2, 3, 4, 5] };
 let scene = null;
 const parCode = Object.fromEntries(POSTES_PLAN.map(p => [p.code, p]));
 const codeDe = nom => String(nom || "").replace(/^Poste\s+/i, "");
@@ -36,12 +42,22 @@ function puces(box, items, valeur, choisir) {
   box.onkeydown = e => { if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return; const bs = [...box.querySelectorAll(".puce")], i = bs.indexOf(document.activeElement); if (i < 0) return; e.preventDefault(); const n = bs[(i + (e.key === "ArrowRight" ? 1 : bs.length - 1)) % bs.length]; n.focus(); n.click(); };
 }
 function dessinerBarre() {
-  const auj = jourParis(new Date()), [y, m, d] = auj.split("-").map(Number), c = new Date(Date.UTC(y, m - 1, d)), jours = [];
+  const auj = jourParis(new Date());
   const js = ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."], ms = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
-  while (jours.length < 9) { const v = c.toISOString().slice(0, 10), w = c.getUTCDay(); if (w !== 0) jours.push({ v, petit: v === auj ? "auj." : js[w], t: `${c.getUTCDate()} ${ms[c.getUTCMonth()]}` }); c.setUTCDate(c.getUTCDate() + 1); }
-  if (!jours.some(j => j.v === E.jour)) E.jour = jours[0].v;
+  // Jour de départ : on avance ou recule d'un jour ouvert (pas de dimanche), d'aujourd'hui à dans deux mois.
+  const ouvert = v => new Date(v + "T12:00:00Z").getUTCDay() !== 0, plus = (v, n) => { const c = new Date(v + "T12:00:00Z"); do c.setUTCDate(c.getUTCDate() + n); while (c.getUTCDay() === 0); return c.toISOString().slice(0, 10); };
+  const premier = ouvert(auj) ? auj : plus(auj, 1), dernier = plus(new Date(Date.parse(auj + "T12:00:00Z") + 60 * 864e5).toISOString().slice(0, 10), 0 + 1);
+  if (!E.jour || E.jour < premier || E.jour > dernier || !ouvert(E.jour)) E.jour = premier;
+  const c = new Date(E.jour + "T12:00:00Z"), txt = `${E.jour === auj ? "auj." : js[c.getUTCDay()]} ${c.getUTCDate()} ${ms[c.getUTCMonth()]}`;
   const garder = (box, f) => { const a = document.activeElement, v = a && box.contains(a) ? a.dataset.v : undefined; f(); if (v !== undefined) box.querySelector(`[data-v="${v}"]`)?.focus(); };
-  garder($("jours"), () => puces($("jours"), jours, E.jour, v => { if (v === E.jour) return; E.jour = v; dessinerBarre(); chargerEtat(); }));
+  const bj = $("jours");
+  bj.innerHTML = `<button class="puce pas" type="button" data-pas="-1" aria-label="Jour précédent" ${E.jour <= premier ? "disabled" : ""}>‹</button><span class="puce date" aria-live="polite">${esc(txt)}</span><button class="puce pas" type="button" data-pas="1" aria-label="Jour suivant" ${E.jour >= dernier ? "disabled" : ""}>›</button>`;
+  bj.onclick = e => { const b = e.target.closest("[data-pas]"); if (!b || b.disabled) return; const pas = b.dataset.pas; E.jour = plus(E.jour, Number(pas)); dessinerBarre(); chargerEtat(); bj.querySelector(`[data-pas="${pas}"]`)?.focus(); };
+  // Durée : un jour, ou une période de 1, 2 ou 4 semaines sur les jours de la semaine choisis.
+  garder($("durees"), () => puces($("durees"), DUREES.map(([v, t]) => ({ v: String(v), t })), String(E.semaines), v => { const n = Number(v) || 0; if (n === E.semaines) return; E.semaines = n; dessinerBarre(); chargerEtat(); }));
+  const bs = $("jsem"); bs.hidden = !E.semaines;
+  bs.innerHTML = JSEM.map(([n, t, nom]) => `<button class="puce" type="button" role="checkbox" aria-checked="${E.jsem.includes(n)}" aria-label="${nom}" data-n="${n}">${t}</button>`).join("");
+  bs.onclick = e => { const b = e.target.closest("[data-n]"); if (!b) return; const n = Number(b.dataset.n); if (E.jsem.includes(n)) { if (E.jsem.length === 1) return; E.jsem = E.jsem.filter(x => x !== n); } else E.jsem = [...E.jsem, n].sort(); dessinerBarre(); chargerEtat(); bs.querySelector(`[data-n="${n}"]`)?.focus(); };
   garder($("creneaux"), () => puces($("creneaux"), Object.entries(CRENEAUX).map(([v, t]) => ({ v, t })), E.creneau, v => { E.creneau = v; dessinerBarre(); rafraichir(); }));
   garder($("zones"), () => puces($("zones"), [{ v: null, t: "Tous" }, ...Object.entries(ZONES).map(([v, z]) => ({ v, t: z.nom }))], E.zone, v => { E.zone = v; dessinerBarre(); if (scene) { v ? scene.cadrerZone(v) : scene.vueEnsemble(); } rafraichir(); }));
 }
@@ -50,7 +66,7 @@ function dessinerBarre() {
 let jeton = 0;
 async function chargerEtat() {
   const j = ++jeton; E.charge = true; E.erreur = null; rafraichir();
-  try { const d = await donnees.etat(E.jour); if (j !== jeton) return; E.etat = d; fichesNexudus(d); }
+  try { const d = await donnees.etat(E.jour, E.semaines, E.jsem); if (j !== jeton) return; E.etat = d; fichesNexudus(d); }
   catch (e) { if (j !== jeton) return; E.etat = null; E.erreur = e.message || "Disponibilités indisponibles pour le moment."; }
   E.charge = false; rafraichir();
 }
@@ -81,7 +97,7 @@ function rafraichir() {
   // compteur
   const visibles = POSTES_PLAN.filter(p => !E.zone || p.zone === E.zone), libres = visibles.filter(p => etats[p.code] === "libre").length;
   const avant = Number($("compte").querySelector("b")?.dataset.n);
-  $("compte").innerHTML = E.charge && !E.etat ? "Lecture des disponibilités…" : E.erreur ? "" : `<b data-n="${libres}">${libres}</b> ${libres > 1 ? "postes libres" : "poste libre"} sur ${visibles.length} · ${esc(jourLong(E.jour))} · ${esc(CRENEAUX[E.creneau].toLowerCase())}`;
+  $("compte").innerHTML = E.charge && !E.etat ? "Lecture des disponibilités…" : E.erreur ? "" : `<b data-n="${libres}">${libres}</b> ${libres > 1 ? "postes libres" : "poste libre"} sur ${visibles.length} · ${esc(quand())} · ${esc(CRENEAUX[E.creneau].toLowerCase())}`;
   compter($("compte").querySelector("b"), avant, libres);
   // bandeau : erreur ou données simulées
   const b = $("bandeau");
@@ -126,7 +142,7 @@ function dessinerFiche() {
       <svg class="sceau" viewBox="0 0 76 76" aria-hidden="true"><circle cx="38" cy="38" r="36"/><path d="M25 39l9 9 17-19"/></svg>
       <p style="font-size:17px">${r.simule ? "Réservation simulée." : `C'est noté, ${esc(r.prenom)}.`}</p>
       <p class="texte">${r.simule ? "Cet aperçu fonctionne hors ligne : <b>rien n'a été enregistré</b> dans Nexudus et aucun poste n'est réellement réservé." : `Votre poste est bloqué à votre nom. La réservation est enregistrée dans Nexudus, en attente de confirmation par l'équipe. Un e-mail vous sera envoyé à ${esc(r.email)}.`}</p>
-      <ul class="recap"><li><span>Poste</span>${esc(p.nom)} · ${esc(z.nom)}</li><li><span>Quand</span>${esc(jourLong(r.jour))}<br>${esc(CRENEAUX[r.creneau])} · ${esc(r.heures)}</li><li><span>Montant</span>${eur(r.ttc)} TTC${r.simule ? "" : " (paiement de démonstration)"}</li>${r.reference ? `<li><span>Référence</span>${esc(r.reference)}</li>` : ""}</ul>
+      <ul class="recap"><li><span>Poste</span>${esc(p.nom)} · ${esc(z.nom)}</li><li><span>Quand</span>${esc(r.quand)}<br>${esc(CRENEAUX[r.creneau])} · ${esc(r.heures)}</li><li><span>Montant</span>${eur(r.ttc)} TTC${r.simule ? "" : " (paiement de démonstration)"}</li>${r.reference ? `<li><span>Référence</span>${esc(r.reference)}</li>` : ""}</ul>
       <button class="btn" type="button" data-act="fermer" style="margin-top:auto">Retour au plateau</button>`;
     return;
   }
@@ -134,7 +150,7 @@ function dessinerFiche() {
     // Paiement : même présentation que les autres parcours du site. Les champs de carte sont des valeurs de test, non modifiables.
     const v = E.form, simule = donnees.source === "simule";
     box.innerHTML = `${tete}
-      <ul class="recap"><li><span>Quand</span>${esc(jourLong(E.jour))}<br>${esc(CRENEAUX[E.creneau])} · ${esc(heures(E.creneau))}</li><li><span>Pour</span>${esc((v.prenom + " " + v.nom).trim())}</li></ul>
+      <ul class="recap"><li><span>Quand</span>${esc(quand())}<br>${esc(CRENEAUX[E.creneau])} · ${esc(heures(E.creneau))}</li><li><span>Pour</span>${esc((v.prenom + " " + v.nom).trim())}</li></ul>
       <div class="paiement">
         <p class="note"><span aria-hidden="true">ⓘ</span><span>${simule ? "<b>Aperçu hors ligne :</b> le paiement et la réservation sont simulés, rien ne sera enregistré." : "<b>Paiement de démonstration :</b> aucune carte n'est débitée, la réservation est bien enregistrée."}</span></p>
         <div class="carte-ico" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -155,7 +171,7 @@ function dessinerFiche() {
   if (E.etape === 2) {
     const v = E.form;
     box.innerHTML = `${tete}
-      <p class="etat"><i class="pt"></i>${esc(jourLong(E.jour))} · ${esc(CRENEAUX[E.creneau].toLowerCase())} · ${esc(heures(E.creneau))}</p>
+      <p class="etat"><i class="pt"></i>${esc(quand())} · ${esc(CRENEAUX[E.creneau].toLowerCase())} · ${esc(heures(E.creneau))}</p>
       <form id="f-form" novalidate style="display:flex;flex-direction:column;gap:16px;flex:1">
         <div class="champs">
           <div class="champ"><label for="f-prenom">Prénom</label><input id="f-prenom" name="prenom" autocomplete="given-name" value="${esc(v.prenom)}"><span class="msg"></span></div>
@@ -177,7 +193,7 @@ function dessinerFiche() {
   const reste = e === "pris" ? ["matin", "apres"].find(c => c !== E.creneau && etatDe(p.code, c) === "libre") : null;
   const DEMI = { matin: "le matin", apres: "l'après-midi" };
   box.innerHTML = `${tete}
-    <p class="etat"><i class="pt ${libre ? "" : e === "pris" ? "pris" : "passe"}"></i>${e === "attente" ? "Lecture des disponibilités…" : libre ? `Libre · ${esc(jourLong(E.jour))}` : e === "pris" ? `${reste ? `Occupé ${DEMI[reste === "matin" ? "apres" : "matin"]}, libre ${DEMI[reste]}` : "Déjà réservé sur ce créneau"} · ${esc(jourLong(E.jour))}` : `Indisponible · ${esc(jourLong(E.jour))}`}</p>
+    <p class="etat"><i class="pt ${libre ? "" : e === "pris" ? "pris" : "passe"}"></i>${e === "attente" ? "Lecture des disponibilités…" : libre ? `Libre · ${esc(quand())}` : e === "pris" ? `${reste ? `Occupé ${DEMI[reste === "matin" ? "apres" : "matin"]}, libre ${DEMI[reste]}` : "Déjà réservé sur ce créneau"} · ${esc(quand())}` : `Indisponible · ${esc(quand())}`}</p>
     <p class="texte">${esc(p.texte || z.texte)}</p>
     <ul class="equip">${(p.equipements || z.equipements).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
     <div><span class="label" id="f-l-cr" style="display:block;margin-bottom:8px">Créneau</span><div class="options" role="radiogroup" aria-labelledby="f-l-cr">${Object.entries(CRENEAUX).map(([c, t]) => { const ec = etatDe(p.code, c), ok = ec === "libre";
@@ -197,14 +213,14 @@ function validerForm() {
 }
 async function envoyer() {
   E.msg = null;
-  const p = posteApi(E.choix), code = E.choix, v = { poste: p.id, jour: E.jour, creneau: E.creneau, ...E.form, ouvert_le: E.ouvertLe };
+  const p = posteApi(E.choix), code = E.choix, v = { poste: p.id, jour: E.jour, creneau: E.creneau, semaines: E.semaines, jsem: E.jsem.join(","), ...E.form, ouvert_le: E.ouvertLe };
   const attente = Math.max(0, 4200 - (Date.now() - E.ouvertLe));
   E.envoi = true; E.statut = "Paiement en cours"; E.statutLong = "Autorisation du paiement de démonstration…"; dessinerFiche();
   try {
     await new Promise(r => setTimeout(r, Math.max(attente, 1100)));
     E.statut = "Réservation"; E.statutLong = donnees.source === "simule" ? "Réservation simulée…" : "Réservation du poste dans Nexudus…"; dessinerFiche();
     const r = await donnees.reserver(v), px = prix(v.creneau);
-    E.fin = { ...r, prenom: v.prenom, email: v.email, jour: v.jour, creneau: v.creneau, heures: heures(v.creneau), ttc: (r.montantHt ?? px) * 1.2 };
+    E.fin = { ...r, prenom: v.prenom, email: v.email, jour: v.jour, quand: quand(), creneau: v.creneau, heures: heures(v.creneau), ttc: (r.montantHt ?? px) * 1.2 };
     E.envoi = false; scene && scene.tamponner(code); await chargerEtat();
     // si la relecture échoue, on reflète quand même la réservation qui vient d'être faite
     if (E.etat && !r.simule) { const q = posteApi(code); if (q && q.etat[v.creneau] === "libre") { q.etat[v.creneau] = "pris"; q.etat.journee = "pris"; rafraichir(); } }

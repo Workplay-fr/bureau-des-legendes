@@ -109,7 +109,12 @@ svg.trace *{fill:none;stroke:var(--noir);stroke-width:1;vector-effect:non-scalin
 .barre{position:fixed;left:50%;top:calc(max(18px,env(safe-area-inset-top,0px)) + 74px);transform:translateX(-50%);display:flex;align-items:flex-end;gap:22px;padding:12px 16px 12px;background:rgba(255,255,255,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);max-width:calc(100vw - 2*var(--bord));transition:transform .6s var(--ease)}
 .groupe{display:flex;flex-direction:column;gap:7px;min-width:0}
 .jours,.segments{display:flex;gap:4px}
-.jours{overflow-x:auto;scrollbar-width:none;max-width:min(30vw,372px)}
+.jours{align-items:stretch}
+.ligne-quand{display:flex;gap:12px;align-items:stretch}
+.puce.pas{padding:0 11px;font-size:16px;line-height:1;letter-spacing:0}.puce.pas:disabled{opacity:.3;cursor:default}
+.puce.date{min-width:112px;text-align:center;cursor:default;border-color:var(--line-2);display:flex;align-items:center;justify-content:center}
+.jsem .puce{min-width:32px;padding-inline:0;text-align:center}.jsem[hidden]{display:none}
+.barre{align-items:flex-start !important}
 .jours::-webkit-scrollbar{display:none}
 .puce{flex:none;background:none;border:1px solid var(--line);padding:8px 11px;font:400 12px/1.15 var(--f);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .25s,color .25s,border-color .25s}
 .puce small{display:block;font-size:9.5px;letter-spacing:.16em;color:var(--gris);margin-bottom:3px;transition:color .25s}

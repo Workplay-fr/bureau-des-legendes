@@ -10,8 +10,8 @@ const lireJson = async r => { try { return await r.json(); } catch { return null
 
 const nexudus = {
   source: "nexudus",
-  async etat(jour) {
-    const r = await fetch(`/api/postes?jour=${jour}`, { headers: { accept: "application/json" } });
+  async etat(jour, semaines = 0, jsem = [1, 2, 3, 4, 5]) {
+    const r = await fetch(`/api/postes?jour=${jour}${semaines ? `&semaines=${semaines}&jsem=${jsem.join(",")}` : ""}`, { headers: { accept: "application/json" } });
     const d = await lireJson(r);
     if (!d) throw Object.assign(new Error("hors-ligne"), { code: "hors-ligne" });
     if (!r.ok || !d.ok) throw Object.assign(new Error(d.erreur || "Disponibilités indisponibles pour le moment."), { code: "serveur" });
@@ -31,25 +31,27 @@ const prises = new Set();
 function alea(graine) { let h = 2166136261; for (const c of graine) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return ((h >>> 0) % 1000) / 1000; }
 const simule = {
   source: "simule",
-  async etat(jour) {
+  async etat(jour, semaines = 0, jsem = [1, 2, 3, 4, 5]) {
     await new Promise(r => setTimeout(r, 350));
-    const w = new Date(jour + "T12:00:00Z").getUTCDay();
-    const h = w === 0 ? null : w === 6 ? [9, 18] : [8, 20];
-    const creneaux = h ? { matin: { de: h[0], a: 13, prix: 15 }, apres: { de: 13, a: h[1], prix: 15 }, journee: { de: h[0], a: h[1], prix: 25 } } : { matin: null, apres: null, journee: null };
+    const horaires = j => { const w = new Date(j + "T12:00:00Z").getUTCDay(); return w === 0 ? null : w === 6 ? [9, 18] : [8, 20]; };
+    // Mêmes règles que le serveur : un jour, ou les jours ouverts de la période qui tombent sur les jours de semaine choisis.
+    const jours = []; if (!semaines) jours.push(jour); else { const c = new Date(jour + "T12:00:00Z"); for (let k = 0; k < semaines * 7; k++, c.setUTCDate(c.getUTCDate() + 1)) { const v = c.toISOString().slice(0, 10); if (jsem.includes(c.getUTCDay()) && horaires(v)) jours.push(v); } }
+    const h = jours.length ? horaires(jours[0]) : null, n = jours.length;
+    const creneaux = h ? { matin: { de: h[0], a: 13, prix: 15 * n, parJour: 15 }, apres: { de: 13, a: h[1], prix: 15 * n, parJour: 15 }, journee: { de: h[0], a: h[1], prix: 25 * n, parJour: 25 } } : { matin: null, apres: null, journee: null };
     const postes = POSTES_PLAN.map((p, i) => {
-      const m = alea(jour + p.code + "m") < 0.38 || prises.has(`${jour}|${p.code}|matin`) || prises.has(`${jour}|${p.code}|journee`);
-      const a = alea(jour + p.code + "a") < 0.3 || prises.has(`${jour}|${p.code}|apres`) || prises.has(`${jour}|${p.code}|journee`);
+      const m = jours.some(j => alea(j + p.code + "m") < 0.38 / Math.sqrt(n) || prises.has(`${j}|${p.code}|matin`) || prises.has(`${j}|${p.code}|journee`));
+      const a = jours.some(j => alea(j + p.code + "a") < 0.3 / Math.sqrt(n) || prises.has(`${j}|${p.code}|apres`) || prises.has(`${j}|${p.code}|journee`));
       const e = h ? { matin: m ? "pris" : "libre", apres: a ? "pris" : "libre", journee: m || a ? "pris" : "libre" } : { matin: "passe", apres: "passe", journee: "passe" };
       return { id: 1000 + i, nom: "Poste " + p.code, zone: p.zone, etat: e }; // même nom que les ressources Nexudus
     });
-    return { ok: true, source: "simule", jour, ouvert: !!h, creneaux, postes };
+    return { ok: true, source: "simule", jour, jours, nbJours: n, ouvert: !!h, creneaux, postes };
   },
   async reserver(v) {
     await new Promise(r => setTimeout(r, 900));
     const p = POSTES_PLAN[v.poste - 1000];
     if (!p) throw Object.assign(new Error("Poste inconnu."), { code: "serveur" });
     prises.add(`${v.jour}|${p.code}|${v.creneau}`);
-    return { ok: true, simule: true, reference: null, montantHt: { matin: 15, apres: 15, journee: 25 }[v.creneau] };
+    return { ok: true, simule: true, reference: null };
   },
 };
 
@@ -57,12 +59,12 @@ const simule = {
 let actif = null;
 export const donnees = {
   get source() { return actif ? actif.source : null; },
-  async etat(jour) {
-    if (actif) return actif.etat(jour);
-    try { const d = await nexudus.etat(jour); actif = nexudus; return d; }
+  async etat(jour, semaines, jsem) {
+    if (actif) return actif.etat(jour, semaines, jsem);
+    try { const d = await nexudus.etat(jour, semaines, jsem); actif = nexudus; return d; }
     catch (e) {
       if (e.code !== "hors-ligne" && !(e instanceof TypeError)) { actif = nexudus; throw e; }
-      actif = simule; return simule.etat(jour);
+      actif = simule; return simule.etat(jour, semaines, jsem);
     }
   },
   reserver(v) { return (actif || nexudus).reserver(v); },

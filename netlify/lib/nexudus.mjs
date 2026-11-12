@@ -80,11 +80,11 @@ export function creneauPoste(jour, creneau) {
   return null;
 }
 // Réservations de tous les postes un jour donné : { idPoste: [{de, a}] } en ISO UTC.
-export async function occupationPostes(jour) {
-  const debut = parisVersUtc(jour, 0), fin = parisVersUtc(jour, 23, 59);
+export async function occupationPostes(jour, dernierJour = jour) {
+  const debut = parisVersUtc(jour, 0), fin = parisVersUtc(dernierJour, 23, 59);
   const depuis = new Date(debut.getTime() - 24 * 3600e3);
   const res = Object.fromEntries(Object.keys(POSTES).map(id => [id, []]));
-  for (let page = 1; page <= 5; page++) {
+  for (let page = 1; page <= 12; page++) {
     const q = `from_Booking_FromTime=${encodeURIComponent(isoZ(depuis))}&to_Booking_FromTime=${encodeURIComponent(isoZ(fin))}&size=100&page=${page}`;
     const d = await nx("GET", `/spaces/bookings?${q}`);
     for (const b of d.Records || []) {
