@@ -97,35 +97,37 @@ section{padding-block:clamp(72px,9vw,128px)}
 .hero-r{position:relative;overflow:hidden;min-height:340px;background:var(--creme)}
 .hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:32% 50%}
 /* Aperçu du plateau : la maquette s'incline à la souris, les postes libres sont lus dans Nexudus */
-.apercu{display:block;background:#F3EAE4;color:var(--noir);text-decoration:none;container-type:size;perspective:1400px}
+.poste{padding-block:clamp(56px,7vw,96px);border-bottom:1px solid var(--line)}
+.apercu{position:relative;overflow:hidden;height:clamp(300px,50vw,660px);display:block;background:#F3EAE4;color:var(--noir);text-decoration:none;container-type:size;perspective:1400px}
 .ap-cadre{position:absolute;inset:0;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.7,.3,1)}
-.ap-monde{position:absolute;left:50%;top:45%;translate:-50% -50%;width:min(108cqw,150cqh);aspect-ratio:3/2;animation:apArrive 1.6s var(--ease) both}
+.ap-monde{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(104cqw,150cqh);aspect-ratio:3/2}
 .apercu .ap-monde img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;-webkit-mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);mask-composite:intersect}
-@keyframes apArrive{from{opacity:0;transform:scale(1.08) translateY(14px);filter:blur(10px)}}
-.ap-pt{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#4F7A5B;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 2px 5px rgba(25,17,11,.3);animation:apPose .7s calc(1s + var(--d,0s)) cubic-bezier(.2,1.5,.4,1) backwards;transition:transform .3s var(--ease)}
+.ap-legende{position:absolute;inset:auto 24px 20px auto;z-index:2;display:flex;gap:18px}
+.ap-legende span{display:flex;align-items:center;gap:8px}
+.ap-legende .ap-pt{position:static;margin:0;animation:none}
+.ap-pt{position:absolute;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:#4F7A5B;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 2px 5px rgba(25,17,11,.3);animation:apPose .7s calc(.2s + var(--d,0s)) cubic-bezier(.2,1.5,.4,1) backwards;transition:transform .3s var(--ease)}
 .ap-pt::after{content:"";position:absolute;inset:-9px}
 .ap-pt:hover{transform:scale(1.5)}
-.ap-pt.pris{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
+.ap-pt.pris{width:6px;height:6px;margin:-3px 0 0 -3px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
+.apercu.attend .ap-pt{animation-play-state:paused}
 @keyframes apPose{from{transform:scale(0) translateY(-18px);opacity:0}}
 .ap-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
-.ap-bas{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 20px;padding:18px 24px;border-top:1px solid var(--line);background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);isolation:isolate;transition:color .45s var(--ease)}
-.ap-bas::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--noir);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
-.ap-bas b{font:400 clamp(16px,1.4vw,20px)/1.2 var(--f);letter-spacing:.12em;text-transform:uppercase}
-.ap-bas small{grid-column:1;font-size:13.5px;color:var(--fg-2);transition:color .45s var(--ease)}
-.ap-bas i{grid-row:1/3;grid-column:2;font-style:normal;font-size:22px;line-height:1;transition:transform .45s var(--ease)}
-@media (hover:hover){.apercu:hover .ap-bas{color:#fff}.apercu:hover .ap-bas::before{transform:scaleX(1);transform-origin:left}.apercu:hover .ap-bas small{color:#C7C0B8}.apercu:hover .ap-bas i{transform:translateX(6px)}}
-@media (prefers-reduced-motion:reduce){.ap-monde,.ap-pt{animation:none}.ap-cadre{transform:none}}
-.hero-r figcaption{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
+@media (hover:hover){.apercu:hover .ap-monde img{filter:brightness(1.03)}}
+@media (prefers-reduced-motion:reduce){.ap-pt{animation:none}.ap-cadre{transform:none}}
+@keyframes heroVue{from{transform:scale(1.08)}}
+.hero-r > img{animation:heroVue 14s var(--ease) both}
+.hero-r::after{content:"";position:absolute;inset:0 0 auto;height:130px;background:linear-gradient(rgba(15,10,6,.45),rgba(15,10,6,0));pointer-events:none}
+.hero-r figcaption{color:#fff !important;position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
 @media (max-width:900px){
   .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0}
   .hero-l{padding:36px var(--gut-r) 40px var(--gut);gap:32px}
   .vword{writing-mode:horizontal-tb;transform:none;font-size:clamp(56px,19vw,120px);border-inline:0;border-block:1px solid var(--line);justify-content:flex-start;padding:0 var(--gut-r) 0 var(--gut);line-height:1.3}
   .hero-r{height:86vw;min-height:320px}
-  .hero-r.apercu{height:106vw}
-  .ap-monde{top:43%}
+  .apercu{height:78vw}
+  .ap-haut{inset:14px 16px auto}
+  .ap-legende{display:none}
   .ap-pt{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;box-shadow:0 0 0 1.5px rgba(255,255,255,.92)}
-  .ap-haut{inset:16px var(--gut-r) auto var(--gut)}
-  .ap-bas{padding:16px var(--gut-r) 16px var(--gut)}
+  .ap-pt.pris{width:4px;height:4px;margin:-2px 0 0 -2px}
   .fiche span + span{padding-left:0;border-left:0}
 }
 
@@ -755,15 +757,14 @@ section.tf-q{padding-block:0}
         <div class="entre">
           <h1>Une adresse discrète pour écrire sa légende.</h1>
           <p class="lede">Postes de coworking, bureaux privés et salles de réunion dans un immeuble haussmannien. Parquet en point de Hongrie, moulures, cheminées de marbre, et une verrière de 120&nbsp;m² au rez-de-chaussée.</p>
-          <nav class="trio" aria-label="Accès rapides"><button class="trio-l premier" type="button" data-salle=""><b>Réserver une salle</b><small>Dès 35 € HT de l'heure · créneaux en temps réel</small><i aria-hidden="true">→</i></button><a class="trio-l" data-portal="tour" href="#"><b>Visiter le lieu</b><small>30 minutes, café compris ;)</small><i aria-hidden="true">→</i></a><button class="trio-l" type="button" data-membre=""><b>Devenir membre</b><small>Dès 90 € HT par mois · inscription en 2 minutes</small><i aria-hidden="true">→</i></button></nav>
+          <nav class="trio" aria-label="Accès rapides"><button class="trio-l premier" type="button" data-salle=""><b>Réserver une salle</b><small>Dès 35 € HT de l'heure · créneaux en temps réel</small><i aria-hidden="true">→</i></button><a class="trio-l" href="plateau/" id="trio-poste"><b>Réserver un poste</b><small>Dès 15 € HT la demi-journée · à choisir sur le plan</small><i aria-hidden="true">→</i></a><a class="trio-l" data-portal="tour" href="#"><b>Visiter le lieu</b><small>30 minutes, café compris ;)</small><i aria-hidden="true">→</i></a><button class="trio-l" type="button" data-membre=""><b>Devenir membre</b><small>Dès 90 € HT par mois · inscription en 2 minutes</small><i aria-hidden="true">→</i></button></nav>
         </div>
       </div>
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
-      <a class="hero-r apercu" id="apercu" href="plateau/" aria-label="Le plateau du 1er étage : voir les postes libres et en réserver un">
-        <span class="ap-cadre"><span class="ap-monde"><img src="plateau/assets/plateau.webp" alt="Maquette du plateau de coworking : cinq îlots de quatre postes, une bibliothèque vitrée et un lounge" width="1536" height="1024" fetchpriority="high"><span id="ap-points"></span></span></span>
-        <span class="ap-haut label"><span>Le plateau · 1<sup>er</sup> étage</span><span id="ap-compte">20 postes flexibles</span></span>
-        <span class="ap-bas"><b>Choisir mon poste</b><small>Dès 15 € HT la demi-journée · disponibilités en temps réel</small><i aria-hidden="true">→</i></span>
-      </a>
+      <figure class="hero-r">
+        <img src="img/hero.jpg" alt="Grande table de travail en chêne sous la verrière, fauteuils bleu nuit et lampes en laiton" width="1600" height="900" fetchpriority="high">
+        <figcaption class="label"><span>34, boulevard Haussmann</span><span>Quatre niveaux · Paris IX<sup>e</sup></span></figcaption>
+      </figure>
     </div>
   </section>
 
@@ -784,6 +785,20 @@ section.tf-q{padding-block:0}
         <button class="btn btn-or" type="button" data-salle="">Réserver une salle de réunion</button>
       </div>
       <div class="resa-grille" id="resa-grille"></div>
+    </div>
+  </section>
+
+  <section class="poste" id="poste">
+    <div class="wrap">
+      <div class="resa-tete">
+        <div><span class="label">Coworking · 1<sup>er</sup> étage</span><h2>Un poste pour aujourd'hui ?</h2><p>Vingt postes flexibles, côté fenêtre, assis-debout, double écran ou en bibliothèque. Vous voyez les postes libres sur le plan, vous choisissez le vôtre et vous réservez en ligne.</p></div>
+        <a class="btn btn-or" href="plateau/" id="ap-btn">Choisir mon poste</a>
+      </div>
+      <a class="apercu" id="apercu" href="plateau/" aria-label="Le plateau du 1er étage : voir les postes libres et en réserver un">
+        <span class="ap-cadre"><span class="ap-monde"><img src="plateau/assets/plateau-2x.webp" alt="Maquette du plateau de coworking : cinq îlots de quatre postes, une bibliothèque vitrée et un lounge" width="1536" height="1024" loading="lazy"><span id="ap-points"></span></span></span>
+        <span class="ap-haut label"><span>Le plateau</span><span id="ap-compte">20 postes flexibles</span></span>
+        <span class="ap-legende label" aria-hidden="true"><span><i class="ap-pt"></i>Libre</span><span><i class="ap-pt pris"></i>Occupé</span></span>
+      </a>
     </div>
   </section>
 
@@ -2007,7 +2022,8 @@ route();
     document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : " pris"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("");
     const quand = jour === auj ? "aujourd'hui" : new Date(jour + "T12:00:00Z").toLocaleDateString("fr-FR", { weekday:"long", timeZone:"UTC" });
     document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "postes libres" : "poste libre"} ${quand}`;
-    a.href = "plateau/?jour=" + jour;
+    a.href = "plateau/?jour=" + jour; for (const id of ["ap-btn", "trio-poste"]) document.getElementById(id).href = a.href;
+    if (window.IntersectionObserver && !RM){ a.classList.add("attend"); new IntersectionObserver((es, o) => { if (es[0].isIntersecting){ a.classList.remove("attend"); o.disconnect(); } }, { threshold:.35 }).observe(a); }
     a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris")){ e.preventDefault(); location.href = `plateau/?jour=${jour}&poste=${pt.dataset.code}`; } });
   } catch(_){ /* sans Nexudus, l'aperçu reste une image : pas de disponibilité inventée */ }
 })();

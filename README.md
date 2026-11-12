@@ -8,7 +8,7 @@ Site vitrine du coworking fictif Bureau des Légendes (34, boulevard Haussmann),
 - `netlify/lib/nexudus.mjs` : appels à l'API Nexudus, heure de Paris, contacts, liste des salles et horaires.
 - `netlify/functions/visite.mjs` : reçoit le formulaire « Réserver une visite » et crée le contact puis l'opportunité dans le CRM Nexudus (Sales Pipeline · Demande de visite en ligne).
 
-L'accueil affiche un aperçu du plateau en haut de page (`#apercu` dans `index.html`) : il lit `/api/postes` pour montrer les postes libres du jour et renvoie vers `/plateau/?jour=…&poste=…`. Sans réponse de Nexudus, il reste une simple image, sans disponibilité inventée.
+L'accueil affiche le plateau dans la section « Un poste pour aujourd'hui ? » (`#apercu` dans `index.html`) : il lit `/api/postes` pour montrer les postes libres du jour et renvoie vers `/plateau/?jour=…&poste=…`. Sans réponse de Nexudus, il reste une simple image, sans disponibilité inventée.
 
 ## Le plateau (`/plateau`)
 
