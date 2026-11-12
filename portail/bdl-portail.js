@@ -397,7 +397,7 @@ html.bdl .ai-modal-content .ai-modal-footer .input-group{ position:relative; }
 html.bdl .ai-modal-content .ai-modal-footer .input-group .btn{ width:38px; height:38px; flex:0 0 38px; border-radius:50% !important; padding:0 !important; display:grid; place-items:center; background:var(--bdl-noir) !important; border:0 !important; }
 html.bdl .ai-modal-content .ai-modal-footer hr, html.bdl .ai-modal-content .ai-modal-footer > form > small, html.bdl .ai-modal-content .ai-modal-footer h5{ display:none !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start{ display:flex; flex-wrap:wrap; gap:6px; }
-html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(2), html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(n+6){ display:none !important; }
+html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(2), html.bdl .ai-modal-content .ai-modal-footer .text-start > div:nth-child(n+4){ display:none !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start > div > .d-flex{ display:none !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start .bg-light{ margin:0 !important; padding:0 !important; background:transparent !important; }
 html.bdl .ai-modal-content .ai-modal-footer .text-start button.card{ background:#fff !important; border:1px solid rgba(25,17,11,.14) !important; border-radius:999px !important; padding:.4rem .8rem !important; font-size:.78rem; color:var(--bdl-noir); line-height:1.3; transition:border-color .2s, background .2s; }
