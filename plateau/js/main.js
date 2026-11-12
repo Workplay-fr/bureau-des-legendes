@@ -9,7 +9,8 @@ const CRENEAUX = { matin: "Matin", apres: "Après-midi", journee: "Journée" };
 const jourParis = d => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(d);
 const jourLong = j => new Date(j + "T12:00:00Z").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
 
-const E = { jour: null, creneau: "journee", zone: null, etat: null, charge: false, erreur: null, choix: null, etape: 1, envoi: false, ouvertLe: 0, fin: null, survol: null, form: {} };
+const LIEN = new URLSearchParams(location.search);
+const E = { jour: /^\d{4}-\d{2}-\d{2}$/.test(LIEN.get("jour") || "") ? LIEN.get("jour") : null, creneau: "journee", zone: null, etat: null, charge: false, erreur: null, choix: null, etape: 1, envoi: false, ouvertLe: 0, fin: null, survol: null, form: {} };
 let scene = null;
 const parCode = Object.fromEntries(POSTES_PLAN.map(p => [p.code, p]));
 const codeDe = nom => String(nom || "").replace(/^Poste\s+/i, "");
@@ -29,7 +30,7 @@ function dessinerBarre() {
   const auj = jourParis(new Date()), [y, m, d] = auj.split("-").map(Number), c = new Date(Date.UTC(y, m - 1, d)), jours = [];
   const js = ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."], ms = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
   while (jours.length < 9) { const v = c.toISOString().slice(0, 10), w = c.getUTCDay(); if (w !== 0) jours.push({ v, petit: v === auj ? "auj." : js[w], t: `${c.getUTCDate()} ${ms[c.getUTCMonth()]}` }); c.setUTCDate(c.getUTCDate() + 1); }
-  if (!E.jour) E.jour = jours[0].v;
+  if (!jours.some(j => j.v === E.jour)) E.jour = jours[0].v;
   const garder = (box, f) => { const a = document.activeElement, v = a && box.contains(a) ? a.dataset.v : undefined; f(); if (v !== undefined) box.querySelector(`[data-v="${v}"]`)?.focus(); };
   garder($("jours"), () => puces($("jours"), jours, E.jour, v => { if (v === E.jour) return; E.jour = v; dessinerBarre(); chargerEtat(); }));
   garder($("creneaux"), () => puces($("creneaux"), Object.entries(CRENEAUX).map(([v, t]) => ({ v, t })), E.creneau, v => { E.creneau = v; dessinerBarre(); rafraichir(); }));
@@ -120,6 +121,28 @@ function dessinerFiche() {
       <button class="btn" type="button" data-act="fermer" style="margin-top:auto">Retour au plateau</button>`;
     return;
   }
+  if (E.etape === 3) {
+    // Paiement : même présentation que les autres parcours du site. Les champs de carte sont des valeurs de test, non modifiables.
+    const v = E.form, simule = donnees.source === "simule";
+    box.innerHTML = `${tete}
+      <ul class="recap"><li><span>Quand</span>${esc(jourLong(E.jour))}<br>${esc(CRENEAUX[E.creneau])} · ${esc(heures(E.creneau))}</li><li><span>Pour</span>${esc((v.prenom + " " + v.nom).trim())}</li></ul>
+      <div class="paiement">
+        <p class="note"><span aria-hidden="true">ⓘ</span><span>${simule ? "<b>Aperçu hors ligne :</b> le paiement et la réservation sont simulés, rien ne sera enregistré." : "<b>Paiement de démonstration :</b> aucune carte n'est débitée, la réservation est bien enregistrée."}</span></p>
+        <div class="carte-ico" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="carte-l">
+          <div class="champ"><label for="f-cb">Numéro de carte</label><input id="f-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
+          <div class="champ"><label for="f-exp">Expiration</label><input id="f-exp" value="12 / 34" readonly tabindex="-1"></div>
+          <div class="champ"><label for="f-cvc">CVC</label><input id="f-cvc" value="123" readonly tabindex="-1"></div>
+        </div>
+        <div class="champ"><label for="f-tit">Titulaire</label><input id="f-tit" value="${esc((v.prenom + " " + v.nom).trim().toUpperCase())}" readonly tabindex="-1"></div>
+      </div>
+      ${E.msg ? `<p class="erreur" role="alert">${esc(E.msg)}</p>` : ""}
+      <div class="total"><span>Total TTC</span><div><b>${eur(px * 1.2)}</b><small>${eur(px)} HT</small></div></div>
+      <button class="btn" type="button" data-act="payer" ${E.envoi ? "disabled" : ""}>${E.envoi ? `<span class="tourne" aria-hidden="true"></span>${esc(E.statut || "Paiement en cours")}` : "Payer " + eur(px * 1.2)}</button>
+      <button class="lien" type="button" data-act="coord" ${E.envoi ? "disabled" : ""}>← Coordonnées</button>
+      <p class="statut" role="status" aria-live="polite">${E.envoi ? esc(E.statutLong || "") : ""}</p>`;
+    return;
+  }
   if (E.etape === 2) {
     const v = E.form;
     box.innerHTML = `${tete}
@@ -133,11 +156,10 @@ function dessinerFiche() {
         </div>
         <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="f-site">Site web</label><input id="f-site" name="site_web" tabindex="-1" autocomplete="off"></div>
         <label class="accord"><input type="checkbox" name="accord" ${v.accord ? "checked" : ""}> J'accepte les conditions de réservation : annulation gratuite jusqu'à la veille.</label>
-        <p class="note"><span aria-hidden="true">ⓘ</span><span>${donnees.source === "simule" ? "<b>Aperçu hors ligne :</b> la réservation sera simulée, rien ne sera enregistré." : "<b>Paiement de démonstration :</b> aucune carte n'est demandée. La réservation, elle, est bien enregistrée."}</span></p>
         ${E.msg ? `<p class="erreur" role="alert">${esc(E.msg)}</p>` : ""}
         <div class="total"><span>Total TTC</span><div><b>${eur(px * 1.2)}</b><small>${eur(px)} HT</small></div></div>
-        <button class="btn" type="submit" ${E.envoi ? "disabled" : ""}>${E.envoi ? '<span class="tourne" aria-hidden="true"></span>Réservation en cours' : "Confirmer la réservation"}</button>
-        <button class="lien" type="button" data-act="retour" ${E.envoi ? "disabled" : ""}>← Retour au poste</button>
+        <button class="btn" type="submit">Passer au paiement</button>
+        <button class="lien" type="button" data-act="retour">← Retour au poste</button>
       </form>`;
     return;
   }
@@ -162,12 +184,13 @@ function validerForm() {
   return ok;
 }
 async function envoyer() {
-  lireForm(); E.msg = null; if (!validerForm()) return;
+  E.msg = null;
   const p = posteApi(E.choix), code = E.choix, v = { poste: p.id, jour: E.jour, creneau: E.creneau, ...E.form, ouvert_le: E.ouvertLe };
   const attente = Math.max(0, 4200 - (Date.now() - E.ouvertLe));
-  E.envoi = true; dessinerFiche();
+  E.envoi = true; E.statut = "Paiement en cours"; E.statutLong = "Autorisation du paiement de démonstration…"; dessinerFiche();
   try {
-    if (attente) await new Promise(r => setTimeout(r, attente));
+    await new Promise(r => setTimeout(r, Math.max(attente, 1100)));
+    E.statut = "Réservation"; E.statutLong = donnees.source === "simule" ? "Réservation simulée…" : "Réservation du poste dans Nexudus…"; dessinerFiche();
     const r = await donnees.reserver(v), px = prix(v.creneau);
     E.fin = { ...r, prenom: v.prenom, email: v.email, jour: v.jour, creneau: v.creneau, heures: heures(v.creneau), ttc: (r.montantHt ?? px) * 1.2 };
     E.envoi = false; scene && scene.tamponner(code); await chargerEtat();
@@ -185,10 +208,12 @@ $("f-corps").addEventListener("click", e => {
   const a = e.target.closest("[data-act]"); if (!a) return;
   if (a.dataset.act === "reserver") { E.etape = 2; E.msg = null; dessinerFiche(); cadrer(); $("f-prenom")?.focus(); }
   if (a.dataset.act === "retour") { lireForm(); E.etape = 1; E.msg = null; dessinerFiche(); }
+  if (a.dataset.act === "coord" && !E.envoi) { E.etape = 2; E.msg = null; dessinerFiche(); }
+  if (a.dataset.act === "payer" && !E.envoi) envoyer();
   if (a.dataset.act === "fermer") { choisir(null); scene && scene.vueEnsemble(); }
   if (a.dataset.act === "autre") { const p = parCode[E.choix], n = POSTES_PLAN.find(q => q.zone === p.zone && etatDe(q.code) === "libre") || POSTES_PLAN.find(q => etatDe(q.code) === "libre"); if (n) choisir(n.code, { focus: true }); else { E.msg = "Aucun poste libre sur ce créneau. Essayez un autre jour."; dessinerFiche(); } }
 });
-$("f-corps").addEventListener("submit", e => { e.preventDefault(); if (!E.envoi) envoyer(); });
+$("f-corps").addEventListener("submit", e => { e.preventDefault(); if (E.etape !== 2) return; lireForm(); E.msg = null; if (!validerForm()) return; E.etape = 3; dessinerFiche(); $("f-corps").querySelector("[data-act=payer]")?.focus(); });
 $("f-corps").addEventListener("input", () => { if (E.etape === 2) lireForm(); });
 $("f-fermer").addEventListener("click", () => choisir(null));
 $("b-ensemble").addEventListener("click", () => { E.zone = null; dessinerBarre(); choisir(null); scene && scene.vueEnsemble(); });
@@ -211,7 +236,7 @@ const pretDonnees = chargerEtat();
     onChoix: code => { if (code) choisir(code); },
     onGeste: () => $("aide").classList.add("vu"),
     onImage: placerReperes,
-    onIntroFin: () => $("reperes").classList.add("arrive"),
+    onIntroFin: () => { $("reperes").classList.add("arrive"); const c = (LIEN.get("poste") || "").toUpperCase(); if (parCode[c]) setTimeout(() => { if (!E.choix) choisir(c); }, 500); },
   }); } catch (err) { console.error(err); }
   if (!s) {
     // Si le rendu ne se charge pas, la liste remplace la scène.

@@ -96,15 +96,36 @@ section{padding-block:clamp(72px,9vw,128px)}
 .vword span{display:inline-block;animation:rise 1.1s var(--ease) both}
 .hero-r{position:relative;overflow:hidden;min-height:340px;background:var(--creme)}
 .hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:32% 50%}
-.hero-r canvas.office3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
-.hero-r.has3d img{display:none}
+/* Aperçu du plateau : la maquette s'incline à la souris, les postes libres sont lus dans Nexudus */
+.apercu{display:block;background:#F3EAE4;color:var(--noir);text-decoration:none;container-type:size;perspective:1400px}
+.ap-cadre{position:absolute;inset:0;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.7,.3,1)}
+.ap-monde{position:absolute;left:50%;top:45%;translate:-50% -50%;width:min(108cqw,150cqh);aspect-ratio:3/2;animation:apArrive 1.6s var(--ease) both}
+.apercu .ap-monde img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;-webkit-mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent,#000 3%,#000 97%,transparent),linear-gradient(to bottom,transparent,#000 4%,#000 96%,transparent);mask-composite:intersect}
+@keyframes apArrive{from{opacity:0;transform:scale(1.08) translateY(14px);filter:blur(10px)}}
+.ap-pt{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#4F7A5B;box-shadow:0 0 0 2px rgba(255,255,255,.92),0 2px 5px rgba(25,17,11,.3);animation:apPose .7s calc(1s + var(--d,0s)) cubic-bezier(.2,1.5,.4,1) backwards;transition:transform .3s var(--ease)}
+.ap-pt::after{content:"";position:absolute;inset:-9px}
+.ap-pt:hover{transform:scale(1.5)}
+.ap-pt.pris{width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
+@keyframes apPose{from{transform:scale(0) translateY(-18px);opacity:0}}
+.ap-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
+.ap-bas{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 20px;padding:18px 24px;border-top:1px solid var(--line);background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);isolation:isolate;transition:color .45s var(--ease)}
+.ap-bas::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--noir);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
+.ap-bas b{font:400 clamp(16px,1.4vw,20px)/1.2 var(--f);letter-spacing:.12em;text-transform:uppercase}
+.ap-bas small{grid-column:1;font-size:13.5px;color:var(--fg-2);transition:color .45s var(--ease)}
+.ap-bas i{grid-row:1/3;grid-column:2;font-style:normal;font-size:22px;line-height:1;transition:transform .45s var(--ease)}
+@media (hover:hover){.apercu:hover .ap-bas{color:#fff}.apercu:hover .ap-bas::before{transform:scaleX(1);transform-origin:left}.apercu:hover .ap-bas small{color:#C7C0B8}.apercu:hover .ap-bas i{transform:translateX(6px)}}
+@media (prefers-reduced-motion:reduce){.ap-monde,.ap-pt{animation:none}.ap-cadre{transform:none}}
 .hero-r figcaption{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;color:var(--noir)}
-.hero-r:not(.has3d) figcaption{color:#fff}
 @media (max-width:900px){
   .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0}
   .hero-l{padding:36px var(--gut-r) 40px var(--gut);gap:32px}
   .vword{writing-mode:horizontal-tb;transform:none;font-size:clamp(56px,19vw,120px);border-inline:0;border-block:1px solid var(--line);justify-content:flex-start;padding:0 var(--gut-r) 0 var(--gut);line-height:1.3}
   .hero-r{height:86vw;min-height:320px}
+  .hero-r.apercu{height:106vw}
+  .ap-monde{top:43%}
+  .ap-pt{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;box-shadow:0 0 0 1.5px rgba(255,255,255,.92)}
+  .ap-haut{inset:16px var(--gut-r) auto var(--gut)}
+  .ap-bas{padding:16px var(--gut-r) 16px var(--gut)}
   .fiche span + span{padding-left:0;border-left:0}
 }
 
@@ -719,7 +740,7 @@ section.tf-q{padding-block:0}
   </div>
   <div class="mnav" id="mnav" hidden>
     <div class="wrap">
-      <a href="#accueil">Accueil</a><a href="#espaces">Espaces</a><a href="#formules">Formules</a><a href="#evenements">Événements</a><a href="#contact">Contact</a>
+      <a href="#accueil">Accueil</a><a href="plateau/">Réserver un poste</a><a href="#espaces">Espaces</a><a href="#formules">Formules</a><a href="#evenements">Événements</a><a href="#contact">Contact</a>
       <a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a>
     </div>
   </div>
@@ -738,17 +759,17 @@ section.tf-q{padding-block:0}
         </div>
       </div>
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
-      <figure class="hero-r">
-        <img src="img/hero.jpg" alt="Grande table de travail en chêne sous la verrière, fauteuils bleu nuit et lampes en laiton" width="1600" height="900">
-        <figcaption class="label"><span>Le plateau</span><span>Dix postes par étage</span></figcaption>
-        
-      </figure>
+      <a class="hero-r apercu" id="apercu" href="plateau/" aria-label="Le plateau du 1er étage : voir les postes libres et en réserver un">
+        <span class="ap-cadre"><span class="ap-monde"><img src="plateau/assets/plateau.webp" alt="Maquette du plateau de coworking : cinq îlots de quatre postes, une bibliothèque vitrée et un lounge" width="1536" height="1024" fetchpriority="high"><span id="ap-points"></span></span></span>
+        <span class="ap-haut label"><span>Le plateau · 1<sup>er</sup> étage</span><span id="ap-compte">20 postes flexibles</span></span>
+        <span class="ap-bas"><b>Choisir mon poste</b><small>Dès 15 € HT la demi-journée · disponibilités en temps réel</small><i aria-hidden="true">→</i></span>
+      </a>
     </div>
   </section>
 
   <section class="faits" aria-label="Le lieu en chiffres">
     <div class="wrap">
-      <div class="fait"><b class="num">3<small>étages</small></b><span>de coworking, dix postes chacun</span></div>
+      <div class="fait"><b class="num">20<small>postes</small></b><span>flexibles, à choisir sur le plan</span></div>
       <div class="fait"><b class="num">4<small>salles</small></b><span>de réunion, jusqu'à 15 personnes</span></div>
       <div class="fait"><b class="num">120<small>m²</small></b><span>de verrière pour vos événements</span></div>
       <div class="fait"><b class="num">12<small>espaces</small></b><span>réservables en ligne</span></div>
@@ -787,7 +808,7 @@ section.tf-q{padding-block:0}
         <p>Ethan Hunt, James Bond, Mata Hari, George Smiley. Des salles et des bureaux pensés pour des missions très différentes.</p>
       </div>
       <div class="splist">
-        <a class="sprow" href="#espaces"><span class="ph"><img src="img/plateau.jpg" alt="" loading="lazy"></span><h3>Coworking</h3><p>Trois plateaux lumineux sur le boulevard, en place libre ou en poste attitré.</p><span class="label q cap">30 postes</span></a>
+        <a class="sprow" href="plateau/"><span class="ph"><img src="img/plateau.jpg" alt="" loading="lazy"></span><h3>Coworking</h3><p>Vingt postes flexibles au 1<sup>er</sup> étage, à choisir sur le plan. Seize postes attitrés au 2<sup>e</sup>.</p><span class="label q cap">36 postes</span></a>
         <a class="sprow" href="#espaces"><span class="ph"><img src="img/bureau.jpg" alt="" loading="lazy"></span><h3>Bureaux privés</h3><p>George Smiley et Mata Hari, deux bureaux fermés avec cheminée et moulures.</p><span class="label q cap">3 à 6 personnes</span></a>
         <a class="sprow" href="#" data-salle=""><span class="ph"><img src="img/projection.jpg" alt="" loading="lazy"></span><h3>Salles de réunion</h3><p>Quatre salles équipées pour vos comités, vos visios et vos projections.</p><span class="label q cap">Jusqu'à 15 personnes</span></a>
         <a class="sprow" href="#espaces"><span class="ph"><img src="img/cabines.jpg" alt="" loading="lazy"></span><h3>Cabines</h3><p>Enigma et Morse, deux cabines insonorisées pour un appel ou une visio.</p><span class="label q cap">1 personne</span></a>
@@ -828,7 +849,7 @@ section.tf-q{padding-block:0}
         <p>Tarifs mensuels. Le détail de chaque formule est sur la page dédiée.</p>
       </div>
       <div class="plans">
-        <div class="plan court"><div><h3>Nomade</h3><span class="pour">Place libre sur les plateaux</span></div><div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397038">Choisir</a></div>
+        <div class="plan court"><div><h3>Nomade</h3><span class="pour">Poste flexible, à choisir chaque jour</span></div><div class="prix"><b class="num">290&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397038">Choisir</a></div>
         <div class="plan court"><div><h3>Résident</h3><span class="pour">Votre poste attitré</span></div><div class="prix"><b class="num">490&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397039">Choisir</a></div>
         <div class="plan court"><div><h3>Bureau privé</h3><span class="pour">Un bureau fermé pour votre équipe</span></div><div class="prix"><b class="num">750&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397447">Choisir</a></div>
         <div class="plan court"><div><h3>Domiciliation</h3><span class="pour">Votre siège au 34 boulevard Haussmann</span></div><div class="prix"><b class="num">90&nbsp;€</b>par mois</div><a class="lien" href="#" data-membre="1415397040">Choisir</a></div>
@@ -850,11 +871,10 @@ section.tf-q{padding-block:0}
       <div>
         <span class="label">Coworking</span>
         <h2>Les plateaux</h2>
-        <p>Trois étages de travail partagé, dix postes par plateau. Grandes tables en bois, lampes en laiton, prises à chaque place et lumière du boulevard.</p>
+        <p>Vingt postes flexibles au 1<sup>er</sup> étage, seize postes attitrés au 2<sup>e</sup>. Bureaux en chêne, lampes en laiton, prises à chaque place et lumière du boulevard.</p>
         <ul class="res">
-          <li><b>Plateau du 1<sup>er</sup> étage</b><span>10 postes</span></li>
-          <li><b>Plateau du 2<sup>e</sup> étage</b><span>10 postes</span></li>
-          <li><b>Plateau du 3<sup>e</sup> étage</b><span>10 postes</span></li>
+          <li><b>Plateau du 1<sup>er</sup> étage</b><span>20 postes flexibles · <a href="plateau/">voir les postes libres</a></span></li>
+          <li><b>Plateau du 2<sup>e</sup> étage</b><span>16 postes attitrés</span></li>
         </ul>
         <button class="btn btn-or" type="button" data-membre="">Devenir membre</button>
       </div>
@@ -927,7 +947,7 @@ section.tf-q{padding-block:0}
     <div class="wrap">
       <div class="plans" style="border-top:0">
         <div class="plan"><div><h3>Nomade</h3><span class="pour">Pour venir quand vous voulez</span></div>
-          <ul><li>Place libre sur les trois plateaux</li><li>Fibre très haut débit</li><li>Accès aux cabines Enigma et Morse</li><li>Salles de réunion à la réservation</li></ul>
+          <ul><li>Poste flexible au 1<sup>er</sup> étage</li><li>Fibre très haut débit</li><li>Accès aux cabines Enigma et Morse</li><li>Salles de réunion à la réservation</li></ul>
           <div class="prix"><b class="num">290&nbsp;€</b>par mois</div><button class="btn btn-or" type="button" data-membre="1415397038">Choisir Nomade</button></div>
         <div class="plan"><div><h3>Résident</h3><span class="pour">Pour avoir votre place à vous</span></div>
           <ul><li>Poste attitré sur un plateau</li><li>Casier sécurisé</li><li>Accès aux cabines Enigma et Morse</li><li>Salles de réunion à la réservation</li></ul>
@@ -1255,7 +1275,6 @@ section.tf-q{padding-block:0}
   <div class="tf-nav"><button type="button" id="tf-prec" aria-label="Question précédente">↑</button><button type="button" id="tf-suiv" aria-label="Question suivante">↓</button></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // Portail membre Nexudus : une seule adresse à changer ici.
 const PORTAL = "https://bureaudeslegendesparis.nexudus.site/bureaudeslegendesparis";
@@ -1286,146 +1305,6 @@ function splitWords(el){
   let i = 0;
   el.innerHTML = el.textContent.split(/(\s+)/).map(t => !t ? "" : /^\s+$/.test(t) ? " " : `<span class="w"><span style="--i:${i++}">${esc(t)}</span></span>`).join("");
   el.classList.add("split");
-}
-
-/* Scène 3D reprise de France Coworking : le plateau se construit, les membres s'installent, un poste réservé s'allume. */
-function mountOffice3D(fig){
-  const THREE = window.THREE;
-  if (!fig || !THREE) return null;
-  const canvas = document.createElement("canvas");
-  canvas.className = "office3d"; canvas.setAttribute("role","img");
-  canvas.setAttribute("aria-label","Animation 3D : un plateau de coworking se construit, des personnes s'installent, un poste réservé s'allume en bleu.");
-  let renderer;
-  try { renderer = new THREE.WebGLRenderer({canvas, antialias:true}); } catch(e){ return null; }
-  fig.appendChild(canvas); fig.classList.add("has3d");
-  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.setClearColor(0xF6F1EB);
-  const scene = new THREE.Scene();
-  const cam = new THREE.OrthographicCamera(-1,1,1,-1,0.1,200);
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xB9A88E, 0.82));
-  const sun = new THREE.DirectionalLight(0xfff4e2, 0.72);
-  sun.position.set(9,16,7); sun.castShadow = true;
-  sun.shadow.mapSize.set(1024,1024);
-  Object.assign(sun.shadow.camera, {left:-11,right:11,top:11,bottom:-11,near:1,far:50});
-  scene.add(sun);
-  const C = {navy:0x19110B, struct:0x19110B, white:0xFFFFFF, red:0x3C6A9E, stoneD:0x1F3050, wood:0xDCCBB0, glass:0xD9E4EA, leaf:0x58724F, brass:0xC2A160, skin:0xD9C2A6};
-  const mats = {}; const M = (c, extra) => { const k = c + JSON.stringify(extra||{}); return mats[k] || (mats[k] = new THREE.MeshLambertMaterial(Object.assign({color:c}, extra||{}))); };
-  const group = new THREE.Group(); scene.add(group);
-  const items = [];
-  const add = (mesh, t0, o={}) => {
-    mesh.castShadow = o.shadow !== false; mesh.receiveShadow = true;
-    group.add(mesh);
-    items.push({mesh, t0, dur:o.dur||.6, drop:o.drop||0, base:mesh.position.clone()});
-    mesh.scale.setScalar(1e-4);
-    return mesh;
-  };
-  const box = (w,h,d,c,x,y,z,extra) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), M(c,extra)); m.position.set(x,y+h/2,z); return m; };
-  // Parquet et socle
-  add(box(12.4,0.35,8.4,C.wood,0,-0.35,0), 0, {dur:.9});
-  add(box(12.6,0.12,8.6,C.struct,0,-0.47,0), 0.05, {dur:.9});
-  // Hautes fenêtres (arrière et gauche)
-  add(box(12,3,0.04,C.glass,0,0,-4,{transparent:true,opacity:.4}), 1.2, {shadow:false, dur:.8});
-  add(box(0.04,3,8,C.glass,-6,0,0,{transparent:true,opacity:.4}), 1.3, {shadow:false, dur:.8});
-  for (let i=0;i<=8;i++) add(box(0.09,3,0.09,C.white,-6+i*1.5,0,-4), 0.55+i*0.05, {drop:3});
-  for (let i=1;i<=5;i++) add(box(0.09,3,0.09,C.white,-6,0,-4+i*1.6), 0.95+i*0.05, {drop:3});
-  add(box(12,0.09,0.09,C.white,0,2.95,-4), 1.25, {drop:2});
-  add(box(0.09,0.09,8,C.white,-6,2.95,0), 1.3, {drop:2});
-  // Salle de réunion vitrée
-  add(box(2.6,2.6,0.04,C.glass,4.7,0,-1.4,{transparent:true,opacity:.45}), 1.8, {shadow:false});
-  add(box(0.04,2.6,2.6,C.glass,3.4,0,-2.7,{transparent:true,opacity:.45}), 1.85, {shadow:false});
-  add(box(0.08,2.6,0.08,C.struct,3.4,0,-1.4), 1.75, {drop:2});
-  add(box(1.6,0.07,0.9,C.navy,4.7,0.72,-2.7), 2.0, {drop:1.4});
-  [[4.1,-3.4],[5.3,-3.4],[4.1,-2.0],[5.3,-2.0]].forEach(([x,z],i)=> add(box(0.42,0.5,0.42,C.stoneD,x,0,z), 2.1+i*.06, {drop:1}));
-  add(box(1.3,0.75,0.05,C.navy,4.7,1.05,-3.95), 2.3, {drop:1});
-  // Postes de travail
-  const desks = []; let n = 0;
-  [-1.0, 0.9, 2.8].forEach(z => [-4.5,-2.7,-0.9,0.9].forEach(x => {
-    const t = 2.3 + n*0.11, reserved = n === 6;
-    add(box(1.5,0.07,0.75, reserved ? C.red : C.white, x,0.72,z), t, {drop:1.6});
-    add(box(0.06,0.72,0.66,C.navy,x-0.68,0,z), t, {drop:1.6});
-    add(box(0.06,0.72,0.66,C.navy,x+0.68,0,z), t, {drop:1.6});
-    add(box(0.52,0.32,0.04,C.navy,x,0.84,z-0.25), t+0.25, {drop:.8});
-    add(box(0.46,0.09,0.46,C.stoneD,x,0.42,z+0.62), t+0.18, {drop:1});
-    add(box(0.46,0.5,0.08,C.stoneD,x,0.5,z+0.86), t+0.18, {drop:1});
-    desks.push({x, z: z+0.62, reserved}); n++;
-  }));
-  // Suspensions en laiton
-  [[-3.6,-1.0],[-0.0,-1.0],[-3.6,0.9],[0,0.9],[-3.6,2.8],[0,2.8]].forEach(([x,z],i)=>{
-    add(box(0.02,1.05,0.02,C.struct,x,3.15,z), 3.9+i*.07, {drop:2.5});
-    const shade = new THREE.Mesh(new THREE.ConeGeometry(0.32,0.28,24,1,true), M(C.brass,{side:THREE.DoubleSide}));
-    shade.position.set(x,3.05,z); add(shade, 3.95+i*.07, {drop:2.5});
-  });
-  // Plantes
-  [[-5.4,-3.4],[2.9,3.6],[-5.4,3.5]].forEach(([x,z],i)=>{
-    add(new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.22,0.5,16), M(C.struct)), 4.4+i*.1).position.set(x,0.25,z);
-    const leaf = new THREE.Mesh(new THREE.IcosahedronGeometry(0.55,0), M(C.leaf)); leaf.position.set(x,0.95,z); add(leaf, 4.5+i*.1, {drop:.6});
-  });
-  items.forEach(it => it.base.copy(it.mesh.position));
-  // Salon
-  add(box(2.2,0.42,0.85,C.stoneD,3.9,0,2.6), 4.7, {drop:1.2});
-  add(box(2.2,0.6,0.22,C.stoneD,3.9,0.35,3.0), 4.75, {drop:1.2});
-  add(box(1.0,0.32,0.6,C.brass,3.9,0,1.5), 4.85, {drop:1});
-  // Repère de réservation au-dessus du poste réservé
-  const target = desks.find(d => d.reserved);
-  const pin = new THREE.Mesh(new THREE.ConeGeometry(0.22,0.55,4), M(C.red, {emissive:0x0a1a30}));
-  pin.rotation.x = Math.PI; pin.position.set(target.x, 2.1, target.z-0.62);
-  add(pin, 7.0, {drop:2, dur:.7});
-  // Personnes : arrivent par l'angle avant droit et rejoignent un poste
-  const seats = [desks[1], desks[6], desks[4], desks[9], desks[11]];
-  const people = seats.map((d,i) => {
-    const g = new THREE.Group();
-    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.21,0.72,14), M([C.navy,C.red,C.white,C.brass,C.navy][i]));
-    body.position.y = 0.36; body.castShadow = true;
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.15,16,12), M(C.skin)); head.position.y = 0.88; head.castShadow = true;
-    g.add(body, head); g.visible = false; group.add(g);
-    return {g, from:new THREE.Vector3(6.4,0,4.6), to:new THREE.Vector3(d.x,0,d.z), t0:5.4+i*0.38};
-  });
-  const clamp = v => Math.max(0, Math.min(1, v));
-  const outBack = k => { const c1 = 1.5, c3 = c1+1; return 1 + c3*Math.pow(k-1,3) + c1*Math.pow(k-1,2); };
-  const outCubic = k => 1 - Math.pow(1-k,3);
-  const inOut = k => k<.5 ? 4*k*k*k : 1-Math.pow(-2*k+2,3)/2;
-  const N = items.length;
-  function frame(t){
-    items.forEach((it, idx) => {
-      const k = clamp((t - it.t0)/it.dur);
-      const out = clamp((t - (9.25 + (1 - idx/N)*0.45)) / 0.3);
-      const s = Math.max(1e-4, outBack(k) * (1 - outCubic(out)));
-      it.mesh.scale.setScalar(s);
-      it.mesh.position.y = it.base.y + it.drop*(1-outCubic(k));
-    });
-    pin.position.y = 2.1 + (t>7.6 ? Math.sin(t*4)*0.12 : 0) + 2*(1-outCubic(clamp((t-7)/.7)));
-    pin.rotation.y = t*2;
-    const g = Math.max(0,Math.sin(t*6));
-    pin.material.emissive.setRGB(0.04 + 0.08*g, 0.1 + 0.16*g, 0.2 + 0.3*g);
-    people.forEach(p => {
-      const k = clamp((t - p.t0)/1.7), gone = t > 9.2;
-      p.g.visible = k > 0 && !gone;
-      p.g.position.lerpVectors(p.from, p.to, inOut(k));
-      p.g.position.y = (k>=1 ? -0.22 : Math.abs(Math.sin(k*Math.PI*6))*0.06);
-      p.g.rotation.y = Math.atan2(p.to.x-p.from.x, p.to.z-p.from.z);
-    });
-    const a = Math.PI*0.27 + 0.42*Math.sin(2*Math.PI*t/10);
-    cam.position.set(Math.sin(a)*24, 17, Math.cos(a)*24);
-    cam.zoom = 1 + 0.14*Math.sin(Math.PI*t/10);
-    cam.lookAt(0,0.4,0.3); cam.updateProjectionMatrix();
-    renderer.render(scene, cam);
-  }
-  let ready = false;
-  function resize(){
-    const w = fig.clientWidth || 1, h = fig.clientHeight || 1, asp = w/h;
-    const half = Math.max(5.6, 8.4/asp);
-    Object.assign(cam, {left:-half*asp, right:half*asp, top:half, bottom:-half});
-    cam.updateProjectionMatrix(); renderer.setSize(w, h, false);
-    if (RM && ready) frame(8.6);
-  }
-  resize(); ready = true;
-  const ro = window.ResizeObserver ? new ResizeObserver(resize) : null; ro && ro.observe(fig);
-  let raf = 0, visible = true, start = performance.now();
-  const loop = now => { raf = requestAnimationFrame(loop); if (!visible || document.hidden || !fig.clientWidth) return; frame(((now - start)/1000) % 10); };
-  const io = window.IntersectionObserver ? new IntersectionObserver(es => { visible = es[0].isIntersecting; }) : null; io && io.observe(fig);
-  if (RM) frame(8.6); else raf = requestAnimationFrame(loop);
-  return true;
 }
 
 const VIEWS = { accueil:"Bureau des Légendes", espaces:"Espaces", formules:"Formules", evenements:"Événements", contact:"Contact" };
@@ -1939,7 +1818,7 @@ function finSalle(v, res){
 
 /* Devenir membre : formules, questions une à une, paiement simulé, fiche membre et contrat créés dans Nexudus. */
 const FORMULES_UI = [
-  { id:1415397038, nom:"Nomade", prix:290, accroche:"L'accès libre aux plateaux, en journée, du lundi au samedi.", inclus:["Poste nomade sur les 3 étages","Fibre 10 Gb/s et impression","Café de comptoir à volonté","2 h de salle de réunion / mois","Événements membres"], note:"Sans engagement.", preavis:30 },
+  { id:1415397038, nom:"Nomade", prix:290, accroche:"L'accès libre aux plateaux, en journée, du lundi au samedi.", inclus:["Poste flexible au 1er étage","Fibre 10 Gb/s et impression","Café de comptoir à volonté","2 h de salle de réunion / mois","Événements membres"], note:"Sans engagement.", preavis:30 },
   { id:1415397039, nom:"Résident", prix:490, accroche:"Votre poste attitré, à vous seul, dans une zone au calme.", inclus:["Bureau nominatif, écran sur demande","Accès 24/7 et casier sécurisé","5 h de salle de réunion / mois","Adresse professionnelle et courrier","Café et événements membres"], vedette:true, preavis:30 },
   { id:1415397447, nom:"Bureau privé", prix:750, unite:"/ poste", accroche:"Un bureau fermé rien qu'à vous, ou à votre équipe.", inclus:["Mobilier sur mesure, plaque à la porte","Accès 24/7 et casiers sécurisés","10 h de salle de réunion / mois","Courrier et conciergerie","Ligne fibre dédiée"], postes:true, preavis:60 },
   { id:1415397040, nom:"Domiciliation", prix:90, accroche:"Votre adresse au 34 boulevard Haussmann, sans le bureau.", inclus:["Domiciliation commerciale","Courrier reçu, numérisé, notifié","Réexpédition sur demande","Salles de réunion à la carte","Vérification d'identité (KYC)"], note:"Activation après vérification d'identité.", preavis:30 },
@@ -2109,7 +1988,29 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
 
 window.addEventListener("hashchange", route);
 route();
-mountOffice3D(document.querySelector(".hero-r"));
+
+/* Aperçu du plateau en haut de page : rendu de l'étage, postes libres lus dans Nexudus, clic vers /plateau. */
+(async function apercuPlateau(){
+  const a = document.getElementById("apercu"); if (!a) return;
+  if (!RM && matchMedia("(hover:hover)").matches){
+    a.addEventListener("pointermove", e => { const r = a.getBoundingClientRect(); a.style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 7 + "deg"); a.style.setProperty("--rx", -((e.clientY - r.top) / r.height - .5) * 5 + "deg"); });
+    a.addEventListener("pointerleave", () => { a.style.setProperty("--ry", "0deg"); a.style.setProperty("--rx", "0deg"); });
+  }
+  if (DANS_CLAUDE) return;
+  try {
+    const { POSTES_PLAN, IMAGE } = await import("./plateau/js/plan.js");
+    // premier jour ouvert dont la journée n'est pas terminée
+    const c = new Date(jourParis(new Date()) + "T12:00:00Z"), auj = c.toISOString().slice(0,10); let d = null, jour = null;
+    for (let k = 0; k < 3 && !d; k++){ if (c.getUTCDay() !== 0){ jour = c.toISOString().slice(0,10); const r = await fetch("/api/postes?jour=" + jour); const j = await r.json(); if (r.ok && j.ok && j.postes.some(p => p.etat.journee !== "passe")) d = j; } c.setUTCDate(c.getUTCDate() + 1); }
+    if (!d) return;
+    const etat = Object.fromEntries(d.postes.map(p => [p.nom.replace(/^Poste\s+/i, ""), p.etat.journee])), libres = d.postes.filter(p => p.etat.journee === "libre").length;
+    document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : " pris"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("");
+    const quand = jour === auj ? "aujourd'hui" : new Date(jour + "T12:00:00Z").toLocaleDateString("fr-FR", { weekday:"long", timeZone:"UTC" });
+    document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "postes libres" : "poste libre"} ${quand}`;
+    a.href = "plateau/?jour=" + jour;
+    a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris")){ e.preventDefault(); location.href = `plateau/?jour=${jour}&poste=${pt.dataset.code}`; } });
+  } catch(_){ /* sans Nexudus, l'aperçu reste une image : pas de disponibilité inventée */ }
+})();
 </script>
 
 </body>
