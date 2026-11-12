@@ -612,6 +612,15 @@ body.modal-ouverte{overflow:hidden}
 .car-figee .car-points button.on::after{animation:none;transform:scaleX(1)}
 .car-points button:focus-visible{outline:1px solid #fff;outline-offset:2px}
 @keyframes barre{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.car-fl{position:absolute;top:50%;z-index:4;width:48px;height:48px;margin-top:-24px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(15,10,6,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:grid;place-items:center;cursor:pointer;opacity:.75;transition:opacity .3s,background .3s,transform .3s var(--ease)}
+.car-fl svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.car-prec{left:20px}.car-suiv{right:20px}
+.mv-photo:hover .car-fl{opacity:1}
+.car-fl:hover{background:rgba(15,10,6,.6);border-color:#fff}
+.car-prec:hover{transform:translateX(-2px)}.car-suiv:hover{transform:translateX(2px)}
+.car-fl:focus-visible{outline:1px solid #fff;outline-offset:3px}
+#ms.e4 .car-fl,#ms.fini .car-fl{display:none}
+@media (max-width:899px){.car-fl{width:40px;height:40px;margin-top:-20px}.car-prec{left:12px}.car-suiv{right:12px}}
 
 /* Trois accès principaux du hero */
 .trio{margin-top:34px;border-top:1px solid var(--line-2);max-width:560px}
@@ -1082,7 +1091,7 @@ section.tf-q{padding-block:0}
 <div class="mv ms" id="ms" hidden role="dialog" aria-modal="true" aria-labelledby="ms-titre">
   <div class="mv-voile" data-fermer-ms></div>
   <div class="mv-panneau">
-    <figure class="mv-photo" id="ms-car" aria-roledescription="carrousel" aria-label="La salle et ses services"><div id="ms-slides"></div><div class="car-points" id="ms-points"></div>
+    <figure class="mv-photo" id="ms-car" aria-roledescription="carrousel" aria-label="La salle et ses services"><div id="ms-slides"></div><div class="car-points" id="ms-points"></div><button type="button" class="car-fl car-prec" id="ms-prec" aria-label="Photo précédente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="car-fl car-suiv" id="ms-suiv" aria-label="Photo suivante"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       <div class="ticket" id="ms-ticket" aria-hidden="true"><span class="label">Votre panier</span><b class="ticket-salle" id="ms-t-salle"></b><span class="ticket-quand" id="ms-t-quand"></span><ul class="panier-lignes" id="ms-t-lignes"></ul><div class="ticket-total"><span>Total TTC</span><b id="ms-t-ttc"></b></div><small id="ms-t-ht"></small></div></figure>
     <div class="mv-corps">
       <div class="mv-tete">
@@ -1663,6 +1672,8 @@ function montrerSlide(k){
   if (!fige) CAR.minuterie = setTimeout(() => montrerSlide(CAR.i + 1), CAR.duree);
 }
 document.getElementById("ms-points").addEventListener("click", e => { const b = e.target.closest("[data-car]"); if (b) montrerSlide(Number(b.dataset.car)); });
+document.getElementById("ms-prec").addEventListener("click", e => { e.stopPropagation(); montrerSlide(CAR.i - 1); });
+document.getElementById("ms-suiv").addEventListener("click", e => { e.stopPropagation(); montrerSlide(CAR.i + 1); });
 const carEl = document.getElementById("ms-car");
 carEl.addEventListener("mouseenter", () => { CAR.survol = true; montrerSlide(CAR.i); });
 carEl.addEventListener("mouseleave", () => { CAR.survol = false; montrerSlide(CAR.i); });
