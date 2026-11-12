@@ -165,15 +165,18 @@ function dessinerFiche() {
     return;
   }
   const libre = e === "libre";
+  // Poste pris sur le créneau choisi mais libre sur une demi-journée : on le dit et on propose d'y basculer.
+  const reste = e === "pris" ? ["matin", "apres"].find(c => c !== E.creneau && etatDe(p.code, c) === "libre") : null;
+  const DEMI = { matin: "in the morning", apres: "in the afternoon" };
   box.innerHTML = `${tete}
-    <p class="etat"><i class="pt ${libre ? "" : e === "pris" ? "pris" : "passe"}"></i>${e === "attente" ? "Loading availability…" : libre ? `Free · ${esc(jourLong(E.jour))}` : e === "pris" ? `Already booked for this slot · ${esc(jourLong(E.jour))}` : `Unavailable · ${esc(jourLong(E.jour))}`}</p>
+    <p class="etat"><i class="pt ${libre ? "" : e === "pris" ? "pris" : "passe"}"></i>${e === "attente" ? "Loading availability…" : libre ? `Free · ${esc(jourLong(E.jour))}` : e === "pris" ? `${reste ? `Taken ${DEMI[reste === "matin" ? "apres" : "matin"]}, free ${DEMI[reste]}` : "Already booked for this slot"} · ${esc(jourLong(E.jour))}` : `Unavailable · ${esc(jourLong(E.jour))}`}</p>
     <p class="texte">${esc(z.texte)}</p>
     <ul class="equip">${z.equipements.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
     <div><span class="label" id="f-l-cr" style="display:block;margin-bottom:8px">Time slot</span><div class="options" role="radiogroup" aria-labelledby="f-l-cr">${Object.entries(CRENEAUX).map(([c, t]) => { const ec = etatDe(p.code, c), ok = ec === "libre";
       return `<button class="option" type="button" role="radio" aria-checked="${c === E.creneau}" data-creneau="${c}" ${ok || c === E.creneau ? "" : "disabled"}><b>${esc(t)}</b><small>${esc(heures(c)) || "—"}</small><span class="prix">${ok ? eur(prix(c)) : esc(libelleEtat(ec))}</span></button>`; }).join("")}</div></div>
     ${E.msg ? `<p class="erreur" role="alert">${esc(E.msg)}</p>` : ""}
     <div class="total"><span>${libre ? "Price excl. VAT" : "This slot"}</span><div><b>${libre && px ? eur(px) : "—"}</b>${libre && px ? `<small>${eur(px * 1.2)} incl. VAT</small>` : ""}</div></div>
-    <button class="btn" type="button" data-act="reserver" ${libre ? "" : "disabled"}>${libre ? "Book this desk" : e === "pris" ? "Desk taken" : "Unavailable"}</button>
+    ${reste ? `<button class="btn" type="button" data-creneau="${reste}">See it ${DEMI[reste]} · ${eur(prix(reste))} excl. VAT</button>` : `<button class="btn" type="button" data-act="reserver" ${libre ? "" : "disabled"}>${libre ? "Book this desk" : e === "pris" ? "Desk taken" : "Unavailable"}</button>`}
     ${libre ? "" : `<button class="lien" type="button" data-act="autre">See a free desk of the same type</button>`}`;
 }
 
