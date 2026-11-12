@@ -37,3 +37,7 @@ export const ZONES = {
   ecran: { nom: "Dual screen", texte: "Two 27-inch screens, for side-by-side work.", equipements: ["Two 27-inch screens", "USB-C docking station", "Built-in fibre and sockets", "Day locker"] },
   calme: { nom: "Library", texte: "Behind the workshop glass wall. No phone calls here.", equipements: ["Quiet zone", "150 cm oak desk", "Built-in fibre and sockets", "Day locker"] },
 };
+
+// Postes occupés : pour chaque poste, une découpe du même rendu avec une personne installée (assets/occupe/Cxx.webp).
+// [x, y, largeur] dans le repère de l'image ; la scène l'affiche quand Nexudus donne le poste pris.
+export const OCCUPES = {"C01":[491.5,227.5,107.0],"C02":[578.0,274.5,76.5],"C03":[467.0,297.5,82.0],"C04":[536.0,328.0,103.0],"C05":[781.5,300.5,102.0],"C06":[877.0,314.5,87.0],"C07":[764.5,368.5,90.5],"C08":[839.5,398.0,115.5],"C09":[308.0,432.5,103.0],"C10":[397.5,469.0,85.5],"C11":[281.5,495.0,89.0],"C12":[349.5,526.5,117.0],"C13":[640.5,540.5,108.0],"C14":[739.0,559.5,87.0],"C15":[608.0,594.5,97.5],"C16":[689.0,629.0,121.5],"C17":[1146.5,438.0,101.5],"C18":[1238.0,448.0,95.0],"C19":[1129.0,491.5,91.0],"C20":[1202.0,518.5,120.5]};

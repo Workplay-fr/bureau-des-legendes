@@ -113,8 +113,8 @@ section{padding-block:clamp(72px,9vw,128px)}
 .ap-pt:hover{transform:scale(1.5)}
 .ap-pt.pris{width:8px;height:8px;margin:-4px 0 0 -4px;background:#B0473A;box-shadow:0 0 0 1.5px rgba(255,255,255,.92),0 2px 5px rgba(90,25,15,.3)}
 .ap-pt.pris:hover{transform:none}
-.apercu .ap-monde img.ap-fig{inset:auto;height:auto;object-fit:contain;-webkit-mask-image:none;mask-image:none;pointer-events:none;filter:drop-shadow(0 1px 1px rgba(25,17,11,.28));animation:apFig .6s calc(.5s + var(--d,0s)) both}
-@keyframes apFig{from{opacity:0;transform:translateY(-4px)}}
+.apercu .ap-monde img.ap-fig{inset:auto;height:auto;object-fit:contain;-webkit-mask-image:none;mask-image:none;pointer-events:none;animation:apFig .9s calc(.5s + var(--d,0s)) both}
+@keyframes apFig{from{opacity:0}}
 .apercu.attend .ap-fig{animation-play-state:paused}
 .ap-pt.passe{width:6px;height:6px;margin:-3px 0 0 -3px;background:rgba(25,17,11,.34);box-shadow:0 0 0 1.5px rgba(255,255,255,.7)}
 .apercu.attend .ap-pt{animation-play-state:paused}
@@ -2126,14 +2126,14 @@ const NIVEAUX = [
   }
   if (DANS_CLAUDE) return;
   try {
-    const { POSTES_PLAN, IMAGE } = await import("../plateau/js/plan.js");
+    const { POSTES_PLAN, IMAGE, OCCUPES } = await import("../plateau/js/plan.js");
     // premier jour ouvert dont la journée n'est pas terminée
     const c = new Date(jourParis(new Date()) + "T12:00:00Z"), auj = c.toISOString().slice(0,10); let d = null, jour = null;
     for (let k = 0; k < 3 && !d; k++){ if (c.getUTCDay() !== 0){ jour = c.toISOString().slice(0,10); const r = await fetch("/api/postes?jour=" + jour + "&lang=en"); const j = await r.json(); if (r.ok && j.ok && j.postes.some(p => p.etat.journee !== "passe")) d = j; } c.setUTCDate(c.getUTCDate() + 1); }
     if (!d) return;
     const etat = Object.fromEntries(d.postes.map(p => [p.nom.replace(/^Poste\s+/i, ""), p.etat.journee])), libres = d.postes.filter(p => p.etat.journee === "libre").length;
     document.getElementById("ap-points").innerHTML = POSTES_PLAN.map(p => `<i class="ap-pt${etat[p.code] === "libre" ? "" : etat[p.code] === "pris" ? " pris" : " passe"}" data-code="${p.code}" style="left:${(p.x / IMAGE.l * 100).toFixed(2)}%;top:${(p.y / IMAGE.h * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s"></i>`).join("")
-      + POSTES_PLAN.map((p, i) => { if (etat[p.code] !== "pris") return ""; const face = i % 4 < 2, [ax, ay, l] = face ? [17, 28.1, 28.5] : [11.1, 24.4, 28.8]; return `<img class="ap-fig" alt="" src="/plateau/assets/figurine-${face ? "face" : "dos"}.webp" style="left:${((p.fx - ax) / IMAGE.l * 100).toFixed(2)}%;top:${((p.fy - ay) / IMAGE.h * 100).toFixed(2)}%;width:${(l / IMAGE.l * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s">`; }).join("");
+      + POSTES_PLAN.map(p => { const o = OCCUPES[p.code]; if (etat[p.code] !== "pris" || !o) return ""; return `<img class="ap-fig" alt="" src="/plateau/assets/occupe/${p.code}.webp" style="left:${(o[0] / IMAGE.l * 100).toFixed(2)}%;top:${(o[1] / IMAGE.h * 100).toFixed(2)}%;width:${(o[2] / IMAGE.l * 100).toFixed(2)}%;--d:${((p.x + p.y * .6 - 560) / 1100 * .9).toFixed(2)}s">`; }).join("");
     const quand = jour === auj ? "today" : new Date(jour + "T12:00:00Z").toLocaleDateString("en-GB", { weekday:"long", timeZone:"UTC" });
     document.getElementById("ap-compte").textContent = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand}`;
     NIVEAUX[1].detail = `${libres} ${libres > 1 ? "free desks" : "free desk"} ${quand} out of twenty, picked on the floor plan. From €15 excl. VAT per half day.`;

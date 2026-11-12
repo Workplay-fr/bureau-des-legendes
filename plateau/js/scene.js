@@ -1,6 +1,6 @@
 // Scène du plateau : le rendu de l'étage, dans lequel on se déplace, on zoome et on choisit un poste.
 // Aucune donnée de disponibilité ici : main.js pousse les états et dessine les repères.
-import { IMAGE, POSTES_PLAN, ILOTS_PLAN } from "./plan.js";
+import { IMAGE, POSTES_PLAN, ILOTS_PLAN, OCCUPES } from "./plan.js";
 
 const RM = matchMedia("(prefers-reduced-motion:reduce)").matches;
 const borne = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -27,10 +27,10 @@ export async function creerScene(cadre, rappel = {}) {
   const trait = (pts, d, ferme) => { const e = document.createElementNS(NS, ferme ? "polygon" : "polyline"); e.setAttribute("points", pts.map(p => p.join(",")).join(" ")); e.setAttribute("pathLength", 1); e.style.setProperty("--d", d + "s"); trace.appendChild(e); };
   trait(IMAGE.sol, 0, true); IMAGE.murs.forEach((m, i) => trait(m, 0.25 + i * 0.07));
   ILOTS_PLAN.forEach((il, i) => { const [dx, dy] = [il.postes[2][0] - 515, il.postes[2][1] - 338]; trait([[473, 341], [505, 298], [645, 330], [612, 372]].map(([x, y]) => [x + dx, y + dy]), 0.75 + i * 0.09, true); });
-  // Figurines : une par poste, posée sur son fauteuil ; main.js les montre quand le poste est pris (majEtats).
+  // Postes occupés : une découpe du rendu « habité » par poste ; main.js les montre quand le poste est pris (majEtats).
   const gens = div("gens"), figurines = {};
-  for (const p of POSTES_PLAN) { const face = POSTES_PLAN.indexOf(p) % 4 < 2, f = new Image(); f.alt = ""; f.draggable = false; f.decoding = "async"; f.src = `/plateau/assets/figurine-${face ? "face" : "dos"}.webp`;
-    f.style.cssText = face ? `left:${p.fx - 17}px;top:${p.fy - 28.1}px;width:28.5px` : `left:${p.fx - 11.1}px;top:${p.fy - 24.4}px;width:28.8px`; f.style.setProperty("--d", ((p.x + p.y * 0.6 - 560) / 1100 * 0.9).toFixed(2) + "s"); gens.appendChild(f); figurines[p.code] = f; }
+  for (const p of POSTES_PLAN) { const o = OCCUPES[p.code]; if (!o) continue; const f = new Image(); f.alt = ""; f.draggable = false; f.decoding = "async"; f.src = `/plateau/assets/occupe/${p.code}.webp`;
+    f.style.cssText = `left:${o[0]}px;top:${o[1]}px;width:${o[2]}px`; f.style.setProperty("--d", ((p.x + p.y * 0.6 - 560) / 1100 * 0.9).toFixed(2) + "s"); gens.appendChild(f); figurines[p.code] = f; }
   monde.append(img, gens, teinte, rais, poussiere, flou, ombre, voile, svg, trace); incline.appendChild(monde); cadre.appendChild(incline);
   const sceau = document.createElementNS(NS, "circle"); sceau.setAttribute("class", "c-sceau"); sceau.setAttribute("r", 30); svg.appendChild(sceau);
   const leger = matchMedia("(max-width:820px)").matches && (window.devicePixelRatio || 1) < 2;
