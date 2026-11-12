@@ -120,14 +120,15 @@ section{padding-block:clamp(72px,9vw,128px)}
 .entree{background:#1b130c;color:#fff;cursor:pointer}
 .hero-r.entree > img{object-position:40% 50%;transform-origin:44% 62%;animation:approche 22s ease-in-out infinite alternate}
 @keyframes approche{from{transform:scale(1)}to{transform:scale(1.13)}}
-.entree::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(12,8,4,.45) 0%,rgba(12,8,4,0) 22%,rgba(12,8,4,0) 40%,rgba(12,8,4,.78) 62%,rgba(12,8,4,.93) 100%);pointer-events:none}
+.entree::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(12,8,4,.15) 0%,rgba(12,8,4,0) 22%,rgba(12,8,4,0) 52%,rgba(12,8,4,.8) 78%,rgba(12,8,4,.93) 100%);pointer-events:none}
 .en-haut{position:absolute;inset:22px 24px auto;z-index:2;display:flex;justify-content:space-between;gap:16px;margin:0;color:#fff}
 /* repère lumineux sur la porte */
 .en-porte{position:absolute;left:50%;top:44%;z-index:2;width:14px;height:14px;margin:-7px;border-radius:50%;background:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.22)}
 .en-porte::before,.en-porte::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(255,255,255,.75);animation:appel 2.8s var(--ease) infinite}
 .en-porte::after{animation-delay:1.4s}
 @keyframes appel{from{transform:scale(.6);opacity:1}to{transform:scale(4.2);opacity:0}}
-.en-bas{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;gap:12px;padding:0 28px 30px}
+.en-bas{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;gap:10px;padding:0 32px 36px}
+.en-bas .en-cta{margin-top:10px}
 .en-bas .label{color:#E8DFD2}
 .en-bas b{font:400 clamp(22px,2.2vw,32px)/1.15 var(--f);letter-spacing:.08em;text-transform:uppercase}
 .en-bas p{font-size:15px;line-height:1.55;color:#E8DFD2;max-width:46ch}
@@ -835,20 +836,17 @@ section.tf-q{padding-block:0}
         <div class="fiche label q"><span>34, boulevard Haussmann</span><span>Paris IX<sup>e</sup></span><span>Coworking et bureaux</span></div>
         <div class="entre">
           <h1>Une adresse discrète pour écrire sa légende.</h1>
-          <p class="lede">Postes de coworking, bureaux privés et salles de réunion dans un immeuble haussmannien. Parquet en point de Hongrie, moulures, cheminées de marbre, et une verrière de 120&nbsp;m² au rez-de-chaussée.</p>
+          <p class="lede">Coworking, bureaux privés et salles de réunion, dans un immeuble haussmannien.</p>
           <nav class="trio" aria-label="Accès rapides"><button class="trio-l premier" type="button" data-salle=""><b>Réserver une salle</b><small>Dès 35 € HT de l'heure · créneaux en temps réel</small><i aria-hidden="true">→</i></button><a class="trio-l" data-portal="tour" href="#"><b>Visiter le lieu</b><small>30 minutes, café compris ;)</small><i aria-hidden="true">→</i></a><button class="trio-l" type="button" data-membre=""><b>Devenir membre</b><small>Dès 90 € HT par mois · inscription en 2 minutes</small><i aria-hidden="true">→</i></button></nav>
         </div>
       </div>
       <p class="vword" aria-hidden="true"><span>Légendes</span></p>
       <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explorer l'immeuble : pousser la porte du 34, boulevard Haussmann">
         <img src="img/entree.webp" alt="L'entrée du Bureau des Légendes au crépuscule : porte cochère ouverte sur un intérieur éclairé, plaque en laiton, façade en pierre" width="1536" height="1024" fetchpriority="high">
-        <p class="en-haut label"><span>34, boulevard Haussmann</span><span>Quatre niveaux</span></p>
         <i class="en-porte" aria-hidden="true"></i>
         <div class="en-bas">
-          <span class="label">La porte est ouverte</span>
-          <b>Entrez, et parcourez l'immeuble.</b>
-          <p>Quatre niveaux à explorer en maquette, avec les disponibilités en temps réel et la réservation en ligne.</p>
-          <ul class="en-liste" aria-label="Ce que vous allez trouver"><li style="--k:0">Salles et Verrière</li><li style="--k:1">Plateau de coworking</li><li style="--k:2">Bureaux privés</li><li style="--k:3">Étage privatisé</li></ul>
+          <b>Poussez la porte.</b>
+          <p>Quatre niveaux à parcourir en maquette : salles, coworking, bureaux privés.</p>
           <span class="en-cta">Explorer l'immeuble <i aria-hidden="true">→</i></span>
         </div>
       </div>
@@ -868,7 +866,7 @@ section.tf-q{padding-block:0}
   <section class="resa" id="resa">
     <div class="wrap">
       <div class="resa-tete">
-        <div><span class="label">Salles de réunion</span><h2>Une salle pour demain matin ?</h2><p>Quatre salles équipées, jusqu'à 15 personnes. Vous voyez les créneaux libres en temps réel, vous réservez et payez en ligne.</p></div>
+        <div><span class="label">Salles de réunion</span><h2>Une salle pour demain matin ?</h2><p>Quatre salles, jusqu'à 15 personnes. Créneaux en temps réel.</p></div>
         <button class="btn btn-or" type="button" data-salle="">Réserver une salle de réunion</button>
       </div>
       <div class="resa-grille" id="resa-grille"></div>
@@ -878,7 +876,7 @@ section.tf-q{padding-block:0}
   <section class="poste" id="poste">
     <div class="wrap">
       <div class="resa-tete">
-        <div><span class="label">Coworking · 1<sup>er</sup> étage</span><h2>Un poste pour aujourd'hui ?</h2><p>Vingt postes flexibles, côté fenêtre, assis-debout, double écran ou en bibliothèque. Vous voyez les postes libres sur le plan, vous choisissez le vôtre et vous réservez en ligne.</p></div>
+        <div><span class="label">Coworking · 1<sup>er</sup> étage</span><h2>Un poste pour aujourd'hui ?</h2><p>Vingt postes flexibles. Choisissez le vôtre sur le plan.</p></div>
         <a class="btn btn-or" href="plateau/" id="ap-btn">Choisir mon poste</a>
       </div>
       <a class="apercu" id="apercu" href="plateau/" aria-label="Le plateau du 1er étage : voir les postes libres et en réserver un">
@@ -886,61 +884,6 @@ section.tf-q{padding-block:0}
         <span class="ap-haut label"><span>Le plateau</span><span id="ap-compte">20 postes flexibles</span></span>
         <span class="ap-legende label" aria-hidden="true"><span><i class="ap-pt"></i>Libre</span><span><i class="ap-pt pris"></i>Occupé</span></span>
       </a>
-    </div>
-  </section>
-
-  <section class="salon">
-    <div class="wrap why">
-      <figure class="ph"><img src="img/salon.jpg" alt="Salon avec cheminée de marbre, fauteuils en cuir et en velours, table basse en laiton" width="1200" height="540" loading="lazy"></figure>
-      <div>
-        <span class="label">L'esprit du lieu</span>
-        <h2 style="margin-top:18px">Un appartement parisien où l'on vient travailler.</h2>
-        <div class="reason"><h3>Feutré</h3><p>Velours, bois clair et lumière dorée. On s'entend réfléchir, et les appels se passent en cabine capitonnée.</p></div>
-        <div class="reason"><h3>Central</h3><p>Au 34 boulevard Haussmann, dans le 9<sup>e</sup> arrondissement. Vos rendez-vous n'ont pas à traverser Paris.</p></div>
-        <div class="reason"><h3>Confidentiel</h3><p>Casiers sécurisés, bureaux fermés, lignes fibre dédiées. Ce qui se dit ici reste ici.</p></div>
-        <div class="reason"><h3>Simple</h3><p>Vous réservez une salle, payez une facture ou invitez un visiteur depuis votre espace membre, en quelques secondes.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="label">Les espaces</span><h2>Chaque pièce porte le nom d'une légende.</h2></div>
-        <p>Ethan Hunt, James Bond, Mata Hari, George Smiley. Des salles et des bureaux pensés pour des missions très différentes.</p>
-      </div>
-      <div class="splist">
-        <a class="sprow" href="plateau/"><span class="ph"><img src="img/plateau.jpg" alt="" loading="lazy"></span><h3>Coworking</h3><p>Vingt postes flexibles au 1<sup>er</sup> étage, à choisir sur le plan. Seize postes attitrés au 2<sup>e</sup>.</p><span class="label q cap">36 postes</span></a>
-        <a class="sprow" href="#espaces"><span class="ph"><img src="img/bureau.jpg" alt="" loading="lazy"></span><h3>Bureaux privés</h3><p>George Smiley et Mata Hari, deux bureaux fermés avec cheminée et moulures.</p><span class="label q cap">3 à 6 personnes</span></a>
-        <a class="sprow" href="#" data-salle=""><span class="ph"><img src="img/projection.jpg" alt="" loading="lazy"></span><h3>Salles de réunion</h3><p>Quatre salles équipées pour vos comités, vos visios et vos projections.</p><span class="label q cap">Jusqu'à 15 personnes</span></a>
-        <a class="sprow" href="#espaces"><span class="ph"><img src="img/cabines.jpg" alt="" loading="lazy"></span><h3>Cabines</h3><p>Enigma et Morse, deux cabines insonorisées pour un appel ou une visio.</p><span class="label q cap">1 personne</span></a>
-        <a class="sprow" href="#evenements"><span class="ph"><img src="img/verriere-jour.jpg" alt="" loading="lazy"></span><h3>La Verrière</h3><p>Notre pièce maîtresse, pour une conférence, un cocktail ou un atelier.</p><span class="label q cap">60 assis · 90 debout</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="facade">
-    <img src="img/facade.jpg" alt="Façade haussmannienne du 34 boulevard Haussmann au crépuscule, lanternes allumées" width="1280" height="520" loading="lazy">
-    <div class="wrap">
-      <span class="label">L'adresse</span>
-      <h2 style="margin-top:16px">Poussez la porte cochère.</h2>
-      <p>34, boulevard Haussmann, Paris 9<sup>e</sup>. Venez voir le lieu, prendre un café et choisir votre place.</p>
-      <a class="btn btn-or" data-portal="tour" href="#">Réserver une visite</a>
-    </div>
-  </section>
-
-  <section class="salon">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="label">Votre arrivée</span><h2>De la visite à votre premier jour.</h2></div>
-        <p>Tout se fait en ligne, sans paperasse. L'équipe reste là pour le reste.</p>
-      </div>
-      <div class="steps">
-        <div class="step"><h3>Visitez</h3><p>Choisissez un créneau en ligne. Nous vous faisons faire le tour des étages.</p></div>
-        <div class="step"><h3>Choisissez</h3><p>Nomade, Résident, Bureau privé ou Domiciliation. Vous souscrivez en quelques minutes.</p></div>
-        <div class="step"><h3>Recevez vos accès</h3><p>Votre compte membre est créé. Vous y retrouvez contrat, factures et badge.</p></div>
-        <div class="step"><h3>Réservez</h3><p>Salles, cabines et Verrière se réservent depuis votre espace membre, en temps réel.</p></div>
-      </div>
     </div>
   </section>
 
