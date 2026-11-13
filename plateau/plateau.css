@@ -9,6 +9,9 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
+/* voile de passage avec l'accueil (même couleur que le fond) */
+body::after{content:"";position:fixed;inset:0;z-index:1000;background:#F3EAE4;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s ease,visibility 0s .5s}
+html.voile body::after{opacity:1;visibility:visible;transition:opacity .45s ease}
 body{font:400 15px/1.55 var(--f);color:var(--noir);background:linear-gradient(#F3EAE4,#F5EEE8);overflow:hidden;-webkit-font-smoothing:antialiased}
 h1,h2,h3,p{margin:0}
 h1,h2,h3{font-weight:400;text-transform:uppercase}

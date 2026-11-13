@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
 <link rel="stylesheet" href="plateau.css">
+<script>if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("voile")</script>
 <link rel="preload" as="image" href="assets/plateau-2x.webp" media="(min-width:821px)">
 </head>
 <body>
@@ -58,5 +59,25 @@
 
 <noscript><p class="sans-js">Cette page a besoin de JavaScript. Vous pouvez réserver un poste depuis <a href="https://bureaudeslegendesparis.nexudus.site/bureaudeslegendesparis/bookings">l'espace membre</a>.</p></noscript>
 <script type="module" src="js/main.js"></script>
+<script>
+/* Arrivée : le voile se lève une fois le plan chargé. Départ vers l'accueil : il retombe, puis on revient sur l'accueil tel qu'on l'a laissé. */
+(() => {
+  const h = document.documentElement, RM = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  let leve = false;
+  const lever = () => { if (leve) return; leve = true; requestAnimationFrame(() => requestAnimationFrame(() => h.classList.remove("voile"))); };
+  addEventListener("plateau-pret", lever);
+  setTimeout(lever, 2200);
+  addEventListener("pageshow", e => { if (e.persisted){ leve = false; lever(); } });
+  const r = document.querySelector(".retour");
+  r?.addEventListener("click", e => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault(); leve = false; h.classList.add("voile");
+    let ref = null; try { ref = document.referrer ? new URL(document.referrer) : null; } catch {}
+    const depuisAccueil = ref && ref.origin === location.origin && !/\/plateau\//.test(ref.pathname) && history.length > 1;
+    try { sessionStorage.setItem("bdl-voile", "1"); } catch {}
+    setTimeout(() => { if (depuisAccueil) history.back(); else location.href = r.href; }, RM ? 0 : 460);
+  });
+})();
+</script>
 </body>
 </html>

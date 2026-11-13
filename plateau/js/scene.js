@@ -35,7 +35,8 @@ export async function creerScene(cadre, rappel = {}) {
   const sceau = document.createElementNS(NS, "circle"); sceau.setAttribute("class", "c-sceau"); sceau.setAttribute("r", 30); svg.appendChild(sceau);
   const leger = matchMedia("(max-width:820px)").matches && (window.devicePixelRatio || 1) < 2;
   try { await new Promise((ok, ko) => { img.onload = ok; img.onerror = ko; img.src = leger ? IMAGE.leger : IMAGE.src; }); if (img.decode) await img.decode().catch(() => {}); }
-  catch { return null; }
+  catch { dispatchEvent(new Event("plateau-pret")); return null; }
+  dispatchEvent(new Event("plateau-pret"));
 
   const parCode = Object.fromEntries(POSTES_PLAN.map(p => [p.code, p]));
   const centre = p => ({ x: (p.x + p.fx) / 2, y: (p.y + p.fy) / 2 });

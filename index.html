@@ -400,6 +400,9 @@ section{padding-block:clamp(72px,9vw,128px)}
 
 /* Rideau de transition entre les pages */
 #rideau{position:fixed;inset:0;z-index:300;background:var(--noir);transform:translateY(100%);display:grid;place-items:center;pointer-events:none;padding:0 24px;visibility:hidden}
+/* voile de passage vers et depuis le plateau : couleur du fond du plateau, pour ne jamais voir l'autre page en coup de vent */
+#voile{position:fixed;inset:0;z-index:1000;background:#F3EAE4;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .45s ease,visibility 0s .45s}
+html.voile #voile{opacity:1;visibility:visible;transition:opacity .45s ease}
 #rideau div{text-align:center}
 #rideau img{height:54px;width:auto;margin:0 auto 28px}
 #rideau span{font:400 clamp(30px,6.4vw,92px)/1.05 var(--f);letter-spacing:.1em;text-transform:uppercase;color:#fff}
@@ -842,10 +845,12 @@ section.tf-q{padding-block:0}
 .tf .paiement{max-width:520px;margin-top:28px}
 .tf .recap{margin-top:24px;max-width:520px}
 </style>
+<script>try{if(sessionStorage.getItem("bdl-voile")){sessionStorage.removeItem("bdl-voile");if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("voile")}}catch(e){}</script>
 </head>
 <body>
 
 
+<div id="voile" aria-hidden="true"></div>
 <div id="rideau" aria-hidden="true"><div><img src="img/mark-blanc.png" alt=""><br><span id="rideau-t"></span></div></div>
 
 <header class="hdr">
@@ -1414,6 +1419,21 @@ document.querySelectorAll("[data-portal]").forEach(a => { a.href = PORTAL + (PAT
 const NOMS = ["Ethan Hunt","James Bond","Jason Bourne","George Smiley","Mata Hari","Enigma","Morse","La Verrière"];
 
 const RM = matchMedia("(prefers-reduced-motion:reduce)").matches;
+/* Passage vers le plateau : le voile couvre la page, puis on change de page ; au retour, il se lève. */
+function versPlateau(url){
+  const h = document.documentElement; if (h.classList.contains("part")) return;
+  h.classList.add("voile", "part");
+  setTimeout(() => { location.href = url; }, RM ? 0 : 460);
+}
+document.addEventListener("click", e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest("a[href]"); if (!a || a.target === "_blank") return;
+  const u = new URL(a.href, location.href); if (u.origin !== location.origin || !/\/plateau\//.test(u.pathname)) return;
+  e.preventDefault(); versPlateau(u.href);
+});
+const leverVoile = () => requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove("voile", "part")));
+if (document.documentElement.classList.contains("voile")){ if (document.readyState === "complete") leverVoile(); else { addEventListener("load", leverVoile, { once: true }); setTimeout(leverVoile, 1400); } }
+addEventListener("pageshow", e => { if (e.persisted){ try { sessionStorage.removeItem("bdl-voile"); } catch {} leverVoile(); } });
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 function fitVword(){
@@ -2134,7 +2154,7 @@ route();
 /* L'immeuble en coupe : le niveau mis en avant change tout seul ; survol ou clic pour choisir, chaque niveau mène à son offre. */
 const NIVEAUX = [
   { niveau:"Rez-de-chaussée", titre:"Salles de réunion et Verrière", detail:"Quatre salles jusqu'à 15 personnes, et 120 m² sous verrière. Dès 35 € HT de l'heure.", cta:"Réserver une salle", action:() => ouvrirSalle(null) },
-  { niveau:"1er étage", titre:"Le plateau de coworking", detail:"Vingt postes flexibles, à choisir sur le plan. Dès 15 € HT la demi-journée.", cta:"Réserver un poste", action:() => { location.href = document.getElementById("apercu")?.href || "plateau/"; } },
+  { niveau:"1er étage", titre:"Le plateau de coworking", detail:"Vingt postes flexibles, à choisir sur le plan. Dès 15 € HT la demi-journée.", cta:"Réserver un poste", action:() => versPlateau(document.getElementById("apercu")?.href || "plateau/"), reste:true },
   { niveau:"2e étage", titre:"Résidents et bureaux privés", detail:"Seize postes attitrés et trois bureaux fermés, avec cheminée et moulures. Dès 490 € HT par mois.", cta:"Devenir membre", action:() => ouvrirMembre(1415397039) },
   { niveau:"3e étage", titre:"Un étage pour votre équipe", detail:"Un plateau privatisé : vos postes, votre bureau de direction, votre salle de réunion.", cta:"Réserver une visite", action:() => ouvrir() },
 ];
@@ -2151,7 +2171,7 @@ const NIVEAUX = [
     box.classList.remove("tourne"); clearTimeout(minuterie);
     if (!RM && !pause && box.classList.contains("ouvert")){ void box.offsetWidth; box.style.setProperty("--duree", DUREE + "ms"); box.classList.add("tourne"); minuterie = setTimeout(() => montrer(actif - 1), DUREE); }
   }
-  const lancer = n => { fermer(); NIVEAUX[n].action(); };
+  const lancer = n => { if (!NIVEAUX[n].reste) fermer(); NIVEAUX[n].action(); };
   function ouvrirUnivers(){
     focusAvant = document.activeElement; dessiner(); pause = false; actif = 0;
     box.className = "univers"; box.hidden = false; document.body.classList.add("modal-ouverte");
@@ -2166,6 +2186,7 @@ const NIVEAUX = [
   entree.addEventListener("click", e => { if (!e.target.closest(".en-nexudus")) ouvrirUnivers(); });
   entree.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); ouvrirUnivers(); } });
   document.getElementById("un-fermer").addEventListener("click", fermer);
+  addEventListener("pageshow", e => { if (e.persisted) fermer(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !box.hidden) fermer(); });
   box.addEventListener("click", e => {
     // un clic pendant l'ouverture passe directement à la vue en coupe
@@ -2202,7 +2223,7 @@ const NIVEAUX = [
     if (d.creneaux && d.creneaux.matin) NIVEAUX[1].detail = prixDans(NIVEAUX[1].detail, d.creneaux.matin.prix);
     a.href = "plateau/?jour=" + jour; document.getElementById("ap-btn").href = a.href;
     if (window.IntersectionObserver && !RM){ a.classList.add("attend"); new IntersectionObserver((es, o) => { if (es[0].isIntersecting){ a.classList.remove("attend"); o.disconnect(); } }, { threshold:.35 }).observe(a); }
-    a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris") && !pt.classList.contains("passe")){ e.preventDefault(); location.href = `plateau/?jour=${jour}&poste=${pt.dataset.code}`; } });
+    a.addEventListener("click", e => { const pt = e.target.closest("[data-code]"); if (pt && !pt.classList.contains("pris") && !pt.classList.contains("passe")){ e.preventDefault(); versPlateau(`plateau/?jour=${jour}&poste=${pt.dataset.code}`); } });
   } catch(_){ /* sans Nexudus, l'aperçu reste une image : pas de disponibilité inventée */ }
 })();
 /* Pass journée : achat en trois champs, paiement de démonstration, pass créé dans Nexudus par /api/pass. */
