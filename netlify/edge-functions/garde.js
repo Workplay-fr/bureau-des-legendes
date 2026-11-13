@@ -25,6 +25,12 @@ const versInterne = s => (typeof s === "string" && s.startsWith("/") && !s.start
 export default async (req, context) => {
   const url = new URL(req.url);
   const p = url.pathname;
+  if (p.startsWith("/img/email/")) {
+    // Modèles d'e-mails : lisibles depuis l'éditeur de Flow, y compris à travers la redirection .html → sans extension
+    const r = await context.next();
+    const h = new Headers(r.headers); h.set("access-control-allow-origin", "*");
+    return new Response(r.body, { status: r.status, headers: h });
+  }
   if (p.startsWith("/img/") || p.startsWith("/portail/")) return context.next();
 
   const secret = env("SITE_PASSWORD");
