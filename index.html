@@ -844,6 +844,16 @@ section.tf-q{padding-block:0}
 @media (max-width:600px){.plans-tf{grid-template-columns:minmax(0,1fr)}.tf-champ.deux{grid-template-columns:minmax(0,1fr)}.tf-nav{display:none}}
 .tf .paiement{max-width:520px;margin-top:28px}
 .tf .recap{margin-top:24px;max-width:520px}
+
+/* Touches de bleu (la 3e couleur, ~10 %) : repères des surtitres, soulignés, survols, sélection */
+.label:not(.q)::before{content:"";display:inline-block;width:6px;height:6px;background:var(--bleu);margin-right:12px;vertical-align:.18em}
+.nav a::after,.sprow::before{background:var(--bleu)}
+.lien{text-decoration-color:var(--bleu);text-underline-offset:.35em}
+.btn-fil::before{background:var(--bleu)}
+@media (hover:hover){.btn-fil:hover{color:#fff;border-color:var(--bleu)}}
+::selection{background:var(--bleu);color:#fff}
+.trio-l:not(.premier) i{color:var(--bleu)}
+.tf-num{color:var(--bleu)}
 </style>
 <script>try{if(sessionStorage.getItem("bdl-voile")){sessionStorage.removeItem("bdl-voile");if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("voile")}}catch(e){}</script>
 </head>
