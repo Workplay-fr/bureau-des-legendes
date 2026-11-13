@@ -425,7 +425,7 @@ def appliquer(texte, paires, ou):
 
 PAGE_P = [
     ('<html lang="fr">', '<html lang="en">'), ('<title>Le plateau · Bureau des Légendes</title>', '<title>The floor · Bureau des Légendes</title>'),
-    ('href="../img/mark-blanc.png"', 'href="../../img/mark-blanc.png"'), ('href="plateau.css"', 'href="../plateau.css"'),
+    ('href="../img/mark-noir.png"', 'href="../../img/mark-noir.png"'), ('href="plateau.css"', 'href="../plateau.css"'),
     ('href="assets/plateau-2x.webp"', 'href="../assets/plateau-2x.webp"'), ('src="js/main.js"', 'src="js/main.js"'),
     ('<a class="retour" href="/">← Bureau des Légendes</a>', '<a class="retour" href="/en/">← Bureau des Légendes</a>'),
     ('<h1>Le plateau</h1>', '<h1>The floor</h1>'), ('<p>1<sup>er</sup> étage · 20 postes flexibles</p>', '<p>1<sup>st</sup> floor · 20 flexible desks</p>'),

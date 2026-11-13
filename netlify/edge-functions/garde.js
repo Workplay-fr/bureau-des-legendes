@@ -80,7 +80,7 @@ function page(suite, erreur, status) {
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Bureau des Légendes · ${en ? "Access" : "Accès"}</title>
-<link rel="icon" type="image/png" href="/img/mark-blanc.png">
+<link rel="icon" type="image/png" href="/img/mark-noir.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
 <style>
