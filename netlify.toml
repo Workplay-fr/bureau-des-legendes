@@ -19,3 +19,9 @@
 [[edge_functions]]
   path = "/*"
   function = "garde"
+
+# Modèles d'e-mails Nexudus : lisibles depuis l'éditeur de Flow (collage du HTML)
+[[headers]]
+  for = "/img/email/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
