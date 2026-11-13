@@ -118,5 +118,29 @@
   "langue": "en",
   "fichier": "VisitorBookingNotification-en.html",
   "sujet": "Invitation · {resourceName} · no. {bookingNumber}"
+ },
+ {
+  "modele": "TourRegistered",
+  "langue": "fr",
+  "fichier": "TourRegistered-fr.html",
+  "sujet": "Votre visite du Bureau des Légendes est confirmée"
+ },
+ {
+  "modele": "TourRegistered",
+  "langue": "en",
+  "fichier": "TourRegistered-en.html",
+  "sujet": "Your Bureau des Légendes tour is confirmed"
+ },
+ {
+  "modele": "VisitorCheckin",
+  "langue": "fr",
+  "fichier": "VisitorCheckin-fr.html",
+  "sujet": "{visitorfullname} vient d'arriver"
+ },
+ {
+  "modele": "VisitorCheckin",
+  "langue": "en",
+  "fichier": "VisitorCheckin-en.html",
+  "sujet": "{visitorfullname} has just arrived"
  }
 ]
