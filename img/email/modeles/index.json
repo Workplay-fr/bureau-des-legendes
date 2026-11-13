@@ -1,0 +1,122 @@
+[
+ {
+  "modele": "NewUser",
+  "langue": "fr",
+  "fichier": "NewUser-fr.html",
+  "sujet": "Bienvenue au Bureau des Légendes, {salutation}"
+ },
+ {
+  "modele": "NewUser",
+  "langue": "en",
+  "fichier": "NewUser-en.html",
+  "sujet": "Welcome to the Bureau des Légendes, {salutation}"
+ },
+ {
+  "modele": "BookingConfirmation",
+  "langue": "fr",
+  "fichier": "BookingConfirmation-fr.html",
+  "sujet": "Votre réservation · {resourceName} · n° {bookingNumber}"
+ },
+ {
+  "modele": "BookingConfirmation",
+  "langue": "en",
+  "fichier": "BookingConfirmation-en.html",
+  "sujet": "Your booking · {resourceName} · no. {bookingNumber}"
+ },
+ {
+  "modele": "BookingReminder",
+  "langue": "fr",
+  "fichier": "BookingReminder-fr.html",
+  "sujet": "Rappel · {resourceName} · n° {bookingNumber}"
+ },
+ {
+  "modele": "BookingReminder",
+  "langue": "en",
+  "fichier": "BookingReminder-en.html",
+  "sujet": "Reminder · {resourceName} · no. {bookingNumber}"
+ },
+ {
+  "modele": "BookingDeletedConfirmation",
+  "langue": "fr",
+  "fichier": "BookingDeletedConfirmation-fr.html",
+  "sujet": "Réservation annulée · {resourceName} · n° {bookingNumber}"
+ },
+ {
+  "modele": "BookingDeletedConfirmation",
+  "langue": "en",
+  "fichier": "BookingDeletedConfirmation-en.html",
+  "sujet": "Booking cancelled · {resourceName} · no. {bookingNumber}"
+ },
+ {
+  "modele": "NewInvoice",
+  "langue": "fr",
+  "fichier": "NewInvoice-fr.html",
+  "sujet": "Votre facture {invoicenumber} · Bureau des Légendes"
+ },
+ {
+  "modele": "NewInvoice",
+  "langue": "en",
+  "fichier": "NewInvoice-en.html",
+  "sujet": "Your invoice {invoicenumber} · Bureau des Légendes"
+ },
+ {
+  "modele": "Proposal",
+  "langue": "fr",
+  "fichier": "Proposal-fr.html",
+  "sujet": "Votre proposition · Bureau des Légendes · {proposalreference}"
+ },
+ {
+  "modele": "Proposal",
+  "langue": "en",
+  "fichier": "Proposal-en.html",
+  "sujet": "Your proposal · Bureau des Légendes · {proposalreference}"
+ },
+ {
+  "modele": "SignInCode",
+  "langue": "fr",
+  "fichier": "SignInCode-fr.html",
+  "sujet": "Votre code de connexion : {signincode}"
+ },
+ {
+  "modele": "SignInCode",
+  "langue": "en",
+  "fichier": "SignInCode-en.html",
+  "sujet": "Your sign-in code: {signincode}"
+ },
+ {
+  "modele": "VisitorRegistered",
+  "langue": "fr",
+  "fichier": "VisitorRegistered-fr.html",
+  "sujet": "{fullname} vous attend au Bureau des Légendes"
+ },
+ {
+  "modele": "VisitorRegistered",
+  "langue": "en",
+  "fichier": "VisitorRegistered-en.html",
+  "sujet": "{fullname} is expecting you at the Bureau des Légendes"
+ },
+ {
+  "modele": "VisitorApproveRequest",
+  "langue": "fr",
+  "fichier": "VisitorApproveRequest-fr.html",
+  "sujet": "{visitorfullname} vous attend à l'accueil"
+ },
+ {
+  "modele": "VisitorApproveRequest",
+  "langue": "en",
+  "fichier": "VisitorApproveRequest-en.html",
+  "sujet": "{visitorfullname} is waiting for you at reception"
+ },
+ {
+  "modele": "VisitorBookingNotification",
+  "langue": "fr",
+  "fichier": "VisitorBookingNotification-fr.html",
+  "sujet": "Invitation · {resourceName} · n° {bookingNumber}"
+ },
+ {
+  "modele": "VisitorBookingNotification",
+  "langue": "en",
+  "fichier": "VisitorBookingNotification-en.html",
+  "sujet": "Invitation · {resourceName} · no. {bookingNumber}"
+ }
+]
