@@ -854,6 +854,16 @@ section.tf-q{padding-block:0}
 ::selection{background:var(--bleu);color:#fff}
 .trio-l:not(.premier) i{color:var(--bleu)}
 .tf-num{color:var(--bleu)}
+/* … un peu plus de bleu, toujours en ponctuation */
+.label:not(.q)+h2::after{content:"";display:block;width:44px;height:2px;background:var(--bleu);margin-top:22px}
+.btn-or::before{background:var(--bleu)}
+@media (hover:hover){.btn-or:hover{color:#fff;border-color:var(--bleu)}}
+.badge{background:var(--bleu)}
+.ag-date b{color:var(--bleu,#3C6A9E)}
+.prix b,.prix-h b{color:var(--bleu)}
+.deep .prix b,.ftr .prix b{color:#8FB0D6}
+.faq summary::after{background:linear-gradient(var(--bleu),var(--bleu)) center/13px 1px no-repeat,linear-gradient(var(--bleu),var(--bleu)) center/1px 13px no-repeat}
+.faq details[open] summary{color:var(--bleu)}
 </style>
 <script>try{if(sessionStorage.getItem("bdl-voile")){sessionStorage.removeItem("bdl-voile");if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("voile")}}catch(e){}</script>
 </head>
