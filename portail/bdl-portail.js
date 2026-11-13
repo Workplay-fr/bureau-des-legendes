@@ -8,6 +8,23 @@
   var BASE = "https://bdl.workplay.fr";
   var doc = document;
 
+  /* Favicon : le « B » noir du site vitrine (celui de Nexudus est blanc, invisible sur un onglet clair) */
+  (function () {
+    var ICONE = BASE + "/img/favicon-noir.png";
+    function poser() {
+      var liens = doc.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]');
+      var ok = liens.length && Array.prototype.every.call(liens, function (l) { return l.href === ICONE; });
+      if (ok) return;
+      Array.prototype.forEach.call(liens, function (l) { l.parentNode.removeChild(l); });
+      [["icon", "image/png"], ["apple-touch-icon", ""]].forEach(function (r) {
+        var l = doc.createElement("link"); l.rel = r[0]; if (r[1]) l.type = r[1]; l.href = ICONE; l.setAttribute("data-bdl", "icone");
+        doc.head.appendChild(l);
+      });
+    }
+    poser();
+    try { new MutationObserver(poser).observe(doc.head, { childList: true }); } catch (e) {}
+  })();
+
   /* Police Jost, celle du site vitrine */
   if (!doc.querySelector('link[data-bdl="font"]')) {
     var pc = doc.createElement("link");
