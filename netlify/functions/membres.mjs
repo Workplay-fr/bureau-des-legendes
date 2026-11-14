@@ -56,21 +56,10 @@ const traiter = async (req) => {
       return json(200, { ok: true, contrat: null, demande: true, reference: oid ? "BDL-D" + String(oid).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
     }
     const id = k.Value && k.Value.Id;
-    // Domiciliation : on ouvre tout de suite les deux vérifications rattachées au contrat (pièce d'identité via Stripe Identity,
-    // justificatif de domicile relu par l'équipe). Le client les retrouve dans son espace membre ; le contrat s'active quand elles sont validées.
-    let verifs = null;
+    // Domiciliation : les vérifications (pièce d'identité via Stripe Identity, justificatif de domicile) sont ouvertes par le client
+    // dans l'onboarding Bureau virtuel du portail (/virtual-office/onboarding), dont Nexudus envoie le lien par e-mail (formule : SendOnBoardingFormByEmail).
+    const verifs = null;
     if (domic && id) {
-      try {
-        let guid = k.Value.UniqueId;
-        if (!guid) { const kk = await nx("GET", `/billing/coworkercontracts/${id}`); guid = kk.UniqueId; }
-        const verif = (type, nom, desc, prov) => ({ BusinessId: CFG.business, CoworkerId: c.id, Name: nom, Description: desc,
-          IdentityCheckProvider: prov, VerificationType: type, IdentityDocumentType: 3, AddressDocumentType: 99,
-          IdentityCheckDocumentTypes: [1, 3], AddressCheckDocumentTypes: [9, 4, 99], CoworkerContractGuid: guid });
-        const corps = [verif(1, "Domiciliation · pièce d'identité du dirigeant", "Carte nationale d'identité ou passeport en cours de validité.", 2),
-          verif(2, "Domiciliation · justificatif de domicile du dirigeant", "Justificatif de domicile personnel de moins de 3 mois.", 1)];
-        for (const b of corps) await nx("POST", "/spaces/coworkeridentitychecks", b);
-        verifs = corps.length;
-      } catch (e) { console.error("Vérifications non créées :", e.message); verifs = String(e.message).slice(0, 200); }
       // Carte dans le tableau CRM « Domiciliation », colonne « Dossier reçu » : Nexudus crée les tâches de l'équipe (liste « Dossier de domiciliation »)
       try {
         await nx("POST", "/crm/crmopportunities", {
