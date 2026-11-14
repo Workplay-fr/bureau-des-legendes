@@ -58,6 +58,7 @@ const traiter = async (req) => {
     const id = k.Value && k.Value.Id;
     // Domiciliation : on ouvre tout de suite les deux vérifications rattachées au contrat (pièce d'identité via Stripe Identity,
     // justificatif de domicile relu par l'équipe). Le client les retrouve dans son espace membre ; le contrat s'active quand elles sont validées.
+    let verifs = null;
     if (domic && id) {
       try {
         let guid = k.Value.UniqueId;
@@ -67,13 +68,11 @@ const traiter = async (req) => {
           IdentityCheckDocumentTypes: [1, 3], AddressCheckDocumentTypes: [9, 4, 99], CoworkerContractGuid: guid });
         const corps = [verif(1, "Domiciliation · pièce d'identité du dirigeant", "Carte nationale d'identité ou passeport en cours de validité.", 2),
           verif(2, "Domiciliation · justificatif de domicile du dirigeant", "Justificatif de domicile personnel de moins de 3 mois.", 1)];
-        for (const b of corps) {
-          try { await nx("POST", "/spaces/coworkeridentitychecks", b); }
-          catch (e) { await nx("POST", "/billing/coworkeridentitychecks", b); }
-        }
-      } catch (e) { console.error("Vérifications non créées :", e.message); }
+        for (const b of corps) await nx("POST", "/spaces/coworkeridentitychecks", b);
+        verifs = corps.length;
+      } catch (e) { console.error("Vérifications non créées :", e.message); verifs = String(e.message).slice(0, 200); }
     }
-    return json(200, { ok: true, contrat: id, reference: id ? (domic ? "BDL-D" : "BDL-M") + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
+    return json(200, { ok: true, verifs, contrat: id, reference: id ? (domic ? "BDL-D" : "BDL-M") + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
   } catch (e) {
     const refus = emailRefuse(e); if (refus) return refus;
     console.error(e.message, JSON.stringify(e.details || null));
