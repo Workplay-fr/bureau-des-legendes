@@ -35,7 +35,7 @@ const traiter = async (req) => {
   try {
     const c = await contact({ ...v, compte: true,
       note: domic ? `Dirigeant de ${v.societe} : dossier de domiciliation déposé depuis le site vitrine${creation ? " (société en création)" : ` (SIREN ${siren})`}.` : `Membre inscrit depuis le site vitrine (formule ${f.nom}).`,
-      extra: domic ? { BillingName: v.societe, ReferenceNumber: creation ? null : siren } : null });
+      extra: domic ? { BillingName: v.societe, TaxIDNumber: creation ? null : siren } : null });
     let k;
     try { k = await nx("POST", "/billing/coworkercontracts", {
       IssuedById: CFG.business, CoworkerId: c.id, TariffId: tarif, StartDate: `${debut}T00:00:00Z`,

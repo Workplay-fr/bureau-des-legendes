@@ -142,5 +142,17 @@
   "langue": "en",
   "fichier": "VisitorCheckin-en.html",
   "sujet": "{visitorfullname} has just arrived"
+ },
+ {
+  "modele": "VirtualOfficeWelcome",
+  "langue": "fr",
+  "fichier": "VirtualOfficeWelcome-fr.html",
+  "sujet": "Votre domiciliation au 312 boulevard Haussmann : dernière étape"
+ },
+ {
+  "modele": "VirtualOfficeWelcome",
+  "langue": "en",
+  "fichier": "VirtualOfficeWelcome-en.html",
+  "sujet": "Your registered address at 312 boulevard Haussmann: one last step"
  }
 ]
