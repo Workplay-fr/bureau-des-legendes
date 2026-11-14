@@ -2224,7 +2224,7 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
     portail.hidden = domic;
     if (domic){
       titre.innerHTML = `Dossier reçu, ${esc(v.prenom)}.`;
-      aideFin.innerHTML = `Plus que trois étapes, et aucun paiement avant la validation :<ol class="tf-etapes"><li><b>Ouvrez l'e-mail de bienvenue</b> envoyé à ${esc(v.email)} et choisissez votre mot de passe.</li><li><b>Vérifiez votre identité</b> depuis votre espace membre : votre pièce d'identité avec votre téléphone (2 minutes), puis votre justificatif de domicile.</li><li><b>Nous validons sous 24 h ouvrées.</b> Vous recevez alors votre contrat, votre attestation de domiciliation pour le greffe et votre première facture.</li></ol>`;
+      aideFin.innerHTML = `Plus que trois étapes, et aucun paiement avant la validation :<ol class="tf-etapes"><li><b>Ouvrez nos deux e-mails</b> envoyés à ${esc(v.email)} : vos identifiants de connexion, puis « Votre domiciliation : dernière étape ».</li><li><b>Complétez votre dossier en ligne</b> (5 minutes) : votre société, votre pièce d'identité avec votre téléphone, votre justificatif de domicile et vos consignes de courrier.</li><li><b>Nous validons sous 24 h ouvrées.</b> Vous recevez alors votre contrat, votre attestation de domiciliation pour le greffe et votre première facture.</li></ol>`;
       portail.textContent = "Vérifier mon identité";
     } else {
       titre.innerHTML = titre.dataset.orig; aideFin.innerHTML = aideFin.dataset.orig; portail.textContent = portail.dataset.orig;

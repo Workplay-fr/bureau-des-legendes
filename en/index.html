@@ -2224,7 +2224,7 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
     portail.hidden = domic;
     if (domic){
       titre.innerHTML = `File received, ${esc(v.prenom)}.`;
-      aideFin.innerHTML = `Three steps left, and no payment until approval:<ol class="tf-etapes"><li><b>Open the welcome email</b> sent to ${esc(v.email)} and choose your password.</li><li><b>Verify your identity</b> from your member area: your ID with your phone (2 minutes), then your proof of address.</li><li><b>We approve within one business day.</b> You then receive your contract, your domiciliation certificate for the company registry and your first invoice.</li></ol>`;
+      aideFin.innerHTML = `Three steps left, and no payment until approval:<ol class="tf-etapes"><li><b>Open our two emails</b> sent to ${esc(v.email)}: your login details, then « Your registered address: one last step ».</li><li><b>Complete your file online</b> (5 minutes): your company, your ID with your phone, your proof of address and your mail instructions.</li><li><b>We approve within one business day.</b> You then receive your contract, your domiciliation certificate for the company registry and your first invoice.</li></ol>`;
       portail.textContent = "Verify my identity";
     } else {
       titre.innerHTML = titre.dataset.orig; aideFin.innerHTML = aideFin.dataset.orig; portail.textContent = portail.dataset.orig;
