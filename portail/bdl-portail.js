@@ -34,7 +34,7 @@
     };
     var EXTRAS = [
       { cle: "factures", txt: en ? "Invoices & payments" : "Factures & paiements", href: function () { return base + "/user/dashboard/invoices"; } },
-      { cle: "demande", txt: en ? "Need anything? Just ask" : "Une demande ? On s'en occupe", href: function () { return route(/help-?desk/i, "/help-desk"); } },
+      { cle: "demande", txt: en ? "Need anything? Just ask" : "Une demande ? On s'en occupe", href: function () { return base + "/user/help-desk"; }, ouvre: "demande" },
       { cle: "agenda", txt: en ? "Join an event" : "Participer à un événement", href: function () { return base + "/events/agenda"; } }
     ];
     function feuille(el) {
@@ -69,12 +69,21 @@
         a.removeAttribute("target");
         var f = feuille(col); if (f) f.textContent = x.txt;
         icone(col, x.cle);
+        if (x.ouvre) a.addEventListener("click", function () { try { sessionStorage.setItem("bdl_ouvre", x.ouvre); } catch (e) {} });
         boite.appendChild(col);
       });
     }
+    function ouvrirDemande() {
+      var f = null; try { f = sessionStorage.getItem("bdl_ouvre"); } catch (e) {}
+      if (f !== "demande" || !/\/help-desk/.test(location.pathname)) return;
+      var b = Array.prototype.filter.call(doc.querySelectorAll("main button.btn-primary"), function (x) { return /demander|aide|request|help|new/i.test(x.textContent); })[0];
+      if (!b) return;
+      try { sessionStorage.removeItem("bdl_ouvre"); } catch (e) {}
+      setTimeout(function () { b.click(); }, 250);
+    }
     var t = null;
-    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(completer, 80); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
-    completer();
+    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(function () { completer(); ouvrirDemande(); }, 80); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
+    completer(); ouvrirDemande();
   })();
 
   /* Favicon : le « B » noir du site vitrine (celui de Nexudus est blanc, invisible sur un onglet clair) */
