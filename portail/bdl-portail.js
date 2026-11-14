@@ -837,7 +837,7 @@ html.bdl-page main .card .btn-primary{ width:auto; }
     files: ["Mes <em>documents.</em>", "Contrats, attestations et fichiers partagés avec vous.", "bureau.jpg"]
   };
   function rubrique() {
-    var m = location.pathname.match(/\/user\/dashboard\/([^/?#]+)/);
+    var m = location.pathname.match(/\/user\/dashboard\/(?!personal)([^/?#]+)/);
     return m ? m[1] : null;
   }
   function activite() {
@@ -861,7 +861,7 @@ html.bdl-page main .card .btn-primary{ width:auto; }
   }
 
   function appliquer() {
-    var act = /\/user\/dashboard\/[^/?#]+/.test(location.pathname);
+    var act = /\/user\/dashboard\/(?!personal)[^/?#]+/.test(location.pathname);
     var dash = /\/user\/dashboard/.test(location.pathname) && !act;
     doc.documentElement.classList.toggle("bdl-act", act);
     doc.documentElement.classList.toggle("bdl-dash", dash);
