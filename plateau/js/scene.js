@@ -33,7 +33,9 @@ export async function creerScene(cadre, rappel = {}) {
     f.style.cssText = `left:${o[0]}px;top:${o[1]}px;width:${o[2]}px`; f.style.setProperty("--d", ((p.x + p.y * 0.6 - 560) / 1100 * 0.9).toFixed(2) + "s"); gens.appendChild(f); figurines[p.code] = f; }
   monde.append(img, gens, teinte, rais, poussiere, flou, ombre, voile, svg, trace); incline.appendChild(monde); cadre.appendChild(incline);
   const sceau = document.createElementNS(NS, "circle"); sceau.setAttribute("class", "c-sceau"); sceau.setAttribute("r", 30); svg.appendChild(sceau);
-  const leger = matchMedia("(max-width:820px)").matches && (window.devicePixelRatio || 1) < 2;
+  // Téléphones et tablettes : image 1x, sans calques de lumière ni flou (Safari iOS ferme l'onglet au-delà de sa mémoire)
+  const leger = matchMedia("(max-width:820px), (pointer:coarse)").matches;
+  if (leger) { cadre.classList.add("leger"); [rais, poussiere, flou, ombre].forEach(e => e.remove()); }
   try { await new Promise((ok, ko) => { img.onload = ok; img.onerror = ko; img.src = leger ? IMAGE.leger : IMAGE.src; }); if (img.decode) await img.decode().catch(() => {}); }
   catch { dispatchEvent(new Event("plateau-pret")); return null; }
   dispatchEvent(new Event("plateau-pret"));
@@ -72,7 +74,7 @@ export async function creerScene(cadre, rappel = {}) {
       // l'échelle s'interpole en logarithme : le zoom paraît régulier
       V.e = Math.exp(Math.log(anim.de.e) + (Math.log(anim.a.e) - Math.log(anim.de.e)) * q); V.x = anim.de.x + (anim.a.x - anim.de.x) * q; V.y = anim.de.y + (anim.a.y - anim.de.y) * q; if (k >= 1) anim = null; sale = true; }
     if (Math.abs(I.ca - I.a) > 0.004 || Math.abs(I.cb - I.b) > 0.004) { I.a += (I.ca - I.a) * 0.07; I.b += (I.cb - I.b) * 0.07; sale = true; }
-    if (!RM && ++tic % 2 === 0) poussieres(now);
+    if (!RM && !leger && ++tic % 2 === 0) poussieres(now);
     if (sale) appliquer(); }
   // Poussières dans la lumière : quelques points qui dérivent lentement
   let tic = 0; const ctx = poussiere.getContext("2d"), grains = Array.from({ length: 54 }, (_, i) => ({ x: 120 + ((i * 97) % 520), y: 110 + ((i * 53) % 330), r: 0.5 + (i % 4) * 0.28, v: 0.05 + (i % 5) * 0.022, p: i * 1.7 }));
@@ -117,7 +119,7 @@ export async function creerScene(cadre, rappel = {}) {
   function finIntro() { if (introFinie) return; introFinie = true; minuteries.forEach(clearTimeout); cadre.classList.add("i-trace", "i-rendu", "pret"); rappel.onIntroFin && rappel.onIntroFin(); }
   // Rendus par créneau, s'ils ont été fournis
   const rendus = {};
-  for (const [nom, src] of Object.entries(IMAGE.ambiances || {})) { const im = new Image(); im.className = "rendu-ambiance"; im.alt = ""; im.draggable = false; im.onload = () => { rendus[nom] = im; img.after(im); im.classList.toggle("on", cadre.dataset.ambiance === nom); cadre.classList.add("a-des-rendus"); }; im.src = src; }
+  for (const [nom, src] of Object.entries((leger ? IMAGE.ambiancesLeger : IMAGE.ambiances) || {})) { const im = new Image(); im.className = "rendu-ambiance"; im.alt = ""; im.draggable = false; im.onload = () => { rendus[nom] = im; img.after(im); im.classList.toggle("on", cadre.dataset.ambiance === nom); cadre.classList.add("a-des-rendus"); }; im.src = src; }
   return {
     codes: POSTES_PLAN.map(p => p.code),
     demarrer() { const v = contenir(vueEns()); pret = true;

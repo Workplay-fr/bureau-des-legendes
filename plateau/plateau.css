@@ -307,3 +307,9 @@ body.sans-3d .bandeau{position:static;transform:none;margin:12px auto}
 .cal-jours button.entre{background:rgba(60,106,158,.12)}
 .cal-jours button:hover:not(:disabled):not(.sel){box-shadow:inset 0 0 0 1px var(--bleu);background:transparent}
 ::selection{background:var(--bleu);color:#fff}
+
+/* Mobile et tactile : rendu allégé (mémoire de Safari iOS) */
+#scene.leger{perspective:none}
+#scene.leger .incline{will-change:auto;transform:none!important}
+#scene.leger .monde > img:first-child{filter:none!important}
+#scene.leger .teinte{mix-blend-mode:normal;opacity:.12}
