@@ -821,6 +821,7 @@ section.tf-q{padding-block:0}
 .tf-choix button.on{background:var(--noir);color:#fff;border-color:var(--noir)}
 .tf-choix button.on kbd{border-color:#fff}
 .tf-choix button.on small{color:#C7C0B8}
+.tf-etapes{margin:14px 0 0;padding-left:1.3em;display:grid;gap:8px}.tf-etapes li{padding-left:4px}.tf-etapes b{color:var(--noir);font-weight:500}
 .tf-date{font:400 18px/1.3 var(--f);padding:12px 14px;border:1px solid var(--noir);background:#fff;color:var(--noir);max-width:260px}
 .tf-ok{margin-top:30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .tf-ok .astuce{font-size:13px;color:var(--gris)}
@@ -2220,16 +2221,17 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
       : [["Membership", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["First month", eur(montantM().ttc) + " incl. VAT (demo payment)"], ["Reference", res.reference || "—"]]).map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
     const titre = document.getElementById("tf-fin-titre"), aideFin = document.getElementById("tf-fin-aide"), portail = document.getElementById("tf-fin-portail");
     if (titre.dataset.orig === undefined){ titre.dataset.orig = titre.innerHTML; aideFin.dataset.orig = aideFin.innerHTML; portail.dataset.orig = portail.textContent; }
+    portail.hidden = domic;
     if (domic){
       titre.innerHTML = `File received, ${esc(v.prenom)}.`;
-      aideFin.innerHTML = `One last step: verify your identity from your member area (director's ID and proof of address). <b>No payment until approval.</b> The contract then activates, and you receive your first invoice and your domiciliation certificate for the company registry.`;
+      aideFin.innerHTML = `Three steps left, and no payment until approval:<ol class="tf-etapes"><li><b>Open the welcome email</b> sent to ${esc(v.email)} and choose your password.</li><li><b>Verify your identity</b> from your member area: your ID with your phone (2 minutes), then your proof of address.</li><li><b>We approve within one business day.</b> You then receive your contract, your domiciliation certificate for the company registry and your first invoice.</li></ol>`;
       portail.textContent = "Verify my identity";
     } else {
       titre.innerHTML = titre.dataset.orig; aideFin.innerHTML = aideFin.dataset.orig; portail.textContent = portail.dataset.orig;
       document.getElementById("tf-fin-prenom").textContent = v.prenom; document.getElementById("tf-fin-date").textContent = M.debutTxt;
     }
     document.getElementById("tf-crm").innerHTML = domic
-      ? `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>Domiciliation</b> en attente : il ne s'active qu'une fois l'identité vérifiée (Stripe Identity), le justificatif de domicile validé et la société contrôlée (Pappers, OpenSanctions). Visible tout de suite dans Flow, rubrique Clients.`
+      ? `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, a pending <b>Virtual office</b> contract (it activates once the identity is verified by Stripe Identity and the proof of address approved), and a card on the « Domiciliation » CRM board that creates the team's tasks.`
       : `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.`;
     allerQ("fin");
   } catch (err){

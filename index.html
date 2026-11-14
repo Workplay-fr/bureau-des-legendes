@@ -821,6 +821,7 @@ section.tf-q{padding-block:0}
 .tf-choix button.on{background:var(--noir);color:#fff;border-color:var(--noir)}
 .tf-choix button.on kbd{border-color:#fff}
 .tf-choix button.on small{color:#C7C0B8}
+.tf-etapes{margin:14px 0 0;padding-left:1.3em;display:grid;gap:8px}.tf-etapes li{padding-left:4px}.tf-etapes b{color:var(--noir);font-weight:500}
 .tf-date{font:400 18px/1.3 var(--f);padding:12px 14px;border:1px solid var(--noir);background:#fff;color:var(--noir);max-width:260px}
 .tf-ok{margin-top:30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .tf-ok .astuce{font-size:13px;color:var(--gris)}
@@ -2220,16 +2221,17 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
       : [["Formule", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "postes" : "poste"}` : "")], ["Début", M.debutTxt], ["Premier mois", eur(montantM().ttc) + " TTC (paiement simulé)"], ["Référence", res.reference || "—"]]).map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
     const titre = document.getElementById("tf-fin-titre"), aideFin = document.getElementById("tf-fin-aide"), portail = document.getElementById("tf-fin-portail");
     if (titre.dataset.orig === undefined){ titre.dataset.orig = titre.innerHTML; aideFin.dataset.orig = aideFin.innerHTML; portail.dataset.orig = portail.textContent; }
+    portail.hidden = domic;
     if (domic){
       titre.innerHTML = `Dossier reçu, ${esc(v.prenom)}.`;
-      aideFin.innerHTML = `Dernière étape : vérifiez votre identité depuis votre espace membre (pièce d'identité du dirigeant et justificatif de domicile). <b>Aucun paiement avant la validation.</b> Le contrat s'active alors, et vous recevez votre première facture et votre attestation de domiciliation pour le greffe.`;
+      aideFin.innerHTML = `Plus que trois étapes, et aucun paiement avant la validation :<ol class="tf-etapes"><li><b>Ouvrez l'e-mail de bienvenue</b> envoyé à ${esc(v.email)} et choisissez votre mot de passe.</li><li><b>Vérifiez votre identité</b> depuis votre espace membre : votre pièce d'identité avec votre téléphone (2 minutes), puis votre justificatif de domicile.</li><li><b>Nous validons sous 24 h ouvrées.</b> Vous recevez alors votre contrat, votre attestation de domiciliation pour le greffe et votre première facture.</li></ol>`;
       portail.textContent = "Vérifier mon identité";
     } else {
       titre.innerHTML = titre.dataset.orig; aideFin.innerHTML = aideFin.dataset.orig; portail.textContent = portail.dataset.orig;
       document.getElementById("tf-fin-prenom").textContent = v.prenom; document.getElementById("tf-fin-date").textContent = M.debutTxt;
     }
     document.getElementById("tf-crm").innerHTML = domic
-      ? `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>Domiciliation</b> en attente : il ne s'active qu'une fois l'identité vérifiée (Stripe Identity), le justificatif de domicile validé et la société contrôlée (Pappers, OpenSanctions). Visible tout de suite dans Flow, rubrique Clients.`
+      ? `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, un contrat <b>Domiciliation</b> en attente (il s'active une fois l'identité vérifiée par Stripe Identity et le justificatif de domicile validé), et une carte dans le tableau CRM « Domiciliation » qui crée les tâches de l'équipe.`
       : `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>${esc(f.nom)}</b> qui démarre le ${esc(M.debutTxt)}. Visible tout de suite dans Flow, rubrique Clients.`;
     allerQ("fin");
   } catch (err){

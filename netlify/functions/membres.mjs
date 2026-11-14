@@ -71,6 +71,15 @@ const traiter = async (req) => {
         for (const b of corps) await nx("POST", "/spaces/coworkeridentitychecks", b);
         verifs = corps.length;
       } catch (e) { console.error("Vérifications non créées :", e.message); verifs = String(e.message).slice(0, 200); }
+      // Carte dans le tableau CRM « Domiciliation », colonne « Dossier reçu » : Nexudus crée les tâches de l'équipe (liste « Dossier de domiciliation »)
+      try {
+        await nx("POST", "/crm/crmopportunities", {
+          Name: `Domiciliation · ${v.societe.slice(0, 80)}`, CrmBoardColumnId: 1415384205, CoworkerId: c.id, Status: 1, Position: 0, LeadSource: 1,
+          DueDate: new Date(Date.now() + 2 * 864e5).toISOString().slice(0, 19) + "Z", Value: f.prix * 3,
+          Notes: [`Dossier de domiciliation déposé depuis le site vitrine`, `Société : ${v.societe}${creation ? " (en création)" : ` · SIREN ${siren}`}`, `Dirigeant : ${v.nom}`, `Début souhaité : ${debut}`, `Paiement après validation des vérifications`].join("\n"),
+          UtmSource: "site-vitrine", UtmMedium: "domiciliation",
+        });
+      } catch (e) { console.error("Carte CRM non créée :", e.message); }
     }
     return json(200, { ok: true, verifs, contrat: id, reference: id ? (domic ? "BDL-D" : "BDL-M") + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
   } catch (e) {
