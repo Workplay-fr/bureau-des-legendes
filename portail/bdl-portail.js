@@ -71,98 +71,127 @@
         a.removeAttribute("target");
         var f = feuille(col); if (f) f.textContent = x.txt;
         icone(col, x.cle);
-        if (x.ouvre) a.addEventListener("click", function (ev) {
-          if (fenetreDemande(ev)) return;
-          try { sessionStorage.setItem("bdl_ouvre", x.ouvre); } catch (e) {}
-        });
         boite.appendChild(col);
       });
     }
-    /* Formulaire d'assistance ouvert sur place : la page Assistance est préchargée dans un cadre invisible,
-       on n'en montre que la fenêtre « Ajouter un message d'aide ». Repli : navigation classique. */
-    var cadre = null, cadrePret = false, attenteOuverture = null;
-    function precharger() {
-      if (window.top !== window || cadre || !doc.querySelector("[data-bdl-action=demande]")) return;
-      cadre = doc.createElement("iframe");
-      cadre.className = "bdl-cadre-demande"; cadre.setAttribute("aria-hidden", "true"); cadre.setAttribute("tabindex", "-1");
-      cadre.src = base + "/user/help-desk";
-      doc.body.appendChild(cadre);
+    /* Fenêtres ouvertes sur place : la page Nexudus concernée est préchargée dans un cadre invisible,
+       on n'en montre que sa fenêtre (Bootstrap .modal). Repli : navigation classique, fenêtre ouverte à l'arrivée. */
+    var FENETRES = {
+      demande: { page: "/user/help-desk", bouton: /demander|aide|request|help|new/i, envoi: /accord|^ok$|envoyer|send|submit|valider/i,
+        msg: en ? "Request sent — the team will get back to you shortly." : "Demande transmise : l'équipe revient vers vous rapidement." },
+      visiteur: { page: "/user/activity/visitors", bouton: /enregistrer|visiteur|register|visitor/i, envoi: /sauvegarder|enregistrer|save|register/i,
+        msg: en ? "Visitor registered — reception has been notified." : "Visiteur enregistré : l'accueil est prévenu." }
+    };
+    function cleDePage(path) {
+      for (var k in FENETRES) if (path.indexOf(FENETRES[k].page) >= 0) return k;
+      return null;
     }
-    function fermerCadre(envoye) {
-      if (!cadre) return;
-      cadre.classList.remove("on"); cadre.setAttribute("aria-hidden", "true");
-      doc.documentElement.classList.remove("bdl-cadre-ouvert");
-      if (envoye) toast(en ? "Request sent — the team will get back to you shortly." : "Demande transmise : l'équipe revient vers vous rapidement.");
-      cadrePret = false;
-      try { cadre.contentWindow.location.reload(); } catch (e) {}
+    function boutonDe(k) {
+      return Array.prototype.filter.call(doc.querySelectorAll("main button.btn-primary"), function (x) { return FENETRES[k].bouton.test(x.textContent); })[0];
+    }
+    var cadres = {}, prets = {}, attente = null, actif = null;
+    function precharger() {
+      if (window.top !== window || !doc.querySelector(".quick-actions-banner-container")) return;
+      Object.keys(FENETRES).forEach(function (k) {
+        if (cadres[k]) return;
+        var f = doc.createElement("iframe");
+        f.className = "bdl-cadre-demande"; f.setAttribute("aria-hidden", "true"); f.setAttribute("tabindex", "-1");
+        f.src = base + FENETRES[k].page;
+        cadres[k] = f; doc.body.appendChild(f);
+      });
     }
     function toast(txt) {
       var t = doc.createElement("div"); t.className = "bdl-toast"; t.textContent = txt; doc.body.appendChild(t);
       setTimeout(function () { t.classList.add("on"); }, 20);
       setTimeout(function () { t.classList.remove("on"); setTimeout(function () { t.remove(); }, 600); }, 4200);
     }
-    function fenetreDemande(ev) {
-      if (!cadre || !cadrePret) return false;
-      ev.preventDefault();
+    function fermer(k, envoye) {
+      var f = cadres[k]; if (!f) return;
+      f.classList.remove("on"); f.setAttribute("aria-hidden", "true");
+      doc.documentElement.classList.remove("bdl-cadre-ouvert");
+      if (envoye) toast(FENETRES[k].msg);
+      prets[k] = false; actif = null;
+      try { f.contentWindow.location.reload(); } catch (e) {}
+    }
+    function ouvrirSurPlace(k, ev) {
+      var f = cadres[k];
+      if (!f || !prets[k]) { try { sessionStorage.setItem("bdl_ouvre", k); } catch (e) {} return; }
+      ev.preventDefault(); ev.stopPropagation(); if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      actif = k;
       doc.documentElement.classList.add("bdl-cadre-ouvert");
-      cadre.classList.add("charge");
-      cadre.contentWindow.postMessage({ bdl: "ouvrir" }, location.origin);
-      clearTimeout(attenteOuverture);
-      attenteOuverture = setTimeout(function () {
-        if (cadre.classList.contains("on")) return;
+      f.contentWindow.postMessage({ bdl: "ouvrir" }, location.origin);
+      clearTimeout(attente);
+      attente = setTimeout(function () {
+        if (f.classList.contains("on")) return;
         doc.documentElement.classList.remove("bdl-cadre-ouvert");
-        try { sessionStorage.setItem("bdl_ouvre", "demande"); } catch (e) {}
-        location.href = base + "/user/help-desk";
+        try { sessionStorage.setItem("bdl_ouvre", k); } catch (e) {}
+        location.href = base + FENETRES[k].page;
       }, 4000);
-      return true;
+    }
+    /* Cartes : celles ajoutées (data-bdl-action) et la carte native « Inscrire un visiteur » */
+    function brancher() {
+      var cartes = doc.querySelectorAll(".quick-actions-banner-container .row > div");
+      Array.prototype.forEach.call(cartes, function (c) {
+        var a = c.matches("a[href]") ? c : c.querySelector("a[href]"); if (!a || a.hasAttribute("data-bdl-fen")) return;
+        var k = c.getAttribute("data-bdl-action") === "demande" ? "demande" : (/\/visitors/.test(a.getAttribute("href")) ? "visiteur" : null);
+        if (!k) return;
+        a.setAttribute("data-bdl-fen", k);
+        a.addEventListener("click", function (ev) { ouvrirSurPlace(k, ev); }, true);
+      });
+    }
+    function source(m) {
+      for (var k in cadres) if (cadres[k].contentWindow === m.source) return k;
+      return null;
     }
     window.addEventListener("message", function (m) {
       if (m.origin !== location.origin || !m.data || !m.data.bdl) return;
       if (window.top === window) {
-        if (m.data.bdl === "pret") cadrePret = true;
-        if (m.data.bdl === "ouvert" && cadre) { clearTimeout(attenteOuverture); cadre.classList.add("on"); cadre.removeAttribute("aria-hidden"); try { cadre.focus(); } catch (e) {} }
-        if (m.data.bdl === "ferme") fermerCadre(m.data.envoye);
+        var k = source(m); if (!k) return;
+        if (m.data.bdl === "pret") prets[k] = true;
+        if (m.data.bdl === "ouvert" && actif === k) { clearTimeout(attente); cadres[k].classList.add("on"); cadres[k].removeAttribute("aria-hidden"); try { cadres[k].focus(); } catch (e) {} }
+        if (m.data.bdl === "ferme" && actif === k) fermer(k, m.data.envoye);
       } else if (m.data.bdl === "ouvrir") {
-        cadreOuvrir();
+        var b = boutonDe(cleCadre); if (b) { modalVu = false; envoye = false; b.click(); }
       }
     });
-    /* Côté cadre : page Assistance réduite à sa fenêtre */
-    var dansCadre = window.top !== window && /\/help-desk/.test(location.pathname);
+    /* Côté cadre : page réduite à sa fenêtre */
+    var cleCadre = window.top !== window ? cleDePage(location.pathname) : null;
     var modalVu = false, envoye = false;
-    function boutonDemande() {
-      return Array.prototype.filter.call(doc.querySelectorAll("main button.btn-primary"), function (x) { return /demander|aide|request|help|new/i.test(x.textContent); })[0];
-    }
-    function cadreOuvrir() {
-      var b = boutonDemande(); if (!b) return;
-      modalVu = false; envoye = false; b.click();
-    }
     function suivreCadre() {
-      if (!dansCadre) return;
+      if (!cleCadre) return;
       doc.documentElement.classList.add("bdl-embarque");
-      if (boutonDemande()) window.parent.postMessage({ bdl: "pret" }, location.origin);
+      if (boutonDe(cleCadre)) window.parent.postMessage({ bdl: "pret" }, location.origin);
       var m = doc.querySelector(".modal.show");
+      if (m) nettoyer(m);
       if (m && !modalVu) {
         modalVu = true; window.parent.postMessage({ bdl: "ouvert" }, location.origin);
         m.addEventListener("click", function (e) {
           var b = e.target.closest && e.target.closest("button");
-          if (b && /btn-primary/.test(b.className) && /accord|ok|envoyer|send|submit|valider/i.test(b.textContent)) envoye = true;
+          if (b && /btn-primary/.test(b.className) && FENETRES[cleCadre].envoi.test(b.textContent.trim())) envoye = true;
         }, true);
       } else if (!m && modalVu) {
         modalVu = false; window.parent.postMessage({ bdl: "ferme", envoye: envoye }, location.origin);
       }
     }
-
+    /* Libellé de notes mal traduit par Nexudus dans « Enregistrer un nouveau visiteur » */
+    function nettoyer(m) {
+      Array.prototype.forEach.call(m.querySelectorAll("label"), function (l) {
+        if (/notes/i.test(l.textContent) && l.textContent.length > 40) l.textContent = en ? "Notes for reception" : "Un mot pour l'accueil";
+      });
+    }
+    /* Arrivée par navigation (repli) : ouvre la fenêtre de la page */
     function ouvrirDemande() {
+      if (window.top !== window) return;
       var f = null; try { f = sessionStorage.getItem("bdl_ouvre"); } catch (e) {}
-      if (window.top !== window || f !== "demande" || !/\/help-desk/.test(location.pathname)) return;
-      var b = Array.prototype.filter.call(doc.querySelectorAll("main button.btn-primary"), function (x) { return /demander|aide|request|help|new/i.test(x.textContent); })[0];
-      if (!b) return;
+      if (!f || !FENETRES[f] || cleDePage(location.pathname) !== f) return;
+      var b = boutonDe(f); if (!b) return;
       try { sessionStorage.removeItem("bdl_ouvre"); } catch (e) {}
       setTimeout(function () { b.click(); }, 250);
     }
+    function nettoyerPage() { var m = doc.querySelector(".modal.show"); if (m) nettoyer(m); }
     var t = null;
-    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(function () { completer(); ouvrirDemande(); suivreCadre(); if (!cadre) setTimeout(precharger, 1500); }, 80); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
-    completer(); ouvrirDemande(); suivreCadre();
+    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(function () { completer(); brancher(); ouvrirDemande(); suivreCadre(); nettoyerPage(); setTimeout(precharger, 1500); }, 80); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
+    completer(); brancher(); ouvrirDemande(); suivreCadre();
   })();
 
   /* Favicon : le « B » noir du site vitrine (celui de Nexudus est blanc, invisible sur un onglet clair) */
