@@ -870,6 +870,32 @@ section.tf-q{padding-block:0}
 .deep .prix b,.ftr .prix b{color:#8FB0D6}
 .faq summary::after{background:linear-gradient(var(--bleu),var(--bleu)) center/13px 1px no-repeat,linear-gradient(var(--bleu),var(--bleu)) center/1px 13px no-repeat}
 .faq details[open] summary{color:var(--bleu)}
+
+/* === Bleu, 3e couleur : éclat satiné (texte) et sélections brillantes === */
+:root{--bleu-f:#2C5486;--bleu-c:#7FA6D6;--bleu-glace:#E4EEF9;
+  --bleu-lustre:linear-gradient(135deg,var(--bleu-f) 0%,var(--bleu) 42%,#5F8CC4 62%,var(--bleu) 82%,var(--bleu-f) 100%)}
+.gloss{font-weight:inherit;padding-right:.04em;
+  background:linear-gradient(105deg,var(--bleu-f) 0%,var(--bleu) 34%,#6E9AD2 44%,var(--bleu-glace) 50%,#6E9AD2 56%,var(--bleu) 66%,var(--bleu-f) 100%);
+  background-size:280% 100%;background-position:115% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--bleu);
+  animation:bdlGloss 6.5s cubic-bezier(.4,0,.2,1) 1.4s infinite}
+.vword .gloss{display:inline;animation-delay:2s}
+.on .w > span.gloss{animation:rise .9s var(--ease) both,bdlGloss 6.5s cubic-bezier(.4,0,.2,1) 2.2s infinite;animation-delay:calc(var(--i)*55ms + var(--d0,120ms)),2.2s}
+@keyframes bdlGloss{0%{background-position:115% 0}38%,100%{background-position:-15% 0}}
+/* sélections : laque bleue avec reflet */
+.tf-choix button.on,.choix input:checked + span,.salle-opt input:checked + .boite,.pass-choix .btn[aria-pressed="true"]{
+  background:var(--bleu-lustre)!important;background-size:200% 200%!important;border-color:var(--bleu-f)!important;color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),inset 0 -1px 0 rgba(0,0,0,.18),0 10px 24px -14px rgba(44,84,134,.75);animation:laque 4s ease-in-out infinite alternate}
+.tf-choix button.on small,.choix input:checked + span small,.salle-opt input:checked + .boite small{color:var(--bleu-glace)!important}
+.tf-choix button.on kbd{border-color:rgba(255,255,255,.7)}
+@keyframes laque{from{background-position:0% 50%}to{background-position:100% 50%}}
+.tf-choix button:hover,.choix span:hover{border-color:var(--bleu)}
+.prod-choix[aria-pressed="true"]{border-color:var(--bleu)!important;box-shadow:0 0 0 1px var(--bleu) inset}
+.prod-choix[aria-pressed="true"] i{background:var(--bleu-lustre)!important;border-color:var(--bleu)!important}
+.accord input,input[type=checkbox],input[type=radio]{accent-color:var(--bleu)}
+.tf-prog span{background:linear-gradient(90deg,var(--bleu-f),var(--bleu) 60%,var(--bleu-c))}
+::selection{background:var(--bleu);color:#fff}
+@media (prefers-reduced-motion:reduce){.gloss,.on .w > span.gloss,.tf-choix button.on,.choix input:checked + span{animation:none}}
+
 </style>
 <script>try{if(sessionStorage.getItem("bdl-voile")){sessionStorage.removeItem("bdl-voile");if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("voile")}}catch(e){}</script>
 </head>
@@ -911,7 +937,7 @@ section.tf-q{padding-block:0}
           <nav class="trio" aria-label="Accès rapides"><button class="trio-l premier" type="button" data-salle=""><b>Réserver une salle</b><small>Dès 35 € HT de l'heure · créneaux en temps réel</small><i aria-hidden="true">→</i></button><a class="trio-l" data-portal="tour" href="#"><b>Visiter le lieu</b><small>30 minutes, café compris ;)</small><i aria-hidden="true">→</i></a><button class="trio-l" type="button" data-membre=""><b>Devenir membre</b><small>Dès 90 € HT par mois · inscription en 2 minutes</small><i aria-hidden="true">→</i></button></nav>
         </div>
       </div>
-      <p class="vword" aria-hidden="true"><span>Légendes</span></p>
+      <p class="vword" aria-hidden="true"><span>L<b class="gloss">é</b>gendes</span></p>
       <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explorer l'immeuble : pousser la porte du 312, boulevard Haussmann">
         <img src="img/entree.webp" alt="L'entrée du Bureau des Légendes au crépuscule : porte cochère ouverte sur un intérieur éclairé, plaque en laiton, façade en pierre" width="1536" height="1024" fetchpriority="high">
         <video class="en-film" src="img/entree.mp4" muted autoplay playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
@@ -1494,7 +1520,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitV
 function splitWords(el){
   if (el.classList.contains("split")) return;
   let i = 0;
-  el.innerHTML = el.textContent.split(/(\s+)/).map(t => !t ? "" : /^\s+$/.test(t) ? " " : `<span class="w"><span style="--i:${i++}">${esc(t)}</span></span>`).join("");
+  el.innerHTML = el.textContent.split(/(\s+)/).map(t => !t ? "" : /^\s+$/.test(t) ? " " : `<span class="w"><span style="--i:${i++}"${/^(l[ée]gende|legend)/i.test(t) ? ' class="gloss"' : ""}>${esc(t)}</span></span>`).join("");
   el.classList.add("split");
 }
 

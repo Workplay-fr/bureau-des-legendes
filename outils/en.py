@@ -12,6 +12,7 @@ src = (RACINE / "index.html").read_text()
 
 # ---------------------------------------------------------------- 1. morceaux de HTML (avec exposants)
 SNIP = [
+    ('<span>L<b class="gloss">é</b>gendes</span>', '<span><b class="gloss">L</b>egends</span>'),
     ("Paris IX<sup>e</sup>", "Paris 9<sup>th</sup>"),
     ("Vingt postes flexibles au 1<sup>er</sup> étage, seize postes attitrés au 2<sup>e</sup>. Bureaux en chêne, lampes en laiton, prises à chaque place et lumière du boulevard.",
      "Twenty flexible desks on the 1<sup>st</sup> floor, sixteen dedicated desks on the 2<sup>nd</sup>. Oak desks, brass lamps, a socket at every seat and light from the boulevard."),
@@ -43,7 +44,7 @@ TEXT = {
     "Dès 35 € HT de l'heure · créneaux en temps réel": "From €35 excl. VAT per hour · live availability",
     "Visiter le lieu": "Visit the space", "30 minutes, café compris ;)": "30 minutes, coffee included ;)",
     "Devenir membre": "Become a member", "Dès 90 € HT par mois · inscription en 2 minutes": "From €90 excl. VAT per month · sign up in 2 minutes",
-    "Légendes": "Legends", "Powered by": "Powered by",
+    "Powered by": "Powered by",
     "Poussez la porte.": "Step inside.",
     "Quatre niveaux à parcourir en maquette : salles, coworking, bureaux privés.": "Four floors to explore as a scale model: rooms, coworking, private offices.",
     "Explorer l'immeuble": "Explore the building",
