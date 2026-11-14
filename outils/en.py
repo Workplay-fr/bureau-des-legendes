@@ -364,7 +364,9 @@ JS = [
     ('<span class="badge">La plus choisie</span>', '<span class="badge">Most popular</span>'),
     ('<small>HT ${f.unite || "/ mois"}</small>', '<small>excl. VAT ${f.unite || "/ month"}</small>'),
     ('data-plan="${f.id}">Choisir ${f.nom}</button>', 'data-plan="${f.id}">Choose ${f.nom}</button>'),
-    ('"Dès lundi prochain"', '"From next Monday"'), ('"Le 1er du mois prochain"', '"The 1st of next month"'), ('"Dans deux semaines"', '"In two weeks"'),
+    ('<span>Le 1<sup>er</sup> ${mois(x)}<small>', '<span>${mois(x).replace(/^./, c => c.toUpperCase())} 1<sup>st</sup><small>'),
+    ('<span>Une autre date<small id="tf-autre-txt">au jour près</small>', '<span>Another date<small id="tf-autre-txt">any day you like</small>'),
+    ('aria-label="Date de début" hidden>', 'aria-label="Start date" hidden>'),
     ('${n} ${n > 1 ? "postes" : "poste"}<small>${eur(750*n)} HT / mois</small>', '${n} ${n > 1 ? "desks" : "desk"}<small>${eur(750*n)} excl. VAT / month</small>'),
     
     ('"Choisissez une date de début."', '"Choose a start date."'),
