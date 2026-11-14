@@ -542,7 +542,7 @@ html.bdl .bdl-pied-liens{ display:flex; gap:24px; flex-wrap:wrap; }
 html.bdl .bdl-pied-liens a{ color:rgba(255,255,255,.8) !important; text-decoration:none; letter-spacing:.04em; }
 html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
 /* ===== Mon activité (/user/dashboard/<rubrique>) : factures, réservations, visiteurs… ===== */
-html.bdl-act body, html.bdl-act body div:has(> .container > main), html.bdl-act body div:has(> div > .container > main), html.bdl-act main, html.bdl-act main > div{ background:var(--bdl-creme) !important; }
+html.bdl-act body, html.bdl-act body div:has(> .container > main), html.bdl-act body div:has(> div > .container > main), html.bdl-act main, html.bdl-act main > div, html.bdl-act .d-flex.gap-0 > .flex-fill.bg-light{ background:var(--bdl-creme) !important; }
 html.bdl-act .bdl-act-band{ max-width:1200px; margin:0 auto 2.5rem; border-radius:0 0 28px 28px !important; padding:clamp(2.75rem,7vh,4.5rem) clamp(1.5rem,4vw,3.5rem) 2.5rem !important; }
 html.bdl-act .bdl-act-band .bdl-b-tete{ padding:0 !important; margin:0 !important; max-width:none; }
 html.bdl-act main{ max-width:1200px; margin:0 auto; padding-bottom:4rem; }
