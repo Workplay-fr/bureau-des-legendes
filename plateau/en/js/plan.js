@@ -11,6 +11,7 @@ export const IMAGE = {
   murs: [[[78, 655], [75, 510], [460, 125], [455, 290]], [[460, 125], [1420, 345], [1415, 455]], [[1148, 292], [1148, 402], [1030, 625], [1030, 520], [1148, 292]], [[1030, 625], [1335, 640]], [[905, 800], [935, 700]], [[985, 715], [1010, 610]]],
   // Rendus de l'étage sous une autre lumière, par créneau (même cadrage que l'image principale, vérifié au pixel près).
   ambiances: { matin: "/plateau/assets/plateau-matin-2x.webp", apres: "/plateau/assets/plateau-apres-2x.webp" },
+  ambiancesLeger: { matin: "/plateau/assets/plateau-matin.webp", apres: "/plateau/assets/plateau-apres.webp" },
 };
 
 // Un îlot = quatre postes dos à dos. cadre : zone de l'image qui le contient.
