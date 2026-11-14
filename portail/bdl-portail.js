@@ -8,29 +8,73 @@
   var BASE = "https://bdl.workplay.fr";
   var doc = document;
 
-  /* Actions rapides : libellés maison pour « factures » et « support » (le portail ne permet pas de les renommer) */
+  /* Actions rapides : 6 cartes. Le portail n'en affiche que 3 ; on complète avec des copies de la carte « La boutique »
+     (Factures & paiements, Une demande ?, Participer à un événement), avec leurs propres icônes. */
   (function () {
     var en = /^en/i.test(doc.documentElement.lang || "");
-    var L = en ? { fac: "Invoices & payments", sup: "Need anything? Just ask" }
-               : { fac: "Factures & paiements", sup: "Une demande ? On s'en occupe" };
-    function libelle(carte, texte) {
-      var feuilles = Array.prototype.filter.call(carte.querySelectorAll("*"), function (e) {
-        return !e.children.length && e.textContent.trim() && !e.closest("svg");
-      });
-      if (feuilles[0] && feuilles[0].textContent !== texte) feuilles[0].textContent = texte;
+    var base = "/" + (location.pathname.split("/")[1] || "bureaudeslegendesparis");
+    function route(motif, secours) {
+      var liens = doc.querySelectorAll("a[href]");
+      for (var k = 0; k < liens.length; k++) {
+        var h = liens[k].getAttribute("href");
+        if (motif.test(h) && !/\?|#/.test(h)) return h;
+      }
+      try {
+        var pages = (window.__BUILD_MANIFEST && window.__BUILD_MANIFEST.sortedPages) || [];
+        for (var m = 0; m < pages.length; m++) if (motif.test(pages[m]) && pages[m].indexOf("[") < 0) return base + pages[m].replace(/^\/\[[^\]]+\]/, "");
+      } catch (e) {}
+      return base + secours;
     }
-    function renommer() {
-      var cartes = doc.querySelectorAll(".quick-actions-banner-container .row > div > *");
-      Array.prototype.forEach.call(cartes, function (c) {
-        var lien = c.matches("a[href]") ? c : c.querySelector("a[href]");
-        var h = (lien ? lien.getAttribute("href") : "") + " " + c.textContent;
-        if (/invoice|factur/i.test(h)) libelle(c, L.fac);
-        else if (/help-?desk|support|ticket|assistance/i.test(h)) libelle(c, L.sup);
+    var svg = function (d) { return '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">' + d + "</svg>"; };
+    var ICONES = {
+      boutique: svg('<path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'),
+      factures: svg('<path d="M7 3h10v18l-2.5-1.5L12 21l-2.5-1.5L7 21V3z"/><path d="M10 8h4M10 12h4M10 16h2"/>'),
+      demande: svg('<path d="M4 5h16v11H9l-5 4V5z"/><path d="M9 10h6"/>'),
+      agenda: svg('<rect x="4" y="5" width="16" height="15" rx="1"/><path d="M4 10h16M9 3v4M15 3v4"/><path d="m10.5 14.5 1.5 1.5 3-3"/>')
+    };
+    var EXTRAS = [
+      { cle: "factures", txt: en ? "Invoices & payments" : "Factures & paiements", href: function () { return route(/invoice/i, "/my-invoices"); } },
+      { cle: "demande", txt: en ? "Need anything? Just ask" : "Une demande ? On s'en occupe", href: function () { return route(/help-?desk/i, "/help-desk"); } },
+      { cle: "agenda", txt: en ? "Join an event" : "Participer à un événement", href: function () { return base + "/events/agenda"; } }
+    ];
+    function feuille(el) {
+      return Array.prototype.filter.call(el.querySelectorAll("*"), function (e) { return !e.children.length && e.textContent.trim() && !e.closest("svg"); })[0];
+    }
+    function icone(carte, cle) {
+      var ic = carte.querySelector(".icon-masked");
+      if (ic) {
+        var url = 'url("data:image/svg+xml,' + encodeURIComponent(ICONES[cle].replace('stroke="#fff"', 'stroke="#000"')) + '")';
+        ic.style.webkitMaskImage = url; ic.style.maskImage = url;
+        ic.style.webkitMaskSize = ic.style.maskSize = "contain";
+        ic.style.webkitMaskRepeat = ic.style.maskRepeat = "no-repeat";
+        ic.style.webkitMaskPosition = ic.style.maskPosition = "center";
+        return;
+      }
+      var s = carte.querySelector("svg");
+      if (s) { var w = doc.createElement("span"); w.innerHTML = ICONES[cle]; var n = w.firstChild; n.setAttribute("width", s.getAttribute("width") || 40); n.setAttribute("height", s.getAttribute("height") || 40); s.parentNode.replaceChild(n, s); }
+    }
+    function completer() {
+      var boite = doc.querySelector(".quick-actions-banner-container .row");
+      if (!boite || boite.querySelector("[data-bdl-action]")) return;
+      var cols = Array.prototype.filter.call(boite.children, function (c) { return c.querySelector("a[href]"); });
+      var modele = cols.filter(function (c) { return /\/store/.test(c.querySelector("a[href]").getAttribute("href")); })[0] || cols[0];
+      if (!modele) return;
+      if (!modele.hasAttribute("data-bdl-boutique")) { modele.setAttribute("data-bdl-boutique", ""); icone(modele, "boutique"); }
+      EXTRAS.forEach(function (x) {
+        var col = modele.cloneNode(true);
+        col.removeAttribute("data-bdl-boutique");
+        col.setAttribute("data-bdl-action", x.cle);
+        var a = col.querySelector("a[href]") || col;
+        a.setAttribute("href", x.href());
+        a.removeAttribute("target");
+        var f = feuille(col); if (f) f.textContent = x.txt;
+        icone(col, x.cle);
+        boite.appendChild(col);
       });
     }
     var t = null;
-    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(renommer, 60); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
-    renommer();
+    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(completer, 80); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
+    completer();
   })();
 
   /* Favicon : le « B » noir du site vitrine (celui de Nexudus est blanc, invisible sur un onglet clair) */
@@ -141,7 +185,13 @@ html.bdl-dash .dashboard-content-container .container{ max-width:1440px; }
 .bdl-hero .quick-actions-banner-container .row > div:nth-child(1){ animation-delay:1.05s; }
 .bdl-hero .quick-actions-banner-container .row > div:nth-child(2){ animation-delay:1.15s; }
 .bdl-hero .quick-actions-banner-container .row > div:nth-child(3){ animation-delay:1.25s; }
-.bdl-hero .quick-actions-banner-container .row > div:nth-child(n+4){ animation-delay:1.35s; }
+.bdl-hero .quick-actions-banner-container .row > div:nth-child(4){ animation-delay:1.35s; }
+.bdl-hero .quick-actions-banner-container .row > div:nth-child(5){ animation-delay:1.45s; }
+.bdl-hero .quick-actions-banner-container .row > div:nth-child(n+6){ animation-delay:1.55s; }
+.bdl-hero .quick-actions-banner-container .row{ flex-wrap:wrap !important; row-gap:1rem; }
+.bdl-hero .quick-actions-banner-container .row > div{ flex:0 0 33.3333% !important; max-width:33.3333% !important; width:33.3333% !important; }
+.bdl-hero .quick-actions-banner-container .row > div > *{ height:100%; }
+@media (max-width:767px){ .bdl-hero .quick-actions-banner-container .row > div{ flex-basis:50% !important; max-width:50% !important; width:50% !important; } }
 .bdl-hero .icon{ background-color:#fff !important; }
 
 /* Titres de section numérotés */
