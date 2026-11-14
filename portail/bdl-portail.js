@@ -71,21 +71,98 @@
         a.removeAttribute("target");
         var f = feuille(col); if (f) f.textContent = x.txt;
         icone(col, x.cle);
-        if (x.ouvre) a.addEventListener("click", function () { try { sessionStorage.setItem("bdl_ouvre", x.ouvre); } catch (e) {} });
+        if (x.ouvre) a.addEventListener("click", function (ev) {
+          if (fenetreDemande(ev)) return;
+          try { sessionStorage.setItem("bdl_ouvre", x.ouvre); } catch (e) {}
+        });
         boite.appendChild(col);
       });
     }
+    /* Formulaire d'assistance ouvert sur place : la page Assistance est préchargée dans un cadre invisible,
+       on n'en montre que la fenêtre « Ajouter un message d'aide ». Repli : navigation classique. */
+    var cadre = null, cadrePret = false, attenteOuverture = null;
+    function precharger() {
+      if (window.top !== window || cadre || !doc.querySelector("[data-bdl-action=demande]")) return;
+      cadre = doc.createElement("iframe");
+      cadre.className = "bdl-cadre-demande"; cadre.setAttribute("aria-hidden", "true"); cadre.setAttribute("tabindex", "-1");
+      cadre.src = base + "/user/help-desk";
+      doc.body.appendChild(cadre);
+    }
+    function fermerCadre(envoye) {
+      if (!cadre) return;
+      cadre.classList.remove("on"); cadre.setAttribute("aria-hidden", "true");
+      doc.documentElement.classList.remove("bdl-cadre-ouvert");
+      if (envoye) toast(en ? "Request sent — the team will get back to you shortly." : "Demande transmise : l'équipe revient vers vous rapidement.");
+      cadrePret = false;
+      try { cadre.contentWindow.location.reload(); } catch (e) {}
+    }
+    function toast(txt) {
+      var t = doc.createElement("div"); t.className = "bdl-toast"; t.textContent = txt; doc.body.appendChild(t);
+      setTimeout(function () { t.classList.add("on"); }, 20);
+      setTimeout(function () { t.classList.remove("on"); setTimeout(function () { t.remove(); }, 600); }, 4200);
+    }
+    function fenetreDemande(ev) {
+      if (!cadre || !cadrePret) return false;
+      ev.preventDefault();
+      doc.documentElement.classList.add("bdl-cadre-ouvert");
+      cadre.classList.add("charge");
+      cadre.contentWindow.postMessage({ bdl: "ouvrir" }, location.origin);
+      clearTimeout(attenteOuverture);
+      attenteOuverture = setTimeout(function () {
+        if (cadre.classList.contains("on")) return;
+        doc.documentElement.classList.remove("bdl-cadre-ouvert");
+        try { sessionStorage.setItem("bdl_ouvre", "demande"); } catch (e) {}
+        location.href = base + "/user/help-desk";
+      }, 4000);
+      return true;
+    }
+    window.addEventListener("message", function (m) {
+      if (m.origin !== location.origin || !m.data || !m.data.bdl) return;
+      if (window.top === window) {
+        if (m.data.bdl === "pret") cadrePret = true;
+        if (m.data.bdl === "ouvert" && cadre) { clearTimeout(attenteOuverture); cadre.classList.add("on"); cadre.removeAttribute("aria-hidden"); try { cadre.focus(); } catch (e) {} }
+        if (m.data.bdl === "ferme") fermerCadre(m.data.envoye);
+      } else if (m.data.bdl === "ouvrir") {
+        cadreOuvrir();
+      }
+    });
+    /* Côté cadre : page Assistance réduite à sa fenêtre */
+    var dansCadre = window.top !== window && /\/help-desk/.test(location.pathname);
+    var modalVu = false, envoye = false;
+    function boutonDemande() {
+      return Array.prototype.filter.call(doc.querySelectorAll("main button.btn-primary"), function (x) { return /demander|aide|request|help|new/i.test(x.textContent); })[0];
+    }
+    function cadreOuvrir() {
+      var b = boutonDemande(); if (!b) return;
+      modalVu = false; envoye = false; b.click();
+    }
+    function suivreCadre() {
+      if (!dansCadre) return;
+      doc.documentElement.classList.add("bdl-embarque");
+      if (boutonDemande()) window.parent.postMessage({ bdl: "pret" }, location.origin);
+      var m = doc.querySelector(".modal.show");
+      if (m && !modalVu) {
+        modalVu = true; window.parent.postMessage({ bdl: "ouvert" }, location.origin);
+        m.addEventListener("click", function (e) {
+          var b = e.target.closest && e.target.closest("button");
+          if (b && /btn-primary/.test(b.className) && /accord|ok|envoyer|send|submit|valider/i.test(b.textContent)) envoye = true;
+        }, true);
+      } else if (!m && modalVu) {
+        modalVu = false; window.parent.postMessage({ bdl: "ferme", envoye: envoye }, location.origin);
+      }
+    }
+
     function ouvrirDemande() {
       var f = null; try { f = sessionStorage.getItem("bdl_ouvre"); } catch (e) {}
-      if (f !== "demande" || !/\/help-desk/.test(location.pathname)) return;
+      if (window.top !== window || f !== "demande" || !/\/help-desk/.test(location.pathname)) return;
       var b = Array.prototype.filter.call(doc.querySelectorAll("main button.btn-primary"), function (x) { return /demander|aide|request|help|new/i.test(x.textContent); })[0];
       if (!b) return;
       try { sessionStorage.removeItem("bdl_ouvre"); } catch (e) {}
       setTimeout(function () { b.click(); }, 250);
     }
     var t = null;
-    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(function () { completer(); ouvrirDemande(); }, 80); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
-    completer(); ouvrirDemande();
+    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(function () { completer(); ouvrirDemande(); suivreCadre(); if (!cadre) setTimeout(precharger, 1500); }, 80); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
+    completer(); ouvrirDemande(); suivreCadre();
   })();
 
   /* Favicon : le « B » noir du site vitrine (celui de Nexudus est blanc, invisible sur un onglet clair) */
@@ -541,6 +618,16 @@ html.bdl .bdl-pied-c{ display:flex; align-items:center; justify-content:space-be
 html.bdl .bdl-pied-liens{ display:flex; gap:24px; flex-wrap:wrap; }
 html.bdl .bdl-pied-liens a{ color:rgba(255,255,255,.8) !important; text-decoration:none; letter-spacing:.04em; }
 html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
+/* Formulaire d'assistance en surimpression (cadre préchargé) */
+.bdl-cadre-demande{ position:fixed; inset:0; width:100%; height:100%; border:0; z-index:2147483000; background:transparent; color-scheme:normal; opacity:0; pointer-events:none; visibility:hidden; transition:opacity .35s var(--bdl-ease); }
+.bdl-cadre-demande.on{ opacity:1; pointer-events:auto; visibility:visible; }
+html.bdl-cadre-ouvert body{ overflow:hidden; cursor:progress; }
+html.bdl-embarque, html.bdl-embarque body{ background:transparent !important; }
+html.bdl-embarque body *{ visibility:hidden !important; }
+html.bdl-embarque .modal, html.bdl-embarque .modal *, html.bdl-embarque .modal-backdrop{ visibility:visible !important; }
+html.bdl-embarque .modal-backdrop{ background:rgba(25,17,11,.55) !important; opacity:1 !important; backdrop-filter:blur(3px); }
+.bdl-toast{ position:fixed; left:50%; bottom:32px; transform:translate(-50%,20px); z-index:2147483001; background:var(--bdl-noir); color:#fff; padding:1rem 1.4rem; border-radius:4px; font-size:.9rem; letter-spacing:.01em; box-shadow:0 20px 50px -20px rgba(25,17,11,.6); opacity:0; transition:opacity .4s var(--bdl-ease), transform .4s var(--bdl-ease); }
+.bdl-toast.on{ opacity:1; transform:translate(-50%,0); }
 /* ===== Mon activité (/user/dashboard/<rubrique>) : factures, réservations, visiteurs… ===== */
 html.bdl-act body, html.bdl-act body div:has(> .container > main), html.bdl-act body div:has(> div > .container > main), html.bdl-act main, html.bdl-act main > div, html.bdl-act .d-flex.gap-0 > .flex-fill.bg-light{ background:var(--bdl-creme) !important; }
 html.bdl-act .bdl-act-band{ max-width:1200px; margin:0 auto 2.5rem; border-radius:0 0 28px 28px !important; padding:clamp(2.75rem,7vh,4.5rem) clamp(1.5rem,4vw,3.5rem) 2.5rem !important; }
