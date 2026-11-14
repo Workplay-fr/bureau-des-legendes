@@ -896,6 +896,13 @@ section.tf-q{padding-block:0}
 ::selection{background:var(--bleu);color:#fff}
 @media (prefers-reduced-motion:reduce){.gloss,.on .w > span.gloss,.tf-choix button.on,.choix input:checked + span{animation:none}}
 
+
+/* Accès rapides de l'accueil : fond bleu laqué au lieu du noir, texte blanc */
+.trio-l::before{background:var(--bleu-lustre);background-size:200% 200%;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -1px 0 rgba(0,0,0,.18);animation:laque 5s ease-in-out infinite alternate}
+.trio-l.premier{border-bottom-color:var(--bleu-f)}
+.trio-l.premier small{color:var(--bleu-glace)}
+.trio-l.premier i{color:#fff}
+@media (hover:hover){ .trio-l:hover small{color:var(--bleu-glace)} .trio-l:hover i{color:#fff}  .trio:hover .trio-l.premier:not(:hover) i{color:var(--bleu)} .trio:hover .trio-l.premier:not(:hover) small{color:var(--fg-2)} }
 </style>
 <script>try{if(sessionStorage.getItem("bdl-voile")){sessionStorage.removeItem("bdl-voile");if(!matchMedia("(prefers-reduced-motion:reduce)").matches)document.documentElement.classList.add("voile")}}catch(e){}</script>
 </head>
@@ -1520,7 +1527,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitV
 function splitWords(el){
   if (el.classList.contains("split")) return;
   let i = 0;
-  el.innerHTML = el.textContent.split(/(\s+)/).map(t => !t ? "" : /^\s+$/.test(t) ? " " : `<span class="w"><span style="--i:${i++}"${/^(l[ée]gende|legend)/i.test(t) ? ' class="gloss"' : ""}>${esc(t)}</span></span>`).join("");
+  el.innerHTML = el.textContent.split(/(\s+)/).map(t => !t ? "" : /^\s+$/.test(t) ? " " : `<span class="w"><span style="--i:${i++}">${esc(t)}</span></span>`).join("");
   el.classList.add("split");
 }
 
