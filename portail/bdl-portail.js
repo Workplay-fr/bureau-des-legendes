@@ -8,6 +8,31 @@
   var BASE = "https://bdl.workplay.fr";
   var doc = document;
 
+  /* Actions rapides : libellés maison pour « factures » et « support » (le portail ne permet pas de les renommer) */
+  (function () {
+    var en = /^en/i.test(doc.documentElement.lang || "");
+    var L = en ? { fac: "Invoices & payments", sup: "Need anything? Just ask" }
+               : { fac: "Factures & paiements", sup: "Une demande ? On s'en occupe" };
+    function libelle(carte, texte) {
+      var feuilles = Array.prototype.filter.call(carte.querySelectorAll("*"), function (e) {
+        return !e.children.length && e.textContent.trim() && !e.closest("svg");
+      });
+      if (feuilles[0] && feuilles[0].textContent !== texte) feuilles[0].textContent = texte;
+    }
+    function renommer() {
+      var cartes = doc.querySelectorAll(".quick-actions-banner-container .row > div > *");
+      Array.prototype.forEach.call(cartes, function (c) {
+        var lien = c.matches("a[href]") ? c : c.querySelector("a[href]");
+        var h = (lien ? lien.getAttribute("href") : "") + " " + c.textContent;
+        if (/invoice|factur/i.test(h)) libelle(c, L.fac);
+        else if (/help-?desk|support|ticket|assistance/i.test(h)) libelle(c, L.sup);
+      });
+    }
+    var t = null;
+    try { new MutationObserver(function () { clearTimeout(t); t = setTimeout(renommer, 60); }).observe(doc.body, { childList: true, subtree: true }); } catch (e) {}
+    renommer();
+  })();
+
   /* Favicon : le « B » noir du site vitrine (celui de Nexudus est blanc, invisible sur un onglet clair) */
   (function () {
     var ICONE = BASE + "/img/favicon-noir.png";
