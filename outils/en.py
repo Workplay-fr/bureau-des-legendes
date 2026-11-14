@@ -30,6 +30,8 @@ SNIP = [
 
 # ---------------------------------------------------------------- 2. textes de la page (nœuds texte exacts)
 TEXT = {
+    "Souhaitez-vous domicilier le siège de votre société chez nous ?": "Would you like to register your company's head office with us?",
+    "Votre siège social au 312 boulevard Haussmann, avec l'attestation pour le greffe. L'option n'est activée, et facturée, qu'après la validation de votre dossier.": "Your registered office at 312 boulevard Haussmann, with the certificate for the company registry. The option is only activated, and invoiced, once your file is approved.",
     "Société en cours de création : le SIREN suivra après l'immatriculation.": "Company being formed: the SIREN will follow once registered.",
     "Espaces": "Spaces", "Formules": "Memberships", "Événements": "Events", "Contact": "Contact",
     "Espace membre": "Member area", "Réserver une visite": "Book a visit", "Menu": "Menu", "Accueil": "Home",
@@ -192,6 +194,7 @@ TEXT = {
 
 # ---------------------------------------------------------------- 3. attributs (alt, aria-label, placeholder, title)
 ATTR = {
+    "Dénomination de la société": "Company name",
     "SIREN (9 chiffres)": "SIREN (9 digits)",
     "Un invité par ligne : Prénom Nom, adresse e-mail": "One guest per line: First Last, email address",
     "Bureau des Légendes, accueil": "Bureau des Légendes, home", "Navigation principale": "Main navigation", "Accès rapides": "Quick links",
@@ -225,6 +228,15 @@ ATTR = {
 
 # ---------------------------------------------------------------- 4. script de la page (morceaux exacts, guillemets compris)
 JS = [
+    ('"Réception du courrier"', '"Mail reception"'),
+    ('<span>Non, merci<small>Je viens travailler, sans y fixer mon siège</small></span>', '<span>No, thank you<small>I come to work, without registering my company here</small></span>'),
+    ('<span>Oui, domicilier ma société<small>${prix}</small></span>', '<span>Yes, register my company<small>${prix}</small></span>'),
+    ('`+ ${eur(f.domOpt).replace(",00","")} HT / mois` : "Incluse avec votre bureau privé"', '`+ ${eur(f.domOpt).replace(".00","")} excl. VAT / month` : "Included with your private office"'),
+    ('"Choisissez une réponse."', '"Choose an answer."'),
+    ('lignes.push(["Option domiciliation", (f.domOpt ? eur(f.domOpt) + " HT / mois" : "Incluse") + ", activée après validation de votre dossier"])', 'lignes.push(["Registered-office option", (f.domOpt ? eur(f.domOpt) + " excl. VAT / month" : "Included") + ", activated once your file is approved"])'),
+    ("Pour l'option domiciliation, ouvrez aussi l'e-mail « Votre domiciliation : dernière étape » et complétez votre dossier en ligne : elle n'est activée, et facturée, qu'après sa validation.", 'For the registered-office option, also open the email « Your registered address: one last step » and complete your file online: it is only activated, and invoiced, once approved.'),
+    ('" Option domiciliation : un second contrat en attente des vérifications et une carte dans le tableau « Domiciliation »."', '" Registered-office option: a second contract pending the checks and a card on the « Domiciliation » board."'),
+    ('" Une carte dans le tableau CRM « Adhésions » crée les tâches d\'accueil de l\'équipe."', '" A card on the « Adhésions » CRM board creates the team\'s onboarding tasks."'),
     ('À partir de quand domicilier votre société ?', 'From when should we host your registered office?'),
     ('Contrat de trois mois minimum, puis mensuel. Aucun paiement avant la validation de votre dossier.', 'Three-month minimum, then monthly. No payment until your file is approved.'),
     ('Qui dirige la société ?', 'Who runs the company?'),
@@ -356,7 +368,7 @@ JS = [
     ('"Événements membres"', '"Member events"'), ('"Sans engagement."', '"No commitment."'),
     ('nom:"Résident"', 'nom:"Resident"'), ('"Votre poste attitré, à vous seul, dans une zone au calme."', '"Your own dedicated desk, in a quiet area."'),
     ('"Bureau nominatif, écran sur demande"', '"Named desk, screen on request"'), ('"Accès 24/7 et casier sécurisé"', '"24/7 access and secure locker"'),
-    ('"5 h de salle de réunion / mois"', '"5 h of meeting room / month"'), ('"Adresse professionnelle et courrier"', '"Business address and mail"'),
+    ('"5 h de salle de réunion / mois"', '"5 h of meeting room / month"'),
     ('"Café et événements membres"', '"Coffee and member events"'),
     ('nom:"Bureau privé"', 'nom:"Private office"'), ('"Un bureau fermé rien qu\'à vous, ou à votre équipe."', '"A closed office just for you or your team."'),
     ('"Mobilier sur mesure, plaque à la porte"', '"Bespoke furniture, name plate on the door"'), ('"Accès 24/7 et casiers sécurisés"', '"24/7 access and secure lockers"'),

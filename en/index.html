@@ -821,6 +821,7 @@ section.tf-q{padding-block:0}
 .tf-choix button.on{background:var(--noir);color:#fff;border-color:var(--noir)}
 .tf-choix button.on kbd{border-color:#fff}
 .tf-choix button.on small{color:#C7C0B8}
+.tf-opt-dom{display:block;margin-top:12px}
 .tf-etapes{margin:14px 0 0;padding-left:1.3em;display:grid;gap:8px}.tf-etapes li{padding-left:4px}.tf-etapes b{color:var(--noir);font-weight:500}
 .tf-date{font:400 18px/1.3 var(--f);padding:12px 14px;border:1px solid var(--noir);background:#fff;color:var(--noir);max-width:260px}
 .tf-ok{margin-top:30px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -1396,6 +1397,19 @@ section.tf-q{padding-block:0}
       <div class="tf-champ tf-domic"><div><input id="tf-siren" placeholder="SIREN (9 digits)" inputmode="numeric" maxlength="11" autocomplete="off" aria-label="SIREN"><span class="msg"></span></div></div>
       <label class="accord tf-domic" style="margin-top:14px"><input type="checkbox" id="tf-creation"><span>Company being formed: the SIREN will follow once registered.</span></label>
       <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">press <b>Enter ↵</b></span></div>
+    </section>
+    <section class="tf-q" data-q="domopt">
+      <div class="tf-num">06 →</div>
+      <h2>Would you like to register your company's head office with us?</h2>
+      <p class="tf-aide">Your registered office at 312 boulevard Haussmann, with the certificate for the company registry. The option is only activated, and invoiced, once your file is approved.</p>
+      <div class="tf-choix" id="tf-domopts"></div>
+      <div class="tf-domopt-oui" hidden>
+        <div class="tf-champ"><div><input id="tf-dom-societe" placeholder="Company name" autocomplete="organization" aria-label="Company name"><span class="msg"></span></div></div>
+        <div class="tf-champ"><div><input id="tf-dom-siren" placeholder="SIREN (9 digits)" inputmode="numeric" maxlength="11" autocomplete="off" aria-label="SIREN"><span class="msg"></span></div></div>
+        <label class="accord" style="margin-top:14px"><input type="checkbox" id="tf-dom-creation"><span>Company being formed: the SIREN will follow once registered.</span></label>
+        <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">press <b>Enter ↵</b></span></div>
+      </div>
+      <p class="tf-err" data-err></p>
     </section>
     <section class="tf-q" data-q="contact">
       <div class="tf-num">06 →</div>
@@ -2004,15 +2018,15 @@ function finSalle(v, res){
 
 /* Devenir membre : formules, questions une à une, paiement simulé, fiche membre et contrat créés dans Nexudus. */
 const FORMULES_UI = [
-  { id:1415397038, nom:"Nomad", prix:290, accroche:"Free access to the coworking floor, daytime, Monday to Saturday.", inclus:["Flexible desk on the 1st floor","10 Gb/s fibre and printing","Unlimited coffee at the bar","2 h of meeting room / month","Member events"], note:"No commitment.", preavis:30 },
-  { id:1415397039, nom:"Resident", prix:490, accroche:"Your own dedicated desk, in a quiet area.", inclus:["Named desk, screen on request","24/7 access and secure locker","5 h of meeting room / month","Business address and mail","Coffee and member events"], vedette:true, preavis:30 },
-  { id:1415397447, nom:"Private office", prix:750, unite:"/ poste", accroche:"A closed office just for you or your team.", inclus:["Bespoke furniture, name plate on the door","24/7 access and secure lockers","10 h of meeting room / month","Mail and concierge","Dedicated fibre line"], postes:true, preavis:60 },
+  { id:1415397038, nom:"Nomad", prix:290, domOpt:45, accroche:"Free access to the coworking floor, daytime, Monday to Saturday.", inclus:["Flexible desk on the 1st floor","10 Gb/s fibre and printing","Unlimited coffee at the bar","2 h of meeting room / month","Member events"], note:"No commitment.", preavis:30 },
+  { id:1415397039, nom:"Resident", prix:490, domOpt:45, accroche:"Your own dedicated desk, in a quiet area.", inclus:["Named desk, screen on request","24/7 access and secure locker","5 h of meeting room / month","Mail reception","Coffee and member events"], vedette:true, preavis:30 },
+  { id:1415397447, nom:"Private office", prix:750, domOpt:0, unite:"/ poste", accroche:"A closed office just for you or your team.", inclus:["Bespoke furniture, name plate on the door","24/7 access and secure lockers","10 h of meeting room / month","Mail and concierge","Dedicated fibre line"], postes:true, preavis:60 },
   { id:1415397040, nom:"Business address", prix:90, accroche:"Your address at 312 boulevard Haussmann, without the office.", inclus:["Registered business address","Mail received, scanned, notified","Forwarding on request","Meeting rooms à la carte","Identity check (KYC)"], note:"Activated after identity check.", preavis:30 },
 ];
 const tf = document.getElementById("tf");
 const M = { formule:null, debut:null, debutTxt:"", postes:1, i:0, ouvertLe:0, focus:null, envoi:false };
 const fCour = () => FORMULES_UI.find(f => f.id === M.formule);
-const ordreQ = () => ["formule","debut", ...(fCour() && fCour().postes ? ["postes"] : []), "nom","societe","contact","paiement"];
+const ordreQ = () => ["formule","debut", ...(fCour() && fCour().postes ? ["postes"] : []), "nom","societe", ...(fCour() && fCour().domOpt !== undefined ? ["domopt"] : []), "contact","paiement"];
 
 function dessinerFormules(){
 document.getElementById("tf-plans").innerHTML = FORMULES_UI.map(f => `<article class="pl${f.vedette ? " vedette" : ""}">${f.vedette ? '<span class="badge">Most popular</span>' : ""}<h3>${f.nom}</h3><p class="accroche">${f.accroche}</p><p class="p num">${eur(f.prix).replace(".00","")}<small>excl. VAT ${f.unite || "/ month"}</small></p><ul>${f.inclus.map(x => `<li>${x}</li>`).join("")}</ul>${f.note ? `<p class="note-pl">${f.note}</p>` : ""}<button class="btn ${f.vedette ? "btn-or" : "btn-fil"}" type="button" data-plan="${f.id}">Choose ${f.nom}</button></article>`).join("");
@@ -2040,7 +2054,7 @@ dessinerFormules();
 })();
 
 function ouvrirMembre(plan){
-  M.focus = document.activeElement; M.ouvertLe = Date.now(); M.envoi = false;
+  M.focus = document.activeElement; M.ouvertLe = Date.now(); M.envoi = false; M.domOpt = null;
   tf.hidden = false; tf.classList.remove("ferme"); document.body.classList.add("modal-ouverte");
   const voile = document.getElementById("tf-voile"); voile.hidden = false; voile.classList.remove("ferme");
   if (plan){ M.formule = plan; allerQ("debut"); } else allerQ("formule");
@@ -2099,6 +2113,13 @@ function textesParcours(){
   tf.classList.toggle("domic", d);
   tf.setAttribute("aria-label", d ? "Register my company" : "Become a member");
 }
+function dessinerDomOpt(){
+  const f = fCour(); if (!f || f.domOpt === undefined) return;
+  const prix = f.domOpt ? `+ ${eur(f.domOpt).replace(".00","")} excl. VAT / month` : "Included with your private office";
+  document.getElementById("tf-domopts").innerHTML = `<button type="button" data-val="non"><kbd>A</kbd><span>No, thank you<small>I come to work, without registering my company here</small></span></button><button type="button" data-val="oui"><kbd>B</kbd><span>Yes, register my company<small>${prix}</small></span></button>`;
+  marquer("tf-domopts", M.domOpt === true ? "oui" : M.domOpt === false ? "non" : null);
+  tf.querySelector(".tf-domopt-oui").hidden = M.domOpt !== true;
+}
 function allerQ(nom){
   textesParcours();
   const ordre = ordreQ(); M.i = nom === "fin" ? ordre.length : Math.max(0, ordre.indexOf(nom));
@@ -2111,6 +2132,7 @@ function allerQ(nom){
   if (nom === "debut") marquer("tf-debuts", M.debut);
   if (nom === "postes") marquer("tf-postes", String(M.postes));
   if (nom === "societe"){ const e = document.getElementById("tf-prenom-echo"); if (e) e.textContent = document.getElementById("tf-prenom").value.trim(); }
+  if (nom === "domopt"){ dessinerDomOpt(); const ds = document.getElementById("tf-dom-societe"); if (!ds.value) ds.value = document.getElementById("tf-societe").value.trim(); }
   if (nom === "paiement") remplirRecapM();
   document.getElementById("tf-corps").scrollTop = 0;
   setTimeout(() => { const q = tf.querySelector(".tf-q.on"); (q.querySelector("input:not([readonly]):not([tabindex='-1'])") || q.querySelector(".tf-choix button.on, .tf-choix button, button"))?.focus({ preventScroll:true }); }, 80);
@@ -2128,6 +2150,13 @@ function valider(nom){
     if (document.getElementById("tf-creation").checked){ document.getElementById("tf-siren").parentElement.querySelector(".msg").textContent = ""; return true; }
     return champ("tf-siren", v => /^\d{9}$/.test(v.replace(/\s/g, "")), "A SIREN has 9 digits. Company being formed? Tick the box below.");
   }
+  if (nom === "domopt"){
+    if (M.domOpt === null || M.domOpt === undefined){ tf.querySelector('[data-q="domopt"] [data-err]').textContent = "Choose an answer."; return false; }
+    if (!M.domOpt) return true;
+    if (!champ("tf-dom-societe", v => v.length >= 2, "Enter the company name.")) return false;
+    if (document.getElementById("tf-dom-creation").checked){ document.getElementById("tf-dom-siren").parentElement.querySelector(".msg").textContent = ""; return true; }
+    return champ("tf-dom-siren", v => /^\d{9}$/.test(v.replace(/\s/g, "")), "A SIREN has 9 digits. Company being formed? Tick the box below.");
+  }
   if (nom === "contact") return champ("tf-email", v => /^[\x21-\x7e]+@[\x21-\x7e]+\.[a-z]{2,}$/i.test(v) && !/xn--/i.test(v) && !/@[^@]*\.\./.test(v), "This email address is not valid: check it has no accents or special characters.") && champ("tf-tel", v => !v || v.replace(/\D/g,"").length >= 8, "This number looks incomplete.");
   return true;
 }
@@ -2139,6 +2168,11 @@ tf.addEventListener("click", e => {
   const p = e.target.closest("[data-plan]"); if (p){ M.formule = Number(p.dataset.plan); if (!fCour().postes) M.postes = 1; return allerQ("debut"); }
   const c = e.target.closest(".tf-choix button");
   if (c && c.hasAttribute("data-autre")){ const l = document.getElementById("tf-debut-libre"); l.hidden = false; l.focus(); try { l.showPicker(); } catch(_){} return; }
+  if (c && c.parentElement.id === "tf-domopts"){
+    M.domOpt = c.dataset.val === "oui"; marquer("tf-domopts", c.dataset.val); const er = c.closest(".tf-q").querySelector("[data-err]"); if (er) er.textContent = "";
+    tf.querySelector(".tf-domopt-oui").hidden = !M.domOpt;
+    if (M.domOpt){ setTimeout(() => document.getElementById(document.getElementById("tf-dom-societe").value ? "tf-dom-siren" : "tf-dom-societe").focus(), 60); return; }
+    setTimeout(suivante, RM ? 0 : 380); return; }
   if (c){ const box = c.parentElement.id; if (box === "tf-debuts"){ M.debut = c.dataset.val; M.debutTxt = c.dataset.txt; } else M.postes = Number(c.dataset.val);
     marquer(box, c.dataset.val); const er = c.closest(".tf-q").querySelector("[data-err]"); if (er) er.textContent = ""; setTimeout(suivante, RM ? 0 : 380); return; }
   if (e.target.closest("[data-ok]")) suivante();
@@ -2164,6 +2198,7 @@ function remplirRecapM(){
     ? [["Plan", f.nom], ["Start", M.debutTxt], ["Company", soc], ["SIREN", sirenTxt], ["Director", nom], ["Email", document.getElementById("tf-email").value.trim()], ["Registered address", "312 bd Haussmann, 75009 Paris"]]
     : [["Membership", f.nom + (f.postes ? ` · ${M.postes} ${M.postes > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["Member", nom], ["E-mail", document.getElementById("tf-email").value.trim()]];
   if (soc && !estDomic()) lignes.splice(3, 0, ["Company", soc]);
+  if (!estDomic() && M.domOpt) lignes.push(["Registered-office option", (f.domOpt ? eur(f.domOpt) + " excl. VAT / month" : "Included") + ", activated once your file is approved"]);
   document.getElementById("tf-recap").innerHTML = lignes.map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
   document.getElementById("tf-ttc").textContent = eur(m.ttc);
   document.getElementById("tf-ht").textContent = eur(m.ht) + " excl. VAT + VAT 20%";
@@ -2209,6 +2244,7 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
     societe:document.getElementById("tf-societe").value.trim(), email:document.getElementById("tf-email").value.trim().toLowerCase(), tel:document.getElementById("tf-tel").value.trim(),
     accord:true, site_web:document.getElementById("tf-site").value, ouvert_le:M.ouvertLe };
   const domic = estDomic();
+  if (!domic && M.domOpt){ v.option_domiciliation = true; v.dom_societe = document.getElementById("tf-dom-societe").value.trim(); v.creation = document.getElementById("tf-dom-creation").checked; v.siren = v.creation ? "" : document.getElementById("tf-dom-siren").value.replace(/\s/g, ""); }
   if (domic){ v.siren = document.getElementById("tf-creation").checked ? "" : document.getElementById("tf-siren").value.replace(/\s/g, ""); v.creation = document.getElementById("tf-creation").checked; }
   M.envoi = true; b.disabled = true; st.textContent = "";
   b.innerHTML = '<span class="envoi" aria-hidden="true"></span>' + (domic ? "Sending your file" : "Processing payment");
@@ -2227,12 +2263,14 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
       aideFin.innerHTML = `Three steps left, and no payment until approval:<ol class="tf-etapes"><li><b>Open our two emails</b> sent to ${esc(v.email)}: your login details, then « Your registered address: one last step ».</li><li><b>Complete your file online</b> (5 minutes): your company, your ID with your phone, your proof of address and your mail instructions.</li><li><b>We approve within one business day.</b> You then receive your contract, your domiciliation certificate for the company registry and your first invoice.</li></ol>`;
       portail.textContent = "Verify my identity";
     } else {
-      titre.innerHTML = titre.dataset.orig; aideFin.innerHTML = aideFin.dataset.orig; portail.textContent = portail.dataset.orig;
+      titre.innerHTML = titre.dataset.orig; aideFin.innerHTML = aideFin.dataset.orig + (v.option_domiciliation ? `<span class="tf-opt-dom">For the registered-office option, also open the email « Your registered address: one last step » and complete your file online: it is only activated, and invoiced, once approved.</span>` : ""); portail.textContent = portail.dataset.orig;
       document.getElementById("tf-fin-prenom").textContent = v.prenom; document.getElementById("tf-fin-date").textContent = M.debutTxt;
     }
     document.getElementById("tf-crm").innerHTML = domic
       ? `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, a pending <b>Virtual office</b> contract (it activates once the identity is verified by Stripe Identity and the proof of address approved), and a card on the « Domiciliation » CRM board that creates the team's tasks.`
-      : `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.`;
+      : `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.`
+        + (v.option_domiciliation ? " Registered-office option: a second contract pending the checks and a card on the « Domiciliation » board." : "")
+        + " A card on the « Adhésions » CRM board creates the team's onboarding tasks.";
     allerQ("fin");
   } catch (err){
     const c = err && err.code;

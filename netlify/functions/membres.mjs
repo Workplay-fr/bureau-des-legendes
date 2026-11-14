@@ -23,54 +23,68 @@ const traiter = async (req) => {
   const t = debut && new Date(debut + "T12:00:00Z");
   if (!t || t < new Date(Date.now() - 864e5) || t > new Date(Date.now() + 120 * 864e5)) return json(400, { ok: false, erreur: "Choisissez une date de début." });
   if (!d.accord) return json(400, { ok: false, erreur: "Merci d'accepter les conditions d'adhésion." });
-  // Domiciliation : un dossier (société, SIREN, dirigeant) ; le contrat reste en attente des vérifications KYC/KYB, rien n'est encaissé avant.
-  const domic = tarif === 1415397040;
+  // Domiciliation : un dossier (société, SIREN, dirigeant) ; le contrat reste en attente des vérifications, rien n'est encaissé avant.
+  // Les membres (Nomade, Résident, Bureau privé) peuvent prendre la domiciliation en option : second contrat « Domiciliation membre ».
+  const DOMIC = 1415397040, DOMIC_MEMBRE = 1415468540, BUREAU_PRIVE = 1415397447;
+  const domic = tarif === DOMIC, option = !domic && !!d.option_domiciliation;
   const siren = String(d.siren || "").replace(/\s/g, ""), creation = !!d.creation;
-  if (domic && v.societe.length < 2) return json(400, { ok: false, erreur: "Indiquez la dénomination de la société." });
-  if (domic && !creation && !/^\d{9}$/.test(siren)) return json(400, { ok: false, erreur: "Le SIREN compte 9 chiffres." });
-  const notesContrat = domic
-    ? `Dossier site · ${v.societe.slice(0, 60)} · SIREN ${creation ? "en création" : siren} · paiement après vérifications`
-    : `Souscription depuis le site vitrine · paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}`;
+  const societeDom = domic ? v.societe : nettoie(d.dom_societe || v.societe, 120);
+  if ((domic || option) && societeDom.length < 2) return json(400, { ok: false, erreur: "Indiquez la dénomination de la société." });
+  if ((domic || option) && !creation && !/^\d{9}$/.test(siren)) return json(400, { ok: false, erreur: "Le SIREN compte 9 chiffres." });
+  const notesDom = `Dossier site · ${societeDom.slice(0, 60)} · SIREN ${creation ? "en création" : siren} · paiement après vérifications`;
+  const notesContrat = domic ? notesDom : `Adhésion site · paiement simulé (démo) de ${f.prix * quantite} € HT${v.societe ? " · " + v.societe.slice(0, 60) : ""}`;
+  const contrat = (tariffId, notes, extra) => nx("POST", "/billing/coworkercontracts", {
+    IssuedById: CFG.business, CoworkerId: cId, TariffId: tariffId, StartDate: `${debut}T00:00:00Z`,
+    BillingDay: Math.min(28, t.getUTCDate()), Quantity: tariffId === tarif ? quantite : 1, ApplyProRating: true, Notes: notes, ...(extra || {}),
+  });
+  const carte = (colonne, nom, valeur, notes, medium) => nx("POST", "/crm/crmopportunities", {
+    Name: nom.slice(0, 120), CrmBoardColumnId: colonne, CoworkerId: cId, Status: 1, Position: 0, LeadSource: 1,
+    DueDate: new Date(Date.now() + 2 * 864e5).toISOString().slice(0, 19) + "Z", Value: valeur, Notes: notes.filter(Boolean).join("\n"),
+    UtmSource: "site-vitrine", UtmMedium: medium,
+  }).catch(e => console.error("Carte CRM non créée :", e.message));
+  let cId = null;
 
   try {
     const c = await contact({ ...v, compte: true,
-      note: domic ? `Dirigeant de ${v.societe} : dossier de domiciliation déposé depuis le site vitrine${creation ? " (société en création)" : ` (SIREN ${siren})`}.` : `Membre inscrit depuis le site vitrine (formule ${f.nom}).`,
-      extra: domic ? { BillingName: v.societe, TaxIDNumber: creation ? null : siren } : null });
+      note: domic ? `Dirigeant de ${societeDom} : dossier de domiciliation déposé depuis le site vitrine${creation ? " (société en création)" : ` (SIREN ${siren})`}.`
+        : `Membre inscrit depuis le site vitrine (formule ${f.nom}${option ? ", option domiciliation" : ""}).`,
+      extra: (domic || option) ? { BillingName: societeDom, CompanyName: societeDom, TaxIDNumber: creation ? null : siren } : null });
+    cId = c.id;
     let k;
-    try { k = await nx("POST", "/billing/coworkercontracts", {
-      IssuedById: CFG.business, CoworkerId: c.id, TariffId: tarif, StartDate: `${debut}T00:00:00Z`,
-      BillingDay: Math.min(28, t.getUTCDate()), Quantity: quantite, ApplyProRating: true,
-      Notes: notesContrat,
-    }); }
+    try { k = await contrat(tarif, notesContrat); }
     catch (e) {
       // Filet de sécurité : si le module Bureaux virtuels venait à être désactivé, le contrat de domiciliation ne peut pas être créé par l'API.
-      // On enregistre alors une demande dans le pipeline commercial, à traiter par l'équipe (vérification d'identité comprise).
       if (!/virtual office/i.test(String(e.message))) throw e;
       const o = await nx("POST", "/crm/crmopportunities", {
         Name: `${f.nom} · ${v.nom}`, CrmBoardColumnId: CFG.colonne, CoworkerId: c.id, Status: 1, Position: 0, LeadSource: 1,
         DueDate: `${debut}T09:00:00Z`, Value: f.prix * quantite,
-        Notes: [`Demande de ${f.nom} depuis le site vitrine`, `Début souhaité : ${debut}`, `Paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join("\n"),
+        Notes: [`Demande de ${f.nom} depuis le site vitrine`, `Début souhaité : ${debut}`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`].filter(Boolean).join("\n"),
         UtmSource: "site-vitrine", UtmMedium: "adhesion",
       });
       const oid = o.Value && o.Value.Id;
       return json(200, { ok: true, contrat: null, demande: true, reference: oid ? "BDL-D" + String(oid).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
     }
     const id = k.Value && k.Value.Id;
-    // Domiciliation : les vérifications (pièce d'identité via Stripe Identity, justificatif de domicile) sont ouvertes par le client
-    // dans l'onboarding Bureau virtuel du portail (/virtual-office/onboarding), dont Nexudus envoie le lien par e-mail (formule : SendOnBoardingFormByEmail).
-    const verifs = null;
+    const infosDom = [`Société : ${societeDom}${creation ? " (en création)" : ` · SIREN ${siren}`}`, `Dirigeant : ${v.nom}`, `Début souhaité : ${debut}`, `Paiement après validation des vérifications`];
+    let optionId = null;
     if (domic && id) {
-      // Carte dans le tableau CRM « Domiciliation », colonne « Dossier reçu » : Nexudus crée les tâches de l'équipe (liste « Dossier de domiciliation »)
-      try {
-        await nx("POST", "/crm/crmopportunities", {
-          Name: `Domiciliation · ${v.societe.slice(0, 80)}`, CrmBoardColumnId: 1415384205, CoworkerId: c.id, Status: 1, Position: 0, LeadSource: 1,
-          DueDate: new Date(Date.now() + 2 * 864e5).toISOString().slice(0, 19) + "Z", Value: f.prix * 3,
-          Notes: [`Dossier de domiciliation déposé depuis le site vitrine`, `Société : ${v.societe}${creation ? " (en création)" : ` · SIREN ${siren}`}`, `Dirigeant : ${v.nom}`, `Début souhaité : ${debut}`, `Paiement après validation des vérifications`].join("\n"),
-          UtmSource: "site-vitrine", UtmMedium: "domiciliation",
-        });
-      } catch (e) { console.error("Carte CRM non créée :", e.message); }
+      // Tableau « Domiciliation », colonne « Dossier reçu » : Nexudus crée les tâches de l'équipe. Les vérifications sont ouvertes
+      // par le client dans l'onboarding Bureau virtuel du portail, dont Nexudus envoie le lien par e-mail.
+      await carte(1415384205, `Domiciliation · ${societeDom}`, f.prix * 3, ["Dossier de domiciliation déposé depuis le site vitrine", ...infosDom], "domiciliation");
+    } else if (id) {
+      // Tableau « Adhésions », colonne « Inscription reçue » : tâches d'accueil (badge, paiement, premier jour, suivi à J+7).
+      await carte(1415384309, `${f.nom} · ${v.nom}${v.societe ? " · " + v.societe : ""}`, f.prix * quantite * 12,
+        [`Adhésion ${f.nom}${quantite > 1 ? ` · ${quantite} postes` : ""} depuis le site vitrine`, `Début : ${debut}`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`, option && "Option domiciliation demandée (voir le tableau Domiciliation)"], "adhesion");
+      if (option) {
+        try {
+          const ko = await contrat(DOMIC_MEMBRE, notesDom, tarif === BUREAU_PRIVE ? { Price: 0 } : null);
+          optionId = ko.Value && ko.Value.Id;
+          await carte(1415384205, `Domiciliation (option ${f.nom}) · ${societeDom}`, (tarif === BUREAU_PRIVE ? 0 : 45) * 3,
+            [`Option domiciliation prise avec l'adhésion ${f.nom}`, ...infosDom], "domiciliation-option");
+        } catch (e) { console.error("Option domiciliation non créée :", e.message); }
+      }
     }
-    return json(200, { ok: true, verifs, contrat: id, reference: id ? (domic ? "BDL-D" : "BDL-M") + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
+    return json(200, { ok: true, contrat: id, option: optionId, reference: id ? (domic ? "BDL-D" : "BDL-M") + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
   } catch (e) {
     const refus = emailRefuse(e); if (refus) return refus;
     console.error(e.message, JSON.stringify(e.details || null));
