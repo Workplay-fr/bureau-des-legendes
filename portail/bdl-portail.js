@@ -33,7 +33,7 @@
       agenda: svg('<rect x="4" y="5" width="16" height="15" rx="1"/><path d="M4 10h16M9 3v4M15 3v4"/><path d="m10.5 14.5 1.5 1.5 3-3"/>')
     };
     var EXTRAS = [
-      { cle: "factures", txt: en ? "Invoices & payments" : "Factures & paiements", href: function () { return route(/invoice/i, "/my-invoices"); } },
+      { cle: "factures", txt: en ? "Invoices & payments" : "Factures & paiements", href: function () { return base + "/user/dashboard/invoices"; } },
       { cle: "demande", txt: en ? "Need anything? Just ask" : "Une demande ? On s'en occupe", href: function () { return route(/help-?desk/i, "/help-desk"); } },
       { cle: "agenda", txt: en ? "Join an event" : "Participer à un événement", href: function () { return base + "/events/agenda"; } }
     ];
@@ -530,6 +530,37 @@ html.bdl .bdl-pied-c{ display:flex; align-items:center; justify-content:space-be
 html.bdl .bdl-pied-liens{ display:flex; gap:24px; flex-wrap:wrap; }
 html.bdl .bdl-pied-liens a{ color:rgba(255,255,255,.8) !important; text-decoration:none; letter-spacing:.04em; }
 html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
+/* ===== Mon activité (/user/dashboard/<rubrique>) : factures, réservations, visiteurs… ===== */
+html.bdl-act body, html.bdl-act main, html.bdl-act main > div{ background:var(--bdl-creme) !important; }
+html.bdl-act .bdl-act-band{ max-width:1200px; margin:0 auto 2.5rem; border-radius:0 0 28px 28px !important; padding:clamp(2.75rem,7vh,4.5rem) clamp(1.5rem,4vw,3.5rem) 2.5rem !important; }
+html.bdl-act .bdl-act-band .bdl-b-tete{ padding:0 !important; margin:0 !important; max-width:none; }
+html.bdl-act main{ max-width:1200px; margin:0 auto; padding-bottom:4rem; }
+html.bdl-act main > .flex-shrink-0 h3{ display:none !important; }
+html.bdl-act main > .flex-shrink-0 .bg-light{ background:#fff !important; border-radius:8px !important; box-shadow:0 0 0 1px var(--bdl-sable); padding:1rem !important; }
+html.bdl-act main > .flex-shrink-0 .bg-light::before{ content:"Rubrique"; display:block; font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; font-weight:500; color:var(--bdl-gris); margin:0 0 .6rem .15rem; }
+html.bdl-act main .form-select, html.bdl-act main .form-control{ background-color:#fff !important; border:1px solid var(--bdl-sable) !important; border-radius:6px !important; box-shadow:none !important; font-size:.92rem !important; color:var(--bdl-noir) !important; transition:border-color .25s; }
+html.bdl-act main .form-select:hover, html.bdl-act main .form-select:focus{ border-color:var(--bdl-noir) !important; }
+html.bdl-act main > .flex-grow-1{ padding-top:0 !important; }
+html.bdl-act main > .flex-grow-1 h5.fs-5{ font-size:.72rem !important; letter-spacing:.28em; text-transform:uppercase; font-weight:500 !important; color:var(--bdl-noir); gap:.7rem !important; }
+html.bdl-act main > .flex-grow-1 h5.fs-5::before{ content:""; width:6px; height:6px; background:var(--bdl-bleu); flex:none; }
+html.bdl-act .mobile-filter-dropdowns{ display:grid !important; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem !important; }
+html.bdl-act main .form-label{ font-size:.62rem !important; letter-spacing:.22em; text-transform:uppercase; font-weight:500; color:var(--bdl-gris) !important; margin-bottom:.45rem; }
+html.bdl-act main .card{ background:#fff !important; border:0 !important; border-radius:8px !important; box-shadow:0 0 0 1px var(--bdl-sable) !important; }
+html.bdl-act main .card.text-center{ max-width:none; padding:3.5rem 2rem !important; }
+html.bdl-act main .card.text-center h5{ font-weight:500 !important; font-size:1.35rem !important; letter-spacing:-.005em; }
+html.bdl-act main .card.text-center p{ color:var(--bdl-gris); }
+html.bdl-act main .card .icon{ background-color:var(--bdl-bleu) !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column{ flex-direction:row !important; flex-wrap:wrap; gap:.75rem !important; margin-top:1.5rem !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a{ display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 1.3rem; border:1px solid var(--bdl-noir); border-radius:2px; background:#fff; color:var(--bdl-noir) !important;
+  font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500; transition:background .3s var(--bdl-ease), color .3s; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a .icon{ background-color:currentColor !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a:hover{ background:var(--bdl-noir); color:#fff !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a:first-child{ background:var(--bdl-noir); color:#fff !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a:first-child:hover{ background:var(--bdl-bleu); border-color:var(--bdl-bleu); }
+html.bdl-act main table{ background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 0 0 1px var(--bdl-sable); }
+html.bdl-act main table th{ font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; font-weight:500; color:var(--bdl-gris); background:#fff !important; border-bottom:1px solid var(--bdl-sable) !important; }
+html.bdl-act main table td{ border-color:var(--bdl-sable) !important; }
+@media (max-width:991px){ html.bdl-act .bdl-act-band{ border-radius:0 0 20px 20px !important; margin-bottom:1.5rem; } }
 /* ===== Autres pages : même direction artistique que le tableau de bord ===== */
 html.bdl-page body, html.bdl-page main, html.bdl-page main > div{ background:var(--bdl-creme) !important; }
 html.bdl-page main .container{ max-width:1320px; }
@@ -787,11 +818,48 @@ html.bdl-page main .card .btn-primary{ width:auto; }
     band.classList.toggle("bdl-b-propre", !!p[2]);
   }
 
+  /* ===== Mon activité : bandeau photo au-dessus de la rubrique ===== */
+  var RUBRIQUES = {
+    invoices: ["Factures &amp; <em>paiements.</em>", "Vos factures, votre relevé et la prochaine échéance, au même endroit.", "bureau.jpg"],
+    bookings: ["Mes <em>réservations.</em>", "Salles, postes et cabines réservés, passés et à venir.", "projection.jpg"],
+    visitors: ["Mes <em>visiteurs.</em>", "Vos invités sont attendus à l'accueil, badge prêt.", "salon.jpg"],
+    deliveries: ["Mon <em>courrier.</em>", "Colis et plis reçus à votre nom au Bureau.", "courrier.jpg"],
+    events: ["Mes <em>événements.</em>", "Les rendez-vous auxquels vous êtes inscrit.", "verriere-nuit.jpg"],
+    courses: ["Mes <em>formations.</em>", "Vos parcours et ressources en cours.", "verriere-jour.jpg"],
+    files: ["Mes <em>documents.</em>", "Contrats, attestations et fichiers partagés avec vous.", "bureau.jpg"]
+  };
+  function rubrique() {
+    var m = location.pathname.match(/\/user\/dashboard\/([^/?#]+)/);
+    return m ? m[1] : null;
+  }
+  function activite() {
+    var main = doc.querySelector("main.d-lg-flex");
+    if (!main) return;
+    var r = rubrique(), cle = location.pathname;
+    var band = main.parentNode.querySelector(":scope > .bdl-act-band");
+    if (band && band.dataset.bdl === cle) return;
+    if (band) band.remove();
+    var titre = (main.querySelector(".flex-grow-1 h5") || {}).textContent || "Mon activité";
+    var p = RUBRIQUES[r] || [titre.trim() + ".", "", "verriere-jour.jpg"];
+    band = doc.createElement("div"); band.className = "bdl-bandeau bdl-act-band"; band.dataset.bdl = cle;
+    var bg = doc.createElement("div"); bg.className = "bdl-b-bg"; bg.style.backgroundImage = "url(" + BASE + "/img/" + p[2] + ")";
+    var im = new Image(); im.onload = function () { bg.classList.add("on"); }; im.src = BASE + "/img/" + p[2];
+    var voile = doc.createElement("div"); voile.className = "bdl-b-voile";
+    var tete = doc.createElement("div"); tete.className = "bdl-b-tete";
+    tete.innerHTML = '<div class="bdl-b-sur"><span>Mon activité</span><i></i><span>312, bd Haussmann · Paris IX<sup>e</sup></span></div>' +
+      '<h1 class="bdl-b-titre">' + p[0] + '</h1>' + (p[1] ? '<p class="bdl-b-sous">' + p[1] + '</p>' : '');
+    band.appendChild(bg); band.appendChild(voile); band.appendChild(tete);
+    main.parentNode.insertBefore(band, main);
+  }
+
   function appliquer() {
-    var dash = /\/user\/dashboard/.test(location.pathname);
+    var act = /\/user\/dashboard\/[^/?#]+/.test(location.pathname);
+    var dash = /\/user\/dashboard/.test(location.pathname) && !act;
+    doc.documentElement.classList.toggle("bdl-act", act);
     doc.documentElement.classList.toggle("bdl-dash", dash);
-    doc.documentElement.classList.toggle("bdl-page", !dash);
+    doc.documentElement.classList.toggle("bdl-page", !dash && !act);
     commun();
+    if (act) { activite(); return; }
     if (!dash) { pages(); return; }
     var c = doc.querySelector(".dashboard-content-container");
     if (!c) return;
