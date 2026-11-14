@@ -622,7 +622,7 @@ html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
 .bdl-cadre-demande{ position:fixed; inset:0; width:100%; height:100%; border:0; z-index:2147483000; background:transparent; color-scheme:normal; opacity:0; pointer-events:none; visibility:hidden; transition:opacity .35s var(--bdl-ease); }
 .bdl-cadre-demande.on{ opacity:1; pointer-events:auto; visibility:visible; }
 html.bdl-cadre-ouvert body{ overflow:hidden; cursor:progress; }
-html.bdl-embarque, html.bdl-embarque body{ background:transparent !important; }
+html.bdl-embarque, html.bdl-embarque.bdl body, html.bdl-embarque.bdl.bdl-page body, html.bdl-embarque body{ background:transparent !important; background-color:transparent !important; }
 html.bdl-embarque body *{ visibility:hidden !important; }
 html.bdl-embarque .modal, html.bdl-embarque .modal *, html.bdl-embarque .modal-backdrop{ visibility:visible !important; }
 html.bdl-embarque .modal-backdrop{ background:rgba(25,17,11,.55) !important; opacity:1 !important; backdrop-filter:blur(3px); }
