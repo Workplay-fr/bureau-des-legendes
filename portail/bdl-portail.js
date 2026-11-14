@@ -450,7 +450,7 @@ html.bdl .ai-modal-dialog{ position:fixed !important; right:24px; bottom:24px; m
 html.bdl .ai-modal-content{ height:min(600px, calc(100vh - 48px)); display:flex !important; flex-direction:column; border:0 !important; border-radius:18px !important; overflow:hidden;
   background:#F6F1EB !important; box-shadow:0 30px 70px -20px rgba(25,17,11,.45), 0 0 0 1px rgba(25,17,11,.06) !important; font-family:Jost, sans-serif; }
 html.bdl .ai-modal-content .modal-header{ flex:0 0 auto; background:var(--bdl-noir) !important; color:#fff; padding:14px 16px 14px 20px !important; gap:10px; align-items:center; }
-html.bdl .ai-modal-content .modal-header::before{ content:"Votre concierge"; order:0; font-size:1rem; font-weight:500; letter-spacing:.02em; color:#fff; margin-right:auto; }
+html.bdl .ai-modal-content .modal-header::before{ content:"Votre concierge IA"; order:0; font-size:1rem; font-weight:500; letter-spacing:.02em; color:#fff; margin-right:auto; }
 html.bdl .ai-modal-content .modal-header .btn-outline-secondary{ order:1; margin:0 !important; border:1px solid rgba(255,255,255,.3) !important; color:#fff !important; background:transparent !important; border-radius:999px !important; font-size:.72rem !important; padding:.25rem .7rem !important; letter-spacing:.04em; }
 html.bdl .ai-modal-content .modal-header .btn-outline-secondary:hover{ background:rgba(255,255,255,.12) !important; }
 html.bdl .ai-modal-content .modal-header .btn-outline-secondary svg{ display:none; }
@@ -673,15 +673,9 @@ html.bdl-page main .card .btn-primary{ width:auto; }
       '<div class="bdl-assist">' +
         '<button type="button" class="bdl-assist-barre" data-q="">' +
           '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg>' +
-          '<span class="txt"><b>Votre concierge</b> · réservez, invitez, posez une question…</span>' +
+          '<span class="txt"><b>Votre concierge IA</b> · posez-moi une question, réservez, invitez</span>' +
           '<span class="go">Demander</span>' +
         '</button>' +
-        '<div class="bdl-assist-puces">' +
-          '<button type="button" data-q="Je cherche une salle de réunion pour 6 personnes demain à 10h au Bureau des Légendes">Une salle pour 6 demain à 10h</button>' +
-          '<button type="button" data-q="Le chauffage ne fonctionne pas dans notre bureau, pouvez-vous prévenir l\'équipe ?">Signaler un souci au bureau</button>' +
-          '<button type="button" data-q="Peut-on accéder à l\'espace le week-end ?">Accès le week-end</button>' +
-          '<button type="button" data-q="Quels sont les horaires d\'ouverture ?">Horaires</button>' +
-        '</div>' +
       '</div>';
     s.querySelectorAll("[data-q]").forEach(function (b) {
       b.addEventListener("click", function () { ouvrirAssistant(b.getAttribute("data-q")); });
