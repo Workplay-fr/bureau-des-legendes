@@ -23,14 +23,24 @@ const traiter = async (req) => {
   const t = debut && new Date(debut + "T12:00:00Z");
   if (!t || t < new Date(Date.now() - 864e5) || t > new Date(Date.now() + 120 * 864e5)) return json(400, { ok: false, erreur: "Choisissez une date de début." });
   if (!d.accord) return json(400, { ok: false, erreur: "Merci d'accepter les conditions d'adhésion." });
+  // Domiciliation : un dossier (société, SIREN, dirigeant) ; le contrat reste en attente des vérifications KYC/KYB, rien n'est encaissé avant.
+  const domic = tarif === 1415397040;
+  const siren = String(d.siren || "").replace(/\s/g, ""), creation = !!d.creation;
+  if (domic && v.societe.length < 2) return json(400, { ok: false, erreur: "Indiquez la dénomination de la société." });
+  if (domic && !creation && !/^\d{9}$/.test(siren)) return json(400, { ok: false, erreur: "Le SIREN compte 9 chiffres." });
+  const notesContrat = domic
+    ? ["Dossier de domiciliation déposé depuis le site vitrine", `Société domiciliée : ${v.societe}`, creation ? "SIREN : société en cours de création" : `SIREN : ${siren}`, `Dirigeant : ${v.nom}`, "Aucun paiement avant la validation des vérifications (identité, justificatif de domicile, Pappers, OpenSanctions)"].join(" · ")
+    : `Souscription depuis le site vitrine · paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}`;
 
   try {
-    const c = await contact({ ...v, compte: true, note: `Membre inscrit depuis le site vitrine (formule ${f.nom}).` });
+    const c = await contact({ ...v, compte: true,
+      note: domic ? `Dirigeant de ${v.societe} : dossier de domiciliation déposé depuis le site vitrine${creation ? " (société en création)" : ` (SIREN ${siren})`}.` : `Membre inscrit depuis le site vitrine (formule ${f.nom}).`,
+      extra: domic ? { BillingName: v.societe, ReferenceNumber: creation ? null : siren } : null });
     let k;
     try { k = await nx("POST", "/billing/coworkercontracts", {
       IssuedById: CFG.business, CoworkerId: c.id, TariffId: tarif, StartDate: `${debut}T00:00:00Z`,
       BillingDay: Math.min(28, t.getUTCDate()), Quantity: quantite, ApplyProRating: true,
-      Notes: `Souscription depuis le site vitrine · paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}`,
+      Notes: notesContrat,
     }); }
     catch (e) {
       // Filet de sécurité : si le module Bureaux virtuels venait à être désactivé, le contrat de domiciliation ne peut pas être créé par l'API.
@@ -46,7 +56,7 @@ const traiter = async (req) => {
       return json(200, { ok: true, contrat: null, demande: true, reference: oid ? "BDL-D" + String(oid).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
     }
     const id = k.Value && k.Value.Id;
-    return json(200, { ok: true, contrat: id, reference: id ? "BDL-M" + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
+    return json(200, { ok: true, contrat: id, reference: id ? (domic ? "BDL-D" : "BDL-M") + String(id).slice(-5) : null, nouveau: c.nouveau, compte: c.compte });
   } catch (e) {
     const refus = emailRefuse(e); if (refus) return refus;
     console.error(e.message, JSON.stringify(e.details || null));

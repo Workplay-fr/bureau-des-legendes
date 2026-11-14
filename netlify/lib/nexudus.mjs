@@ -99,7 +99,7 @@ export async function occupationPostes(jour, dernierJour = jour) {
 }
 
 // Retrouve un contact par e-mail, ou le crée.
-export async function contact({ nom, email, tel, societe, note, compte }) {
+export async function contact({ nom, email, tel, societe, note, compte, extra }) {
   const liste = await nx("GET", `/spaces/coworkers?Coworker_Email=${encodeURIComponent(email)}&size=1`);
   const existant = liste.Records && liste.Records[0] && liste.Records[0].Id;
   if (existant) {
@@ -113,6 +113,7 @@ export async function contact({ nom, email, tel, societe, note, compte }) {
     Gender: 1, TaxRateType: 1, CountryId: CFG.pays, SimpleTimeZoneId: CFG.fuseau, InvoicingBusinessId: CFG.business,
     MondayAttendance: 1, TuesdayAttendance: 1, WednesdayAttendance: 1, ThursdayAttendance: 1, FridayAttendance: 1, SaturdayAttendance: 1, SundayAttendance: 1,
     Notes: note || "Contact créé depuis le site vitrine.",
+    ...(extra || {}),
   };
   let c, avecCompte = !!compte;
   try { c = await nx("POST", "/spaces/coworkers", compte ? { ...fiche, CreateUser: true } : fiche); }

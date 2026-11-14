@@ -479,6 +479,9 @@ html.voile #voile{opacity:1;visibility:visible;transition:opacity .45s ease}
 .champ input:focus,.champ select:focus,.champ textarea:focus{border-bottom-color:var(--noir);box-shadow:0 1px 0 var(--noir)}
 .champ.err input{border-bottom-color:#B3261E}
 .champ .msg{display:block;min-height:1.2em;margin-top:4px;font-size:12.5px;color:#B3261E}
+#tf.domic .tf-carte,#tf:not(.domic) .tf-domic{display:none!important}
+#tf.domic .paiement .total{border-top:0;margin-top:0;padding-top:0}
+#tf.domic .paiement .total .mv-statut{white-space:nowrap}
 .accord{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--gris);line-height:1.5;cursor:pointer}
 .accord input{margin:3px 0 0;accent-color:var(--noir);width:16px;height:16px;flex:none}
 .mv-pied{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:auto;padding-top:24px}
@@ -1388,6 +1391,8 @@ section.tf-q{padding-block:0}
       <h2>Nice to meet you, <span id="tf-prenom-echo"></span>. Which company?</h2>
       <p class="tf-aide">Optional: leave blank if you are joining as an individual.</p>
       <div class="tf-champ"><div><input id="tf-societe" placeholder="Your company name" autocomplete="organization" aria-label="Company"><span class="msg"></span></div></div>
+      <div class="tf-champ tf-domic"><div><input id="tf-siren" placeholder="SIREN (9 digits)" inputmode="numeric" maxlength="11" autocomplete="off" aria-label="SIREN"><span class="msg"></span></div></div>
+      <label class="accord tf-domic" style="margin-top:14px"><input type="checkbox" id="tf-creation"><span>Company being formed: the SIREN will follow once registered.</span></label>
       <div class="tf-ok"><button class="btn btn-or" type="button" data-ok>OK</button><span class="astuce">press <b>Enter ↵</b></span></div>
     </section>
     <section class="tf-q" data-q="contact">
@@ -1406,25 +1411,25 @@ section.tf-q{padding-block:0}
       <h2>Last step: payment.</h2>
       <ul class="recap" id="tf-recap"></ul>
       <div class="paiement">
-        <div class="demo-badge"><span aria-hidden="true">ⓘ</span><span><b>Demo payment.</b> No card is charged and no bank details are requested: the fields below are test values. The membership itself is recorded.</span></div>
-        <div class="carte-l">
+        <div class="demo-badge tf-carte"><span aria-hidden="true">ⓘ</span><span><b>Demo payment.</b> No card is charged and no bank details are requested: the fields below are test values. The membership itself is recorded.</span></div>
+        <div class="carte-l tf-carte">
           <div class="champ"><label class="t" for="tf-cb">Card number</label><input id="tf-cb" value="4242 4242 4242 4242" readonly tabindex="-1"></div>
           <div class="champ"><label class="t" for="tf-exp">Expiry</label><input id="tf-exp" value="12 / 34" readonly tabindex="-1"></div>
           <div class="champ"><label class="t" for="tf-cvc">CVC</label><input id="tf-cvc" value="123" readonly tabindex="-1"></div>
         </div>
         <div class="total"><span class="mv-statut">First month incl. VAT</span><div><b id="tf-ttc"></b><small id="tf-ht"></small></div></div>
       </div>
-      <label class="accord" style="margin-top:22px;max-width:520px"><input type="checkbox" id="tf-accord"> I accept the membership terms: monthly plan, cancellable with a notice of <span id="tf-preavis">30</span> days.</label>
+      <label class="accord" style="margin-top:22px;max-width:520px"><input type="checkbox" id="tf-accord"><span id="tf-accord-txt">I accept the membership terms: monthly plan, cancellable with a notice of <span id="tf-preavis">30</span> days.</span></label>
       <div class="tf-ok"><button class="btn btn-or" type="button" id="tf-payer">Pay</button></div>
       <p class="tf-err" id="tf-statut" role="status" aria-live="polite"></p>
     </section>
     <section class="tf-q" data-q="fin">
       <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
-      <h2 style="margin-top:22px">Welcome to Bureau des Légendes, <span id="tf-fin-prenom"></span>.</h2>
+      <h2 style="margin-top:22px" id="tf-fin-titre">Welcome to Bureau des Légendes, <span id="tf-fin-prenom"></span>.</h2>
       <p class="tf-aide" id="tf-fin-aide">Your membership is recorded. We look forward to seeing you on <span id="tf-fin-date"></span> to hand over your badge.</p>
       <ul class="recap" id="tf-fin-recap"></ul>
       <p class="crm" id="tf-crm" style="margin-top:16px;max-width:560px"></p>
-      <div class="tf-ok"><a class="btn btn-or" data-portal="login" href="#">Go to the member area</a><button class="btn btn-fil" type="button" data-fermer-tf>Back to the site</button></div>
+      <div class="tf-ok"><a class="btn btn-or" data-portal="login" href="#" id="tf-fin-portail">Go to the member area</a><button class="btn btn-fil" type="button" data-fermer-tf>Back to the site</button></div>
     </section>
   </div>
   <div class="tf-nav"><button type="button" id="tf-prec" aria-label="Previous question">↑</button><button type="button" id="tf-suiv" aria-label="Next question">↓</button></div>
@@ -2054,17 +2059,47 @@ function fermerMembre(){
   const fin = () => { tf.hidden = true; voile.hidden = true; tf.classList.remove("ferme"); voile.classList.remove("ferme"); document.body.classList.remove("modal-ouverte"); M.focus?.focus?.(); };
   if (RM) return fin(); tf.classList.add("ferme"); voile.classList.add("ferme"); setTimeout(fin, 480);
 }
+/* Domiciliation : même parcours, vocabulaire et règles propres (dossier d'abord, paiement après les vérifications KYC/KYB). */
+const DOMIC = 1415397040;
+const estDomic = () => M.formule === DOMIC;
+const TEXTES_DOMIC = {
+  'debut h2': "From when should we host your registered office?",
+  'debut .tf-aide': "Three-month minimum, then monthly. No payment until your file is approved.",
+  'nom h2': "Who runs the company?",
+  'nom .tf-aide': "The director whose identity we will verify, as the law requires for any registered address.",
+  'contact h2': "Where can we write to the director?",
+  'contact .tf-aide': "Your member area, file updates and mail notifications will be linked to this address.",
+  'paiement h2': "Your registered-address file.",
+};
+function textesParcours(){
+  const d = estDomic();
+  Object.entries(TEXTES_DOMIC).forEach(([cle, txt]) => {
+    const [q, sel] = cle.split(" "), sec = tf.querySelector(`[data-q="${q}"]`); if (!sec) return;
+    let el = sec.querySelector(sel);
+    if (!el && sel === ".tf-aide"){ el = document.createElement("p"); el.className = "tf-aide"; el.hidden = true; sec.querySelector("h2").after(el); }
+    if (el.dataset.orig === undefined) el.dataset.orig = el.hidden ? "" : el.innerHTML;
+    el.innerHTML = d ? txt : el.dataset.orig; el.hidden = !el.innerHTML;
+  });
+  const h2s = tf.querySelector('[data-q="societe"] h2'), aide = tf.querySelector('[data-q="societe"] .tf-aide'), pr = esc(document.getElementById("tf-prenom").value.trim());
+  h2s.innerHTML = d ? `Which company are we hosting, ${pr}?` : `Nice to meet you, <span id="tf-prenom-echo">${pr}</span>. Which company?`;
+  if (aide.dataset.orig === undefined) aide.dataset.orig = aide.innerHTML;
+  aide.innerHTML = d ? "Company name and SIREN number: we check the company before activating the contract." : aide.dataset.orig;
+  document.getElementById("tf-societe").placeholder = d ? "Company name" : "Nom de votre entreprise";
+  tf.classList.toggle("domic", d);
+  tf.setAttribute("aria-label", d ? "Register my company" : "Become a member");
+}
 function allerQ(nom){
+  textesParcours();
   const ordre = ordreQ(); M.i = nom === "fin" ? ordre.length : Math.max(0, ordre.indexOf(nom));
   tf.querySelectorAll(".tf-q").forEach(q => q.classList.toggle("on", q.dataset.q === nom));
   tf.querySelectorAll(".tf-q").forEach(q => { const k = ordre.indexOf(q.dataset.q); if (k >= 0) q.querySelector(".tf-num").textContent = String(k+1).padStart(2,"0") + " →"; });
   document.getElementById("tf-prog").style.width = (nom === "fin" ? 100 : Math.round(M.i / ordre.length * 100)) + "%";
-  document.getElementById("tf-etat").textContent = nom === "fin" ? "Membership confirmed" : `Become a member · ${M.i+1} of ${ordre.length}`;
+  document.getElementById("tf-etat").textContent = nom === "fin" ? (estDomic() ? "File sent" : "Membership confirmed") : `${estDomic() ? "Register my company" : "Become a member"} · ${M.i+1} of ${ordre.length}`;
   document.getElementById("tf-prec").disabled = M.i === 0 || nom === "fin";
   document.getElementById("tf-suiv").disabled = nom === "fin" || nom === "paiement";
   if (nom === "debut") marquer("tf-debuts", M.debut);
   if (nom === "postes") marquer("tf-postes", String(M.postes));
-  if (nom === "societe") document.getElementById("tf-prenom-echo").textContent = document.getElementById("tf-prenom").value.trim();
+  if (nom === "societe"){ const e = document.getElementById("tf-prenom-echo"); if (e) e.textContent = document.getElementById("tf-prenom").value.trim(); }
   if (nom === "paiement") remplirRecapM();
   document.getElementById("tf-corps").scrollTop = 0;
   setTimeout(() => { const q = tf.querySelector(".tf-q.on"); (q.querySelector("input:not([readonly]):not([tabindex='-1'])") || q.querySelector(".tf-choix button.on, .tf-choix button, button"))?.focus({ preventScroll:true }); }, 80);
@@ -2077,7 +2112,12 @@ function valider(nom){
   if (nom === "debut"){ if (!M.debut){ tf.querySelector('[data-q="debut"] [data-err]').textContent = "Choose a start date."; return false; } return true; }
   if (nom === "postes") return M.postes >= 1;
   if (nom === "nom") return champ("tf-prenom", v => v.length >= 1, "Please enter your first name.") && champ("tf-nom", v => v.length >= 1, "Please enter your name.");
-  if (nom === "contact") return champ("tf-email", v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v), "This email address is not valid.") && champ("tf-tel", v => !v || v.replace(/\D/g,"").length >= 8, "This number looks incomplete.");
+  if (nom === "societe" && estDomic()){
+    if (!champ("tf-societe", v => v.length >= 2, "Enter the company name.")) return false;
+    if (document.getElementById("tf-creation").checked){ document.getElementById("tf-siren").parentElement.querySelector(".msg").textContent = ""; return true; }
+    return champ("tf-siren", v => /^\d{9}$/.test(v.replace(/\s/g, "")), "A SIREN has 9 digits. Company being formed? Tick the box below.");
+  }
+  if (nom === "contact") return champ("tf-email", v => /^[\x21-\x7e]+@[\x21-\x7e]+\.[a-z]{2,}$/i.test(v) && !/xn--/i.test(v) && !/@[^@]*\.\./.test(v), "This email address is not valid: check it has no accents or special characters.") && champ("tf-tel", v => !v || v.replace(/\D/g,"").length >= 8, "This number looks incomplete.");
   return true;
 }
 function suivante(){ const n = qCour(), o = ordreQ(); if (!n || n === "paiement" || n === "fin") return; if (!valider(n)) return; allerQ(o[o.indexOf(n)+1]); }
@@ -2106,13 +2146,22 @@ document.addEventListener("click", e => { const t = e.target.closest("[data-memb
 function montantM(){ const f = fCour(), ht = f.prix * (f.postes ? M.postes : 1); return { ht, ttc: Math.round(ht*1.2*100)/100 }; }
 function remplirRecapM(){
   const f = fCour(), m = montantM(), nom = (document.getElementById("tf-prenom").value + " " + document.getElementById("tf-nom").value).trim();
-  const lignes = [["Membership", f.nom + (f.postes ? ` · ${M.postes} ${M.postes > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["Member", nom], ["E-mail", document.getElementById("tf-email").value.trim()]];
-  const soc = document.getElementById("tf-societe").value.trim(); if (soc) lignes.splice(3, 0, ["Company", soc]);
+  const soc = document.getElementById("tf-societe").value.trim();
+  const sirenTxt = document.getElementById("tf-creation").checked ? "being formed" : document.getElementById("tf-siren").value.replace(/\s/g, "").replace(/(\d{3})(?=\d)/g, "$1 ");
+  const lignes = estDomic()
+    ? [["Plan", f.nom], ["Start", M.debutTxt], ["Company", soc], ["SIREN", sirenTxt], ["Director", nom], ["Email", document.getElementById("tf-email").value.trim()], ["Registered address", "312 bd Haussmann, 75009 Paris"]]
+    : [["Membership", f.nom + (f.postes ? ` · ${M.postes} ${M.postes > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["Member", nom], ["E-mail", document.getElementById("tf-email").value.trim()]];
+  if (soc && !estDomic()) lignes.splice(3, 0, ["Company", soc]);
   document.getElementById("tf-recap").innerHTML = lignes.map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
   document.getElementById("tf-ttc").textContent = eur(m.ttc);
   document.getElementById("tf-ht").textContent = eur(m.ht) + " excl. VAT + VAT 20%";
-  document.getElementById("tf-preavis").textContent = f.preavis;
-  document.getElementById("tf-payer").textContent = "Pay " + eur(m.ttc) + " and become a member";
+  const lt = document.querySelector("#tf .total .mv-statut");
+  lt.textContent = estDomic() ? "Monthly, incl. VAT" : "First month incl. VAT";
+  if (estDomic()) document.getElementById("tf-ht").textContent = eur(m.ht) + " excl. VAT + VAT 20% · invoiced once your file is approved";
+  document.getElementById("tf-accord-txt").innerHTML = estDomic()
+    ? `I accept the registered-address contract: three months minimum, then monthly, cancellable with <span id="tf-preavis">${f.preavis}</span> days' notice.`
+    : `I accept the membership terms: monthly plan, cancellable with <span id="tf-preavis">${f.preavis}</span> days' notice.`;
+  document.getElementById("tf-payer").textContent = estDomic() ? "Send my file" : "Pay " + eur(m.ttc) + " and become a member";
   document.getElementById("tf-statut").textContent = "";
 }
 async function adhererClaude(v){
@@ -2147,19 +2196,29 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
   const v = { formule:f.id, quantite:f.postes ? M.postes : 1, debut:M.debut, prenom:document.getElementById("tf-prenom").value.trim(), nom:document.getElementById("tf-nom").value.trim(),
     societe:document.getElementById("tf-societe").value.trim(), email:document.getElementById("tf-email").value.trim().toLowerCase(), tel:document.getElementById("tf-tel").value.trim(),
     accord:true, site_web:document.getElementById("tf-site").value, ouvert_le:M.ouvertLe };
+  const domic = estDomic();
+  if (domic){ v.siren = document.getElementById("tf-creation").checked ? "" : document.getElementById("tf-siren").value.replace(/\s/g, ""); v.creation = document.getElementById("tf-creation").checked; }
   M.envoi = true; b.disabled = true; st.textContent = "";
-  b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Processing payment';
+  b.innerHTML = '<span class="envoi" aria-hidden="true"></span>' + (domic ? "Sending your file" : "Processing payment");
   try {
-    await pause(RM ? 0 : 1100);
-    b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Creating your member area';
+    if (!domic){ await pause(RM ? 0 : 1100);
+    b.innerHTML = '<span class="envoi" aria-hidden="true"></span>Creating your member area'; }
     const res = DANS_CLAUDE ? await adhererClaude(v) : await adhererSite(v);
-    document.getElementById("tf-fin-prenom").textContent = v.prenom;
-    document.getElementById("tf-fin-date").textContent = M.debutTxt;
-    document.getElementById("tf-fin-recap").innerHTML = [["Membership", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["First month", eur(montantM().ttc) + " incl. VAT (demo payment)"], ["Reference", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
-    const domic = f.id === 1415397040;
-    if (domic) document.getElementById("tf-fin-aide").innerHTML = `Your registered-address contract is created. One last step: verify your identity from your member area (director's ID and proof of address). The contract activates as soon as it is approved, and your domiciliation certificate is sent to you for the company registry.`;
+    document.getElementById("tf-fin-recap").innerHTML = (domic
+      ? [["Company", v.societe], ["Requested start", M.debutTxt], ["Monthly fee", eur(montantM().ttc) + " incl. VAT, invoiced after approval"], ["File", res.reference || "—"]]
+      : [["Membership", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["First month", eur(montantM().ttc) + " incl. VAT (demo payment)"], ["Reference", res.reference || "—"]]).map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
+    const titre = document.getElementById("tf-fin-titre"), aideFin = document.getElementById("tf-fin-aide"), portail = document.getElementById("tf-fin-portail");
+    if (titre.dataset.orig === undefined){ titre.dataset.orig = titre.innerHTML; aideFin.dataset.orig = aideFin.innerHTML; portail.dataset.orig = portail.textContent; }
+    if (domic){
+      titre.innerHTML = `File received, ${esc(v.prenom)}.`;
+      aideFin.innerHTML = `One last step: verify your identity from your member area (director's ID and proof of address). <b>No payment until approval.</b> The contract then activates, and you receive your first invoice and your domiciliation certificate for the company registry.`;
+      portail.textContent = "Verify my identity";
+    } else {
+      titre.innerHTML = titre.dataset.orig; aideFin.innerHTML = aideFin.dataset.orig; portail.textContent = portail.dataset.orig;
+      document.getElementById("tf-fin-prenom").textContent = v.prenom; document.getElementById("tf-fin-date").textContent = M.debutTxt;
+    }
     document.getElementById("tf-crm").innerHTML = domic
-      ? `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a pending <b>Virtual office</b> contract: it only activates once the identity is verified (Stripe Identity), the proof of address approved and the company screened (Pappers, OpenSanctions). Visible straight away in Flow, under Customers.`
+      ? `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>Domiciliation</b> en attente : il ne s'active qu'une fois l'identité vérifiée (Stripe Identity), le justificatif de domicile validé et la société contrôlée (Pappers, OpenSanctions). Visible tout de suite dans Flow, rubrique Clients.`
       : `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.`;
     allerQ("fin");
   } catch (err){
@@ -2169,7 +2228,7 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
     else if (c === "approval_required" || c === "consent_required") st.textContent = "Nexudus needs your permission for this page. Click “Pay” again and allow access.";
     else if (c === "site" || c === "tool_error") st.textContent = String(err.message || "The membership could not be recorded.").slice(0,240);
     else st.textContent = "No response from Nexudus. The membership may have been created: check the customer list before trying again.";
-  } finally { M.envoi = false; b.disabled = false; if (qCour() === "paiement") b.textContent = "Pay " + eur(montantM().ttc) + " and become a member"; }
+  } finally { M.envoi = false; b.disabled = false; if (qCour() === "paiement") b.textContent = estDomic() ? "Send my file" : "Pay " + eur(montantM().ttc) + " and become a member"; }
 });
 
 window.addEventListener("hashchange", route);

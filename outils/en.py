@@ -30,6 +30,7 @@ SNIP = [
 
 # ---------------------------------------------------------------- 2. textes de la page (nœuds texte exacts)
 TEXT = {
+    "Société en cours de création : le SIREN suivra après l'immatriculation.": "Company being formed: the SIREN will follow once registered.",
     "Espaces": "Spaces", "Formules": "Memberships", "Événements": "Events", "Contact": "Contact",
     "Espace membre": "Member area", "Réserver une visite": "Book a visit", "Menu": "Menu", "Accueil": "Home",
     "Réserver un poste": "Book a desk", "312, boulevard Haussmann": "312, boulevard Haussmann",
@@ -191,6 +192,7 @@ TEXT = {
 
 # ---------------------------------------------------------------- 3. attributs (alt, aria-label, placeholder, title)
 ATTR = {
+    "SIREN (9 chiffres)": "SIREN (9 digits)",
     "Un invité par ligne : Prénom Nom, adresse e-mail": "One guest per line: First Last, email address",
     "Bureau des Légendes, accueil": "Bureau des Légendes, home", "Navigation principale": "Main navigation", "Accès rapides": "Quick links",
     "Explorer l'immeuble : pousser la porte du 312, boulevard Haussmann": "Explore the building: step through the door of 312, boulevard Haussmann",
@@ -223,6 +225,35 @@ ATTR = {
 
 # ---------------------------------------------------------------- 4. script de la page (morceaux exacts, guillemets compris)
 JS = [
+    ('À partir de quand domicilier votre société ?', 'From when should we host your registered office?'),
+    ('Contrat de trois mois minimum, puis mensuel. Aucun paiement avant la validation de votre dossier.', 'Three-month minimum, then monthly. No payment until your file is approved.'),
+    ('Qui dirige la société ?', 'Who runs the company?'),
+    ("Le dirigeant dont nous vérifierons l'identité, comme l'exige la loi pour toute domiciliation.", 'The director whose identity we will verify, as the law requires for any registered address.'),
+    ('Où pouvons-nous écrire au dirigeant ?', 'Where can we write to the director?'),
+    ("L'espace membre, le suivi du dossier et les notifications de courrier seront rattachés à cette adresse.", 'Your member area, file updates and mail notifications will be linked to this address.'),
+    ('Votre dossier de domiciliation.', 'Your registered-address file.'),
+    ('`Quelle société domicilions-nous, ${pr} ?`', '`Which company are we hosting, ${pr}?`'),
+    ('`Ravi de vous rencontrer, <span id="tf-prenom-echo">${pr}</span>. Pour quelle entreprise ?`', '`Nice to meet you, <span id="tf-prenom-echo">${pr}</span>. Which company?`'),
+    ("Dénomination et numéro SIREN : nous vérifions la société avant d'activer le contrat.", 'Company name and SIREN number: we check the company before activating the contract.'),
+    ('${estDomic() ? "Domicilier ma société" : "Devenir membre"} · ${M.i+1} sur ${ordre.length}', '${estDomic() ? "Register my company" : "Become a member"} · ${M.i+1} of ${ordre.length}'),
+    ('"Domicilier ma société" : "Devenir membre"', '"Register my company" : "Become a member"'),
+    ('"Dénomination de la société"', '"Company name"'),
+    ('(estDomic() ? "Dossier envoyé" : "Adhésion confirmée")', '(estDomic() ? "File sent" : "Membership confirmed")'),
+    ('"Indiquez la dénomination de la société."', '"Enter the company name."'),
+    ('"Le SIREN compte 9 chiffres. Société en création ? Cochez la case ci-dessous."', '"A SIREN has 9 digits. Company being formed? Tick the box below."'),
+    ('"Cette adresse e-mail n\'est pas valide : vérifiez qu\'elle ne contient ni accent ni caractère spécial."', '"This email address is not valid: check it has no accents or special characters."'),
+    ('"en cours de création"', '"being formed"'),
+    ('[["Formule", f.nom], ["Début", M.debutTxt], ["Société domiciliée", soc], ["SIREN", sirenTxt], ["Dirigeant", nom], ["E-mail", document.getElementById("tf-email").value.trim()], ["Adresse du siège", "312 bd Haussmann, 75009 Paris"]]', '[["Plan", f.nom], ["Start", M.debutTxt], ["Company", soc], ["SIREN", sirenTxt], ["Director", nom], ["Email", document.getElementById("tf-email").value.trim()], ["Registered address", "312 bd Haussmann, 75009 Paris"]]'),
+    ('estDomic() ? "Mensualité TTC" : "Premier mois TTC"', 'estDomic() ? "Monthly, incl. VAT" : "First month incl. VAT"'),
+    ('" HT + TVA 20 % · facturée après validation du dossier"', '" excl. VAT + VAT 20% · invoiced once your file is approved"'),
+    ('`J\'accepte le contrat de domiciliation : trois mois minimum, puis mensuel, résiliable avec un préavis de <span id="tf-preavis">${f.preavis}</span> jours.`', '`I accept the registered-address contract: three months minimum, then monthly, cancellable with <span id="tf-preavis">${f.preavis}</span> days\' notice.`'),
+    ('`J\'accepte les conditions d\'adhésion : formule mensuelle, résiliable avec un préavis de <span id="tf-preavis">${f.preavis}</span> jours.`', '`I accept the membership terms: monthly plan, cancellable with <span id="tf-preavis">${f.preavis}</span> days\' notice.`'),
+    ('"Envoyer mon dossier"', '"Send my file"'),
+    ('"Envoi de votre dossier"', '"Sending your file"'),
+    ('[["Société domiciliée", v.societe], ["Début souhaité", M.debutTxt], ["Mensualité", eur(montantM().ttc) + " TTC, facturée après validation"], ["Dossier", res.reference || "—"]]', '[["Company", v.societe], ["Requested start", M.debutTxt], ["Monthly fee", eur(montantM().ttc) + " incl. VAT, invoiced after approval"], ["File", res.reference || "—"]]'),
+    ('`Dossier reçu, ${esc(v.prenom)}.`', '`File received, ${esc(v.prenom)}.`'),
+    ("`Dernière étape : vérifiez votre identité depuis votre espace membre (pièce d'identité du dirigeant et justificatif de domicile). <b>Aucun paiement avant la validation.</b> Le contrat s'active alors, et vous recevez votre première facture et votre attestation de domiciliation pour le greffe.`", "`One last step: verify your identity from your member area (director's ID and proof of address). <b>No payment until approval.</b> The contract then activates, and you receive your first invoice and your domiciliation certificate for the company registry.`"),
+    ('"Vérifier mon identité"', '"Verify my identity"'),
     ('b.textContent = "Payer " + eur(Math.round(t * 1.2 * 100) / 100) + " TTC";', 'b.textContent = "Pay " + eur(Math.round(t * 1.2 * 100) / 100) + " incl. VAT";'),
     ('b.textContent = "Paiement en cours…";', 'b.textContent = "Processing payment…";'),
     ('st.textContent = "Cochez la case pour accepter les conditions de vente.";', 'st.textContent = "Tick the box to accept the terms of sale.";'),
@@ -335,7 +366,7 @@ JS = [
     ('data-plan="${f.id}">Choisir ${f.nom}</button>', 'data-plan="${f.id}">Choose ${f.nom}</button>'),
     ('"Dès lundi prochain"', '"From next Monday"'), ('"Le 1er du mois prochain"', '"The 1st of next month"'), ('"Dans deux semaines"', '"In two weeks"'),
     ('${n} ${n > 1 ? "postes" : "poste"}<small>${eur(750*n)} HT / mois</small>', '${n} ${n > 1 ? "desks" : "desk"}<small>${eur(750*n)} excl. VAT / month</small>'),
-    ('"Adhésion confirmée"', '"Membership confirmed"'), ('`Devenir membre · ${M.i+1} sur ${ordre.length}`', '`Become a member · ${M.i+1} of ${ordre.length}`'),
+    
     ('"Choisissez une date de début."', '"Choose a start date."'),
     ('["Formule", ', '["Membership", '), ('${M.postes > 1 ? "postes" : "poste"}', '${M.postes > 1 ? "desks" : "desk"}'), ('["Début", ', '["Start", '),
     ('["Membre", ', '["Member", '), ('["Entreprise", ', '["Company", '), ('" HT + TVA 20 %"', '" excl. VAT + VAT 20%"'),
@@ -343,11 +374,6 @@ JS = [
     ('Création de votre espace membre', 'Creating your member area'), ('${v.quantite > 1 ? "postes" : "poste"}', '${v.quantite > 1 ? "desks" : "desk"}'), ('["Premier mois", ', '["First month", '),
     ('Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d\'accès au portail" : ""}, et un contrat <b>${esc(f.nom)}</b> qui démarre le ${esc(M.debutTxt)}. Visible tout de suite dans Flow, rubrique Clients.',
      'In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.'),
-    ("Votre contrat de domiciliation est créé. Dernière étape : vérifiez votre identité depuis votre espace membre (pièce d'identité du dirigeant et justificatif de domicile). Le contrat s'active dès la validation, et votre attestation de domiciliation vous est envoyée pour le greffe.",
-     "Your registered-address contract is created. One last step: verify your identity from your member area (director's ID and proof of address). The contract activates as soon as it is approved, and your domiciliation certificate is sent to you for the company registry."),
-    ("et un contrat <b>Domiciliation</b> en attente : il ne s'active qu'une fois l'identité vérifiée (Stripe Identity), le justificatif de domicile validé et la société contrôlée (Pappers, OpenSanctions). Visible tout de suite dans Flow, rubrique Clients.",
-     "and a pending <b>Virtual office</b> contract: it only activates once the identity is verified (Stripe Identity), the proof of address approved and the company screened (Pappers, OpenSanctions). Visible straight away in Flow, under Customers."),
-    ('? `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d\'accès au portail" : ""}, and a pending', '? `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a pending'),
     ('"La réponse de Nexudus n\'est pas arrivée. L\'adhésion a peut-être été créée : vérifiez la liste des clients avant de recommencer."', '"No response from Nexudus. The membership may have been created: check the customer list before trying again."'),
     ('ordre = ["3e", "2e", "1er", "RDC"]', 'ordre = ["3rd", "2nd", "1st", "GF"]'),
     ('"aujourd\'hui"', '"today"'),
