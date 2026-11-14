@@ -41,6 +41,8 @@
       return Array.prototype.filter.call(el.querySelectorAll("*"), function (e) { return !e.children.length && e.textContent.trim() && !e.closest("svg"); })[0];
     }
     function icone(carte, cle) {
+      var ext = carte.querySelector(".icon-external-link");
+      if (ext) { ext.innerHTML = ICONES[cle].replace("<svg ", '<svg data-bdl="1" ').replace('width="40" height="40"', 'width="24" height="24"'); return; }
       var ic = carte.querySelector(".icon-masked");
       if (ic) {
         var url = 'url("data:image/svg+xml,' + encodeURIComponent(ICONES[cle].replace('stroke="#fff"', 'stroke="#000"')) + '")';
@@ -59,7 +61,7 @@
       var cols = Array.prototype.filter.call(boite.children, function (c) { return c.querySelector("a[href]"); });
       var modele = cols.filter(function (c) { return /\/store/.test(c.querySelector("a[href]").getAttribute("href")); })[0] || cols[0];
       if (!modele) return;
-      if (!modele.hasAttribute("data-bdl-boutique")) { modele.setAttribute("data-bdl-boutique", ""); icone(modele, "boutique"); }
+      modele.setAttribute("data-bdl-boutique", ""); if (!modele.querySelector('svg[data-bdl] path[d^="M5 8h14"]')) icone(modele, "boutique");
       EXTRAS.forEach(function (x) {
         var col = modele.cloneNode(true);
         col.removeAttribute("data-bdl-boutique");
