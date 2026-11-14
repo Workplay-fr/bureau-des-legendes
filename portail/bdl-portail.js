@@ -540,7 +540,7 @@ html.bdl .bdl-pied-liens{ display:flex; gap:24px; flex-wrap:wrap; }
 html.bdl .bdl-pied-liens a{ color:rgba(255,255,255,.8) !important; text-decoration:none; letter-spacing:.04em; }
 html.bdl .bdl-pied-liens a:hover{ color:#fff !important; }
 /* ===== Mon activité (/user/dashboard/<rubrique>) : factures, réservations, visiteurs… ===== */
-html.bdl-act body, html.bdl-act main, html.bdl-act main > div{ background:var(--bdl-creme) !important; }
+html.bdl-act body, html.bdl-act body div:has(> .container > main), html.bdl-act body div:has(> div > .container > main), html.bdl-act main, html.bdl-act main > div{ background:var(--bdl-creme) !important; }
 html.bdl-act .bdl-act-band{ max-width:1200px; margin:0 auto 2.5rem; border-radius:0 0 28px 28px !important; padding:clamp(2.75rem,7vh,4.5rem) clamp(1.5rem,4vw,3.5rem) 2.5rem !important; }
 html.bdl-act .bdl-act-band .bdl-b-tete{ padding:0 !important; margin:0 !important; max-width:none; }
 html.bdl-act main{ max-width:1200px; margin:0 auto; padding-bottom:4rem; }
@@ -558,14 +558,13 @@ html.bdl-act main .card{ background:#fff !important; border:0 !important; border
 html.bdl-act main .card.text-center{ max-width:none; padding:3.5rem 2rem !important; }
 html.bdl-act main .card.text-center h5{ font-weight:500 !important; font-size:1.35rem !important; letter-spacing:-.005em; }
 html.bdl-act main .card.text-center p{ color:var(--bdl-gris); }
-html.bdl-act main .card .icon{ background-color:var(--bdl-bleu) !important; }
-html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column{ flex-direction:row !important; flex-wrap:wrap; gap:.75rem !important; margin-top:1.5rem !important; }
-html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a{ display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 1.3rem; border:1px solid var(--bdl-noir); border-radius:2px; background:#fff; color:var(--bdl-noir) !important;
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.gap-3{ flex-direction:row !important; flex-wrap:wrap; gap:.75rem !important; margin-top:1.5rem !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.gap-3 > a{ display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 1.3rem; border:1px solid var(--bdl-noir); border-radius:2px; background:#fff; color:var(--bdl-noir) !important;
   font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; font-weight:500; transition:background .3s var(--bdl-ease), color .3s; }
-html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a .icon{ background-color:currentColor !important; }
-html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a:hover{ background:var(--bdl-noir); color:#fff !important; }
-html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a:first-child{ background:var(--bdl-noir); color:#fff !important; }
-html.bdl-act main > .flex-grow-1 .mt-2.d-flex.flex-column > a:first-child:hover{ background:var(--bdl-bleu); border-color:var(--bdl-bleu); }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.gap-3 > a .icon{ background-color:currentColor !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.gap-3 > a:hover{ background:var(--bdl-noir); color:#fff !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.gap-3 > a:first-child{ background:var(--bdl-noir); color:#fff !important; }
+html.bdl-act main > .flex-grow-1 .mt-2.d-flex.gap-3 > a:first-child:hover{ background:var(--bdl-bleu); border-color:var(--bdl-bleu); }
 html.bdl-act main table{ background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 0 0 1px var(--bdl-sable); }
 html.bdl-act main table th{ font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; font-weight:500; color:var(--bdl-gris); background:#fff !important; border-bottom:1px solid var(--bdl-sable) !important; }
 html.bdl-act main table td{ border-color:var(--bdl-sable) !important; }
