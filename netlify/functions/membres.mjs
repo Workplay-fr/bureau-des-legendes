@@ -33,7 +33,7 @@ const traiter = async (req) => {
       Notes: `Souscription depuis le site vitrine · paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}`,
     }); }
     catch (e) {
-      // La domiciliation (virtual office) n'est pas incluse dans l'abonnement Nexudus de ce lieu : le contrat ne peut pas être créé par l'API.
+      // Filet de sécurité : si le module Bureaux virtuels venait à être désactivé, le contrat de domiciliation ne peut pas être créé par l'API.
       // On enregistre alors une demande dans le pipeline commercial, à traiter par l'équipe (vérification d'identité comprise).
       if (!/virtual office/i.test(String(e.message))) throw e;
       const o = await nx("POST", "/crm/crmopportunities", {

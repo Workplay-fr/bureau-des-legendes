@@ -1421,7 +1421,7 @@ section.tf-q{padding-block:0}
     <section class="tf-q" data-q="fin">
       <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
       <h2 style="margin-top:22px">Welcome to Bureau des Légendes, <span id="tf-fin-prenom"></span>.</h2>
-      <p class="tf-aide">Your membership is recorded. We look forward to seeing you on <span id="tf-fin-date"></span> to hand over your badge.</p>
+      <p class="tf-aide" id="tf-fin-aide">Your membership is recorded. We look forward to seeing you on <span id="tf-fin-date"></span> to hand over your badge.</p>
       <ul class="recap" id="tf-fin-recap"></ul>
       <p class="crm" id="tf-crm" style="margin-top:16px;max-width:560px"></p>
       <div class="tf-ok"><a class="btn btn-or" data-portal="login" href="#">Go to the member area</a><button class="btn btn-fil" type="button" data-fermer-tf>Back to the site</button></div>
@@ -2156,7 +2156,11 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
     document.getElementById("tf-fin-prenom").textContent = v.prenom;
     document.getElementById("tf-fin-date").textContent = M.debutTxt;
     document.getElementById("tf-fin-recap").innerHTML = [["Membership", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "desks" : "desk"}` : "")], ["Start", M.debutTxt], ["First month", eur(montantM().ttc) + " incl. VAT (demo payment)"], ["Reference", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
-    document.getElementById("tf-crm").innerHTML = `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.`;
+    const domic = f.id === 1415397040;
+    if (domic) document.getElementById("tf-fin-aide").innerHTML = `Your registered-address contract is created. One last step: verify your identity from your member area (director's ID and proof of address). The contract activates as soon as it is approved, and your domiciliation certificate is sent to you for the company registry.`;
+    document.getElementById("tf-crm").innerHTML = domic
+      ? `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a pending <b>Virtual office</b> contract: it only activates once the identity is verified (Stripe Identity), the proof of address approved and the company screened (Pappers, OpenSanctions). Visible straight away in Flow, under Customers.`
+      : `In Nexudus: ${res.nouveau ? "a new customer record" : "the existing customer record"}${res.compte ? " with its portal login" : ""}, and a <b>${esc(f.nom)}</b> contract starting on ${esc(M.debutTxt)}. Visible straight away in Flow, under Customers.`;
     allerQ("fin");
   } catch (err){
     const c = err && err.code;

@@ -1421,7 +1421,7 @@ section.tf-q{padding-block:0}
     <section class="tf-q" data-q="fin">
       <div class="sceau" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none"><path d="M6 15.5l6 6L24 9" stroke="#19110B" stroke-width="1.5"/></svg></div>
       <h2 style="margin-top:22px">Bienvenue au Bureau des Légendes, <span id="tf-fin-prenom"></span>.</h2>
-      <p class="tf-aide">Votre adhésion est enregistrée. Nous vous attendons le <span id="tf-fin-date"></span> pour vous remettre votre badge.</p>
+      <p class="tf-aide" id="tf-fin-aide">Votre adhésion est enregistrée. Nous vous attendons le <span id="tf-fin-date"></span> pour vous remettre votre badge.</p>
       <ul class="recap" id="tf-fin-recap"></ul>
       <p class="crm" id="tf-crm" style="margin-top:16px;max-width:560px"></p>
       <div class="tf-ok"><a class="btn btn-or" data-portal="login" href="#">Accéder à l'espace membre</a><button class="btn btn-fil" type="button" data-fermer-tf>Retour au site</button></div>
@@ -2156,7 +2156,11 @@ document.getElementById("tf-payer").addEventListener("click", async () => {
     document.getElementById("tf-fin-prenom").textContent = v.prenom;
     document.getElementById("tf-fin-date").textContent = M.debutTxt;
     document.getElementById("tf-fin-recap").innerHTML = [["Formule", f.nom + (f.postes ? ` · ${v.quantite} ${v.quantite > 1 ? "postes" : "poste"}` : "")], ["Début", M.debutTxt], ["Premier mois", eur(montantM().ttc) + " TTC (paiement simulé)"], ["Référence", res.reference || "—"]].map(([k,x]) => `<li><span>${k}</span>${esc(x)}</li>`).join("");
-    document.getElementById("tf-crm").innerHTML = `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>${esc(f.nom)}</b> qui démarre le ${esc(M.debutTxt)}. Visible tout de suite dans Flow, rubrique Clients.`;
+    const domic = f.id === 1415397040;
+    if (domic) document.getElementById("tf-fin-aide").innerHTML = `Votre contrat de domiciliation est créé. Dernière étape : vérifiez votre identité depuis votre espace membre (pièce d'identité du dirigeant et justificatif de domicile). Le contrat s'active dès la validation, et votre attestation de domiciliation vous est envoyée pour le greffe.`;
+    document.getElementById("tf-crm").innerHTML = domic
+      ? `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>Domiciliation</b> en attente : il ne s'active qu'une fois l'identité vérifiée (Stripe Identity), le justificatif de domicile validé et la société contrôlée (Pappers, OpenSanctions). Visible tout de suite dans Flow, rubrique Clients.`
+      : `Dans Nexudus : ${res.nouveau ? "une nouvelle fiche client" : "la fiche client existante"}${res.compte ? " avec son compte d'accès au portail" : ""}, et un contrat <b>${esc(f.nom)}</b> qui démarre le ${esc(M.debutTxt)}. Visible tout de suite dans Flow, rubrique Clients.`;
     allerQ("fin");
   } catch (err){
     const c = err && err.code;
