@@ -29,7 +29,7 @@ const traiter = async (req) => {
   if (domic && v.societe.length < 2) return json(400, { ok: false, erreur: "Indiquez la dénomination de la société." });
   if (domic && !creation && !/^\d{9}$/.test(siren)) return json(400, { ok: false, erreur: "Le SIREN compte 9 chiffres." });
   const notesContrat = domic
-    ? ["Dossier de domiciliation déposé depuis le site vitrine", `Société domiciliée : ${v.societe}`, creation ? "SIREN : société en cours de création" : `SIREN : ${siren}`, `Dirigeant : ${v.nom}`, "Aucun paiement avant la validation des vérifications (identité, justificatif de domicile, Pappers, OpenSanctions)"].join(" · ")
+    ? `Dossier site · ${v.societe.slice(0, 60)} · SIREN ${creation ? "en création" : siren} · paiement après vérifications`
     : `Souscription depuis le site vitrine · paiement simulé (démo) de ${f.prix * quantite} € HT pour le premier mois${v.societe ? " · Société : " + v.societe : ""}`;
 
   try {
