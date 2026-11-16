@@ -4,7 +4,8 @@
 import { CFG, nx, contact, nettoie, emailValide, json, tropDEnvois, vide, isoZ, bilingue } from "../lib/nexudus.mjs";
 
 const FORMULES = { "Nomade": 290, "Résident": 490, "Bureau privé": 750, "Domiciliation": 90, "À définir": null };
-const EQUIPES = ["Seul·e", "2 à 5 personnes", "6 personnes et plus"];
+const RESPONSABLE = 1417540719; // Matthias Cohen-Hadria (administrateur Flow)
+const EQUIPES =["Seul·e", "2 à 5 personnes", "6 personnes et plus"];
 
 const traiter = async (req) => {
   if (req.method !== "POST") return json(405, { ok: false, erreur: "Méthode non autorisée." });
@@ -29,11 +30,22 @@ const traiter = async (req) => {
   try {
     const c = await contact({ ...v, note: "Contact créé depuis le site vitrine (demande de visite)." });
     const notes = [`Visite souhaitée : ${v.quandTxt}`, `Intérêt : ${v.formule}`, `Équipe : ${v.equipe}`, v.societe && `Société : ${v.societe}`, v.tel && `Téléphone : ${v.tel}`, v.message && `Message : ${v.message}`].filter(Boolean).join("\n");
+    // Carte en tête de colonne, au nom de l'équipe, datée de la visite. La colonne porte la liste de tâches
+    // « Demande de visite » : Nexudus crée la tâche « confirmer la visite » (2 h) et notifie le responsable dans Flow.
+    const quandCourt = v.quand.toLocaleString("fr-FR", { timeZone: "Europe/Paris", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
     await nx("POST", "/crm/crmopportunities", {
-      Name: `Visite · ${v.nom}`, CrmBoardColumnId: CFG.colonne, CoworkerId: c.id, Status: 1, Position: 0, LeadSource: 1,
-      DueDate: isoZ(v.quand), Value: FORMULES[v.formule], Notes: notes,
+      Name: `Visite · ${v.nom} · ${quandCourt}`.slice(0, 120), CrmBoardColumnId: CFG.colonne, CoworkerId: c.id, Status: 1, Position: 0, LeadSource: 1,
+      ResponsibleId: RESPONSABLE, DueDate: isoZ(v.quand), Value: FORMULES[v.formule], Notes: notes,
       UtmSource: nettoie(d.utm_source, 80) || "site-vitrine", UtmMedium: nettoie(d.utm_medium, 80) || "formulaire-visite", UtmCampaign: nettoie(d.utm_campaign, 80) || null,
     });
+    // Tâches calées sur la date de la visite (la liste de tâches ne sait compter qu'à partir de la création).
+    const veille = new Date(v.quand.getTime() - 864e5), lendemain = new Date(v.quand.getTime() + 864e5);
+    for (const [nom, due] of [[`Visite · préparer l'accueil de ${v.nom} (badge visiteur, café, espaces à montrer)`, veille > new Date() ? veille : v.quand],
+                              [`Visite · relancer ${v.nom} après la visite (proposition de formule)`, lendemain]]) {
+      await nx("POST", "/spaces/coworkertasks", { BusinessId: CFG.business, CoworkerId: c.id, Name: nom.slice(0, 200), DueDate: isoZ(due),
+        ResponsibleId: RESPONSABLE, NotifyByEmail: true, DisplayToEveryone: true, Completed: false, Notes: `Visite prévue : ${v.quandTxt || quandCourt}` })
+        .catch(e => console.error("Tâche non créée :", e.message));
+    }
     return json(200, { ok: true, nouveau: c.nouveau });
   } catch (e) {
     console.error(e.message, JSON.stringify(e.details || null));
