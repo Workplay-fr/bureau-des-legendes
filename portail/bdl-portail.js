@@ -490,6 +490,12 @@ html.bdl-dash .bdl-grille .col-lg-4 div.mb-2{ grid-template-columns:1fr !importa
   .bdl-hero .announcement-banner .order-md-2{ display:none !important; }
   html.bdl-dash .user-main-content .badge, html.bdl-dash .user-main-content [class*="-subtle"]{ white-space:normal !important; max-width:100%; font-size:.68rem; }
 }
+/* Calendrier : mois avec majuscule ; cartes = nom de la salle en gras + horaire (la ligne « Salle - Salle » des réservations confirmées est masquée) */
+html.bdl-dash div:has(.fc-upcoming-agenda-calendar) > .d-flex.justify-content-between.mb-4 > h5.fw-normal::first-letter{ text-transform:uppercase; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child > :first-child{ font-weight:600 !important; font-size:.82rem; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child:has(> :nth-child(4)) > :nth-child(2){ display:none !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child:has(> :nth-child(4)) > :nth-child(3){ display:flex !important; }
+html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child:has(> :nth-child(4)) > :nth-child(4){ display:none !important; }
 /* Calendrier : libellés sur une ligne avec ellipse */
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .text-truncate, html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .fw-bolder{ white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; min-width:0; }
 html.bdl-dash .fc-upcoming-agenda-calendar .fc-event .d-flex.gap-1 > div:last-child{ min-width:0; overflow:hidden; }
