@@ -162,7 +162,7 @@ export const json = (status, body) => new Response(JSON.stringify(body), {
 });
 const vus = new Map();
 export function tropDEnvois(req, max = 5) {
-  const ip = req.headers.get("x-nf-client-connection-ip") || req.headers.get("x-forwarded-for") || "?";
+  const ip = req.headers.get("x-nf-client-connection-ip") || req.headers.get("cf-connecting-ip") || req.headers.get("x-forwarded-for") || "?";
   const now = Date.now(), fen = 10 * 60 * 1000;
   const l = (vus.get(ip) || []).filter(t => now - t < fen); l.push(now); vus.set(ip, l);
   return l.length > max;
