@@ -1,4 +1,5 @@
-// Protège tout le site par un mot de passe (variable d'environnement Netlify SITE_PASSWORD).
+// Protège tout le site par mot de passe : SITE_PASSWORD, et un second mot de passe facultatif SITE_PASSWORD_2.
+// Chaque mot de passe a son propre jeton : retirer SITE_PASSWORD_2 déconnecte ceux qui sont entrés avec.
 // Sans cookie valide, chaque page affiche l'écran de connexion ; les appels /api/* répondent 401.
 // Les images de /img/ restent servies pour que l'écran de connexion puisse les afficher.
 // /portail/ contient l'habillage chargé par le portail membre Nexudus : il doit rester public.
@@ -33,8 +34,9 @@ export default async (req, context) => {
   }
   if (p.startsWith("/img/") || p.startsWith("/portail/")) return context.next();
 
-  const secret = env("SITE_PASSWORD");
-  const attendu = secret ? await jeton(secret) : null;
+  const secrets = ["SITE_PASSWORD", "SITE_PASSWORD_2"].map(env).filter(Boolean);
+  const secret = secrets.length > 0;
+  const jetons = await Promise.all(secrets.map(jeton));
 
   if (p === "/deconnexion") {
     return new Response(null, { status: 303, headers: { location: "/", "set-cookie": `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax` } });
@@ -45,14 +47,17 @@ export default async (req, context) => {
     const mdp = f ? String(f.get("mot_de_passe") || "") : "";
     const suite = versInterne(f && f.get("suite"));
     if (!secret) return page(suite, "L'accès n'est pas encore configuré. Revenez un peu plus tard.", 503);
-    if (egal(await jeton(mdp), attendu)) {
+    const saisi = await jeton(mdp);
+    const attendu = jetons.find(j => egal(saisi, j));
+    if (attendu) {
       return new Response(null, { status: 303, headers: { location: suite, "set-cookie": `${COOKIE}=${attendu}; Path=/; Max-Age=${DUREE}; HttpOnly; Secure; SameSite=Lax`, "x-robots-tag": "noindex, nofollow" } });
     }
     await new Promise(r => setTimeout(r, 700));
     return page(suite, "Ce mot de passe n'est pas le bon.", 401);
   }
 
-  if (attendu && egal(lireCookie(req, COOKIE), attendu)) {
+  const recu = lireCookie(req, COOKIE);
+  if (recu && jetons.some(j => egal(recu, j))) {
     const r = await context.next();
     const h = new Headers(r.headers); h.set("x-robots-tag", "noindex, nofollow");
     return new Response(r.body, { status: r.status, headers: h });
