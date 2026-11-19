@@ -1,4 +1,4 @@
-// Concierge IA du site : répond aux questions, propose les espaces réellement libres et prépare un devis Nexudus.
+// Agent IA du site (« L’agent des Légendes ») : répond aux questions, propose les espaces réellement libres et prépare un devis Nexudus.
 // Les données viennent toutes de Nexudus (catalogue relu toutes les 60 s). Le modèle ne peut proposer que ce que renvoient les outils :
 // aucun prix, aucune remise, aucun espace inventé. Le devis est créé en brouillon : l'équipe le relit et l'envoie depuis Flow.
 import { CFG, nx, contact, nettoie, emailValide, FORMULES_NX } from "./nexudus.mjs";
@@ -101,7 +101,7 @@ async function creerDevis(entree, memo) {
   if (memo.devis) return { ok: true, deja: true, reference: memo.devis.reference };
   if (memo.peutCreer && !memo.peutCreer()) return { ok: false, erreur: "Limite de devis atteinte pour aujourd'hui : proposez une visite ou un rappel par l'équipe." };
   const dom = entree.domiciliation ?? o.domiciliation;
-  const c = await contact({ nom: `${prenom} ${nomF}`, email, tel: nettoie(entree.telephone, 40), societe, compte: true, note: `Prospect venu par le concierge IA du site vitrine (devis ${o.titre}).` });
+  const c = await contact({ nom: `${prenom} ${nomF}`, email, tel: nettoie(entree.telephone, 40), societe, compte: true, note: `Prospect venu par l’agent des Légendes (site vitrine) (devis ${o.titre}).` });
   const reference = ref();
   const debut = `${o.date}T00:00:00Z`;
   const expire = new Date(Date.now() + 15 * 864e5).toISOString().slice(0, 10) + "T00:00:00Z";
@@ -122,8 +122,8 @@ async function creerDevis(entree, memo) {
   await nx("POST", "/crm/crmopportunities", {
     Name: `Devis ${reference} · ${o.titre} · ${societe}`.slice(0, 120), CrmBoardColumnId: COLONNE_DEVIS, CoworkerId: c.id, Status: 1, Position: 0, LeadSource: 1, ResponsibleId: RESPONSABLE,
     DueDate: new Date(Date.now() + 2 * 3600e3).toISOString().slice(0, 19) + "Z", Value: total * 12,
-    Notes: [`Devis ${reference} préparé par le concierge IA du site (brouillon à relire puis envoyer depuis Flow).`, `${o.titre} · ${o.quantite} × ${eur(o.prix_unitaire)} HT${domOk ? " · domiciliation incluse" : ""}`, `Total mensuel : ${eur(total)} HT · arrivée le ${o.date}`, `Contact : ${prenom} ${nomF} · ${societe} · ${email}${entree.telephone ? " · " + nettoie(entree.telephone, 40) : ""}`, resume && `Besoin : ${resume}`].filter(Boolean).join("\n"),
-    UtmSource: "site-vitrine", UtmMedium: "concierge-ia",
+    Notes: [`Devis ${reference} préparé par l’agent des Légendes (brouillon à relire puis envoyer depuis Flow).`, `${o.titre} · ${o.quantite} × ${eur(o.prix_unitaire)} HT${domOk ? " · domiciliation incluse" : ""}`, `Total mensuel : ${eur(total)} HT · arrivée le ${o.date}`, `Contact : ${prenom} ${nomF} · ${societe} · ${email}${entree.telephone ? " · " + nettoie(entree.telephone, 40) : ""}`, resume && `Besoin : ${resume}`].filter(Boolean).join("\n"),
+    UtmSource: "site-vitrine", UtmMedium: "agent-ia",
   }).catch(e => console.error("Carte CRM non créée :", e.message));
   memo.devis = { reference, total, titre: o.titre, date: o.date, quantite: o.quantite, domiciliation: domOk, societe };
   return { ok: true, reference, total_mensuel_ht: total, offre: o.titre, date_arrivee: o.date, domiciliation: domOk, statut: "brouillon relu puis envoyé par l'équipe" };

@@ -1,4 +1,4 @@
-// Concierge IA du site : POST /api/agent { historique: [{role, content}], lang, memo }
+// Agent IA du site (« L’agent des Légendes ») : POST /api/agent { historique: [{role, content}], lang, memo }
 // La clé Anthropic est lue côté serveur uniquement (secret Cloudflare ANTHROPIC_API_KEY via context.env),
 // jamais renvoyée au navigateur ni écrite dans un journal.
 import { json, vide, nettoie } from "../lib/nexudus.mjs";
