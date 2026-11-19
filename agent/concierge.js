@@ -24,17 +24,25 @@
   const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>");
 
   const css = `
-  .cg-btn{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:12px;padding:14px 22px 14px 16px;border:0;border-radius:999px;cursor:pointer;
-    font:500 13px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.16em;text-transform:uppercase;color:#fff;background:#19110B;box-shadow:0 18px 40px rgba(25,17,11,.28);transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s}
-  .cg-btn:hover{transform:translateY(-2px);box-shadow:0 24px 50px rgba(25,17,11,.34)}
-  .cg-btn i{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#2C5486,#3C6A9E 45%,#7FA6D6 60%,#3C6A9E 80%,#2C5486);background-size:200% 200%;animation:cgLaque 4s ease-in-out infinite alternate;position:relative}
-  .cg-btn i::after{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff;opacity:.9;animation:cgPouls 2.4s ease-in-out infinite}
+  .cg-btn{position:fixed;left:50%;translate:-50% 0;bottom:max(26px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:16px;padding:20px 34px 20px 22px;border:0;border-radius:999px;cursor:pointer;
+    font:500 15px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.18em;text-transform:uppercase;color:#fff;background:#19110B;box-shadow:0 20px 46px rgba(25,17,11,.3);
+    animation:cgHalo 2.8s ease-out infinite,cgSouffle 2.8s ease-in-out infinite;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s}
+  .cg-btn:hover{transform:translateY(-3px);animation-play-state:paused}
+  .cg-btn.cg-part{opacity:0;transform:translateY(10px) scale(.92);pointer-events:none}
+  @keyframes cgHalo{0%{box-shadow:0 20px 46px rgba(25,17,11,.3),0 0 0 0 rgba(60,106,158,.5)}75%,100%{box-shadow:0 20px 46px rgba(25,17,11,.3),0 0 0 18px rgba(60,106,158,0)}}
+  @keyframes cgSouffle{50%{scale:1.035}}
+  .cg-btn i{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2C5486,#3C6A9E 45%,#7FA6D6 60%,#3C6A9E 80%,#2C5486);background-size:200% 200%;animation:cgLaque 4s ease-in-out infinite alternate;position:relative}
+  .cg-btn i::after{content:"";position:absolute;inset:11px;border-radius:50%;background:#fff;opacity:.9;animation:cgPouls 2.4s ease-in-out infinite}
   @keyframes cgLaque{to{background-position:100% 100%}} @keyframes cgPouls{50%{transform:scale(.55);opacity:.5}}
-  .cg{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:240;width:min(420px,calc(100vw - 32px));height:min(680px,calc(100dvh - 40px));
+  .cg{position:fixed;left:50%;translate:-50% 0;bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:240;width:min(460px,calc(100vw - 32px));height:min(680px,calc(100dvh - 40px));
     display:flex;flex-direction:column;background:#fff;color:#19110B;border:1px solid rgba(25,17,11,.12);box-shadow:0 40px 90px rgba(25,17,11,.28);font-family:var(--f,"Jost",system-ui,sans-serif);
-    transform-origin:bottom right;animation:cgIn .45s cubic-bezier(.22,1,.36,1) both}
+    transform-origin:bottom center;animation:cgIn .7s cubic-bezier(.22,1,.36,1) both}
+  .cg.cg-sort{animation:cgOut .35s cubic-bezier(.55,0,.75,.2) both}
+  .cg-voile{position:fixed;inset:0;z-index:230;background:rgba(25,17,11,.28);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .6s ease}
+  .cg-voile.on{opacity:1;pointer-events:auto}
   .cg[hidden]{display:none}
-  @keyframes cgIn{from{opacity:0;transform:translateY(16px) scale(.97)}}
+  @keyframes cgIn{from{opacity:0;transform:translateY(40px) scale(.9);filter:blur(8px)}}
+  @keyframes cgOut{to{opacity:0;transform:translateY(24px) scale(.95);filter:blur(4px)}}
   .cg-h{display:flex;align-items:center;gap:14px;padding:18px 18px 16px 22px;background:#19110B;color:#fff}
   .cg-h .cg-o{width:34px;height:34px;border-radius:50%;flex:none;background:linear-gradient(135deg,#2C5486,#3C6A9E 45%,#7FA6D6 60%,#3C6A9E 80%,#2C5486);background-size:200% 200%;animation:cgLaque 4s ease-in-out infinite alternate}
   .cg-h b{display:block;font-weight:500;font-size:14px;letter-spacing:.18em;text-transform:uppercase}
@@ -76,8 +84,8 @@
   .cg-pied{display:flex;justify-content:space-between;padding:0 16px 12px;font-size:11px;color:#8E8A83;letter-spacing:.04em}
   .cg-pied button{background:none;border:0;color:#8E8A83;font:inherit;cursor:pointer;text-decoration:underline;padding:0}
   body.modal-ouverte .cg-btn{display:none}
-  @media (max-width:560px){.cg{right:0;bottom:0;width:100vw;height:100dvh;border:0}.cg-btn{padding:13px 18px 13px 14px}}
-  @media (prefers-reduced-motion:reduce){.cg,.cg-b,.cg-of,.cg-dv{animation:none}.cg-btn i,.cg-h .cg-o{animation:none}}`;
+  @media (max-width:560px){.cg{left:0;translate:none;bottom:0;width:100vw;height:100dvh;border:0}.cg-btn{padding:16px 24px 16px 16px;font-size:13px;gap:12px}.cg-btn i{width:28px;height:28px}.cg-btn i::after{inset:9px}}
+  @media (prefers-reduced-motion:reduce){.cg,.cg-b,.cg-of,.cg-dv,.cg-btn{animation:none}.cg-btn i,.cg-h .cg-o{animation:none}}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   const btn = document.createElement("button"); btn.className = "cg-btn"; btn.type = "button"; btn.innerHTML = `<i aria-hidden="true"></i>${T.bouton}`; btn.setAttribute("aria-haspopup", "dialog");
@@ -156,8 +164,14 @@
   champ.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); envoyer(champ.value); } });
   form.addEventListener("submit", e => { e.preventDefault(); envoyer(champ.value); });
 
-  function ouvrir() { p.hidden = false; btn.hidden = true; if (!zone.childElementCount) afficherTout(); setTimeout(() => champ.focus(), 80); }
-  function fermer() { p.hidden = true; btn.hidden = false; }
+  const voile = document.createElement("div"); voile.className = "cg-voile"; document.body.append(voile);
+  voile.addEventListener("click", () => fermer());
+  let tempo;
+  function ouvrir() { clearTimeout(tempo); btn.classList.add("cg-part"); voile.classList.add("on"); p.classList.remove("cg-sort");
+    tempo = setTimeout(() => { btn.hidden = true; }, 350);
+    p.hidden = false; if (!zone.childElementCount) afficherTout(); setTimeout(() => champ.focus({ preventScroll: true }), 120); }
+  function fermer() { clearTimeout(tempo); p.classList.add("cg-sort"); voile.classList.remove("on");
+    tempo = setTimeout(() => { p.hidden = true; p.classList.remove("cg-sort"); btn.hidden = false; requestAnimationFrame(() => btn.classList.remove("cg-part")); }, 340); }
   btn.addEventListener("click", ouvrir);
   p.querySelector(".cg-x").addEventListener("click", fermer);
   p.querySelector(".cg-n").addEventListener("click", () => { etat = { h: [], memo: {}, rendu: [] }; garder(); afficherTout(); champ.focus(); });
