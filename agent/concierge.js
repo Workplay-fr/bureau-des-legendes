@@ -1,22 +1,22 @@
-// Concierge IA du Bureau des Légendes : fenêtre de conversation reliée à /api/agent.
+// L'agent des Légendes (agent IA du site) : fenêtre de conversation reliée à /api/agent.
 // Les offres et le devis viennent de Nexudus ; l'interface ne fait qu'afficher ce que renvoie le serveur.
 (() => {
   if (window.__bdlConcierge) return; window.__bdlConcierge = true;
   const EN = (document.documentElement.lang || "fr").startsWith("en");
   const T = EN ? {
-    bouton: "Concierge", titre: "The concierge", sous: "Answers based on our live availability", place: "Ask your question…", envoyer: "Send",
+    bouton: "The Legends' agent", titre: "The Legends' agent", sous: "Live availability and quotes", place: "Ask your question…", envoyer: "Send",
     accueil: "Good day. I can answer your questions about the Bureau des Légendes, show you what is available and prepare a quote for your office. How can I help?",
     idees: ["An office for 4 people in January", "What memberships do you offer?", "Can I register my company here?", "Book a visit"],
     choisir: "Choose this offer", parMois: "excl. VAT / month", choix: o => `I'd like the offer “${o.titre}”.`, arrivee: "Move-in",
     devisT: "Quote prepared", devisS: "Our team will review it and send it to you shortly. You will be able to accept it online.", ref: "Reference", total: "Monthly total",
-    erreur: "The concierge is unavailable for a moment.", fermer: "Close", nouveau: "New conversation", dom: "registered office included", ia: "AI assistant · may make mistakes",
+    erreur: "The agent is unavailable for a moment.", fermer: "Close", nouveau: "New conversation", dom: "registered office included", ia: "AI assistant · may make mistakes",
   } : {
-    bouton: "Concierge", titre: "Le concierge", sous: "Réponses tirées de nos disponibilités en temps réel", place: "Posez votre question…", envoyer: "Envoyer",
+    bouton: "L'agent des Légendes", titre: "L'agent des Légendes", sous: "Disponibilités et devis en direct", place: "Posez votre question…", envoyer: "Envoyer",
     accueil: "Bonjour. Je peux répondre à vos questions sur le Bureau des Légendes, vous montrer ce qui est disponible et préparer un devis pour votre bureau. Que puis-je faire pour vous ?",
     idees: ["Un bureau pour 4 personnes en janvier", "Quelles formules proposez-vous ?", "Puis-je domicilier ma société ?", "Visiter le lieu"],
     choisir: "Choisir cette offre", parMois: "HT / mois", choix: o => `Je choisis l'offre « ${o.titre} ».`, arrivee: "Arrivée",
     devisT: "Devis préparé", devisS: "Notre équipe le relit et vous l'envoie très vite. Vous pourrez l'accepter en ligne.", ref: "Référence", total: "Total mensuel",
-    erreur: "Le concierge est momentanément indisponible.", fermer: "Fermer", nouveau: "Nouvelle conversation", dom: "domiciliation incluse", ia: "Assistant IA · peut se tromper",
+    erreur: "L'agent est momentanément indisponible.", fermer: "Fermer", nouveau: "Nouvelle conversation", dom: "domiciliation incluse", ia: "Assistant IA · peut se tromper",
   };
   const eur = n => new Intl.NumberFormat(EN ? "en-GB" : "fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
   const dateTxt = s => { try { return new Date(s + "T12:00:00Z").toLocaleDateString(EN ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }); } catch { return s; } };

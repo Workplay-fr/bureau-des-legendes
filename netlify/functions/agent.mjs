@@ -18,7 +18,7 @@ export default async (req, context) => {
   const msg = (fr, enTxt) => (en ? enTxt : fr);
   if (req.method !== "POST") return json(405, { ok: false, erreur: "Méthode non autorisée." });
   const cle = (context && context.env && context.env.ANTHROPIC_API_KEY) || "";
-  if (!cle || vide()) return json(503, { ok: false, code: "non_configure", erreur: msg("Le concierge n'est pas disponible sur cette version du site.", "The concierge is not available on this version of the site.") });
+  if (!cle || vide()) return json(503, { ok: false, code: "non_configure", erreur: msg("L'agent n'est pas disponible sur cette version du site.", "The agent is not available on this version of the site.") });
   const ip = req.headers.get("cf-connecting-ip") || req.headers.get("x-forwarded-for") || "?";
   if (limite(ip, "msg", MAX_MESSAGES, FEN)) return json(429, { ok: false, code: "limite", erreur: msg("Vous avez envoyé beaucoup de messages en peu de temps. Réessayez dans quelques minutes, ou réservez une visite.", "You have sent many messages in a short time. Please try again in a few minutes, or book a visit.") });
   let d; try { d = await req.json(); } catch { return json(400, { ok: false, erreur: "Demande illisible." }); }
@@ -39,8 +39,8 @@ export default async (req, context) => {
     console.error("agent", e.ia ? e.message : String(e.message || "").slice(0, 200));
     const occupe = e.status === 429 || e.status === 529 || e.status === 402 || e.status === 400 && /credit|billing/i.test(e.message);
     return json(502, { ok: false, code: e.ia ? "ia" : "erreur", erreur: occupe
-      ? msg("Le concierge est très sollicité en ce moment. Réessayez dans un instant, ou réservez une visite : l'équipe vous répondra directement.", "The concierge is very busy right now. Please try again shortly, or book a visit and the team will reply directly.")
-      : msg("Le concierge est momentanément indisponible. Réessayez dans un instant, ou réservez une visite.", "The concierge is unavailable for a moment. Please try again shortly, or book a visit.") });
+      ? msg("L'agent est très sollicité en ce moment. Réessayez dans un instant, ou réservez une visite : l'équipe vous répondra directement.", "The agent is very busy right now. Please try again shortly, or book a visit and the team will reply directly.")
+      : msg("L'agent est momentanément indisponible. Réessayez dans un instant, ou réservez une visite.", "The agent is unavailable for a moment. Please try again shortly, or book a visit.") });
   }
 };
 
