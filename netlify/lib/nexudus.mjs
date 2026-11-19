@@ -199,7 +199,6 @@ const EN = {
   "Poste ou créneau invalide.": "Invalid desk or slot.",
   "Salle ou jour invalide.": "Invalid room or day.",
   "Trop d'adhésions envoyées. Réessayez dans quelques minutes.": "Too many sign-ups. Please try again in a few minutes.",
-  "Trop de demandes envoyées. Réessayez dans quelques minutes.": "Too many requests. Please try again in a few minutes.",
   "Trop de réservations envoyées. Réessayez dans quelques minutes.": "Too many bookings. Please try again in a few minutes.",
   "Votre demande n'a pas pu être enregistrée. Réessayez ou appelez-nous au +33 1 84 80 12 34.": "Your request could not be recorded. Please try again or call us on +33 1 84 80 12 34.",
 };
