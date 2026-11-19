@@ -66,8 +66,8 @@ async function lire() {
   const plan = (await liste("/sys/floorplandesks", `FloorPlanDesk_FloorPlan_Business=${CFG.business}`).catch(e => { noter("plan", e); return []; }))
     .filter(x => Number(x.FloorPlanBusinessId) === CFG.business && !/^archive/i.test(x.FloorPlanName || "") && x.Available !== false && nombre(x.Price) > 0);
   const occupe = x => !!(x.CoworkerId || x.CoworkerContractIds);
-  const bureaux = plan.filter(x => x.ItemType === 1).map(x => ({ nom: x.Name, etage: String(x.FloorPlanName || "").split(" — ")[0], capacite: nombre(x.Capacity), surface: nombre(x.Area) ?? nombre(x.Size), prix: x.Price, libre: !occupe(x) }));
-  const attitres = plan.filter(x => x.ItemType === 2), postesAttitres = { total: attitres.length, libres: attitres.filter(x => !occupe(x)).length };
+  const bureaux = plan.filter(x => x.ItemType === 1).map(x => ({ id: Number(x.Id), nom: x.Name, etage: String(x.FloorPlanName || "").split(" — ")[0], capacite: nombre(x.Capacity), surface: nombre(x.Area) ?? nombre(x.Size), prix: x.Price, libre: !occupe(x) }));
+  const attitres = plan.filter(x => x.ItemType === 2), postesAttitres = { total: attitres.length, libres: attitres.filter(x => !occupe(x)).length, idsLibres: attitres.filter(x => !occupe(x)).map(x => Number(x.Id)) };
   const lu = { lieu: false, ressources: 0, tarifs: 0, produits: 0, formules: 0 };
 
   // Horaires d'ouverture du lieu (minutes depuis minuit dans Nexudus).
@@ -144,7 +144,7 @@ export async function catalogue() {
     tarifsPoste: { ...TARIFS_POSTE },
     produits: Object.entries(PRODUITS_RESA).map(([id, p]) => ({ id: Number(id), nom: p.nom, prix: p.prix, description: p.description || "", parPersonne: p.parPersonne })),
     pass: Object.fromEntries(Object.entries(PASS_NX).map(([k, p]) => [k, { nom: p.nom, prix: p.prix, quantite: p.quantite, total: p.prix * p.quantite }])),
-    evenements: etat.evenements || [], bureaux: etat.bureaux || [], postesAttitres: etat.postesAttitres || null,
+    evenements: etat.evenements || [], bureaux: etat.bureaux || [], postesAttitres: etat.postesAttitres ? { total: etat.postesAttitres.total, libres: etat.postesAttitres.libres } : null,
     formules: Object.entries(FORMULES_NX).map(([id, f]) => ({ id: Number(id), nom: f.nom, prix: f.prix, description: f.description || "" })),
   };
 }
