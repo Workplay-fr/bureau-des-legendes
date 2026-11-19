@@ -7,3 +7,6 @@
 
 /img/email/*
   Access-Control-Allow-Origin: *
+
+/agent/*
+  Cache-Control: public, max-age=60, must-revalidate
