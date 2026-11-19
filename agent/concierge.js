@@ -24,15 +24,20 @@
   const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>");
 
   const css = `
-  .cg-btn{position:fixed;left:50%;translate:-50% 0;bottom:max(26px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:16px;padding:20px 34px 20px 22px;border:0;border-radius:999px;cursor:pointer;
-    font:500 15px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.18em;text-transform:uppercase;color:#fff;background:#19110B;box-shadow:0 20px 46px rgba(25,17,11,.3);
-    animation:cgHalo 2.8s ease-out infinite,cgSouffle 2.8s ease-in-out infinite;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s}
-  .cg-btn:hover{transform:translateY(-3px);animation-play-state:paused}
+  .cg-btn{position:fixed;left:50%;translate:-50% 0;bottom:max(24px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:12px;padding:13px 24px 13px 14px;border-radius:999px;cursor:pointer;overflow:hidden;
+    font:500 12.5px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.18em;text-transform:uppercase;color:#fff;
+    background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.03) 55%),rgba(25,17,11,.58);
+    -webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);
+    border:1px solid rgba(255,255,255,.26);text-shadow:0 1px 2px rgba(0,0,0,.25);
+    animation:cgHalo 2.8s ease-out infinite,cgSouffle 2.8s ease-in-out infinite;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s,background .35s}
+  .cg-btn::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);animation:cgReflet 5.5s ease-in-out infinite;pointer-events:none}
+  .cg-btn:hover{transform:translateY(-2px);animation-play-state:paused;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 55%),rgba(25,17,11,.62)}
   .cg-btn.cg-part{opacity:0;transform:translateY(10px) scale(.92);pointer-events:none}
-  @keyframes cgHalo{0%{box-shadow:0 20px 46px rgba(25,17,11,.3),0 0 0 0 rgba(60,106,158,.5)}75%,100%{box-shadow:0 20px 46px rgba(25,17,11,.3),0 0 0 18px rgba(60,106,158,0)}}
-  @keyframes cgSouffle{50%{scale:1.035}}
-  .cg-btn i{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#2C5486,#3C6A9E 45%,#7FA6D6 60%,#3C6A9E 80%,#2C5486);background-size:200% 200%;animation:cgLaque 4s ease-in-out infinite alternate;position:relative}
-  .cg-btn i::after{content:"";position:absolute;inset:11px;border-radius:50%;background:#fff;opacity:.9;animation:cgPouls 2.4s ease-in-out infinite}
+  @keyframes cgHalo{0%{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 34px rgba(25,17,11,.24),0 0 0 0 rgba(60,106,158,.45)}75%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 34px rgba(25,17,11,.24),0 0 0 14px rgba(60,106,158,0)}}
+  @keyframes cgSouffle{50%{scale:1.03}}
+  @keyframes cgReflet{0%,55%{left:-60%}85%,100%{left:130%}}
+  .cg-btn i{width:24px;height:24px;flex:none;box-shadow:0 0 12px rgba(127,166,214,.55);border-radius:50%;background:linear-gradient(135deg,#2C5486,#3C6A9E 45%,#7FA6D6 60%,#3C6A9E 80%,#2C5486);background-size:200% 200%;animation:cgLaque 4s ease-in-out infinite alternate;position:relative}
+  .cg-btn i::after{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff;opacity:.9;animation:cgPouls 2.4s ease-in-out infinite}
   @keyframes cgLaque{to{background-position:100% 100%}} @keyframes cgPouls{50%{transform:scale(.55);opacity:.5}}
   .cg{position:fixed;left:50%;translate:-50% 0;bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:240;width:min(460px,calc(100vw - 32px));height:min(680px,calc(100dvh - 40px));
     display:flex;flex-direction:column;background:#fff;color:#19110B;border:1px solid rgba(25,17,11,.12);box-shadow:0 40px 90px rgba(25,17,11,.28);font-family:var(--f,"Jost",system-ui,sans-serif);
@@ -84,8 +89,8 @@
   .cg-pied{display:flex;justify-content:space-between;padding:0 16px 12px;font-size:11px;color:#8E8A83;letter-spacing:.04em}
   .cg-pied button{background:none;border:0;color:#8E8A83;font:inherit;cursor:pointer;text-decoration:underline;padding:0}
   body.modal-ouverte .cg-btn{display:none}
-  @media (max-width:560px){.cg{left:0;translate:none;bottom:0;width:100vw;height:100dvh;border:0}.cg-btn{padding:16px 24px 16px 16px;font-size:13px;gap:12px}.cg-btn i{width:28px;height:28px}.cg-btn i::after{inset:9px}}
-  @media (prefers-reduced-motion:reduce){.cg,.cg-b,.cg-of,.cg-dv,.cg-btn{animation:none}.cg-btn i,.cg-h .cg-o{animation:none}}`;
+  @media (max-width:560px){.cg{left:0;translate:none;bottom:0;width:100vw;height:100dvh;border:0}.cg-btn{padding:12px 20px 12px 12px;font-size:12px;gap:10px}}
+  @media (prefers-reduced-motion:reduce){.cg,.cg-b,.cg-of,.cg-dv,.cg-btn,.cg-btn::before{animation:none}.cg-btn i,.cg-h .cg-o{animation:none}}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   const btn = document.createElement("button"); btn.className = "cg-btn"; btn.type = "button"; btn.innerHTML = `<i aria-hidden="true"></i>${T.bouton}`; btn.setAttribute("aria-haspopup", "dialog");
