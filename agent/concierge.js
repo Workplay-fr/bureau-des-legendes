@@ -26,12 +26,12 @@
   const css = `
   .cg-btn{position:fixed;left:50%;translate:-50% 0;bottom:max(24px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:12px;padding:13px 24px 13px 14px;border-radius:999px;cursor:pointer;overflow:hidden;
     font:500 12.5px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.18em;text-transform:uppercase;color:#fff;
-    background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.03) 55%),rgba(25,17,11,.58);
+    background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 55%),rgba(25,17,11,.3);
     -webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);
-    border:1px solid rgba(255,255,255,.26);text-shadow:0 1px 2px rgba(0,0,0,.25);
+    border:1px solid rgba(255,255,255,.26);text-shadow:0 1px 3px rgba(0,0,0,.45);
     animation:cgHalo 2.8s ease-out infinite,cgSouffle 2.8s ease-in-out infinite;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s,background .35s}
   .cg-btn::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);animation:cgReflet 5.5s ease-in-out infinite;pointer-events:none}
-  .cg-btn:hover{transform:translateY(-2px);animation-play-state:paused;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 55%),rgba(25,17,11,.62)}
+  .cg-btn:hover{transform:translateY(-2px);animation-play-state:paused;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 55%),rgba(25,17,11,.42)}
   .cg-btn.cg-part{opacity:0;transform:translateY(10px) scale(.92);pointer-events:none}
   @keyframes cgHalo{0%{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 34px rgba(25,17,11,.24),0 0 0 0 rgba(60,106,158,.45)}75%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 34px rgba(25,17,11,.24),0 0 0 14px rgba(60,106,158,0)}}
   @keyframes cgSouffle{50%{scale:1.03}}
