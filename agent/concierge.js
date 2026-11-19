@@ -24,20 +24,20 @@
   const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>");
 
   const css = `
-  .cg-btn{position:fixed;left:50%;translate:-50% 0;bottom:max(24px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:12px;padding:13px 24px 13px 14px;border-radius:999px;cursor:pointer;overflow:hidden;
-    font:500 12.5px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.18em;text-transform:uppercase;color:#fff;
-    background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 55%),rgba(25,17,11,.3);
-    -webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%);
-    border:1px solid rgba(255,255,255,.26);text-shadow:0 1px 3px rgba(0,0,0,.45);
-    animation:cgHalo 2.8s ease-out infinite,cgSouffle 2.8s ease-in-out infinite;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s,background .35s}
-  .cg-btn::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);animation:cgReflet 5.5s ease-in-out infinite;pointer-events:none}
-  .cg-btn:hover{transform:translateY(-2px);animation-play-state:paused;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 55%),rgba(25,17,11,.42)}
-  .cg-btn.cg-part{opacity:0;transform:translateY(10px) scale(.92);pointer-events:none}
-  @keyframes cgHalo{0%{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 34px rgba(25,17,11,.24),0 0 0 0 rgba(60,106,158,.45)}75%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 34px rgba(25,17,11,.24),0 0 0 14px rgba(60,106,158,0)}}
-  @keyframes cgSouffle{50%{scale:1.03}}
-  @keyframes cgReflet{0%,55%{left:-60%}85%,100%{left:130%}}
-  .cg-btn i{width:24px;height:24px;flex:none;box-shadow:0 0 12px rgba(127,166,214,.55);border-radius:50%;background:linear-gradient(135deg,#2C5486,#3C6A9E 45%,#7FA6D6 60%,#3C6A9E 80%,#2C5486);background-size:200% 200%;animation:cgLaque 4s ease-in-out infinite alternate;position:relative}
-  .cg-btn i::after{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff;opacity:.9;animation:cgPouls 2.4s ease-in-out infinite}
+  .cg-btn{position:fixed;left:50%;translate:-50% 0;bottom:max(26px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 20px;border-radius:999px;cursor:pointer;
+    font:500 11px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.26em;text-transform:uppercase;color:#19110B;
+    background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(250,247,242,.5));-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+    border:1px solid rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(25,17,11,.07),0 1px 1px rgba(25,17,11,.04),0 12px 32px -8px rgba(25,17,11,.22);
+    transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .35s,box-shadow .5s;animation:cgArrive 1s .6s cubic-bezier(.22,1,.36,1) both}
+  .cg-btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(25,17,11,.09),0 1px 1px rgba(25,17,11,.04),0 18px 40px -10px rgba(25,17,11,.3)}
+  .cg-btn.cg-part{opacity:0;transform:translateY(10px) scale(.96);pointer-events:none}
+  @keyframes cgArrive{from{opacity:0;transform:translateY(14px)}}
+  .cg-btn i{position:relative;width:7px;height:7px;flex:none;border-radius:50%;background:#3C6A9E;box-shadow:0 0 0 3px rgba(60,106,158,.14)}
+  .cg-btn i::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid #3C6A9E;animation:cgOnde 2.6s cubic-bezier(.22,1,.36,1) infinite}
+  @keyframes cgOnde{0%{transform:scale(1);opacity:.7}100%{transform:scale(3.4);opacity:0}}
+  .cg-btn span{padding-top:1px}
+  .cg-btn em{font-style:normal;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#19110B;color:#fff;font-size:13px;letter-spacing:0;transition:transform .5s cubic-bezier(.22,1,.36,1),background .3s}
+  .cg-btn:hover em{transform:translateX(2px);background:#3C6A9E}
   @keyframes cgLaque{to{background-position:100% 100%}} @keyframes cgPouls{50%{transform:scale(.55);opacity:.5}}
   .cg{position:fixed;left:50%;translate:-50% 0;bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:240;width:min(460px,calc(100vw - 32px));height:min(680px,calc(100dvh - 40px));
     display:flex;flex-direction:column;background:#fff;color:#19110B;border:1px solid rgba(25,17,11,.12);box-shadow:0 40px 90px rgba(25,17,11,.28);font-family:var(--f,"Jost",system-ui,sans-serif);
@@ -89,11 +89,11 @@
   .cg-pied{display:flex;justify-content:space-between;padding:0 16px 12px;font-size:11px;color:#8E8A83;letter-spacing:.04em}
   .cg-pied button{background:none;border:0;color:#8E8A83;font:inherit;cursor:pointer;text-decoration:underline;padding:0}
   body.modal-ouverte .cg-btn{display:none}
-  @media (max-width:560px){.cg{left:0;translate:none;bottom:0;width:100vw;height:100dvh;border:0}.cg-btn{padding:12px 20px 12px 12px;font-size:12px;gap:10px}}
-  @media (prefers-reduced-motion:reduce){.cg,.cg-b,.cg-of,.cg-dv,.cg-btn,.cg-btn::before{animation:none}.cg-btn i,.cg-h .cg-o{animation:none}}`;
+  @media (max-width:560px){.cg{left:0;translate:none;bottom:0;width:100vw;height:100dvh;border:0}.cg-btn{padding:8px 8px 8px 16px;gap:11px;letter-spacing:.2em}}
+  @media (prefers-reduced-motion:reduce){.cg,.cg-b,.cg-of,.cg-dv,.cg-btn,.cg-btn i::after{animation:none}.cg-btn i,.cg-h .cg-o{animation:none}}`;
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
-  const btn = document.createElement("button"); btn.className = "cg-btn"; btn.type = "button"; btn.innerHTML = `<i aria-hidden="true"></i>${T.bouton}`; btn.setAttribute("aria-haspopup", "dialog");
+  const btn = document.createElement("button"); btn.className = "cg-btn"; btn.type = "button"; btn.innerHTML = `<i aria-hidden="true"></i><span>${T.bouton}</span><em aria-hidden="true">→</em>`; btn.setAttribute("aria-haspopup", "dialog");
   const p = document.createElement("div"); p.className = "cg"; p.hidden = true; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", T.titre);
   p.innerHTML = `<div class="cg-h"><span class="cg-o" aria-hidden="true"></span><div><b>${T.titre}</b><small>${T.sous}</small></div><button type="button" class="cg-x">${T.fermer}</button></div>
     <div class="cg-m" aria-live="polite"></div>
