@@ -8,18 +8,23 @@
     accueil: "Good day. I can answer your questions about the Bureau des Légendes, show you what is available and prepare a quote for your office. How can I help?",
     idees: ["An office for 4 people in January", "What memberships do you offer?", "Can I register my company here?", "Book a visit"],
     choisir: "Choose this offer", parMois: "excl. VAT / month", choix: o => `I'd like the offer “${o.titre}”.`, arrivee: "Move-in",
-    devisT: "Quote prepared", devisS: "Our team will review it and send it to you shortly. You will be able to accept it online.", ref: "Reference", total: "Monthly total",
+    devisT: "Quote requested", devisS: "Our team will review it and email it to you shortly. You will be able to accept it online.", ref: "Reference", total: "Monthly total",
     erreur: "The agent is unavailable for a moment.", fermer: "Close", nouveau: "New conversation", dom: "registered office included", ia: "AI assistant · may make mistakes",
+    retenue: "Offer selected", recapT: "Quote summary", domL: "Add a registered office address for the company", domInclus: "included", confirmer: "Confirm the quote", confirme: "I confirm the quote.", devisDemande: "Quote requested",
+    notes: { visite: "Visit booking form opened", salle: "Room booking opened", poste: "Day desk booking opened", pass: "Day passes opened" },
   } : {
     bouton: "L'agent des Légendes", titre: "L'agent des Légendes", sous: "Disponibilités et devis en direct", place: "Posez votre question…", envoyer: "Envoyer",
     accueil: "Bonjour. Je peux répondre à vos questions sur le Bureau des Légendes, vous montrer ce qui est disponible et préparer un devis pour votre bureau. Que puis-je faire pour vous ?",
     idees: ["Un bureau pour 4 personnes en janvier", "Quelles formules proposez-vous ?", "Puis-je domicilier ma société ?", "Visiter le lieu"],
     choisir: "Choisir cette offre", parMois: "HT / mois", choix: o => `Je choisis l'offre « ${o.titre} ».`, arrivee: "Arrivée",
-    devisT: "Devis préparé", devisS: "Notre équipe le relit et vous l'envoie très vite. Vous pourrez l'accepter en ligne.", ref: "Référence", total: "Total mensuel",
+    devisT: "Devis demandé", devisS: "Notre équipe le relit et vous l'envoie par e-mail très vite. Vous pourrez l'accepter en ligne.", ref: "Référence", total: "Total mensuel",
     erreur: "L'agent est momentanément indisponible.", fermer: "Fermer", nouveau: "Nouvelle conversation", dom: "domiciliation incluse", ia: "Assistant IA · peut se tromper",
+    retenue: "Offre retenue", recapT: "Récapitulatif du devis", domL: "Ajouter la domiciliation de la société", domInclus: "incluse", confirmer: "Confirmer le devis", confirme: "Je confirme le devis.", devisDemande: "Devis demandé",
+    notes: { visite: "Formulaire de visite ouvert", salle: "Réservation de salle ouverte", poste: "Réservation de poste ouverte", pass: "Pass journée et carnets ouverts" },
   };
   const eur = n => new Intl.NumberFormat(EN ? "en-GB" : "fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
-  const dateTxt = s => { try { return new Date(s + "T12:00:00Z").toLocaleDateString(EN ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }); } catch { return s; } };
+  const dateTxt = s => { try { const t = new Date(s + "T12:00:00Z").toLocaleDateString(EN ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }); return EN ? t : t.replace(/^1 /, "1er "); } catch { return s; } };
+  const nb = s => (EN ? String(s) : String(s).replace(/(\d)\.(\d)/g, "$1,$2"));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>");
 
@@ -75,6 +80,20 @@
   .cg-of .px span{font-size:12px;color:#6B635C;letter-spacing:.06em}
   .cg-of button{margin-top:12px;width:100%;border:0;padding:12px;background:#19110B;color:#fff;font:inherit;font-size:12px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .25s}
   .cg-of button:hover{background:linear-gradient(135deg,#2C5486,#3C6A9E 45%,#5F8CC4 62%,#3C6A9E 82%,#2C5486)}
+  .cg-of.retenue{border-color:#3C6A9E}
+  .cg-of .ok{margin-top:12px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#3C6A9E}
+  .cg-rc{align-self:stretch;border:1px solid rgba(25,17,11,.14);background:#fff;padding:18px;animation:cgMsg .45s cubic-bezier(.22,1,.36,1) both}
+  .cg-rc .t{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#3C6A9E}
+  .cg-rc b{display:block;font-weight:500;font-size:16px;margin-top:8px}
+  .cg-rc small{display:block;color:#6B635C;font-size:13px;margin-top:3px;line-height:1.45}
+  .cg-rc label{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:13px;line-height:1.4;cursor:pointer}
+  .cg-rc label input{margin-top:2px;accent-color:#3C6A9E}
+  .cg-rc .px{display:flex;align-items:baseline;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(25,17,11,.1);font-size:22px}
+  .cg-rc .px span{font-size:12px;color:#6B635C;letter-spacing:.06em}
+  .cg-rc button{margin-top:14px;width:100%;border:0;padding:13px;background:#19110B;color:#fff;font:inherit;font-size:12px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .25s}
+  .cg-rc button:hover{background:#3C6A9E} .cg-rc button:disabled{opacity:.5;cursor:default}
+  .cg-rc.fait{opacity:.6} .cg-rc.fait label,.cg-rc.fait button{display:none}
+  .cg-note{align-self:center;font-size:12px;letter-spacing:.08em;color:#3C6A9E;padding:6px 12px;border:1px solid rgba(60,106,158,.3);border-radius:999px;animation:cgMsg .4s both}
   .cg-dv{align-self:stretch;background:#19110B;color:#fff;padding:20px 20px;animation:cgMsg .5s cubic-bezier(.22,1,.36,1) both}
   .cg-dv .t{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#7FA6D6}
   .cg-dv b{display:block;font-weight:400;font-size:19px;margin-top:8px}
@@ -110,17 +129,39 @@
 
   const bas = () => requestAnimationFrame(() => { zone.scrollTop = zone.scrollHeight; });
   const bulle = (txt, qui) => { const d = document.createElement("div"); d.className = "cg-b " + qui; d.innerHTML = md(txt); zone.appendChild(d); bas(); };
-  function offres(o) {
+  function offres(o, choisi) {
     if (!o || !o.options || !o.options.length) return;
     const w = document.createElement("div"); w.className = "cg-offres";
+    const fige = id => { w.querySelectorAll(".cg-of").forEach(c => { if (c.dataset.id !== id) c.remove(); else { c.classList.add("retenue"); c.querySelector("button")?.replaceWith(Object.assign(document.createElement("div"), { className: "ok", textContent: "✓ " + T.retenue })); } }); };
     o.options.forEach((x, i) => {
-      const c = document.createElement("div"); c.className = "cg-of"; c.style.animationDelay = (i * 0.12) + "s";
-      c.innerHTML = `<b>${esc(x.titre)}</b><small>${esc(x.detail)} · ${T.arrivee} ${esc(dateTxt(x.date))}${x.domiciliation ? " · " + T.dom : ""}</small><div class="px">${eur(x.total_mensuel_ht)}<span>${T.parMois}</span></div><button type="button">${T.choisir}</button>`;
-      c.querySelector("button").addEventListener("click", () => envoyer(T.choix(x)));
+      const c = document.createElement("div"); c.className = "cg-of"; c.dataset.id = x.id; c.style.animationDelay = (i * 0.12) + "s";
+      c.innerHTML = `<b>${esc(x.titre)}</b><small>${esc(nb(x.detail))} · ${T.arrivee} ${esc(dateTxt(x.date))}</small><div class="px">${eur(x.total_mensuel_ht)}<span>${T.parMois}</span></div><button type="button">${T.choisir}</button>`;
+      c.querySelector("button").addEventListener("click", () => {
+        if (occupe) return;
+        fige(x.id); etat.memo.choix = x.id; const r = etat.rendu.find(e => e.t === "o" && e.v === o); if (r) r.c = x.id; garder();
+        envoyer(T.choix(x));
+      });
       w.appendChild(c);
     });
-    zone.appendChild(w); bas();
+    zone.appendChild(w); if (choisi) fige(choisi); bas();
   }
+  let recapEnCours = null;
+  function recap(v, fait) {
+    if (!v) return;
+    const c = document.createElement("div"); c.className = "cg-rc" + (fait ? " fait" : "");
+    const domTxt = v.dom_prix ? `+ ${eur(v.dom_prix)} ${T.parMois}` : T.domInclus;
+    c.innerHTML = `<div class="t">${T.recapT}</div><b>${esc(v.titre)}</b><small>${esc(nb(v.detail))} · ${T.arrivee} ${esc(dateTxt(v.date))}<br>${esc(v.contact)} · ${esc(v.email)}</small>
+      <label><input type="checkbox"${v.domiciliation ? " checked" : ""}><span>${T.domL} (${domTxt})</span></label>
+      <div class="px"><span class="v"></span><span>${T.parMois}</span></div><button type="button">${T.confirmer}</button>`;
+    const cb = c.querySelector("input"), px = c.querySelector(".v");
+    const maj = () => { px.textContent = eur(v.prix + (cb.checked ? v.dom_prix : 0)); px.style.fontSize = "22px"; px.style.color = "#19110B"; };
+    cb.addEventListener("change", maj); maj();
+    const go = () => { if (occupe || c.classList.contains("fait")) return; c.classList.add("fait"); recapEnCours = null; envoyer(T.confirme, { confirmer: { domiciliation: cb.checked } }); };
+    c.querySelector("button").addEventListener("click", go);
+    if (!fait) recapEnCours = go;
+    zone.appendChild(c); bas();
+  }
+  function note(a) { if (!T.notes[a]) return; const d = document.createElement("div"); d.className = "cg-note"; d.textContent = "↗ " + T.notes[a]; zone.appendChild(d); bas(); }
   function devis(d) {
     if (!d || !d.reference) return;
     const c = document.createElement("div"); c.className = "cg-dv";
@@ -135,32 +176,39 @@
   function afficherTout() {
     zone.innerHTML = ""; bulle(T.accueil, "ia");
     if (!etat.rendu.length) { idees(); return; }
-    etat.rendu.forEach(r => r.t === "b" ? bulle(r.v, r.q) : r.t === "o" ? offres(r.v) : devis(r.v));
+    recapEnCours = null;
+    const dernierRecap = etat.rendu.map(r => r.t).lastIndexOf("r");
+    etat.rendu.forEach((r, i) => r.t === "b" ? bulle(r.v, r.q) : r.t === "o" ? offres(r.v, r.c) : r.t === "r" ? recap(r.v, i !== dernierRecap || !!etat.memo.devis) : r.t === "n" ? note(r.v) : devis(r.v));
   }
   function action(a) {
     if (a === "visite") { const e = document.querySelector('[data-portal="tour"]'); if (e) { fermer(); e.click(); } }
     else if (a === "salle") { const e = document.querySelector("[data-salle]"); if (e) { fermer(); e.click(); } }
     else if (a === "poste") { const e = document.getElementById("poste"); if (e) { fermer(); e.scrollIntoView({ behavior: "smooth" }); } }
+    else if (a === "pass") { const e = document.getElementById("pass"); if (e) { fermer(); e.scrollIntoView({ behavior: "smooth" }); } }
   }
 
   let occupe = false;
-  async function envoyer(txt) {
+  async function envoyer(txt, extra) {
     txt = String(txt || "").trim(); if (!txt || occupe) return;
+    // « oui » tapé alors qu'un récapitulatif attend : vaut clic sur « Confirmer le devis ».
+    if (!extra && recapEnCours && /^\s*(oui|ok|d'accord|je confirme|c'est bon|parfait|yes|confirm)/i.test(txt) && txt.length < 40) { champ.value = ""; recapEnCours(); return; }
     occupe = true; go.disabled = true; champ.value = ""; ajuster();
     zone.querySelector(".cg-idees")?.remove();
     bulle(txt, "moi"); etat.h.push({ role: "user", content: txt }); etat.rendu.push({ t: "b", q: "moi", v: txt }); garder();
     const ecrit = document.createElement("div"); ecrit.className = "cg-ecrit"; ecrit.innerHTML = "<i></i><i></i><i></i>"; zone.appendChild(ecrit); bas();
     try {
-      const r = await fetch("/api/agent", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ historique: etat.h, lang: EN ? "en" : "fr", memo: etat.memo }) });
+      const r = await fetch("/api/agent", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ historique: etat.h, lang: EN ? "en" : "fr", memo: etat.memo, ...(extra || {}) }) });
       const d = await r.json().catch(() => ({}));
       ecrit.remove();
       if (!d.ok) { bulle(d.erreur || T.erreur, "ia"); return; }
       if (d.memo) etat.memo = d.memo;
       if (d.texte) { bulle(d.texte, "ia"); etat.h.push({ role: "assistant", content: d.texte }); etat.rendu.push({ t: "b", q: "ia", v: d.texte }); }
-      if (d.offres && d.offres.options?.length) { offres(d.offres); etat.rendu.push({ t: "o", v: d.offres }); }
+      if (d.offres && d.offres.options?.length) { zone.querySelectorAll(".cg-rc:not(.fait)").forEach(c => c.classList.add("fait")); recapEnCours = null; offres(d.offres); etat.rendu.push({ t: "o", v: d.offres }); }
+      if (d.recap) { zone.querySelectorAll(".cg-rc:not(.fait)").forEach(c => c.classList.add("fait")); recap(d.recap); etat.rendu.push({ t: "r", v: d.recap }); }
       if (d.devis) { devis(d.devis); etat.rendu.push({ t: "d", v: d.devis }); }
+      (d.actions || []).forEach(a => { note(a); etat.rendu.push({ t: "n", v: a }); });
       garder();
-      (d.actions || []).forEach(a => setTimeout(() => action(a), 900));
+      (d.actions || []).forEach(a => setTimeout(() => action(a), 1400));
     } catch { ecrit.remove(); bulle(T.erreur, "ia"); }
     finally { occupe = false; go.disabled = false; champ.focus(); }
   }

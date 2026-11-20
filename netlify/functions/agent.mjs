@@ -2,7 +2,7 @@
 // La clé Anthropic est lue côté serveur uniquement (secret Cloudflare ANTHROPIC_API_KEY via context.env),
 // jamais renvoyée au navigateur ni écrite dans un journal.
 import { json, vide, nettoie } from "../lib/nexudus.mjs";
-import { repondre } from "../lib/agent.mjs";
+import { repondre, confirmerDevis } from "../lib/agent.mjs";
 
 // Limites d'usage (par adresse IP, en mémoire de l'instance) : la clé a un plafond de dépense mensuel.
 const FEN = 10 * 60e3, MAX_MESSAGES = 25, MAX_DEVIS = 3, FEN_DEVIS = 3600e3, MAX_TOURS_SESSION = 30;
@@ -24,17 +24,37 @@ export default async (req, context) => {
   let d; try { d = await req.json(); } catch { return json(400, { ok: false, erreur: "Demande illisible." }); }
   const lang = d.lang === "en" ? "en" : "fr";
   const historique = Array.isArray(d.historique) ? d.historique.filter(m => m && typeof m.content === "string") : [];
-  if (!historique.length) return json(400, { ok: false, erreur: msg("Message vide.", "Empty message.") });
+  const confirmer = d.confirmer && typeof d.confirmer === "object";
+  if (!historique.length && !confirmer) return json(400, { ok: false, erreur: msg("Message vide.", "Empty message.") });
   if (historique.filter(m => m.role === "user").length > MAX_TOURS_SESSION) return json(429, { ok: false, code: "session", erreur: msg("Cette conversation est déjà longue : ouvrez une nouvelle conversation, ou réservez une visite pour en parler avec l'équipe.", "This conversation is already long: start a new one, or book a visit to talk with the team.") });
   const m0 = d.memo && typeof d.memo === "object" ? d.memo : {};
-  const memo = { criteres: m0.criteres && typeof m0.criteres === "object" ? { personnes: Number(m0.criteres.personnes) || 1, date_arrivee: nettoie(m0.criteres.date_arrivee, 10), domiciliation: !!m0.criteres.domiciliation, budget_mensuel_ht: Number(m0.criteres.budget_mensuel_ht) || 0 } : null,
-    devis: m0.devis && m0.devis.reference ? { reference: nettoie(m0.devis.reference, 12) } : null };
+  const r0 = m0.recap && typeof m0.recap === "object" ? m0.recap : null;
+  const memo = {
+    criteres: m0.criteres && typeof m0.criteres === "object" ? { personnes: Number(m0.criteres.personnes) || 1, date_arrivee: nettoie(m0.criteres.date_arrivee, 10), budget_mensuel_ht: Number(m0.criteres.budget_mensuel_ht) || 0 } : null,
+    choix: m0.choix ? nettoie(m0.choix, 40) : null,
+    recap: r0 ? { option_id: nettoie(r0.option_id, 40), prenom: nettoie(r0.prenom, 60), nom: nettoie(r0.nom, 60), email: nettoie(r0.email, 160).toLowerCase(), societe: nettoie(r0.societe, 120), telephone: nettoie(r0.telephone, 40), domiciliation: !!r0.domiciliation, resume: nettoie(r0.resume, 400) } : null,
+    devis: m0.devis && m0.devis.reference ? { ...m0.devis, reference: nettoie(m0.devis.reference, 12) } : null,
+  };
   // Plafond de devis par IP : vérifié au moment de la création (voir lib/agent.mjs).
   memo.peutCreer = () => !limite(ip, "devis", MAX_DEVIS, FEN_DEVIS);
+  const sortieMemo = () => { const { criteres, choix, recap, devis } = memo; return { criteres, choix, recap, devis }; };
   try {
+    if (confirmer) {
+      // Bouton « Confirmer le devis » : création directe, sans passer par le modèle.
+      const r = await confirmerDevis(memo, d.confirmer.domiciliation);
+      if (!r.ok) {
+        const t = r.limite ? msg("Plusieurs devis ont déjà été demandés depuis votre connexion. Réservez une visite : l'équipe vous répondra directement.", "Several quotes have already been requested from your connection. Book a visit and the team will reply directly.")
+          : r.indispo ? msg("Cette offre vient d'être réservée. Dites-moi si vous souhaitez voir les autres disponibilités.", "This offer has just been taken. Let me know if you would like to see other availability.")
+          : msg("Le récapitulatif a expiré. Pouvez-vous me redonner l'offre souhaitée ?", "The summary has expired. Could you tell me again which offer you would like?");
+        return json(200, { ok: true, texte: t, memo: sortieMemo() });
+      }
+      const dv = r.devis;
+      const texte = msg(`Merci. Votre demande de devis **${dv.reference}** est transmise : l'équipe le relit et vous l'envoie par e-mail très vite. Vous pourrez l'accepter en ligne. Souhaitez-vous visiter le lieu d'ici là ?`,
+        `Thank you. Your quote request **${dv.reference}** has been passed on: the team will review it and email it to you shortly. You will be able to accept it online. Would you like to visit in the meantime?`);
+      return json(200, { ok: true, texte, devis: dv, memo: sortieMemo() });
+    }
     const r = await repondre({ historique: historique.slice(-16), lang, memo, cle });
-    const { criteres, devis } = memo;
-    return json(200, { ok: true, texte: r.texte, offres: r.offres, devis: r.devis, actions: r.actions, memo: { criteres, devis } });
+    return json(200, { ok: true, texte: r.texte, offres: r.offres, recap: r.recap, actions: r.actions, memo: sortieMemo() });
   } catch (e) {
     console.error("agent", e.ia ? e.message : String(e.message || "").slice(0, 200));
     const occupe = e.status === 429 || e.status === 529 || e.status === 402 || e.status === 400 && /credit|billing/i.test(e.message);
