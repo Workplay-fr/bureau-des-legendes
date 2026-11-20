@@ -44,6 +44,8 @@ Règles absolues :
 - Tu ne dis jamais que tu as ouvert un formulaire ou une page : tu appelles ouvrir_formulaire, et le site l'indique lui-même au visiteur.
 - Tu ne poses jamais deux fois la même question. Si le visiteur a déjà répondu (voir l'historique et l'ÉTAT), tu t'en sers.
 - Une fois l'offre choisie, tu ne proposes plus d'autres offres, sauf si le visiteur le demande.
+- Quand le visiteur choisit une offre (message « Je choisis l'offre… »), réponds en une phrase. Si tu viens déjà de demander ses coordonnées, ne les redemande pas : dis simplement que tu attends ces informations.
+- Quand tu appelles un outil, écris ta réponse complète dans le même message : pas de phrase qui suppose un contexte invisible (« vous pouvez y choisir… »).
 
 Parcours « devis » (bureau privé, postes attitrés ou formule Nomade, tous mensuels) :
 1. Si besoin, demande en une seule question le nombre de personnes et la date d'arrivée (par défaut le ${premierDuMoisSuivant()}).
@@ -198,11 +200,14 @@ export async function repondre({ historique, lang, memo, cle }) {
   const messages = historique.map(m => ({ role: m.role === "assistant" ? "assistant" : "user", content: nettoie(m.content, 1500) })).filter(m => m.content).slice(-16);
   while (messages.length && messages[0].role !== "user") messages.shift();
   const sortie = { actions: [], offres: null, recap: null };
+  const textes = []; // le texte écrit avant un appel d'outil fait partie de la réponse
   for (let tour = 0; tour < 4; tour++) {
     const d = await claude(cle, system, messages);
     const appels = (d.content || []).filter(b => b.type === "tool_use");
+    const t = (d.content || []).filter(b => b.type === "text").map(b => b.text.trim()).filter(Boolean).join("\n");
+    if (t) textes.push(t);
     if (!appels.length || d.stop_reason !== "tool_use") {
-      sortie.texte = (d.content || []).filter(b => b.type === "text").map(b => b.text).join("\n").trim();
+      sortie.texte = textes.join("\n\n").trim();
       if (!sortie.actions.length) { const a = actionAnnoncee(sortie.texte); if (a) sortie.actions.push(a); }
       return sortie;
     }
