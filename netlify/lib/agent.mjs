@@ -45,7 +45,7 @@ Règles absolues :
 - Tu ne poses jamais deux fois la même question. Si le visiteur a déjà répondu (voir l'historique et l'ÉTAT), tu t'en sers.
 - Une fois l'offre choisie, tu ne proposes plus d'autres offres, sauf si le visiteur le demande.
 - Quand le visiteur choisit une offre (message « Je choisis l'offre… »), réponds en une phrase. Si tu viens déjà de demander ses coordonnées, ne les redemande pas : dis simplement que tu attends ces informations.
-- Quand tu appelles un outil, écris ta réponse complète dans le même message : pas de phrase qui suppose un contexte invisible (« vous pouvez y choisir… »).
+- Quand tu appelles un outil, n'écris rien avant l'appel : écris ta réponse complète une fois le résultat reçu, sans phrase qui suppose un contexte invisible (« vous pouvez y choisir… »).
 
 Parcours « devis » (bureau privé, postes attitrés ou formule Nomade, tous mensuels) :
 1. Si besoin, demande en une seule question le nombre de personnes et la date d'arrivée (par défaut le ${premierDuMoisSuivant()}).
@@ -207,7 +207,8 @@ export async function repondre({ historique, lang, memo, cle }) {
     const t = (d.content || []).filter(b => b.type === "text").map(b => b.text.trim()).filter(Boolean).join("\n");
     if (t) textes.push(t);
     if (!appels.length || d.stop_reason !== "tool_use") {
-      sortie.texte = textes.join("\n\n").trim();
+      // La réponse est celle écrite après les outils ; le texte d'avant ne sert que si elle manque.
+      sortie.texte = (t && textes.length > 1 ? t : textes.join("\n\n")).trim();
       if (!sortie.actions.length) { const a = actionAnnoncee(sortie.texte); if (a) sortie.actions.push(a); }
       return sortie;
     }
