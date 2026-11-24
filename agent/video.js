@@ -80,6 +80,7 @@
     for (const e of document.querySelectorAll("a[href], button, [role=button], input, textarea, select")) {
       if (n.contains(e) || !e.offsetParent && getComputedStyle(e).position !== "fixed") continue;
       const q = e.getBoundingClientRect();
+      if (q.width * q.height > 90000) continue; // grandes images cliquables (plateau, cartes) : pas des boutons
       if (q.width && q.height && q.right > r.left - 8 && q.left < r.right + 8 && q.bottom > r.top - 8 && q.top < r.bottom + 8) return false;
     }
     return true;
