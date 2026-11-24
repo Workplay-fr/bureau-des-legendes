@@ -95,8 +95,8 @@ def intro_frame(fx, t):
     a = [ease_out((t - s) / 0.7) for s in (0.1, 0.5, 0.9)]
     entete(im, 1.0 if fx == "intro2" else ease_out(t / 0.6))
     if fx == "intro1":
-        tc(d, 360 + 24 * (1 - a[0]), "Nexudus, le logiciel de gestion", F_HERO, mix(NOIR, BLANC, a[0]))
-        tc(d, 465 + 24 * (1 - a[0]), "des espaces que l'on loue.", F_HERO, mix(NOIR, BLANC, a[0]))
+        tc(d, 360 + 24 * (1 - a[0]), "Nexudus, la plateforme pour gérer", F_HERO, mix(NOIR, BLANC, a[0]))
+        tc(d, 465 + 24 * (1 - a[0]), "un espace de travail.", F_HERO, mix(NOIR, BLANC, a[0]))
         lw = int(90 * ease_out((t - 0.6) / 0.8))
         if lw > 0: d.rectangle((W / 2 - lw / 2, 590, W / 2 + lw / 2, 592), fill=BLEU_C)
         tc(d, 622 + 20 * (1 - a[1]), "Coworkings, bureaux, self-stockage : plus de 4 000 espaces dans 90 pays.", F_SOUS, mix(NOIR, (226, 220, 213), a[1]))
