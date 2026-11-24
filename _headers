@@ -13,3 +13,12 @@
 
 /video/*
   Cache-Control: public, max-age=86400
+
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/en/*
+  Cache-Control: no-cache
