@@ -2,7 +2,7 @@
 // et un mot de passe invité SITE_PASSWORD_INVITE qui exige l'e-mail du visiteur.
 // Chaque mot de passe a son propre jeton : retirer un secret déconnecte ceux qui sont entrés avec.
 // Entrée d'un invité : son e-mail devient un contact Nexudus, et une alerte part par e-mail
-// (Worker « bdl-notif » relié en service binding NOTIF, s'il est configuré).
+// via Resend (variables RESEND_API_KEY, ALERTE_EMAIL, ALERTE_DE), sinon via le Worker bdl-notif.
 // Sans cookie valide, chaque page affiche l'écran de connexion ; les appels /api/* répondent 401.
 // Les images de /img/ restent servies pour que l'écran de connexion puisse les afficher.
 // /portail/ contient l'habillage chargé par le portail membre Nexudus : il doit rester public.
@@ -40,12 +40,31 @@ async function signaler(context, req, email, suite) {
     const c = await contact({ nom, email, note: `Visiteur du site démo bdl.workplay.fr (accès invité). Entrée le ${quand}.` });
     nouveau = c.nouveau;
   } catch (e) { console.error("Contact visiteur non créé :", e.status || e.message); }
+  const cf = req.cf || {};
+  const lieu = [cf.city, cf.country].filter(Boolean).join(", ") || "inconnu";
+  const nav = (req.headers.get("user-agent") || "").slice(0, 200);
+  const lignes = [`${email} vient d'entrer sur bdl.workplay.fr avec le mot de passe invité.`, "", `Quand : ${quand}`, `Page demandée : ${suite}`, `Lieu approximatif : ${lieu}`, `Navigateur : ${nav}`, "",
+    nouveau === true ? "Un nouveau contact a été créé dans Nexudus." : nouveau === false ? "Ce contact existait déjà dans Nexudus." : ""];
+  // Alerte par Resend (domaine d'envoi déjà vérifié chez Resend). Variables Cloudflare : RESEND_API_KEY (secret),
+  // ALERTE_EMAIL (destinataire) et ALERTE_DE (expéditeur, sur le domaine vérifié).
+  const lire = k => (context.env && context.env[k]) || env(k);
+  const cle = lire("RESEND_API_KEY"), dest = lire("ALERTE_EMAIL"), de = lire("ALERTE_DE");
+  if (cle && dest && de) {
+    try {
+      const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { authorization: `Bearer ${cle}`, "content-type": "application/json" },
+        body: JSON.stringify({ from: `Bureau des Légendes <${de}>`, to: dest.split(",").map(x => x.trim()).filter(Boolean), reply_to: email,
+          subject: `Visite du site BDL : ${email}`, text: lignes.join("\n"),
+          html: `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#19110B"><p><b>${sur(email)}</b> vient d'entrer sur <a href="https://bdl.workplay.fr">bdl.workplay.fr</a> avec le mot de passe invité.</p><table style="border-collapse:collapse;font-size:14px">${[["Quand", quand], ["Page demandée", suite], ["Lieu approximatif", lieu], ["Navigateur", nav]].map(([k, v]) => `<tr><td style="padding:3px 14px 3px 0;color:#6B635C">${k}</td><td style="padding:3px 0">${sur(v)}</td></tr>`).join("")}</table><p style="color:#6B635C">${sur(lignes[7])}</p></div>` }) });
+      if (!r.ok) console.error("Alerte Resend refusée :", r.status, (await r.text()).slice(0, 200));
+    } catch (e) { console.error("Alerte Resend non envoyée :", e.message); }
+    return;
+  }
+  // Sinon, relais par le Worker bdl-notif (service binding NOTIF)
   const notif = context.env && context.env.NOTIF;
   if (notif) {
     try {
-      const cf = req.cf || {};
       await notif.fetch("https://bdl-notif/", { method: "POST", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email, quand, page: suite, ville: cf.city || "", pays: cf.country || "", navigateur: (req.headers.get("user-agent") || "").slice(0, 200), nouveau }) });
+        body: JSON.stringify({ email, quand, page: suite, ville: cf.city || "", pays: cf.country || "", navigateur: nav, nouveau }) });
     } catch (e) { console.error("Alerte e-mail non envoyée :", e.message); }
   }
 }
