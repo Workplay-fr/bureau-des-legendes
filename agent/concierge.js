@@ -31,7 +31,7 @@
   const css = `
   .cg-btn{position:fixed;left:50%;translate:-50% 0;bottom:max(26px,env(safe-area-inset-bottom,0px));z-index:190;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 20px;border-radius:999px;cursor:pointer;
     font:500 11px/1 var(--f,"Jost",system-ui,sans-serif);letter-spacing:.26em;text-transform:uppercase;color:#19110B;
-    background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(250,247,242,.5));-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+    background:#FFFFFF;-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
     border:1px solid rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(25,17,11,.07),0 1px 1px rgba(25,17,11,.04),0 12px 32px -8px rgba(25,17,11,.22);
     transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .35s,box-shadow .5s;animation:cgArrive 1s .6s cubic-bezier(.22,1,.36,1) both}
   .cg-btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(25,17,11,.09),0 1px 1px rgba(25,17,11,.04),0 18px 40px -10px rgba(25,17,11,.3)}
