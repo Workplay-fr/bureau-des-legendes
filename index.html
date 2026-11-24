@@ -5,8 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" type="image/png" href="img/mark-noir.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+
+/* Menu du haut transparent au-dessus du film d'accueil */
+.hdr{transition:background-color .45s ease,border-color .45s ease}
+.brand{position:relative}
+.brand .logo-film{position:absolute;left:0;top:0;opacity:0;transition:opacity .45s ease}
+.brand img:first-child{transition:opacity .45s ease}
+.hdr.sur-film{background:transparent;border-bottom-color:transparent}
+.hdr.sur-film .brand img:first-child{opacity:0}
+.hdr.sur-film .brand .logo-film{opacity:1}
+.hdr.sur-film .nav a{color:#fff}
+.hdr.sur-film .nav a::after{background:#fff}
+.hdr.sur-film .nav a.langue{border-left-color:rgba(255,255,255,.35)}
+.hdr.sur-film .hdr-cta{background:transparent;border-color:rgba(255,255,255,.65);color:#fff}
+.hdr.sur-film .hdr-cta:hover{background:#fff;color:var(--noir)}
+.hdr.sur-film .menu-btn{color:#fff;border-color:rgba(255,255,255,.65)}
 /* Premier écran : le film (fond animé, zoom lent, mouvement à la souris) */
-.hf{position:relative;height:calc(100svh - var(--hdr-h,74px));min-height:620px;max-height:1100px;overflow:hidden;background:#140D08;color:#fff;padding:0;border-bottom:0;isolation:isolate}
+.hf{position:relative;margin-top:calc(-1 * var(--hdr-h,74px));height:100svh;min-height:680px;max-height:1100px;overflow:hidden;background:#140D08;color:#fff;padding:0;border-bottom:0;isolation:isolate}
 .hf-fond{position:absolute;inset:-3%;z-index:0;transform:translate3d(var(--px,0px),var(--py,0px),0);transition:transform 1.4s var(--ease)}
 .hf-plan{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease}
 .hf-plan.on{opacity:1}
@@ -17,7 +32,7 @@
 .hf-video.joue{opacity:1}
 .hf::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(20,13,8,.82) 0%,rgba(20,13,8,.45) 46%,rgba(20,13,8,.12) 100%),linear-gradient(180deg,rgba(20,13,8,.35) 0%,rgba(20,13,8,0) 30%,rgba(20,13,8,0) 58%,rgba(20,13,8,.7) 100%)}
 .hf::after{content:"";position:absolute;inset:0;z-index:5;background:#F4ECE6;opacity:0;pointer-events:none;transition:opacity .7s ease .35s}
-.hf .en-nexudus{z-index:3}
+.hf .en-nexudus{z-index:3;top:calc(var(--hdr-h,74px) + 18px)}
 .hf-contenu{position:absolute;z-index:2;left:var(--gut);right:var(--gut-r);bottom:clamp(96px,15vh,168px);display:flex;flex-direction:column;gap:clamp(22px,3.2vh,34px);max-width:1100px}
 .hf .fiche{color:#E8DFD2}
 .hf .fiche span + span{border-left-color:rgba(255,255,255,.3)}
@@ -54,7 +69,7 @@
 .hf.plonge::after{opacity:1}
 @media (max-width:1250px){.hf-pellicule{display:none}}
 @media (max-width:900px){
-  .hf{height:calc(100svh - var(--hdr-h,64px));min-height:560px}
+  .hf{height:100svh;min-height:600px}
   .hf::before{background:linear-gradient(180deg,rgba(20,13,8,.4) 0%,rgba(20,13,8,.15) 30%,rgba(20,13,8,.6) 62%,rgba(20,13,8,.9) 100%)}
   .hf-contenu{bottom:104px}
   .hf h1{font-size:clamp(40px,12vw,72px)}
@@ -972,7 +987,7 @@ section.tf-q{padding-block:0}
 
 <header class="hdr">
   <div class="wrap">
-    <a class="brand" href="#accueil" aria-label="Bureau des Légendes, accueil"><img src="img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220"></a>
+    <a class="brand" href="#accueil" aria-label="Bureau des Légendes, accueil"><img src="img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220"><img class="logo-film" src="img/logo-blanc.png" alt="" aria-hidden="true" width="496" height="220"></a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="#espaces">Espaces</a><a href="#formules">Formules</a><a href="#evenements">Événements</a><a href="#contact">Contact</a>
       <a data-portal="login" href="#">Espace membre</a>
@@ -2571,6 +2586,15 @@ function prixDans(t, n){ return n == null ? t : String(t).replace(/\d+(?:[.,]\d+
     h.addEventListener("pointermove", e => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; const r = h.getBoundingClientRect(); h.style.setProperty("--px", ((e.clientX - r.left) / r.width - .5) * -22 + "px"); h.style.setProperty("--py", ((e.clientY - r.top) / r.height - .5) * -14 + "px"); }); });
     h.addEventListener("pointerleave", () => { h.style.setProperty("--px", "0px"); h.style.setProperty("--py", "0px"); });
   }
+
+  // Menu du haut transparent tant que le film est sous lui (et que le menu mobile est fermé)
+  const hdr = document.querySelector(".hdr"), mb = document.getElementById("menu-btn"), vue = h.closest("main");
+  const majHdr = () => { const ouvert = mb && mb.getAttribute("aria-expanded") === "true";
+    hdr.classList.toggle("sur-film", !vue.hidden && !ouvert && h.getBoundingClientRect().bottom > hdr.offsetHeight + 8); };
+  addEventListener("scroll", majHdr, { passive: true }); addEventListener("resize", majHdr); addEventListener("hashchange", () => setTimeout(majHdr, 60));
+  new MutationObserver(majHdr).observe(vue, { attributes: true, attributeFilter: ["hidden"] });
+  if (mb) new MutationObserver(majHdr).observe(mb, { attributes: true, attributeFilter: ["aria-expanded"] });
+  majHdr();
   // « Réserver un poste de travail » : le fond passe sur le plateau, zoome, puis le plan 3D s'ouvre
   h.querySelector("[data-plonge]")?.addEventListener("click", e => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
