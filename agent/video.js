@@ -4,7 +4,7 @@
 (() => {
   if (window.__bdlVideo) return; window.__bdlVideo = true;
   const EN = (document.documentElement.lang || "fr").startsWith("en");
-  const VIDEO = "/video/bdl-exploitant.mp4?v=2", MINI = "/video/bdl-exploitant.jpg?v=2", DUREE = "2:11";
+  const VIDEO = "/video/bdl-exploitant.mp4?v=3", MINI = "/video/bdl-exploitant.jpg?v=2", DUREE = "2:11";
   const T = EN ? { sur: "Operator's view", titre: "What happens in Nexudus", voir: "Watch the video", fermer: "Close", replier: "Hide", onglet: "Video" }
                : { sur: "Côté exploitant", titre: "Ce qui se passe dans Nexudus", voir: "Voir la vidéo", fermer: "Fermer", replier: "Replier", onglet: "Vidéo" };
   const CLE = "bdl_video_vu";
