@@ -33,7 +33,7 @@
 .hf::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(20,13,8,.82) 0%,rgba(20,13,8,.45) 46%,rgba(20,13,8,.12) 100%),linear-gradient(180deg,rgba(20,13,8,.35) 0%,rgba(20,13,8,0) 30%,rgba(20,13,8,0) 58%,rgba(20,13,8,.7) 100%)}
 .hf::after{content:"";position:absolute;inset:0;z-index:5;background:#F4ECE6;opacity:0;pointer-events:none;transition:opacity .7s ease .35s}
 .hf .en-nexudus{z-index:3;top:calc(var(--hdr-h,74px) + 4px);right:auto;left:calc(max(0px, (100vw - var(--wrap)) / 2) + var(--gut))}
-.hf-contenu{position:absolute;z-index:2;left:var(--gut);right:var(--gut-r);bottom:clamp(150px,26vh,340px);display:flex;flex-direction:column;gap:clamp(22px,3.2vh,34px);max-width:1100px}
+.hf-contenu{position:absolute;z-index:2;left:var(--gut);right:var(--gut-r);top:50%;translate:0 -50%;display:flex;flex-direction:column;gap:clamp(22px,3.2vh,34px);max-width:1100px}
 .hf .fiche{color:#E8DFD2}
 .hf .fiche span + span{border-left-color:rgba(255,255,255,.3)}
 .hf h1{color:#fff;font-weight:200;font-size:clamp(46px,min(8vw,12.5vh),128px);line-height:.98;letter-spacing:.04em;max-width:7.6em;text-wrap:initial}
@@ -71,7 +71,7 @@
 @media (max-width:900px){
   .hf{height:100svh;min-height:600px}
   .hf::before{background:linear-gradient(180deg,rgba(20,13,8,.4) 0%,rgba(20,13,8,.15) 30%,rgba(20,13,8,.6) 62%,rgba(20,13,8,.9) 100%)}
-  .hf-contenu{bottom:max(150px,22svh)}
+  .hf-contenu{top:52%}
   .hf h1{font-size:clamp(40px,12vw,72px)}
   .hf-pellicule{display:none}
   .hf-poste{padding:18px 22px;font-size:12px}
