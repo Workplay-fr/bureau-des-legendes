@@ -6,6 +6,12 @@
 <link rel="icon" type="image/png" href="img/mark-noir.png">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 
+/* Badge Nexudus / Workplay qui bascule */
+.flip{perspective:600px}
+.flip .ff{display:grid;transform-style:preserve-3d;transition:transform .9s var(--ease)}
+.flip .fa,.flip .fb{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;white-space:nowrap}
+.flip .fb{transform:rotateX(180deg)}
+.flip.tourne .ff{transform:rotateX(180deg)}
 /* Menu du haut transparent au-dessus du film d'accueil */
 .hdr{transition:background-color .45s ease,border-color .45s ease}
 .brand{position:relative}
@@ -1014,7 +1020,7 @@ section.tf-q{padding-block:0}
       <div class="hf-plan" style="--dx:-1.2%;--dy:1%"><img src="img/verriere-nuit.jpg" alt="" width="1600" height="900" loading="lazy"></div>
       <div class="hf-plan" style="--dx:1.2%;--dy:-1.2%"><img src="img/plateau.jpg" alt="" width="1600" height="900" loading="lazy"></div>
     </div>
-    <a class="en-nexudus" href="https://www.nexudus.com/" target="_blank" rel="noopener">Powered by <b>Nexudus</b></a>
+    <a class="en-nexudus flip" id="badge" href="https://www.nexudus.com/" target="_blank" rel="noopener"><span class="ff"><span class="fa">Powered by <b>Nexudus</b></span><span class="fb" aria-hidden="true">Integrated by <b>Workplay</b></span></span></a>
     <div class="hf-contenu entre">
       <div class="fiche label q"><span>312, boulevard Haussmann</span><span>Paris IX<sup>e</sup></span><span>Coworking et bureaux</span></div>
       <h1>Une adresse pour écrire sa légende.</h1>
@@ -2595,6 +2601,11 @@ function prixDans(t, n){ return n == null ? t : String(t).replace(/\d+(?:[.,]\d+
   new MutationObserver(majHdr).observe(vue, { attributes: true, attributeFilter: ["hidden"] });
   if (mb) new MutationObserver(majHdr).observe(mb, { attributes: true, attributeFilter: ["aria-expanded"] });
   majHdr();
+
+  // Badge : « Powered by Nexudus » et « Integrated by Workplay » en alternance toutes les 5 secondes
+  const bg = document.getElementById("badge");
+  if (bg) setInterval(() => { const w = bg.classList.toggle("tourne"); bg.href = w ? "https://workplay.fr" : "https://www.nexudus.com/";
+    bg.querySelector(".fa").setAttribute("aria-hidden", String(w)); bg.querySelector(".fb").setAttribute("aria-hidden", String(!w)); }, 5000);
   // « Réserver un poste de travail » : le fond passe sur le plateau, zoome, puis le plan 3D s'ouvre
   h.querySelector("[data-plonge]")?.addEventListener("click", e => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;

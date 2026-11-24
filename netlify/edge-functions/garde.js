@@ -108,101 +108,194 @@ export default async (req, context) => {
 
 // Textes de l'écran d'accès : en anglais quand la page demandée est celle de la version anglaise.
 const TEXTES = {
-  fr: { lang: "fr", photo: "Façade haussmannienne au crépuscule", sous: "Paris IX<sup>e</sup> · Coworking et bureaux", label: "Accès réservé", titre: "Bienvenue au Bureau des Légendes.",
-    intro: "Ce site de démonstration est accessible sur invitation. Indiquez votre e-mail et le mot de passe qui vous a été communiqué.", mail: "E-mail professionnel", mdp: "Mot de passe",
-    rgpd: "Votre e-mail est transmis à l'équipe Nexudus, qui pourra vous recontacter au sujet de cette démonstration. Il ne sert à rien d'autre.", afficher: "Afficher", masquer: "Masquer", entrer: "Entrer",
-    fictif: "<b>Un lieu imaginaire.</b> Le Bureau des Légendes est un espace de coworking fictif, créé pour une démonstration. L'adresse, les salles, les tarifs et les photos ne correspondent à aucun lieu réel.",
-    nx: "Réservations, demandes de visite, contacts et portail membre fonctionnent avec <b>Nexudus</b>, la plateforme de gestion utilisée par plus de 4 000 espaces de coworking et centres d'affaires dans 90 pays. <a href=\"https://nexudus.com\" target=\"_blank\" rel=\"noopener\">Découvrir Nexudus</a>" },
-  en: { lang: "en", photo: "Haussmann façade at dusk", sous: "Paris 9<sup>th</sup> · Coworking and offices", label: "Restricted access", titre: "Welcome to Bureau des Légendes.",
-    intro: "This demo site is available by invitation. Enter your email and the password you were given.", mail: "Work email", mdp: "Password",
-    rgpd: "Your email is shared with the Nexudus team, who may contact you about this demo. It is not used for anything else.", afficher: "Show", masquer: "Hide", entrer: "Enter",
-    fictif: "<b>An imaginary place.</b> Bureau des Légendes is a fictional coworking space created for a demo. The address, rooms, prices and photos do not match any real place.",
-    nx: "Bookings, visit requests, contacts and the member portal run on <b>Nexudus</b>, the management platform used by more than 4,000 coworking spaces and business centres in 90 countries. <a href=\"https://nexudus.com\" target=\"_blank\" rel=\"noopener\">Discover Nexudus</a>" },
+  fr: { lang: "fr", acces: "Accès sur invitation", titre: "Bienvenue au Bureau des Légendes.", sous: "Une adresse imaginaire au 312, boulevard Haussmann, et une démonstration grandeur nature de Nexudus.",
+    commencer: "Entrer", entree: "appuyez sur <b>Entrée ↵</b>", q1: "Votre e-mail professionnel ?", a1: "Pour que l'équipe puisse vous recontacter au sujet de cette démonstration.",
+    ph1: "nom@entreprise.fr", ok: "OK", passer: "Accès équipe : passer cette étape", q2: "Le mot de passe qui vous a été communiqué.", a2: "Il figure dans votre invitation.",
+    ph2: "Mot de passe", afficher: "Afficher", masquer: "Masquer", entrer: "Entrer", retour: "Retour", mailKo: "Cette adresse ne semble pas valide.",
+    rgpd: "Votre e-mail est transmis à l'équipe Nexudus, qui pourra vous recontacter au sujet de cette démonstration. Il ne sert à rien d'autre.",
+    fictif: "Le Bureau des Légendes est un lieu fictif, créé pour montrer Nexudus en situation.", nx: "Découvrir Nexudus", etape: "Étape" },
+  en: { lang: "en", acces: "By invitation", titre: "Welcome to Bureau des Légendes.", sous: "An imaginary address at 312, boulevard Haussmann, and a full-scale Nexudus demo.",
+    commencer: "Come in", entree: "press <b>Enter ↵</b>", q1: "Your work email?", a1: "So the team can get back to you about this demo.",
+    ph1: "name@company.com", ok: "OK", passer: "Team access: skip this step", q2: "The password you were given.", a2: "You will find it in your invitation.",
+    ph2: "Password", afficher: "Show", masquer: "Hide", entrer: "Enter", retour: "Back", mailKo: "This address does not look valid.",
+    rgpd: "Your email is shared with the Nexudus team, who may contact you about this demo. It is not used for anything else.",
+    fictif: "Bureau des Légendes is a fictional place, created to show Nexudus at work.", nx: "Discover Nexudus", etape: "Step" },
 };
 const ERREURS_EN = { "Ce mot de passe n'est pas le bon.": "This password is incorrect.", "Indiquez votre adresse e-mail pour entrer.": "Please enter your email address to come in.", "L'accès n'est pas encore configuré. Revenez un peu plus tard.": "Access is not set up yet. Please come back a little later." };
 function page(suite, erreur, status, email = "") {
   const en = /^\/(en|plateau\/en)(\/|$|\?)/.test(suite), T = TEXTES[en ? "en" : "fr"];
+  const erreurMail = /e-mail/.test(erreur);
   if (en && erreur) erreur = ERREURS_EN[erreur] || erreur;
+  // Étape d'ouverture : l'accueil, ou directement la question en défaut après une erreur
+  const depart = !erreur ? 0 : erreurMail ? 1 : 2;
+  const mots = T.titre.split(" ").map((m, i) => `<span class="w"><span style="--i:${i}">${sur(m)}</span></span>`).join(" ");
   const html = `<!doctype html>
 <html lang="${T.lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#140D08">
 <title>Bureau des Légendes · ${en ? "Access" : "Accès"}</title>
 <link rel="icon" type="image/png" href="/img/mark-noir.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&display=swap">
 <style>
-:root{--noir:#19110B;--blanc:#fff;--creme:#F6F1EB;--gris:#6B635C;--line:rgba(25,17,11,.13);--line-2:rgba(25,17,11,.5);--f:"Jost","Futura","Century Gothic","Avenir Next",system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+:root{--noir:#140D08;--creme:#F6F1EB;--gris:#C9C0B6;--bleu:#7FA6D6;--f:"Jost","Futura","Century Gothic","Avenir Next",system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1);--g:max(22px,clamp(22px,5vw,72px),env(safe-area-inset-left,0px))}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--blanc);color:var(--noir);font:400 16px/1.65 var(--f);-webkit-font-smoothing:antialiased}
-.cadre{min-height:100%;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
-.photo{position:relative;overflow:hidden;background:var(--noir)}
-.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kb 3s var(--ease) both}
-.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,6,.15),rgba(15,10,6,.15) 50%,rgba(15,10,6,.75))}
-.photo p{position:absolute;left:clamp(24px,4vw,56px);right:24px;bottom:clamp(24px,4vw,48px);z-index:2;margin:0;color:#fff;font:400 12px/1.6 var(--f);letter-spacing:.22em;text-transform:uppercase}
-.photo p b{display:block;font:400 clamp(22px,2.4vw,32px)/1.2 var(--f);letter-spacing:.08em;margin-bottom:10px}
-.droite{display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:clamp(28px,5vw,72px) max(20px,clamp(24px,5vw,72px),env(safe-area-inset-right,0px)) clamp(24px,4vw,48px) max(20px,clamp(24px,5vw,72px),env(safe-area-inset-left,0px))}
-.logo{height:44px;width:auto;display:block;align-self:flex-start}
-.boite{max-width:420px;width:100%;animation:up .9s .1s var(--ease) both}
-.label{font:400 12px/1.4 var(--f);letter-spacing:.22em;text-transform:uppercase;color:var(--gris)}
-h1{margin:14px 0 0;font:400 clamp(28px,3.2vw,44px)/1.12 var(--f);letter-spacing:.06em;text-transform:uppercase}
-.intro{color:var(--gris);margin:18px 0 32px}
-label.t{display:block;font:400 11.5px/1.4 var(--f);letter-spacing:.2em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
-.champ{display:flex;border-bottom:1px solid var(--line-2);transition:border-color .3s}
-.champ:focus-within{border-color:var(--noir);box-shadow:0 1px 0 var(--noir)}
-input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0 12px;font:400 18px/1.4 var(--f);color:var(--noir);outline:none;letter-spacing:.04em}
-.oeil{background:none;border:0;padding:0 2px;cursor:pointer;font:400 11px/1 var(--f);letter-spacing:.18em;text-transform:uppercase;color:var(--gris)}
-.oeil:hover{color:var(--noir)}
-.err{min-height:1.5em;margin:10px 0 0;font-size:14px;color:#B3261E}
-.err:not(:empty){animation:secoue .4s}
-.btn{margin-top:22px;width:100%;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--noir);background:var(--noir);color:#fff;padding:17px 30px;font:400 12.5px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--ease)}
-.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:#fff;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
-@media (hover:hover){.btn:hover{color:var(--noir)}.btn:hover::before{transform:scaleX(1);transform-origin:left}}
-:focus-visible{outline:1px solid var(--noir);outline-offset:3px}
+body{margin:0;background:var(--noir);color:#fff;font:400 16px/1.6 var(--f);-webkit-font-smoothing:antialiased;overflow:hidden}
+.fond{position:fixed;inset:-4%;z-index:0;transform:translate3d(var(--px,0px),var(--py,0px),0);transition:transform 1.4s var(--ease)}
+.fond i{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;animation:defile 27s linear infinite}
+.fond i:nth-child(1){background-image:url(/img/entree.webp);animation-delay:-1s}
+.fond i:nth-child(2){background-image:url(/img/verriere-nuit.jpg);animation-delay:8s}
+.fond i:nth-child(3){background-image:url(/img/hero.jpg);animation-delay:17s}
+@keyframes defile{0%{opacity:0;transform:scale(1.04)}6%{opacity:1}33%{opacity:1}40%{opacity:0;transform:scale(1.18) translate(-1.5%,-1%)}100%{opacity:0}}
+.voile{position:fixed;inset:0;z-index:1;background:linear-gradient(90deg,rgba(20,13,8,.9) 0%,rgba(20,13,8,.62) 50%,rgba(20,13,8,.35) 100%),linear-gradient(180deg,rgba(20,13,8,.45),rgba(20,13,8,0) 30%,rgba(20,13,8,0) 65%,rgba(20,13,8,.8));transition:background .8s}
+body.q .voile{background:rgba(20,13,8,.78)}
+.haut{position:fixed;z-index:3;left:var(--g);right:var(--g);top:max(26px,env(safe-area-inset-top,0px));display:flex;justify-content:space-between;align-items:flex-start;gap:20px;animation:apparait 1.2s .2s var(--ease) both}
+.haut img{height:42px;width:auto;display:block}
+.marque{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.badge,.acces{font:400 10.5px/1 var(--f);letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.82);padding:8px 10px;border:1px solid rgba(255,255,255,.35)}
+.badge b{font-weight:500;color:#fff}
+.flip{display:inline-block;perspective:600px}
+.flip .ff{display:grid;transform-style:preserve-3d;transition:transform .9s var(--ease)}
+.flip .fa,.flip .fb{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;white-space:nowrap}
+.flip .fb{transform:rotateX(180deg)}
+.flip.tourne .ff{transform:rotateX(180deg)}
+.acces{border:0;padding:8px 0;display:flex;align-items:center;gap:10px}
+.acces::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--bleu);box-shadow:0 0 0 5px rgba(127,166,214,.22);animation:pouls 2.4s ease-in-out infinite}
+main{position:fixed;inset:0;z-index:2}
+.pas{position:absolute;left:var(--g);right:var(--g);top:50%;max-width:1000px;transform:translateY(calc(-50% + 50px));opacity:0;visibility:hidden;transition:opacity .6s var(--ease),transform .8s var(--ease),visibility 0s .8s}
+.pas.on{opacity:1;visibility:visible;transform:translateY(-50%);transition:opacity .7s .15s var(--ease),transform .9s .1s var(--ease),visibility 0s}
+.pas.passe{transform:translateY(calc(-50% - 60px))}
+h1{margin:0;font:200 clamp(44px,7.4vw,118px)/1 var(--f);letter-spacing:.04em;text-transform:uppercase;max-width:9em}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding:.12em 0 .06em;margin:-.12em 0 -.06em}
+.w>span{display:inline-block;transform:translateY(105%)}
+.pas.on .w>span{animation:monte 1.1s var(--ease) both;animation-delay:calc(.35s + var(--i) * 80ms)}
+.sous{margin:28px 0 0;max-width:34em;font-size:clamp(16px,1.4vw,19px);color:var(--gris);animation:apparait 1s 1s var(--ease) both}
+.num{display:flex;align-items:center;gap:12px;font:400 13px/1 var(--f);letter-spacing:.18em;color:var(--bleu);margin-bottom:18px}
+.num::after{content:"→";letter-spacing:0}
+label.qq{display:block;font:300 clamp(28px,3.8vw,54px)/1.15 var(--f);letter-spacing:.02em}
+.aide{margin:12px 0 0;color:var(--gris);font-size:clamp(15px,1.2vw,17px)}
+.champ{display:flex;align-items:center;gap:16px;margin-top:clamp(26px,4vh,40px);border-bottom:1px solid rgba(255,255,255,.4);transition:border-color .3s,box-shadow .3s;max-width:760px}
+.champ:focus-within{border-color:#fff;box-shadow:0 1px 0 #fff}
+input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0 14px;font:300 clamp(24px,3vw,40px)/1.3 var(--f);color:#fff;outline:none;caret-color:var(--bleu)}
+input::placeholder{color:rgba(255,255,255,.3)}
+.oeil{background:none;border:0;padding:0;cursor:pointer;font:400 11px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;color:var(--gris)}
+.oeil:hover{color:#fff}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:14px;border:0;background:#fff;color:var(--noir);padding:16px 26px;font:400 12.5px/1.2 var(--f);letter-spacing:.22em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:#3C6A9E;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.btn:hover,.btn:focus-visible{color:#fff}.btn:hover::before,.btn:focus-visible::before{transform:scaleX(1);transform-origin:left}
+.btn i{font-style:normal;font-size:17px;transition:transform .4s var(--ease)}.btn:hover i{transform:translateX(5px)}
+.astuce{font-size:13px;color:var(--gris)}.astuce b{font-weight:500;color:#fff}
+.lien{background:none;border:0;padding:0;color:var(--gris);font:400 13px/1.4 var(--f);cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.lien:hover{color:#fff}
+.err{min-height:1.4em;margin:14px 0 0;color:#F2A49B;font-size:15px}
+.err:not(:empty){animation:secoue .45s}
+.rgpd{margin:26px 0 0;max-width:42em;font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.55)}
+.bas{position:fixed;z-index:3;left:var(--g);right:var(--g);bottom:max(22px,env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;align-items:flex-end;gap:20px;font-size:12.5px;color:rgba(255,255,255,.6);animation:apparait 1s 1.4s var(--ease) both}
+.bas a{color:#fff;text-underline-offset:4px}
+.etapes{display:flex;align-items:center;gap:12px;font:400 11px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
+.barre{width:120px;height:2px;background:rgba(255,255,255,.2);position:relative;overflow:hidden}
+.barre::after{content:"";position:absolute;inset:0;background:#fff;transform:scaleX(var(--p,0));transform-origin:left;transition:transform .8s var(--ease)}
+.retour{background:none;border:1px solid rgba(255,255,255,.35);color:#fff;width:34px;height:34px;cursor:pointer;font-size:15px;line-height:1}
+.retour:hover{background:#fff;color:var(--noir)}
+.retour[hidden]{display:none}
+:focus-visible{outline:1px solid #fff;outline-offset:4px}
 input:focus-visible{outline:none}
-.rgpd{margin:14px 0 0;font-size:12.5px;line-height:1.55;color:var(--gris)}
-.note{border-top:1px solid var(--line);padding-top:22px;display:grid;gap:12px;max-width:520px;font-size:14px;color:var(--gris)}
-.note b{color:var(--noir);font-weight:500}
-.nx{display:flex;gap:14px;align-items:flex-start;background:var(--creme);padding:16px 18px}
-.nx .m{flex:none;width:30px;height:30px;border:1px solid var(--noir);display:grid;place-items:center;font:500 13px/1 var(--f);color:var(--noir)}
-.nx a{color:var(--noir);text-underline-offset:4px}
-@keyframes kb{from{transform:scale(1.15)}to{transform:none}}
-@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-@keyframes secoue{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-@media (max-width:860px){.cadre{grid-template-columns:minmax(0,1fr)}.photo{min-height:38vh}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@keyframes monte{to{transform:none}}
+@keyframes apparait{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes secoue{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes pouls{50%{box-shadow:0 0 0 9px rgba(127,166,214,0)}}
+/* Sans JavaScript : les deux champs l'un sous l'autre */
+html:not(.js) body{overflow:auto}
+html:not(.js) main{position:relative;padding:150px var(--g) 140px}
+html:not(.js) .pas{position:relative;top:auto;left:auto;right:auto;transform:none;opacity:1;visibility:visible;margin-bottom:60px}
+html:not(.js) .pas[data-p="0"],html:not(.js) .etapes,html:not(.js) [data-suite]{display:none}
+@media (max-width:700px){.haut img{height:34px}.acces{max-width:9em;text-align:right;line-height:1.4}.bas{flex-direction:column;align-items:flex-start;gap:10px;font-size:11.5px}.astuce{display:none}.pas{top:55%}h1{font-size:clamp(34px,10.5vw,52px)}label.qq{font-size:26px}.aide{font-size:14px;margin-top:8px}input{font-size:22px}.champ{margin-top:18px}.actions{margin-top:18px}.rgpd{font-size:11.5px;margin-top:14px}.sous{margin-top:18px;font-size:15px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.w>span{transform:none}.fond i:nth-child(1){opacity:1}}
 </style>
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
-<main class="cadre">
-  <figure class="photo" style="margin:0"><img src="/img/facade.jpg" alt="${T.photo}"><p><b>312, boulevard Haussmann</b>${T.sous}</p></figure>
-  <div class="droite">
-    <img class="logo" src="/img/logo-noir.png" alt="Bureau des Légendes" width="496" height="220">
-    <form class="boite" method="post" action="/connexion">
-      <span class="label">${T.label}</span>
-      <h1>${T.titre}</h1>
-      <p class="intro">${T.intro}</p>
-      <label class="t" for="email">${T.mail}</label>
-      <div class="champ" style="margin-bottom:22px"><input id="email" name="email" type="email" autocomplete="email" inputmode="email" value="${sur(email)}" autofocus></div>
-      <label class="t" for="mdp">${T.mdp}</label>
-      <div class="champ"><input id="mdp" name="mot_de_passe" type="password" autocomplete="current-password" required><button class="oeil" type="button" id="oeil" aria-controls="mdp" aria-pressed="false">${T.afficher}</button></div>
-      <input type="hidden" name="suite" value="${sur(suite)}">
-      <p class="err" role="alert">${sur(erreur)}</p>
-      <button class="btn" type="submit">${T.entrer}</button>
+<div class="fond" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="voile" aria-hidden="true"></div>
+<header class="haut">
+  <div class="marque"><img src="/img/logo-blanc.png" alt="Bureau des Légendes" width="496" height="220"><a class="badge flip" id="badge" href="https://nexudus.com" target="_blank" rel="noopener" style="text-decoration:none"><span class="ff"><span class="fa">Powered by <b>Nexudus</b></span><span class="fb" aria-hidden="true">Integrated by <b>Workplay</b></span></span></a></div>
+  <span class="acces">${T.acces}</span>
+</header>
+<main>
+  <form id="f" method="post" action="/connexion" novalidate>
+    <input type="hidden" name="suite" value="${sur(suite)}">
+    <section class="pas" data-p="0">
+      <h1>${mots}</h1>
+      <p class="sous">${T.sous}</p>
+      <div class="actions" style="animation:apparait 1s 1.2s var(--ease) both"><button class="btn" type="button" data-suite>${T.commencer} <i aria-hidden="true">→</i></button><span class="astuce">${T.entree}</span></div>
+    </section>
+    <section class="pas" data-p="1">
+      <span class="num">01</span>
+      <label class="qq" for="email">${T.q1}</label>
+      <p class="aide">${T.a1}</p>
+      <div class="champ"><input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="${T.ph1}" value="${sur(email)}"></div>
+      <p class="err" role="alert" id="err1">${depart === 1 ? sur(erreur) : ""}</p>
+      <div class="actions"><button class="btn" type="button" data-suite>${T.ok} <i aria-hidden="true">✓</i></button><span class="astuce">${T.entree}</span><button class="lien" type="button" data-passer>${T.passer}</button></div>
+    </section>
+    <section class="pas" data-p="2">
+      <span class="num">02</span>
+      <label class="qq" for="mdp">${T.q2}</label>
+      <p class="aide">${T.a2}</p>
+      <div class="champ"><input id="mdp" name="mot_de_passe" type="password" autocomplete="current-password" placeholder="${T.ph2}" required><button class="oeil" type="button" id="oeil" aria-controls="mdp" aria-pressed="false">${T.afficher}</button></div>
+      <p class="err" role="alert" id="err2">${depart === 2 ? sur(erreur) : ""}</p>
+      <div class="actions"><button class="btn" type="submit">${T.entrer} <i aria-hidden="true">→</i></button><span class="astuce">${T.entree}</span></div>
       <p class="rgpd">${T.rgpd}</p>
-    </form>
-    <div class="note">
-      <p style="margin:0">${T.fictif}</p>
-      <div class="nx"><span class="m" aria-hidden="true">N</span><p style="margin:0">${T.nx}</p></div>
-    </div>
-  </div>
+    </section>
+  </form>
 </main>
+<footer class="bas">
+  <p style="margin:0;max-width:44em">${T.fictif} <a href="https://nexudus.com" target="_blank" rel="noopener">${T.nx}</a></p>
+  <div class="etapes"><button class="retour" type="button" id="retour" aria-label="${T.retour}" hidden>↑</button><span id="compte">${T.etape} 0 / 2</span><span class="barre" id="barre"></span></div>
+</footer>
 <script>
-const b=document.getElementById("oeil"),i=document.getElementById("mdp");
-b.addEventListener("click",()=>{const v=i.type==="password";i.type=v?"text":"password";b.textContent=v?"${T.masquer}":"${T.afficher}";b.setAttribute("aria-pressed",String(v));i.focus();});
+(() => {
+  const pas = [...document.querySelectorAll(".pas")], f = document.getElementById("f"), mail = document.getElementById("email"), mdp = document.getElementById("mdp");
+  const compte = document.getElementById("compte"), barre = document.getElementById("barre"), retour = document.getElementById("retour"), e1 = document.getElementById("err1");
+  let k = -1;
+  const valide = v => /^[^\\s@<>"]+@[^\\s@<>"]+\\.[a-z]{2,}$/i.test(v);
+  function aller(n){
+    if (n === k) return;
+    pas.forEach((p, i) => { p.classList.toggle("on", i === n); p.classList.toggle("passe", i < n); p.setAttribute("aria-hidden", String(i !== n)); p.inert = i !== n; });
+    k = n; document.body.classList.toggle("q", n > 0);
+    compte.textContent = "${T.etape} " + n + " / 2"; barre.style.setProperty("--p", n / 2); retour.hidden = n === 0;
+    const champ = pas[n].querySelector("input:not([type=hidden])");
+    setTimeout(() => (champ || pas[n].querySelector("button")).focus({ preventScroll: true }), 450);
+  }
+  function suivant(){
+    if (k === 0) return aller(1);
+    if (k === 1){ const v = mail.value.trim(); if (v && !valide(v)){ e1.textContent = ""; void e1.offsetWidth; e1.textContent = "${T.mailKo}"; return; } e1.textContent = ""; return aller(2); }
+    if (k === 2) f.requestSubmit ? f.requestSubmit() : f.submit();
+  }
+  document.querySelectorAll("[data-suite]").forEach(b => b.addEventListener("click", suivant));
+  document.querySelector("[data-passer]").addEventListener("click", () => { mail.value = ""; e1.textContent = ""; aller(2); });
+  retour.addEventListener("click", () => aller(Math.max(0, k - 1)));
+  document.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.isComposing && !(e.target.closest && e.target.closest("button"))){ e.preventDefault(); suivant(); }
+  });
+  f.addEventListener("submit", e => { if (!mdp.value){ e.preventDefault(); aller(2); mdp.focus(); } });
+  const o = document.getElementById("oeil");
+  o.addEventListener("click", () => { const v = mdp.type === "password"; mdp.type = v ? "text" : "password"; o.textContent = v ? "${T.masquer}" : "${T.afficher}"; o.setAttribute("aria-pressed", String(v)); mdp.focus(); });
+  // Badge : « Powered by Nexudus » et « Integrated by Workplay » en alternance toutes les 5 secondes
+  const bg = document.getElementById("badge");
+  if (bg) setInterval(() => { const w = bg.classList.toggle("tourne"); bg.href = w ? "https://workplay.fr" : "https://nexudus.com";
+    bg.querySelector(".fa").setAttribute("aria-hidden", String(w)); bg.querySelector(".fb").setAttribute("aria-hidden", String(!w)); }, 5000);
+  // Le fond suit légèrement la souris
+  if (matchMedia("(hover: hover)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches){
+    let raf = 0; const fd = document.querySelector(".fond");
+    addEventListener("pointermove", e => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; fd.style.setProperty("--px", (e.clientX / innerWidth - .5) * -24 + "px"); fd.style.setProperty("--py", (e.clientY / innerHeight - .5) * -16 + "px"); }); });
+  }
+  aller(${depart});
+})();
 </script>
 </body>
 </html>`;
