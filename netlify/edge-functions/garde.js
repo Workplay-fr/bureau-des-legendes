@@ -1,11 +1,16 @@
-// Protège tout le site par mot de passe : SITE_PASSWORD, et un second mot de passe facultatif SITE_PASSWORD_2.
-// Chaque mot de passe a son propre jeton : retirer SITE_PASSWORD_2 déconnecte ceux qui sont entrés avec.
+// Protège tout le site par mot de passe : SITE_PASSWORD, un second mot de passe facultatif SITE_PASSWORD_2,
+// et un mot de passe invité SITE_PASSWORD_INVITE qui exige l'e-mail du visiteur.
+// Chaque mot de passe a son propre jeton : retirer un secret déconnecte ceux qui sont entrés avec.
+// Entrée d'un invité : son e-mail devient un contact Nexudus, et une alerte part par e-mail
+// (Worker « bdl-notif » relié en service binding NOTIF, s'il est configuré).
 // Sans cookie valide, chaque page affiche l'écran de connexion ; les appels /api/* répondent 401.
 // Les images de /img/ restent servies pour que l'écran de connexion puisse les afficher.
 // /portail/ contient l'habillage chargé par le portail membre Nexudus : il doit rester public.
 
 const COOKIE = "bdl_acces";
 const DUREE = 60 * 60 * 24 * 30; // 30 jours
+
+import { contact } from "../lib/nexudus.mjs";
 
 const env = k => (globalThis.Netlify && Netlify.env.get(k)) || (globalThis.process && process.env[k]) || "";
 
@@ -23,6 +28,28 @@ const lireCookie = (req, nom) => (req.headers.get("cookie") || "").split(/;\s*/)
 const sur = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const versInterne = s => (typeof s === "string" && s.startsWith("/") && !s.startsWith("//") ? s : "/");
 
+const emailValide = e => /^[^\s@<>"]{1,64}@[^\s@<>"]+\.[a-z]{2,}$/i.test(e) && e.length <= 160;
+
+// Alerte d'entrée d'un invité : contact Nexudus + e-mail via le Worker bdl-notif. Ne bloque jamais l'entrée.
+async function signaler(context, req, email, suite) {
+  const quand = new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris", dateStyle: "full", timeStyle: "short" });
+  let nouveau = null;
+  try {
+    const local = email.split("@")[0].replace(/[._-]+/g, " ").replace(/\d+/g, "").trim();
+    const nom = local ? local.replace(/\b\p{L}/gu, c => c.toUpperCase()) : email;
+    const c = await contact({ nom, email, note: `Visiteur du site démo bdl.workplay.fr (accès invité). Entrée le ${quand}.` });
+    nouveau = c.nouveau;
+  } catch (e) { console.error("Contact visiteur non créé :", e.status || e.message); }
+  const notif = context.env && context.env.NOTIF;
+  if (notif) {
+    try {
+      const cf = req.cf || {};
+      await notif.fetch("https://bdl-notif/", { method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, quand, page: suite, ville: cf.city || "", pays: cf.country || "", navigateur: (req.headers.get("user-agent") || "").slice(0, 200), nouveau }) });
+    } catch (e) { console.error("Alerte e-mail non envoyée :", e.message); }
+  }
+}
+
 export default async (req, context) => {
   const url = new URL(req.url);
   const p = url.pathname;
@@ -35,8 +62,11 @@ export default async (req, context) => {
   if (p.startsWith("/img/") || p.startsWith("/portail/")) return context.next();
 
   const secrets = ["SITE_PASSWORD", "SITE_PASSWORD_2"].map(env).filter(Boolean);
-  const secret = secrets.length > 0;
+  const invite = env("SITE_PASSWORD_INVITE");
+  const secret = secrets.length > 0 || !!invite;
   const jetons = await Promise.all(secrets.map(jeton));
+  const jetonInvite = invite ? await jeton(invite) : null;
+  if (jetonInvite) jetons.push(jetonInvite);
 
   if (p === "/deconnexion") {
     return new Response(null, { status: 303, headers: { location: "/", "set-cookie": `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax` } });
@@ -45,15 +75,22 @@ export default async (req, context) => {
   if (p === "/connexion" && req.method === "POST") {
     const f = await req.formData().catch(() => null);
     const mdp = f ? String(f.get("mot_de_passe") || "") : "";
+    const email = f ? String(f.get("email") || "").trim().toLowerCase() : "";
     const suite = versInterne(f && f.get("suite"));
-    if (!secret) return page(suite, "L'accès n'est pas encore configuré. Revenez un peu plus tard.", 503);
+    if (!secret) return page(suite, "L'accès n'est pas encore configuré. Revenez un peu plus tard.", 503, email);
     const saisi = await jeton(mdp);
     const attendu = jetons.find(j => egal(saisi, j));
+    if (attendu && jetonInvite && egal(attendu, jetonInvite)) {
+      // Mot de passe invité : l'e-mail est obligatoire
+      if (!emailValide(email)) return page(suite, "Indiquez votre adresse e-mail pour entrer.", 400, email);
+      const tache = signaler(context, req, email, suite);
+      if (context.waitUntil) context.waitUntil(tache); else await tache;
+    }
     if (attendu) {
       return new Response(null, { status: 303, headers: { location: suite, "set-cookie": `${COOKIE}=${attendu}; Path=/; Max-Age=${DUREE}; HttpOnly; Secure; SameSite=Lax`, "x-robots-tag": "noindex, nofollow" } });
     }
     await new Promise(r => setTimeout(r, 700));
-    return page(suite, "Ce mot de passe n'est pas le bon.", 401);
+    return page(suite, "Ce mot de passe n'est pas le bon.", 401, email);
   }
 
   const recu = lireCookie(req, COOKIE);
@@ -72,16 +109,18 @@ export default async (req, context) => {
 // Textes de l'écran d'accès : en anglais quand la page demandée est celle de la version anglaise.
 const TEXTES = {
   fr: { lang: "fr", photo: "Façade haussmannienne au crépuscule", sous: "Paris IX<sup>e</sup> · Coworking et bureaux", label: "Accès réservé", titre: "Bienvenue au Bureau des Légendes.",
-    intro: "Ce site de démonstration est accessible sur invitation. Saisissez le mot de passe qui vous a été communiqué.", mdp: "Mot de passe", afficher: "Afficher", masquer: "Masquer", entrer: "Entrer",
+    intro: "Ce site de démonstration est accessible sur invitation. Indiquez votre e-mail et le mot de passe qui vous a été communiqué.", mail: "E-mail professionnel", mdp: "Mot de passe",
+    rgpd: "Votre e-mail est transmis à l'équipe Nexudus, qui pourra vous recontacter au sujet de cette démonstration. Il ne sert à rien d'autre.", afficher: "Afficher", masquer: "Masquer", entrer: "Entrer",
     fictif: "<b>Un lieu imaginaire.</b> Le Bureau des Légendes est un espace de coworking fictif, créé pour une démonstration. L'adresse, les salles, les tarifs et les photos ne correspondent à aucun lieu réel.",
     nx: "Réservations, demandes de visite, contacts et portail membre fonctionnent avec <b>Nexudus</b>, la plateforme de gestion utilisée par plus de 4 000 espaces de coworking et centres d'affaires dans 90 pays. <a href=\"https://nexudus.com\" target=\"_blank\" rel=\"noopener\">Découvrir Nexudus</a>" },
   en: { lang: "en", photo: "Haussmann façade at dusk", sous: "Paris 9<sup>th</sup> · Coworking and offices", label: "Restricted access", titre: "Welcome to Bureau des Légendes.",
-    intro: "This demo site is available by invitation. Enter the password you were given.", mdp: "Password", afficher: "Show", masquer: "Hide", entrer: "Enter",
+    intro: "This demo site is available by invitation. Enter your email and the password you were given.", mail: "Work email", mdp: "Password",
+    rgpd: "Your email is shared with the Nexudus team, who may contact you about this demo. It is not used for anything else.", afficher: "Show", masquer: "Hide", entrer: "Enter",
     fictif: "<b>An imaginary place.</b> Bureau des Légendes is a fictional coworking space created for a demo. The address, rooms, prices and photos do not match any real place.",
     nx: "Bookings, visit requests, contacts and the member portal run on <b>Nexudus</b>, the management platform used by more than 4,000 coworking spaces and business centres in 90 countries. <a href=\"https://nexudus.com\" target=\"_blank\" rel=\"noopener\">Discover Nexudus</a>" },
 };
-const ERREURS_EN = { "Ce mot de passe n'est pas le bon.": "This password is incorrect.", "L'accès n'est pas encore configuré. Revenez un peu plus tard.": "Access is not set up yet. Please come back a little later." };
-function page(suite, erreur, status) {
+const ERREURS_EN = { "Ce mot de passe n'est pas le bon.": "This password is incorrect.", "Indiquez votre adresse e-mail pour entrer.": "Please enter your email address to come in.", "L'accès n'est pas encore configuré. Revenez un peu plus tard.": "Access is not set up yet. Please come back a little later." };
+function page(suite, erreur, status, email = "") {
   const en = /^\/(en|plateau\/en)(\/|$|\?)/.test(suite), T = TEXTES[en ? "en" : "fr"];
   if (en && erreur) erreur = ERREURS_EN[erreur] || erreur;
   const html = `<!doctype html>
@@ -114,7 +153,7 @@ h1{margin:14px 0 0;font:400 clamp(28px,3.2vw,44px)/1.12 var(--f);letter-spacing:
 label.t{display:block;font:400 11.5px/1.4 var(--f);letter-spacing:.2em;text-transform:uppercase;color:var(--gris);margin-bottom:6px}
 .champ{display:flex;border-bottom:1px solid var(--line-2);transition:border-color .3s}
 .champ:focus-within{border-color:var(--noir);box-shadow:0 1px 0 var(--noir)}
-input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0 12px;font:400 18px/1.4 var(--f);color:var(--noir);outline:none;letter-spacing:.08em}
+input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0 12px;font:400 18px/1.4 var(--f);color:var(--noir);outline:none;letter-spacing:.04em}
 .oeil{background:none;border:0;padding:0 2px;cursor:pointer;font:400 11px/1 var(--f);letter-spacing:.18em;text-transform:uppercase;color:var(--gris)}
 .oeil:hover{color:var(--noir)}
 .err{min-height:1.5em;margin:10px 0 0;font-size:14px;color:#B3261E}
@@ -124,6 +163,7 @@ input{flex:1;min-width:0;border:0;background:transparent;padding:10px 0 12px;fon
 @media (hover:hover){.btn:hover{color:var(--noir)}.btn:hover::before{transform:scaleX(1);transform-origin:left}}
 :focus-visible{outline:1px solid var(--noir);outline-offset:3px}
 input:focus-visible{outline:none}
+.rgpd{margin:14px 0 0;font-size:12.5px;line-height:1.55;color:var(--gris)}
 .note{border-top:1px solid var(--line);padding-top:22px;display:grid;gap:12px;max-width:520px;font-size:14px;color:var(--gris)}
 .note b{color:var(--noir);font-weight:500}
 .nx{display:flex;gap:14px;align-items:flex-start;background:var(--creme);padding:16px 18px}
@@ -145,11 +185,14 @@ input:focus-visible{outline:none}
       <span class="label">${T.label}</span>
       <h1>${T.titre}</h1>
       <p class="intro">${T.intro}</p>
+      <label class="t" for="email">${T.mail}</label>
+      <div class="champ" style="margin-bottom:22px"><input id="email" name="email" type="email" autocomplete="email" inputmode="email" value="${sur(email)}" autofocus></div>
       <label class="t" for="mdp">${T.mdp}</label>
-      <div class="champ"><input id="mdp" name="mot_de_passe" type="password" autocomplete="current-password" required autofocus><button class="oeil" type="button" id="oeil" aria-controls="mdp" aria-pressed="false">${T.afficher}</button></div>
+      <div class="champ"><input id="mdp" name="mot_de_passe" type="password" autocomplete="current-password" required><button class="oeil" type="button" id="oeil" aria-controls="mdp" aria-pressed="false">${T.afficher}</button></div>
       <input type="hidden" name="suite" value="${sur(suite)}">
       <p class="err" role="alert">${sur(erreur)}</p>
       <button class="btn" type="submit">${T.entrer}</button>
+      <p class="rgpd">${T.rgpd}</p>
     </form>
     <div class="note">
       <p style="margin:0">${T.fictif}</p>
