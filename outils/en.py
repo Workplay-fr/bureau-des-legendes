@@ -12,7 +12,6 @@ src = (RACINE / "index.html").read_text()
 
 # ---------------------------------------------------------------- 1. morceaux de HTML (avec exposants)
 SNIP = [
-    ('<span>Légendes</span>', '<span>Legends</span>'),
     ("Paris IX<sup>e</sup>", "Paris 9<sup>th</sup>"),
     ("Vingt postes flexibles au 1<sup>er</sup> étage, seize postes attitrés au 2<sup>e</sup>. Bureaux en chêne, lampes en laiton, prises à chaque place et lumière du boulevard.",
      "Twenty flexible desks on the 1<sup>st</sup> floor, sixteen dedicated desks on the 2<sup>nd</sup>. Oak desks, brass lamps, a socket at every seat and light from the boulevard."),
@@ -39,15 +38,12 @@ TEXT = {
     "Réserver un poste": "Book a desk", "312, boulevard Haussmann": "312, boulevard Haussmann",
     "Coworking et bureaux": "Coworking and offices",
     "Une adresse pour écrire sa légende.": "An address to write your legend.",
-    "Coworking, bureaux privés et salles de réunion, dans un immeuble haussmannien.": "Coworking, private offices and meeting rooms in a Haussmann building.",
     "Réserver une salle": "Book a room",
-    "Dès 35 € HT de l'heure · créneaux en temps réel": "From €35 excl. VAT per hour · live availability",
-    "Visiter le lieu": "Visit the space", "30 minutes, café compris ;)": "30 minutes, coffee included ;)",
-    "Devenir membre": "Become a member", "Dès 90 € HT par mois · inscription en 2 minutes": "From €90 excl. VAT per month · sign up in 2 minutes",
+    "Visiter le lieu": "Visit the space",
+    "Devenir membre": "Become a member",
     "Powered by": "Powered by",
-    "Poussez la porte.": "Step inside.",
-    "Quatre niveaux à parcourir en maquette : salles, coworking, bureaux privés.": "Four floors to explore as a scale model: rooms, coworking, private offices.",
     "Explorer l'immeuble": "Explore the building",
+    "Réserver un poste de travail": "Book a desk", "01 · La porte": "01 · The door",
     "postes": "desks", "flexibles, à choisir sur le plan": "flexible, picked on the floor plan",
     "salles": "rooms", "de réunion, jusqu'à 15 personnes": "meeting rooms, up to 15 people",
     "de verrière pour vos événements": "under glass for your events",
@@ -195,6 +191,8 @@ TEXT = {
 
 # ---------------------------------------------------------------- 3. attributs (alt, aria-label, placeholder, title)
 ATTR = {
+    "Le Bureau des Légendes": "The Bureau des Légendes", "Le lieu en images": "The space in pictures",
+    "La porte": "The door", "Le hall": "The hall", "La verrière": "The glass roof", "Le plateau": "The floor",
     "Dénomination de la société": "Company name",
     "SIREN (9 chiffres)": "SIREN (9 digits)",
     "Un invité par ligne : Prénom Nom, adresse e-mail": "One guest per line: First Last, email address",

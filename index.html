@@ -4,7 +4,65 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" type="image/png" href="img/mark-noir.png">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* Premier écran : le film (fond animé, zoom lent, mouvement à la souris) */
+.hf{position:relative;height:calc(100svh - var(--hdr-h,74px));min-height:620px;max-height:1100px;overflow:hidden;background:#140D08;color:#fff;padding:0;border-bottom:0;isolation:isolate}
+.hf-fond{position:absolute;inset:-3%;z-index:0;transform:translate3d(var(--px,0px),var(--py,0px),0);transition:transform 1.4s var(--ease)}
+.hf-plan{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease}
+.hf-plan.on{opacity:1}
+.hf-plan img,.hf-plan video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
+.hf-plan.on img,.hf-plan.on video,.hf-plan.sort img,.hf-plan.sort video{animation:hfZoom 10s ease-out both}
+@keyframes hfZoom{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.16) translate(var(--dx,-1.5%),var(--dy,-1%))}}
+.hf-video{opacity:0;transition:opacity 1.6s ease}
+.hf-video.joue{opacity:1}
+.hf::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(20,13,8,.82) 0%,rgba(20,13,8,.45) 46%,rgba(20,13,8,.12) 100%),linear-gradient(180deg,rgba(20,13,8,.35) 0%,rgba(20,13,8,0) 30%,rgba(20,13,8,0) 58%,rgba(20,13,8,.7) 100%)}
+.hf::after{content:"";position:absolute;inset:0;z-index:5;background:#F4ECE6;opacity:0;pointer-events:none;transition:opacity .7s ease .35s}
+.hf .en-nexudus{z-index:3}
+.hf-contenu{position:absolute;z-index:2;left:var(--gut);right:var(--gut-r);bottom:clamp(96px,15vh,168px);display:flex;flex-direction:column;gap:clamp(22px,3.2vh,34px);max-width:1100px}
+.hf .fiche{color:#E8DFD2}
+.hf .fiche span + span{border-left-color:rgba(255,255,255,.3)}
+.hf h1{color:#fff;font-weight:200;font-size:clamp(46px,min(8vw,12.5vh),128px);line-height:.98;letter-spacing:.04em;max-width:7.6em;text-wrap:initial}
+.hf-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px 36px}
+.hf-poste{display:inline-flex;align-items:center;gap:22px;padding:21px 28px;background:#fff;color:var(--noir);text-decoration:none;font:400 13px/1.2 var(--f);letter-spacing:.22em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .4s var(--ease)}
+.hf-poste::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--bleu,#3C6A9E);transform:scaleX(0);transform-origin:right;transition:transform .55s var(--ease)}
+.hf-poste i{font-style:normal;font-size:19px;transition:transform .45s var(--ease)}
+.hf-poste:hover,.hf-poste:focus-visible{color:#fff}
+.hf-poste:hover::before,.hf-poste:focus-visible::before{transform:scaleX(1);transform-origin:left}
+.hf-poste:hover i{transform:translateX(6px)}
+.hf-autres{display:flex;flex-wrap:wrap;gap:10px 30px}
+.hf-autres a,.hf-autres button{border:0;background:none;padding:6px 0;color:#E8DFD2;font:400 12px/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;cursor:pointer;background-image:linear-gradient(currentColor,currentColor);background-size:0 1px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .45s var(--ease),color .3s}
+.hf-autres a:hover,.hf-autres button:hover,.hf-autres a:focus-visible,.hf-autres button:focus-visible{color:#fff;background-size:100% 1px}
+.hf-pellicule{position:absolute;z-index:2;right:var(--gut-r);bottom:34px;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.hf-vues{display:grid;grid-template-columns:repeat(4,96px);gap:10px}
+.hf-v{position:relative;padding:0 0 12px;border:0;background:none;cursor:pointer}
+.hf-v img{display:block;width:96px;height:60px;object-fit:cover;opacity:.5;transition:opacity .4s,outline-color .4s;outline:1px solid transparent;outline-offset:3px}
+.hf-v:hover img,.hf-v.on img{opacity:1}
+.hf-v.on img{outline-color:#fff}
+.hf-v i{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(255,255,255,.25);overflow:hidden}
+.hf-v i::after{content:"";position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+.hf-v.vu i::after{transform:scaleX(1)}
+.hf-v.on i::after{animation:hfBarre var(--duree,7s) linear both}
+.hf.pause .hf-v.on i::after{animation-play-state:paused}
+@keyframes hfBarre{to{transform:scaleX(1)}}
+.hf-legende{font:400 11px/1 var(--f);letter-spacing:.24em;text-transform:uppercase;color:#D8CEC3}
+.hf-defiler{position:absolute;z-index:2;left:50%;bottom:22px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font:400 10.5px/1 var(--f);letter-spacing:.26em;text-transform:uppercase;color:#D8CEC3}
+.hf-defiler::after{content:"";width:1px;height:30px;background:linear-gradient(#fff,transparent);animation:hfDefile 2.2s ease-in-out infinite}
+@keyframes hfDefile{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+/* Clic sur « Réserver un poste de travail » : on plonge dans le plateau */
+.hf.plonge .hf-fond{transform:scale(1.45);transition:transform 1.1s cubic-bezier(.7,0,.25,1)}
+.hf.plonge .hf-contenu,.hf.plonge .hf-pellicule,.hf.plonge .hf-defiler,.hf.plonge .en-nexudus{opacity:0;transform:translateY(-14px);transition:opacity .45s,transform .6s var(--ease)}
+.hf.plonge::after{opacity:1}
+@media (max-width:1250px){.hf-pellicule{display:none}}
+@media (max-width:900px){
+  .hf{height:calc(100svh - var(--hdr-h,64px));min-height:560px}
+  .hf::before{background:linear-gradient(180deg,rgba(20,13,8,.4) 0%,rgba(20,13,8,.15) 30%,rgba(20,13,8,.6) 62%,rgba(20,13,8,.9) 100%)}
+  .hf-contenu{bottom:104px}
+  .hf h1{font-size:clamp(40px,12vw,72px)}
+  .hf-pellicule{display:none}
+  .hf-poste{padding:18px 22px;font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){.hf-plan.on img,.hf-plan.on video,.hf-plan.sort img,.hf-plan.sort video,.hf-defiler::after{animation:none}.hf-fond{transition:none}}
+</style>
 <title>Bureau des Légendes</title>
 <meta name="description" content="Bureau des Légendes : coworking, bureaux privés et salles de réunion au 312 boulevard Haussmann, Paris 9e.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -934,28 +992,30 @@ section.tf-q{padding-block:0}
 
 <!-- ACCUEIL -->
 <main data-view="accueil">
-  <section class="hero">
-    <div class="hero-grid">
-      <div class="hero-l">
-        <div class="fiche label q"><span>312, boulevard Haussmann</span><span>Paris IX<sup>e</sup></span><span>Coworking et bureaux</span></div>
-        <div class="entre">
-          <h1>Une adresse pour écrire sa légende.</h1>
-          <p class="lede">Coworking, bureaux privés et salles de réunion, dans un immeuble haussmannien.</p>
-          <nav class="trio" aria-label="Accès rapides"><button class="trio-l premier" type="button" data-salle=""><b>Réserver une salle</b><small>Dès 35 € HT de l'heure · créneaux en temps réel</small><i aria-hidden="true">→</i></button><a class="trio-l" data-portal="tour" href="#"><b>Visiter le lieu</b><small>30 minutes, café compris ;)</small><i aria-hidden="true">→</i></a><button class="trio-l" type="button" data-membre=""><b>Devenir membre</b><small>Dès 90 € HT par mois · inscription en 2 minutes</small><i aria-hidden="true">→</i></button></nav>
-        </div>
+  <section class="hero hf" id="film" aria-label="Le Bureau des Légendes">
+    <div class="hf-fond" aria-hidden="true">
+      <div class="hf-plan on" style="--dx:-1.6%;--dy:-1%"><img src="img/entree.webp" alt="" width="1536" height="1024" fetchpriority="high"><video class="hf-video" src="img/entree.mp4" muted playsinline preload="auto" tabindex="-1"></video></div>
+      <div class="hf-plan" style="--dx:1.4%;--dy:-.8%"><img src="img/hero.jpg" alt="" width="1600" height="900" loading="lazy"></div>
+      <div class="hf-plan" style="--dx:-1.2%;--dy:1%"><img src="img/verriere-nuit.jpg" alt="" width="1600" height="900" loading="lazy"></div>
+      <div class="hf-plan" style="--dx:1.2%;--dy:-1.2%"><img src="img/plateau.jpg" alt="" width="1600" height="900" loading="lazy"></div>
+    </div>
+    <a class="en-nexudus" href="https://www.nexudus.com/" target="_blank" rel="noopener">Powered by <b>Nexudus</b></a>
+    <div class="hf-contenu entre">
+      <div class="fiche label q"><span>312, boulevard Haussmann</span><span>Paris IX<sup>e</sup></span><span>Coworking et bureaux</span></div>
+      <h1>Une adresse pour écrire sa légende.</h1>
+      <div class="hf-actions">
+        <a class="hf-poste" href="plateau/" data-plonge="">Réserver un poste de travail <i aria-hidden="true">→</i></a>
+        <nav class="hf-autres" aria-label="Accès rapides"><button type="button" data-salle="">Réserver une salle</button><a data-portal="tour" href="#">Visiter le lieu</a><button type="button" id="entree">Explorer l'immeuble</button></nav>
       </div>
-      <p class="vword" aria-hidden="true"><span>Légendes</span></p>
-      <div class="hero-r entree" id="entree" role="button" tabindex="0" aria-label="Explorer l'immeuble : pousser la porte du 312, boulevard Haussmann">
-        <img src="img/entree.webp" alt="L'entrée du Bureau des Légendes au crépuscule : porte cochère ouverte sur un intérieur éclairé, plaque en laiton, façade en pierre" width="1536" height="1024" fetchpriority="high">
-        <video class="en-film" src="img/entree.mp4" muted autoplay playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
-        <a class="en-nexudus" href="https://www.nexudus.com/" target="_blank" rel="noopener">Powered by <b>Nexudus</b></a>
-        <i class="en-porte" aria-hidden="true"></i>
-        <div class="en-bas">
-          <b>Poussez la porte.</b>
-          <p>Quatre niveaux à parcourir en maquette : salles, coworking, bureaux privés.</p>
-          <span class="en-cta">Explorer l'immeuble <i aria-hidden="true">→</i></span>
-        </div>
+    </div>
+    <div class="hf-pellicule" role="group" aria-label="Le lieu en images">
+      <div class="hf-vues">
+        <button class="hf-v on" type="button" data-k="0" aria-label="La porte"><img src="img/entree.webp" alt="" loading="lazy"><i></i></button>
+        <button class="hf-v" type="button" data-k="1" aria-label="Le hall"><img src="img/hero.jpg" alt="" loading="lazy"><i></i></button>
+        <button class="hf-v" type="button" data-k="2" aria-label="La verrière"><img src="img/verriere-nuit.jpg" alt="" loading="lazy"><i></i></button>
+        <button class="hf-v" type="button" data-k="3" aria-label="Le plateau"><img src="img/plateau.jpg" alt="" loading="lazy"><i></i></button>
       </div>
+      <span class="hf-legende" aria-live="polite">01 · La porte</span>
     </div>
   </section>
 
@@ -2480,6 +2540,46 @@ function prixDans(t, n){ return n == null ? t : String(t).replace(/\d+(?:[.,]\d+
   const lire = () => { if (v.ended) return; const p = v.play(); if (p) p.catch(() => {}); };
   if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => e.isIntersecting ? lire() : v.pause()).observe(v);
   else lire();
+})();
+</script>
+<script>
+// Premier écran « film » : quatre plans en fondu, zoom lent, léger mouvement à la souris, plongée vers le plateau.
+(() => {
+  const h = document.getElementById("film"); if (!h) return;
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches, DUREE = 7000;
+  const plans = [...h.querySelectorAll(".hf-plan")], vues = [...h.querySelectorAll(".hf-v")], leg = h.querySelector(".hf-legende");
+  const noms = vues.map(v => v.getAttribute("aria-label")), vid = h.querySelector(".hf-video");
+  let k = 0, t = 0;
+  h.style.setProperty("--duree", DUREE + "ms");
+  function aller(n, auto){
+    clearTimeout(t);
+    const avant = k; k = (n + plans.length) % plans.length;
+    if (avant !== k){ plans[avant].classList.remove("on"); plans[avant].classList.add("sort"); setTimeout(() => plans[avant].classList.remove("sort"), 1900); }
+    plans[k].classList.remove("sort"); void plans[k].offsetWidth; plans[k].classList.add("on");
+    vues.forEach((v, i) => { v.classList.toggle("on", i === k); v.classList.toggle("vu", i < k); v.setAttribute("aria-pressed", String(i === k)); if (i === k){ const b = v.querySelector("i"); b.style.animation = "none"; void b.offsetWidth; b.style.animation = ""; } });
+    if (leg) leg.textContent = String(k + 1).padStart(2, "0") + " · " + noms[k];
+    if (vid){ if (k === 0 && !RM){ vid.classList.remove("joue"); try { vid.currentTime = 0; } catch {} vid.play().then(() => vid.classList.add("joue")).catch(() => {}); } }
+    if (!RM && !h.classList.contains("pause")) t = setTimeout(() => aller(k + 1, true), DUREE);
+  }
+  vues.forEach((v, i) => v.addEventListener("click", () => aller(i)));
+  // Hors de l'écran : on suspend le film
+  if ("IntersectionObserver" in window) new IntersectionObserver(([e]) => { h.classList.toggle("pause", !e.isIntersecting); if (e.isIntersecting) aller(k); else { clearTimeout(t); vid?.pause(); } }, { threshold: .15 }).observe(h);
+  else aller(0);
+  // Léger mouvement du fond qui suit la souris
+  if (!RM && matchMedia("(hover: hover)").matches){
+    let raf = 0;
+    h.addEventListener("pointermove", e => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; const r = h.getBoundingClientRect(); h.style.setProperty("--px", ((e.clientX - r.left) / r.width - .5) * -22 + "px"); h.style.setProperty("--py", ((e.clientY - r.top) / r.height - .5) * -14 + "px"); }); });
+    h.addEventListener("pointerleave", () => { h.style.setProperty("--px", "0px"); h.style.setProperty("--py", "0px"); });
+  }
+  // « Réserver un poste de travail » : le fond passe sur le plateau, zoome, puis le plan 3D s'ouvre
+  h.querySelector("[data-plonge]")?.addEventListener("click", e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    e.preventDefault(); const url = e.currentTarget.href;
+    if (RM){ location.href = url; return; }
+    h.classList.add("pause"); aller(3); h.classList.add("plonge");
+    setTimeout(() => { location.href = url; }, 1050);
+  });
+  addEventListener("pageshow", e => { if (e.persisted){ h.classList.remove("plonge", "pause"); aller(k); } });
 })();
 </script>
 <script src="/agent/concierge.js?v=e2b51f2" defer></script>
