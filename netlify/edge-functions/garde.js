@@ -174,11 +174,12 @@ body{margin:0;background:var(--noir);color:#fff;font:400 16px/1.6 var(--f);-webk
 body.q .voile{background:rgba(20,13,8,.78)}
 .haut{position:fixed;z-index:3;left:var(--g);right:var(--g);top:max(26px,env(safe-area-inset-top,0px));display:flex;justify-content:space-between;align-items:flex-start;gap:20px;animation:apparait 1.2s .2s var(--ease) both}
 .haut img{height:42px;width:auto;display:block}
-.marque{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.marque{display:flex;flex-direction:column;gap:10px;align-items:center}
 .badge,.acces{font:400 10.5px/1 var(--f);letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.82);padding:8px 10px;border:1px solid rgba(255,255,255,.35)}
 .badge b{font-weight:500;color:#fff}
 .flip{display:inline-block;perspective:600px}
 .flip .ff{display:grid;transform-style:preserve-3d;transition:transform .9s var(--ease)}
+.flip .ff{justify-items:center}
 .flip .fa,.flip .fb{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;white-space:nowrap}
 .flip .fb{transform:rotateX(180deg)}
 .flip.tourne .ff{transform:rotateX(180deg)}
